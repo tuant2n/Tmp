@@ -43,6 +43,8 @@
 #pragma mark - NSString
 
 + (BOOL)isNotNullString:(NSString *)input;
++ (NSString *)standardLocaleString:(NSString *)string;
++ (BOOL)isAlphanumbericLetter:(NSString *)letter;
 
 #pragma mark - Time
 

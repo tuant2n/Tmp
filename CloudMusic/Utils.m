@@ -202,6 +202,78 @@
     return ([input isKindOfClass:[NSString class]] && input.length > 0);
 }
 
++ (NSString *)standardLocaleString:(NSString *)string
+{
+    if (string.length == 0) {
+        return nil;
+    }
+    
+    NSString *newString;
+    
+    NSMutableArray *arr = [NSMutableArray array];
+    for (NSUInteger i = 0; i < string.length; i++)
+    {
+        NSString *ichar = [string substringWithRange:NSMakeRange(i, 1)];
+        NSString *newChar = [self standardLocaleLetter:ichar];
+        [arr addObject:newChar];
+    }
+    newString = [arr componentsJoinedByString:@""];
+    
+    return newString;
+}
+
++ (NSString *)standardLocaleLetter:(NSString *)letter
+{
+    letter = [letter lowercaseString];
+    
+    if (letter.length == 0) {
+        return letter;
+    }
+    
+    NSString *regex = @"áàạảãăắằặẳẵâấầậẩẫđéèẹẻẽêếềệểễóòọỏõôốồổộỗơớờợởỡúùụủũưứừựửữíìịỉĩýỳỵỷỹ";
+    
+    NSRange searchRange = [regex rangeOfString:letter];
+    NSUInteger i = searchRange.location;
+    
+    if (i != NSNotFound) {
+        if (i <= 16) {
+            letter = @"a";
+        }
+        else if ((16 < i) && (i <= 17)) {
+            letter = @"d";
+        }
+        else if ((17 < i) && (i <= 28)) {
+            letter = @"e";
+        }
+        else if ((28 < i) && (i <= 45)) {
+            letter = @"o";
+        }
+        else if ((45 < i) && (i <= 56)) {
+            letter = @"u";
+        }
+        else if ((56 < i) && (i <= 61)) {
+            letter = @"i";
+        }
+        else if ((61 < i) && (i <= 66)) {
+            letter = @"y";
+        }
+    }
+    
+    return letter;
+}
+
++ (BOOL)isAlphanumbericLetter:(NSString *)letter
+{
+    if (letter.length == 0) {
+        return NO;
+    }
+    
+    NSString *regex = @"[A-Z]";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    BOOL valid = [predicate evaluateWithObject:letter];
+    return valid;
+}
+
 #pragma mark - Time
 
 + (NSString *)timeFormattedForSong:(int)totalSeconds

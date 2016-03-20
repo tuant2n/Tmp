@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "HCDCoreDataStackController.h"
+#import "Item.h"
 
 @interface DataManagement : NSObject
 
 + (DataManagement *)sharedInstance;
 
 @property (nonatomic, strong) HCDCoreDataStackController *coreDataController;
+- (NSManagedObjectContext *)managedObjectContext;
 
 #pragma mark - Data Method
 

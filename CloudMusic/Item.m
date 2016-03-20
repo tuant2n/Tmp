@@ -24,10 +24,10 @@
     self.iType = [NSNumber numberWithInt:kSourceTypeCloud];
     
     self.iSongId = item.itemPersistentID;
-    self.sSongName = item.itemTitle;
+    [self setSongName:item.itemTitle];
     
     self.iAlbumId = item.itemAlbumPID;
-    self.sAlbumName = item.itemAlbumTitle;
+    [self setAlbumName:item.itemAlbumTitle];
     
     self.iArtistId = item.itemArtistPID;
     self.sArtistName = item.itemArtist;
@@ -50,6 +50,24 @@
     self.iTrack = item.itemAlbumTrackNumber;
     self.iPlayCount = item.itemPlayCount;
     self.fDuration = item.itemPlaybackDuration;
+}
+
+- (void)setSongName:(NSString *)sSongName
+{
+    self.sSongName = sSongName;
+    self.sSongNameIndex = [[Utils standardLocaleString:self.sSongName] lowercaseString];
+    
+    NSString *sFirstLetter = [[self.sSongNameIndex substringToIndex:1] uppercaseString];
+    if (![Utils isAlphanumbericLetter:sFirstLetter]) {
+        sFirstLetter = @"#";
+    }
+    self.sSongFirstLetter = sFirstLetter;
+}
+
+- (void)setAlbumName:(NSString *)sAlbumName
+{
+    self.sAlbumName = sAlbumName;
+    self.sAlbumName = [[Utils standardLocaleString:self.sAlbumName] lowercaseString];
 }
 
 @end

@@ -9,8 +9,6 @@
 #import "DataManagement.h"
 #import <MediaPlayer/MediaPlayer.h>
 
-#import "Item.h"
-
 static DataManagement *_sharedInstance = nil;
 
 @interface DataManagement()
@@ -39,6 +37,11 @@ static DataManagement *_sharedInstance = nil;
     return _coreDataController;
 }
 
+- (NSManagedObjectContext *)managedObjectContext
+{
+    return self.coreDataController.stack.mainManagedObjectContext;
+}
+
 #pragma mark - Data Method
 
 - (void)removeAllData
@@ -48,7 +51,7 @@ static DataManagement *_sharedInstance = nil;
     [fetchSongRequest setPredicate:predicate];
     
     NSError *error = nil;
-    NSArray *listData = [self.coreDataController.stack.mainManagedObjectContext executeFetchRequest:fetchSongRequest error:&error];
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
     
     if (!error) {
         for (Item *item in listData) {
