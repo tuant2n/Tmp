@@ -202,4 +202,33 @@
     return ([input isKindOfClass:[NSString class]] && input.length > 0);
 }
 
+#pragma mark - Time
+
++ (NSString *)timeFormattedForSong:(int)totalSeconds
+{
+    int seconds = totalSeconds % 60;
+    int minutes = (totalSeconds / 60) % 60;
+    int hours = totalSeconds / 3600;
+    
+    if (hours > 0) {
+        return [NSString stringWithFormat:@"%02d:%02d:%02d",hours,minutes,seconds];
+    }
+    else {
+        return [NSString stringWithFormat:@"%02d:%02d",minutes,seconds];
+    }
+}
+
++ (NSString *)timeFormattedForList:(int)totalSeconds
+{
+    int minutes = (totalSeconds / 60) % 60;
+    int hours = totalSeconds / 3600;
+    
+    if (hours > 0) {
+        return [NSString stringWithFormat:@"%d hour %d min",hours,minutes];
+    }
+    else {
+        return [NSString stringWithFormat:@"%d min",minutes];
+    }
+}
+
 @end

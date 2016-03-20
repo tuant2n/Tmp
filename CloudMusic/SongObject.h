@@ -19,13 +19,15 @@
 
 @property (nonatomic, assign) long lPlayCount;
 @property (nonatomic, assign) int iRating;
-@property (nonatomic, assign) float fDuration;
 @property (nonatomic, assign) int iTrack;
+
+@property (nonatomic, assign) float fDuration;
+@property (nonatomic, strong) NSString *sDuration;
 
 @property (nonatomic, strong) NSString *sLyrics;
 @property (nonatomic, assign) int iYear;
 
-@property (nonatomic, strong) NSNumber *iArtistPID;
+@property (nonatomic, strong) NSNumber *iArtistId;
 @property (nonatomic, strong) NSString *sArtist;
 
 @property (nonatomic, strong) NSNumber *iAlbumId;

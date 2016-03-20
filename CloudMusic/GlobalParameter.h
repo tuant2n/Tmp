@@ -12,7 +12,7 @@
 @interface GlobalParameter : NSObject
 
 @property (nonatomic, strong) NSMutableArray *arrData;
-@property (nonatomic, strong) NSMutableArray *arrListSong;
+@property (nonatomic, strong) NSMutableArray *arrListSong, *arrListAlbum, *arrListArtist, *arrListGenre;
 
 + (GlobalParameter *)sharedInstance;
 

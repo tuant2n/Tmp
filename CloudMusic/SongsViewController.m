@@ -18,9 +18,7 @@
 @property (nonatomic, strong) PCSEQVisualizer *musicEq;
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
 
-@property (nonatomic, strong) NSMutableArray *arrayListSong;
-
-@property (nonatomic, weak) IBOutlet UITableView *tblListSong;
+@property (nonatomic, weak) IBOutlet UITableView *tblList;
 
 @end
 

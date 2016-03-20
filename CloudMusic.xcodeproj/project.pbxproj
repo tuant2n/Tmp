@@ -72,11 +72,17 @@
 		3C4926F41C9528320065B1DD /* ArtistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926F31C9528320065B1DD /* ArtistsViewController.m */; };
 		3C4926F81C9528460065B1DD /* GenresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926F71C9528460065B1DD /* GenresViewController.m */; };
 		3C4926FC1C952AC40065B1DD /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926FB1C952AC40065B1DD /* SettingsViewController.m */; };
+		3CA4E29C1C9E742100168B48 /* MusicData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4E29A1C9E742100168B48 /* MusicData.xcdatamodeld */; };
 		3CAC3FEE1C92F574000FFF60 /* GlobalParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAC3FED1C92F573000FFF60 /* GlobalParameter.m */; };
 		3CBCA5971C9AFE4600A2D529 /* SongObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBCA5961C9AFE4600A2D529 /* SongObject.m */; };
 		3CBCA59A1C9B067300A2D529 /* AlbumObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBCA5991C9B067300A2D529 /* AlbumObject.m */; };
 		3CE4B8C81C983E65004447CD /* MoreTableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE4B8C71C983E65004447CD /* MoreTableViewDelegate.m */; };
 		7B007E2D1C924FE90083AA31 /* PCSEQVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B007E2C1C924FE90083AA31 /* PCSEQVisualizer.m */; };
+		7BD179371C9D435F004CD5AF /* ArtistObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179361C9D435F004CD5AF /* ArtistObject.m */; };
+		7BD1793A1C9D4805004CD5AF /* GenreObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179391C9D4805004CD5AF /* GenreObject.m */; };
+		7BD179451C9D5122004CD5AF /* HCDCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179411C9D5122004CD5AF /* HCDCoreDataStack.m */; };
+		7BD179461C9D5122004CD5AF /* HCDCoreDataStackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179431C9D5122004CD5AF /* HCDCoreDataStackController.m */; };
+		7BD1794A1C9D522C004CD5AF /* DataManagement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179491C9D522C004CD5AF /* DataManagement.m */; };
 		7BF5C8D31C915D2100175C6F /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BF5C8D21C915D2100175C6F /* PlayerViewController.m */; };
 		7BF5C8D91C915E3F00175C6F /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BF5C8D81C915E3F00175C6F /* Utils.m */; };
 		7BF5C8DB1C91605800175C6F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BF5C8DA1C91605800175C6F /* Foundation.framework */; };
@@ -163,6 +169,7 @@
 		3C4926F71C9528460065B1DD /* GenresViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenresViewController.m; sourceTree = "<group>"; };
 		3C4926FA1C952AC40065B1DD /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		3C4926FB1C952AC40065B1DD /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		3CA4E29B1C9E742100168B48 /* MusicData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MusicData.xcdatamodel; sourceTree = "<group>"; };
 		3CAC3FEC1C92F573000FFF60 /* GlobalParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalParameter.h; sourceTree = "<group>"; };
 		3CAC3FED1C92F573000FFF60 /* GlobalParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalParameter.m; sourceTree = "<group>"; };
 		3CBCA5951C9AFE4600A2D529 /* SongObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongObject.h; sourceTree = "<group>"; };
@@ -173,6 +180,17 @@
 		3CE4B8C71C983E65004447CD /* MoreTableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreTableViewDelegate.m; sourceTree = "<group>"; };
 		7B007E2B1C924FE90083AA31 /* PCSEQVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCSEQVisualizer.h; sourceTree = "<group>"; };
 		7B007E2C1C924FE90083AA31 /* PCSEQVisualizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCSEQVisualizer.m; sourceTree = "<group>"; };
+		7BD179351C9D435F004CD5AF /* ArtistObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtistObject.h; sourceTree = "<group>"; };
+		7BD179361C9D435F004CD5AF /* ArtistObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtistObject.m; sourceTree = "<group>"; };
+		7BD179381C9D4805004CD5AF /* GenreObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenreObject.h; sourceTree = "<group>"; };
+		7BD179391C9D4805004CD5AF /* GenreObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenreObject.m; sourceTree = "<group>"; };
+		7BD179401C9D5122004CD5AF /* HCDCoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCDCoreDataStack.h; sourceTree = "<group>"; };
+		7BD179411C9D5122004CD5AF /* HCDCoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCDCoreDataStack.m; sourceTree = "<group>"; };
+		7BD179421C9D5122004CD5AF /* HCDCoreDataStackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCDCoreDataStackController.h; sourceTree = "<group>"; };
+		7BD179431C9D5122004CD5AF /* HCDCoreDataStackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCDCoreDataStackController.m; sourceTree = "<group>"; };
+		7BD179441C9D5122004CD5AF /* HCDCoreDataStackProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCDCoreDataStackProtocol.h; sourceTree = "<group>"; };
+		7BD179481C9D522C004CD5AF /* DataManagement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManagement.h; sourceTree = "<group>"; };
+		7BD179491C9D522C004CD5AF /* DataManagement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManagement.m; sourceTree = "<group>"; };
 		7BF5C8D11C915D2100175C6F /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		7BF5C8D21C915D2100175C6F /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
 		7BF5C8D71C915E3F00175C6F /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
@@ -360,6 +378,10 @@
 				3CBCA5961C9AFE4600A2D529 /* SongObject.m */,
 				3CBCA5981C9B067300A2D529 /* AlbumObject.h */,
 				3CBCA5991C9B067300A2D529 /* AlbumObject.m */,
+				7BD179351C9D435F004CD5AF /* ArtistObject.h */,
+				7BD179361C9D435F004CD5AF /* ArtistObject.m */,
+				7BD179381C9D4805004CD5AF /* GenreObject.h */,
+				7BD179391C9D4805004CD5AF /* GenreObject.m */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -385,10 +407,33 @@
 		7BA4EE9B1C9000A600157284 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				7BD1793F1C9D5122004CD5AF /* HardCoreData */,
 				7BFAB51E1C9AB83900C2167F /* MPMediaItem-Accessors-master */,
 				7B007E2A1C924FE90083AA31 /* PCSEQVisualizer */,
 			);
 			path = Libs;
+			sourceTree = "<group>";
+		};
+		7BD1793F1C9D5122004CD5AF /* HardCoreData */ = {
+			isa = PBXGroup;
+			children = (
+				7BD179401C9D5122004CD5AF /* HCDCoreDataStack.h */,
+				7BD179411C9D5122004CD5AF /* HCDCoreDataStack.m */,
+				7BD179421C9D5122004CD5AF /* HCDCoreDataStackController.h */,
+				7BD179431C9D5122004CD5AF /* HCDCoreDataStackController.m */,
+				7BD179441C9D5122004CD5AF /* HCDCoreDataStackProtocol.h */,
+			);
+			path = HardCoreData;
+			sourceTree = "<group>";
+		};
+		7BD179471C9D5159004CD5AF /* DataManagement */ = {
+			isa = PBXGroup;
+			children = (
+				7BD179481C9D522C004CD5AF /* DataManagement.h */,
+				7BD179491C9D522C004CD5AF /* DataManagement.m */,
+				3CA4E29A1C9E742100168B48 /* MusicData.xcdatamodeld */,
+			);
+			name = DataManagement;
 			sourceTree = "<group>";
 		};
 		7BF5C8C31C9153EA00175C6F /* Files */ = {
@@ -448,6 +493,7 @@
 		7BF5C8D61C915E2D00175C6F /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				7BD179471C9D5159004CD5AF /* DataManagement */,
 				3CBCA5941C9AFE2C00A2D529 /* Object */,
 				3CE4B8C51C983E53004447CD /* Other */,
 				3CAC3FEC1C92F573000FFF60 /* GlobalParameter.h */,
@@ -601,17 +647,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BD1793A1C9D4805004CD5AF /* GenreObject.m in Sources */,
+				7BD179461C9D5122004CD5AF /* HCDCoreDataStackController.m in Sources */,
 				3C09C7041C8C6962004A44E2 /* PlaylistsViewController.m in Sources */,
 				3C4926F81C9528460065B1DD /* GenresViewController.m in Sources */,
 				3C4926FC1C952AC40065B1DD /* SettingsViewController.m in Sources */,
 				3C09C6FE1C8C6910004A44E2 /* AlbumsViewController.m in Sources */,
+				3CA4E29C1C9E742100168B48 /* MusicData.xcdatamodeld in Sources */,
+				7BD179371C9D435F004CD5AF /* ArtistObject.m in Sources */,
 				7BF5C8D91C915E3F00175C6F /* Utils.m in Sources */,
 				3C09C6DE1C8C664E004A44E2 /* AppDelegate.m in Sources */,
 				3C09C6F81C8C68C2004A44E2 /* MainTabBarController.m in Sources */,
+				7BD1794A1C9D522C004CD5AF /* DataManagement.m in Sources */,
 				3CAC3FEE1C92F574000FFF60 /* GlobalParameter.m in Sources */,
 				3CBCA5971C9AFE4600A2D529 /* SongObject.m in Sources */,
 				7BF5C8D31C915D2100175C6F /* PlayerViewController.m in Sources */,
 				7B007E2D1C924FE90083AA31 /* PCSEQVisualizer.m in Sources */,
+				7BD179451C9D5122004CD5AF /* HCDCoreDataStack.m in Sources */,
 				3CE4B8C81C983E65004447CD /* MoreTableViewDelegate.m in Sources */,
 				3C09C6F51C8C6899004A44E2 /* SongsViewController.m in Sources */,
 				3C4926F41C9528320065B1DD /* ArtistsViewController.m in Sources */,
@@ -780,6 +832,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3CA4E29A1C9E742100168B48 /* MusicData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3CA4E29B1C9E742100168B48 /* MusicData.xcdatamodel */,
+			);
+			currentVersion = 3CA4E29B1C9E742100168B48 /* MusicData.xcdatamodel */;
+			path = MusicData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3C09C6CE1C8C664E004A44E2 /* Project object */;
 }

@@ -9,10 +9,13 @@
 #import "MainTabBarController.h"
 
 #import "MoreTableViewDelegate.h"
+
 #import "Utils.h"
+#import "DataManagement.h"
 #import "GlobalParameter.h"
 
 #import "MPMediaItem+Accessors.h"
+#import "HCDCoreDataStackController.h"
 
 @interface MainTabBarController () <UITabBarControllerDelegate,UINavigationControllerDelegate>
 {
@@ -35,7 +38,7 @@
 - (void)setupData
 {
 #if !(TARGET_OS_SIMULATOR)
-    long lastTimeAppSync = [[GlobalParameter sharedInstance] lastTimeAppSync];
+    long lastTimeAppSync = 0;//[[GlobalParameter sharedInstance] lastTimeAppSync];
     long lastTimeDeviceSync = [[[MPMediaLibrary defaultMediaLibrary] lastModifiedDate] timeIntervalSince1970];
     
     if (lastTimeAppSync != lastTimeDeviceSync)
@@ -128,6 +131,25 @@
         
         [arrListSong addObject:songInfo];
     }
+    
+    for (int i = 0; i < 1000; i++) {
+        NSManagedObjectContext *backgroundContext = [[DataManagement sharedInstance].coreDataController createChildContextWithType:NSPrivateQueueConcurrencyType];
+        [backgroundContext performBlock:^{
+            
+            //        Person *person = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Person class]) inManagedObjectContext:backgroundContext];
+            //        person.firstName = [NSString stringWithFormat:@"First Name %d", arc4random()];
+            //        person.lastName = [NSString stringWithFormat:@"Last Name %d", arc4random()];
+            //
+            /* Save child context */
+            [backgroundContext save:nil];
+            
+            NSLog(@"_____%d",i);
+            
+            /* Save data to store */
+            [[DataManagement sharedInstance] saveData];
+        }];
+    }
+
     
     [[GlobalParameter sharedInstance] saveData:arrListSong];
     [[GlobalParameter sharedInstance] setLastTimeAppSync:timestamp];

@@ -16,7 +16,8 @@
 {
     self = [super init];
     
-    if (self) {
+    if (self)
+    {
         _iSongId = [songInfo objectForKey:@"iSongId"];
         _sSongTitle = [songInfo objectForKey:@"sSongTitle"];
         _sAssetUrl = [songInfo objectForKey:@"sAssetUrl"];
@@ -30,13 +31,15 @@
         
         _lPlayCount = [[songInfo objectForKey:@"iPlayCount"] longValue];
         _iRating = [[songInfo objectForKey:@"iRating"] intValue];
-        _fDuration = [[songInfo objectForKey:@"fDuration"] floatValue];
         _iTrack = [[songInfo objectForKey:@"iTrack"] intValue];
+        
+        _fDuration = [[songInfo objectForKey:@"fDuration"] floatValue];
+        _sDuration = [Utils timeFormattedForSong:_fDuration];
         
         _sLyrics = [songInfo objectForKey:@"sLyrics"];
         _iYear = [[songInfo objectForKey:@"iYear"] intValue];
         
-        _iArtistPID = [songInfo objectForKey:@"iArtistId"];
+        _iArtistId = [songInfo objectForKey:@"iArtistId"];
         _sArtist = [songInfo objectForKey:@"sArtist"];
         
         _iAlbumId = [songInfo objectForKey:@"iAlbumId"];
@@ -44,10 +47,7 @@
         
         _iGenreId = [songInfo objectForKey:@"iGenreId"];
         _sGenre = [songInfo objectForKey:@"sGenre"];
-        
-        _iGenreId = [songInfo objectForKey:@"iGenreId"];
-        _sGenre = [songInfo objectForKey:@"sGenre"];
-        
+
         _iAlbumArtistId = [songInfo objectForKey:@"iAlbumArtistId"];
         _sAlbumArtist = [songInfo objectForKey:@"sAlbumArtist"];
     }

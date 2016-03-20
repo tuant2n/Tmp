@@ -44,4 +44,9 @@
 
 + (BOOL)isNotNullString:(NSString *)input;
 
+#pragma mark - Time
+
++ (NSString *)timeFormattedForSong:(int)totalSeconds;
++ (NSString *)timeFormattedForList:(int)totalSeconds;
+
 @end
