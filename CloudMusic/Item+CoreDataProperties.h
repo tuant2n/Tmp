@@ -1,0 +1,52 @@
+//
+//  Item+CoreDataProperties.h
+//  CloudMusic
+//
+//  Created by TuanTN on 3/20/16.
+//  Copyright © 2016 TuanTN. All rights reserved.
+//
+//  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
+//  to delete and recreate this implementation file for your updated model.
+//
+
+#import "Item.h"
+#import <MediaPlayer/MediaPlayer.h>
+
+typedef enum {
+    kSourceTypeItunes = 0,
+    kSourceTypeCloud = 1,
+} kSourceType;
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface Item (CoreDataProperties)
+
+@property (nullable, nonatomic, retain) NSString *sAssetUrl;
+@property (nullable, nonatomic, retain) NSNumber *iType;
+
+@property (nullable, nonatomic, retain) NSNumber *iSongId;
+@property (nullable, nonatomic, retain) NSString *sSongName;
+
+@property (nullable, nonatomic, retain) NSNumber *iAlbumId;
+@property (nullable, nonatomic, retain) NSString *sAlbumName;
+
+@property (nullable, nonatomic, retain) NSNumber *iArtistId;
+@property (nullable, nonatomic, retain) NSString *sArtistName;
+
+@property (nullable, nonatomic, retain) NSNumber *iGenreId;
+@property (nullable, nonatomic, retain) NSString *sGenreName;
+
+@property (nullable, nonatomic, retain) NSNumber *iPlaylistId;
+@property (nullable, nonatomic, retain) NSString *sPlaylistName;
+
+@property (nullable, nonatomic, retain) NSString *sLyrics;
+@property (nullable, nonatomic, retain) NSString *sArworkName;
+
+@property (nullable, nonatomic, retain) NSNumber *iRate;
+@property (nullable, nonatomic, retain) NSNumber *iTrack;
+@property (nullable, nonatomic, retain) NSNumber *iPlayCount;
+@property (nullable, nonatomic, retain) NSNumber *fDuration;
+
+@end
+
+NS_ASSUME_NONNULL_END

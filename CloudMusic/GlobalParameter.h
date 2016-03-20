@@ -16,24 +16,10 @@
 
 + (GlobalParameter *)sharedInstance;
 
-#pragma mark - Data
-
-- (void)setupData;
-
 #pragma mark - Play State
 
 - (void)startPlay;
 - (void)pausePlay;
 - (BOOL)isPlay;
-
-#pragma mark - iTunes Sync
-
-- (void)setLastTimeAppSync:(long)lTime;
-- (long)lastTimeAppSync;
-
-#pragma mark - Save Data
-
-- (void)saveData:(NSArray *)listSong;
-- (NSArray *)readData;
 
 @end

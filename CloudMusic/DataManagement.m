@@ -7,12 +7,13 @@
 //
 
 #import "DataManagement.h"
+#import <MediaPlayer/MediaPlayer.h>
+
+#import "Item.h"
 
 static DataManagement *_sharedInstance = nil;
 
 @interface DataManagement()
-
-
 
 @end
 
@@ -38,9 +39,66 @@ static DataManagement *_sharedInstance = nil;
     return _coreDataController;
 }
 
+#pragma mark - Data Method
+
+- (void)removeAllData
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%d != %d", @"iType",kSourceTypeCloud];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [self.coreDataController.stack.mainManagedObjectContext executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        for (Item *item in listData) {
+            [self.coreDataController.stack.mainManagedObjectContext deleteObject:item];
+        }
+    }
+}
+
+- (void)syncData
+{
+    [self removeAllData];
+    
+    NSMutableArray *songList = [[NSMutableArray alloc] init];
+    MPMediaQuery *allSongsQuery = [MPMediaQuery songsQuery];
+    [allSongsQuery addFilterPredicate:[MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusic] forProperty:MPMediaItemPropertyMediaType comparisonType:MPMediaPredicateComparisonContains]];
+    for (MPMediaItemCollection *collection in [allSongsQuery collections])
+    {
+        [songList addObjectsFromArray:[collection items]];
+    }
+    
+    NSManagedObjectContext *backgroundContext = [[DataManagement sharedInstance].coreDataController createChildContextWithType:NSPrivateQueueConcurrencyType];
+    [backgroundContext performBlock:^{
+        
+        for (MPMediaItem *song in songList) {
+            Item *item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Item class]) inManagedObjectContext:backgroundContext];
+            [item updateWithMediaItem:song];
+        }
+        
+        [backgroundContext save:nil];
+        [self saveData];
+    }];
+}
+
 - (void)saveData
 {
     [self.coreDataController save];
+    NSLog(@"SAVE");
+}
+
+#pragma mark - iTunes Sync
+
+- (void)setLastTimeAppSync:(long)lTime
+{
+    [[NSUserDefaults standardUserDefaults] setInteger:lTime forKey:@"LASTTIME_APP_SYNC"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (long)getLastTimeAppSync
+{
+    return [[NSUserDefaults standardUserDefaults] integerForKey:@"LASTTIME_APP_SYNC"];
 }
 
 @end

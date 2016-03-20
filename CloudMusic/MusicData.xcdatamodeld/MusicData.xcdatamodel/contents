@@ -1,4 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
-    <elements/>
+    <entity name="Item" representedClassName="Item" syncable="YES">
+        <attribute name="fDuration" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
+        <attribute name="iAlbumId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="iArtistId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="iGenreId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="iPlayCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="iPlaylistId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="iRate" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="iSongId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="iTrack" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="iType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sAlbumName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sArtistName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sArworkName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sAssetUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sGenreName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sLyrics" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sPlaylistName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sSongName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Item" positionX="-27" positionY="18" width="128" height="315"/>
+    </elements>
 </model>

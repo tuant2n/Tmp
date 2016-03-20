@@ -14,6 +14,16 @@
 + (DataManagement *)sharedInstance;
 
 @property (nonatomic, strong) HCDCoreDataStackController *coreDataController;
+
+#pragma mark - Data Method
+
+- (void)removeAllData;
+- (void)syncData;
 - (void)saveData;
+
+#pragma mark - iTunes Sync
+
+- (void)setLastTimeAppSync:(long)lTime;
+- (long)getLastTimeAppSync;
 
 @end

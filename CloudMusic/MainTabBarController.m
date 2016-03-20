@@ -38,7 +38,7 @@
 - (void)setupData
 {
 #if !(TARGET_OS_SIMULATOR)
-    long lastTimeAppSync = 0;//[[GlobalParameter sharedInstance] lastTimeAppSync];
+    long lastTimeAppSync = [[DataManagement sharedInstance] getLastTimeAppSync];
     long lastTimeDeviceSync = [[[MPMediaLibrary defaultMediaLibrary] lastModifiedDate] timeIntervalSince1970];
     
     if (lastTimeAppSync != lastTimeDeviceSync)
@@ -49,7 +49,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification_iPodLibraryDidChange:) name: MPMediaLibraryDidChangeNotification object:nil];
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
 #endif
-    [[GlobalParameter sharedInstance] setupData];
 }
 
 - (void)notification_iPodLibraryDidChange:(NSNotification *)notify
@@ -60,99 +59,8 @@
 
 - (void)syncData:(long)timestamp
 {
-    NSMutableArray *arrListSong = [[NSMutableArray alloc] init];
-    
-    MPMediaQuery *mediaQuery = [[MPMediaQuery alloc] init];
-    MPMediaPropertyPredicate *mediaPredicate = [MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusic] forProperty:MPMediaItemPropertyMediaType comparisonType:MPMediaPredicateComparisonContains];
-    [mediaQuery addFilterPredicate:mediaPredicate];
-    
-    for (MPMediaItem *song in [mediaQuery items])
-    {
-        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
-        [songInfo setObject:song.itemPersistentID forKey:@"iSongId"];
-        [songInfo setObject:[NSNumber numberWithBool:NO] forKey:@"isDownloaded"];
-        
-        if (song.itemTitle)
-        {
-            [songInfo setObject:song.itemTitle forKey:@"sSongTitle"];
-        }
-        
-        if (song.itemAssetURL)
-        {
-            [songInfo setObject:song.itemAssetURL forKey:@"sAssetUrl"];
-        }
-        
-        [songInfo setObject:song.itemPlayCount forKey:@"iPlayCount"];
-        [songInfo setObject:song.itemRating forKey:@"iRating"];
-        [songInfo setObject:song.itemPlaybackDuration forKey:@"fDuration"];
-        
-        if (song.itemLyrics) {
-            [songInfo setObject:song.itemLyrics forKey:@"sLyrics"];
-        }
-        
-        UIImage *artwork = [song.itemArtwork imageWithSize:song.itemArtwork.bounds.size];
-        if (artwork) {
-            NSString *sArtworkName = [NSString stringWithFormat:@"%@.png",song.itemPersistentID];
-            BOOL isSaveArtwork = [UIImagePNGRepresentation(artwork) writeToFile:[[Utils artworkPath] stringByAppendingPathComponent:sArtworkName] atomically:YES];
-            
-            if (isSaveArtwork) {
-                [songInfo setObject:sArtworkName forKey:@"sArtworkName"];
-            }
-        }
-        
-        [songInfo setObject:song.year forKey:@"iYear"];
-        
-        [songInfo setObject:song.itemAlbumTrackNumber forKey:@"iTrack"];
-        [songInfo setObject:song.itemAlbumTrackCount forKey:@"iTrackCount"];
-        
-        [songInfo setObject:song.itemArtistPID forKey:@"iArtistId"];
-        if (song.itemArtist)
-        {
-            [songInfo setObject:song.itemArtist forKey:@"sArtist"];
-        }
-        
-        [songInfo setObject:song.itemAlbumPID forKey:@"iAlbumId"];
-        if (song.itemAlbumTitle)
-        {
-            [songInfo setObject:song.itemAlbumTitle forKey:@"sAlbumTitle"];
-        }
-        
-        [songInfo setObject:song.itemAlbumArtistPID forKey:@"iAlbumArtistId"];
-        if (song.itemAlbumArtist)
-        {
-            [songInfo setObject:song.itemAlbumArtist forKey:@"sAlbumArtist"];
-        }
-        
-        [songInfo setObject:song.itemGenrePID forKey:@"iGenreId"];
-        if (song.itemGenre)
-        {
-            [songInfo setObject:song.itemGenre forKey:@"sGenre"];
-        }
-        
-        [arrListSong addObject:songInfo];
-    }
-    
-    for (int i = 0; i < 1000; i++) {
-        NSManagedObjectContext *backgroundContext = [[DataManagement sharedInstance].coreDataController createChildContextWithType:NSPrivateQueueConcurrencyType];
-        [backgroundContext performBlock:^{
-            
-            //        Person *person = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Person class]) inManagedObjectContext:backgroundContext];
-            //        person.firstName = [NSString stringWithFormat:@"First Name %d", arc4random()];
-            //        person.lastName = [NSString stringWithFormat:@"Last Name %d", arc4random()];
-            //
-            /* Save child context */
-            [backgroundContext save:nil];
-            
-            NSLog(@"_____%d",i);
-            
-            /* Save data to store */
-            [[DataManagement sharedInstance] saveData];
-        }];
-    }
-
-    
-    [[GlobalParameter sharedInstance] saveData:arrListSong];
-    [[GlobalParameter sharedInstance] setLastTimeAppSync:timestamp];
+    [[DataManagement sharedInstance] syncData];
+    [[DataManagement sharedInstance] setLastTimeAppSync:timestamp];
 }
 
 - (void)setupTabbar
