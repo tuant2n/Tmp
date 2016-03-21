@@ -32,6 +32,9 @@
     self.iArtistId = item.itemArtistPID;
     self.sArtistName = item.itemArtist;
     
+    self.iAlbumArtistId = item.itemAlbumArtistPID;
+    self.sAlbumArtistName = item.itemAlbumArtist;
+    
     self.iGenreId = item.itemGenrePID;
     self.sGenreName = item.itemGenre;
     
@@ -39,7 +42,6 @@
     if (artwork) {
         NSString *sArtworkName = [NSString stringWithFormat:@"%@.png",self.iSongId];
         BOOL isSaveArtwork = [UIImagePNGRepresentation(artwork) writeToFile:[[Utils artworkPath] stringByAppendingPathComponent:sArtworkName] atomically:YES];
-        
         if (isSaveArtwork) {
             self.sArworkName = sArtworkName;
         }
@@ -67,7 +69,7 @@
 - (void)setAlbumName:(NSString *)sAlbumName
 {
     self.sAlbumName = sAlbumName;
-    self.sAlbumName = [[Utils standardLocaleString:self.sAlbumName] lowercaseString];
+    self.sAlbumNameIndex = [[Utils standardLocaleString:self.sAlbumName] lowercaseString];
 }
 
 @end

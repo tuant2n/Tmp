@@ -29,44 +29,44 @@
 @interface MPMediaItem (Accessors)
 
 // General Media Item Property Keys
-@property (readonly, nonatomic) NSNumber* itemPersistentID;
+@property (readonly, nonatomic) NSNumber *itemPersistentID;
 @property (readonly, nonatomic) MPMediaType itemMediaType;
-@property (readonly, nonatomic) NSString* itemTitle;
-@property (readonly, nonatomic) NSString* itemAlbumTitle;
-@property (readonly, nonatomic) NSNumber* itemAlbumPID;
-@property (readonly, nonatomic) NSString* itemArtist;
-@property (readonly, nonatomic) NSNumber* itemArtistPID;
-@property (readonly, nonatomic) NSString* itemAlbumArtist;
-@property (readonly, nonatomic) NSString* itemAlbumArtistPID;
-@property (readonly, nonatomic) NSString* itemGenre;
-@property (readonly, nonatomic) NSNumber* itemGenrePID;
-@property (readonly, nonatomic) NSString* itemComposer;
-@property (readonly, nonatomic) NSNumber* itemComposerPID;
-@property (readonly, nonatomic) NSNumber* itemPlaybackDuration;
-@property (readonly, nonatomic) NSNumber* itemAlbumTrackNumber;
-@property (readonly, nonatomic) NSNumber* itemAlbumTrackCount;
-@property (readonly, nonatomic) NSNumber* itemDiscNumber;
-@property (readonly, nonatomic) NSNumber* itemDiscCount;
-@property (readonly, nonatomic) MPMediaItemArtwork* itemArtwork;
-@property (readonly, nonatomic) NSString* itemLyrics;
+@property (readonly, nonatomic) NSString *itemTitle;
+@property (readonly, nonatomic) NSString *itemAlbumTitle;
+@property (readonly, nonatomic) NSNumber *itemAlbumPID;
+@property (readonly, nonatomic) NSString *itemArtist;
+@property (readonly, nonatomic) NSNumber *itemArtistPID;
+@property (readonly, nonatomic) NSString *itemAlbumArtist;
+@property (readonly, nonatomic) NSNumber *itemAlbumArtistPID;
+@property (readonly, nonatomic) NSString *itemGenre;
+@property (readonly, nonatomic) NSNumber *itemGenrePID;
+@property (readonly, nonatomic) NSString *itemComposer;
+@property (readonly, nonatomic) NSNumber *itemComposerPID;
+@property (readonly, nonatomic) NSNumber *itemPlaybackDuration;
+@property (readonly, nonatomic) NSNumber *itemAlbumTrackNumber;
+@property (readonly, nonatomic) NSNumber *itemAlbumTrackCount;
+@property (readonly, nonatomic) NSNumber *itemDiscNumber;
+@property (readonly, nonatomic) NSNumber *itemDiscCount;
+@property (readonly, nonatomic) MPMediaItemArtwork *itemArtwork;
+@property (readonly, nonatomic) NSString *itemLyrics;
 @property (readonly, nonatomic) BOOL itemIsCompilation;
-@property (readonly, nonatomic) NSDate* itemReleaseDate;
+@property (readonly, nonatomic) NSDate *itemReleaseDate;
 @property (readonly, nonatomic) NSNumber *year;
-@property (readonly, nonatomic) NSNumber* itemBeatsPerMinute;
-@property (readonly, nonatomic) NSString* itemComments;
-@property (readonly, nonatomic) NSURL* itemAssetURL;
+@property (readonly, nonatomic) NSNumber *itemBeatsPerMinute;
+@property (readonly, nonatomic) NSString *itemComments;
+@property (readonly, nonatomic) NSURL *itemAssetURL;
 @property (readonly, nonatomic) BOOL itemIsCloudItem;
 
 // Podcast Item Property Keys
-@property (readonly, nonatomic) NSString* itemPodcastTitle;
-@property (readonly, nonatomic) NSNumber* itemPodcastPID;
+@property (readonly, nonatomic) NSString *itemPodcastTitle;
+@property (readonly, nonatomic) NSNumber *itemPodcastPID;
 
 // User-Defined Property Keys
-@property (readonly, nonatomic) NSNumber* itemPlayCount;
-@property (readonly, nonatomic) NSNumber* itemSkipCount;
-@property (readonly, nonatomic) NSNumber* itemRating;
-@property (readonly, nonatomic) NSDate* itemLastPlayedDate;
-@property (readonly, nonatomic) NSString* itemUserGrouping;
-@property (readonly, nonatomic) NSNumber* itemBookmarkTime;
+@property (readonly, nonatomic) NSNumber *itemPlayCount;
+@property (readonly, nonatomic) NSNumber *itemSkipCount;
+@property (readonly, nonatomic) NSNumber *itemRating;
+@property (readonly, nonatomic) NSDate *itemLastPlayedDate;
+@property (readonly, nonatomic) NSString *itemUserGrouping;
+@property (readonly, nonatomic) NSNumber *itemBookmarkTime;
 
 @end

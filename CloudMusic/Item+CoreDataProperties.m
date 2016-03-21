@@ -28,13 +28,15 @@
 @dynamic sAlbumName;
 @dynamic sAlbumNameIndex;
 
+@dynamic iAlbumArtistId;
+@dynamic sAlbumArtistName;
+
 @dynamic sPlaylistName;
 @dynamic sLyrics;
 @dynamic sGenreName;
 
 @dynamic sArworkName;
 @dynamic sArtistName;
-
 
 @dynamic iTrack;
 @dynamic iRate;

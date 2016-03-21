@@ -42,6 +42,11 @@ static DataManagement *_sharedInstance = nil;
     return self.coreDataController.stack.mainManagedObjectContext;
 }
 
+- (NSEntityDescription *)itemEntity
+{
+    return [NSEntityDescription entityForName:NSStringFromClass([Item class]) inManagedObjectContext:self.managedObjectContext];
+}
+
 #pragma mark - Data Method
 
 - (void)removeAllData

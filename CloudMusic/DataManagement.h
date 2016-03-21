@@ -15,7 +15,9 @@
 + (DataManagement *)sharedInstance;
 
 @property (nonatomic, strong) HCDCoreDataStackController *coreDataController;
+
 - (NSManagedObjectContext *)managedObjectContext;
+- (NSEntityDescription *)itemEntity;
 
 #pragma mark - Data Method
 

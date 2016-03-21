@@ -36,6 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSNumber *iArtistId;
 @property (nullable, nonatomic, retain) NSString *sArtistName;
 
+@property (nullable, nonatomic, retain) NSNumber *iAlbumArtistId;
+@property (nullable, nonatomic, retain) NSString *sAlbumArtistName;
+
 @property (nullable, nonatomic, retain) NSNumber *iGenreId;
 @property (nullable, nonatomic, retain) NSString *sGenreName;
 
