@@ -110,7 +110,7 @@
     return (NSString *)[self valueForProperty:MPMediaItemPropertyLyrics];
 }
 
-- (BOOL) itemIsCompilation {
+- (BOOL)itemIsCompilation {
     return [((NSNumber *)[self valueForProperty:MPMediaItemPropertyIsCompilation])boolValue];
 }
 
@@ -119,11 +119,7 @@
 }
 
 - (NSNumber *)year {
-    if (self.itemReleaseDate) {
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitYear fromDate:self.itemReleaseDate];
-        return @([components year]);
-    }
-    return @(0);
+    return [self valueForProperty:@"year"];
 }
 
 - (NSNumber *)itemBeatsPerMinute {

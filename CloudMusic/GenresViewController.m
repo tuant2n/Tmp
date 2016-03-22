@@ -10,6 +10,7 @@
 
 #import "Utils.h"
 #import "GlobalParameter.h"
+#import "DataManagement.h"
 
 #import "PCSEQVisualizer.h"
 
@@ -18,9 +19,190 @@
 @property (nonatomic, strong) PCSEQVisualizer *musicEq;
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
 
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, weak) IBOutlet UITableView *tblList;
+
 @end
 
 @implementation GenresViewController
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (!_fetchedResultsController)
+    {
+        NSEntityDescription *itemEntity = [[DataManagement sharedInstance] itemEntity];
+        
+        NSAttributeDescription *iGenreId = [itemEntity.attributesByName objectForKey:@"iGenreId"];
+        NSAttributeDescription *sGenreName = [itemEntity.attributesByName objectForKey:@"sGenreName"];
+        
+        NSExpression *listSongId = [NSExpression expressionForKeyPath:@"iSongId"];
+        NSExpression *countSongExpression = [NSExpression expressionForFunction:@"count:" arguments:@[listSongId]];
+        NSExpressionDescription *numberOfSong = [[NSExpressionDescription alloc] init];
+        [numberOfSong setName: @"numberOfSong"];
+        [numberOfSong setExpression:countSongExpression];
+        [numberOfSong setExpressionResultType:NSInteger32AttributeType];
+        
+        NSExpression *listAlbumId = [NSExpression expressionForKeyPath:@"iAlbumId"];
+        NSExpression *distinct = [NSExpression expressionForFunction:@"distinct:" arguments:@[listAlbumId]];
+        NSExpression *countAlbumExpression = [NSExpression expressionForFunction:@"count:" arguments:@[distinct]];
+        NSExpressionDescription *numberOfAlbum = [[NSExpressionDescription alloc] init];
+        [numberOfAlbum setName: @"numberOfAlbum"];
+        [numberOfAlbum setExpression:countAlbumExpression];
+        [numberOfAlbum setExpressionResultType:NSInteger32AttributeType];
+        
+        NSExpression *listDuration = [NSExpression expressionForKeyPath:@"fDuration"];
+        NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:@[listDuration]];
+        NSExpressionDescription *duration = [[NSExpressionDescription alloc] init];
+        [duration setName: @"duration"];
+        [duration setExpression:sumExpression];
+        [duration setExpressionResultType:NSInteger32AttributeType];
+        
+        NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArworkName"];
+        NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
+        NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
+        [artwork setName: @"artwork"];
+        [artwork setExpression:maxExpression];
+        [artwork setExpressionResultType:NSStringAttributeType];
+        
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:itemEntity];
+        [request setPropertiesToFetch:@[iGenreId,sGenreName,numberOfSong,numberOfAlbum,duration,artwork]];
+        [request setPropertiesToGroupBy:@[iGenreId,sGenreName]];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sGenreNameIndex" ascending:YES];
+        [request setSortDescriptors:@[sortDescriptor]];
+        [request setResultType:NSDictionaryResultType];
+        
+        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+        
+        NSError *error = nil;
+        NSArray *fetchedObjects = [[[DataManagement sharedInstance] managedObjectContext] executeFetchRequest:request error:&error];
+        NSLog(@"%lu",(unsigned long)fetchedObjects.count);
+        NSLog(@"%@",fetchedObjects);
+    }
+    return _fetchedResultsController;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self setupUI];
+    [self performFetch];
+}
+
+- (void)performFetch
+{
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        NSLog(@"Fetch error: %@", error);
+    }
+}
+
+- (void)setupUI
+{
+    self.title = @"Genre";
+    self.navigationItem.rightBarButtonItem = self.barMusicEq;
+    
+    [self.tblList registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [[self.fetchedResultsController sections] count];
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    return [self.fetchedResultsController sectionIndexTitles];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+    return [sectionInfo name];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    return [sectionInfo numberOfObjects];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    
+    [self configureCell:cell atIndexPath:indexPath];
+    return cell;
+}
+
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    id item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = [item objectForKey:@"sGenreName"];
+}
+
+#pragma mark - Fetched Results Controller Delegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tblList beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert: {
+            [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            
+            break;
+            
+        case NSFetchedResultsChangeDelete: {
+            [self.tblList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            
+            break;
+            
+        case NSFetchedResultsChangeUpdate: {
+            [self configureCell:(UITableViewCell *)[self.tblList cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+        }
+            break;
+            
+        case NSFetchedResultsChangeMove: {
+            [self.tblList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+    }
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert: {
+            [self.tblList insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+            
+        case NSFetchedResultsChangeDelete: {
+            [self.tblList deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tblList endUpdates];
+}
+
+#pragma mark - MusicEq
 
 - (PCSEQVisualizer *)musicEq
 {
@@ -53,18 +235,6 @@
     return _barMusicEq;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self setupUI];
-}
-
-- (void)setupUI
-{
-    self.title = @"Genres";
-    self.navigationItem.rightBarButtonItem = self.barMusicEq;
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -82,6 +252,8 @@
         [self.musicEq stopEq:NO];
     }
 }
+
+#pragma mark - Method
 
 - (void)openPlayer:(id)sender
 {

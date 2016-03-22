@@ -9,6 +9,8 @@
 #import "DataManagement.h"
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "Utils.h"
+
 static DataManagement *_sharedInstance = nil;
 
 @interface DataManagement()
@@ -60,7 +62,11 @@ static DataManagement *_sharedInstance = nil;
     
     if (!error) {
         for (Item *item in listData) {
-            [self.coreDataController.stack.mainManagedObjectContext deleteObject:item];
+            [[self managedObjectContext] deleteObject:item];
+            
+//            NSArray *keys = [[[item entity] attributesByName] allKeys];
+//            NSDictionary *dict = [item dictionaryWithValuesForKeys:keys];
+//            NSLog(@"%@",dict);
         }
     }
 }
@@ -93,7 +99,6 @@ static DataManagement *_sharedInstance = nil;
 - (void)saveData
 {
     [self.coreDataController save];
-    NSLog(@"SAVE");
 }
 
 #pragma mark - iTunes Sync

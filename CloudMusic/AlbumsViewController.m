@@ -35,23 +35,24 @@
         NSAttributeDescription *iAlbumId = [itemEntity.attributesByName objectForKey:@"iAlbumId"];
         NSAttributeDescription *sAlbumName = [itemEntity.attributesByName objectForKey:@"sAlbumName"];
         NSAttributeDescription *sArtistName = [itemEntity.attributesByName objectForKey:@"sAlbumArtistName"];
-
+        NSAttributeDescription *iYear = [itemEntity.attributesByName objectForKey:@"iYear"];
+        
         NSExpression *listSongId = [NSExpression expressionForKeyPath:@"iSongId"];
-        NSExpression *countExpression = [NSExpression expressionForFunction:@"count:" arguments:[NSArray arrayWithObject:listSongId]];
+        NSExpression *countExpression = [NSExpression expressionForFunction:@"count:" arguments:@[listSongId]];
         NSExpressionDescription *numberOfSong = [[NSExpressionDescription alloc] init];
         [numberOfSong setName: @"numberOfSong"];
         [numberOfSong setExpression:countExpression];
         [numberOfSong setExpressionResultType:NSInteger32AttributeType];
         
         NSExpression *listDuration = [NSExpression expressionForKeyPath:@"fDuration"];
-        NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:[NSArray arrayWithObject:listDuration]];
+        NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:@[listDuration]];
         NSExpressionDescription *duration = [[NSExpressionDescription alloc] init];
         [duration setName: @"duration"];
         [duration setExpression:sumExpression];
         [duration setExpressionResultType:NSInteger32AttributeType];
         
         NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArworkName"];
-        NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:[NSArray arrayWithObject:listArtwork]];
+        NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
         NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
         [artwork setName: @"artwork"];
         [artwork setExpression:maxExpression];
@@ -59,8 +60,8 @@
         
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setEntity:itemEntity];
-        [request setPropertiesToFetch:[NSArray arrayWithObjects:iAlbumId,sAlbumName,sArtistName,numberOfSong,duration,artwork,nil]];
-        [request setPropertiesToGroupBy:[NSArray arrayWithObjects:iAlbumId,sAlbumName,sArtistName,nil]];
+        [request setPropertiesToFetch:@[iAlbumId,sAlbumName,sArtistName,iYear,numberOfSong,duration,artwork]];
+        [request setPropertiesToGroupBy:@[iAlbumId,sAlbumName,sArtistName,iYear]];
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sAlbumNameIndex" ascending:YES];
         [request setSortDescriptors:@[sortDescriptor]];
         [request setResultType:NSDictionaryResultType];

@@ -30,13 +30,13 @@
     [self setAlbumName:item.itemAlbumTitle];
     
     self.iArtistId = item.itemArtistPID;
-    self.sArtistName = item.itemArtist;
+    [self setArtistName:item.itemArtist];
     
     self.iAlbumArtistId = item.itemAlbumArtistPID;
-    self.sAlbumArtistName = item.itemAlbumArtist;
+    [self setAlbumArtistName:item.itemAlbumArtist];
     
     self.iGenreId = item.itemGenrePID;
-    self.sGenreName = item.itemGenre;
+    [self setGenreName:item.itemGenre];
     
     UIImage *artwork = [item.itemArtwork imageWithSize:item.itemArtwork.bounds.size];
     if (artwork) {
@@ -48,6 +48,7 @@
     }
     
     self.sLyrics = item.itemLyrics;
+    self.iYear = item.year;
     self.iRate = item.itemRating;
     self.iTrack = item.itemAlbumTrackNumber;
     self.iPlayCount = item.itemPlayCount;
@@ -70,6 +71,24 @@
 {
     self.sAlbumName = sAlbumName;
     self.sAlbumNameIndex = [[Utils standardLocaleString:self.sAlbumName] lowercaseString];
+}
+
+- (void)setArtistName:(NSString *)sArtistName
+{
+    self.sArtistName = sArtistName;
+    self.sArtistNameIndex = [[Utils standardLocaleString:self.sArtistName] lowercaseString];
+}
+
+- (void)setAlbumArtistName:(NSString *)sAlbumArtistName
+{
+    self.sAlbumArtistName = sAlbumArtistName;
+    self.sAlbumArtistNameIndex = [[Utils standardLocaleString:self.sAlbumArtistName] lowercaseString];
+}
+
+- (void)setGenreName:(NSString *)sGenreName
+{
+    self.sGenreName = sGenreName;
+    self.sGenreNameIndex = [[Utils standardLocaleString:self.sGenreName] lowercaseString];
 }
 
 @end

@@ -48,6 +48,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification_iPodLibraryDidChange:) name: MPMediaLibraryDidChangeNotification object:nil];
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
+#else
+    NSLog(@"%@",[Utils documentPath]);
 #endif
 }
 

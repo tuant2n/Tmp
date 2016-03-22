@@ -35,12 +35,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, retain) NSNumber *iArtistId;
 @property (nullable, nonatomic, retain) NSString *sArtistName;
+@property (nullable, nonatomic, retain) NSString *sArtistNameIndex;
 
 @property (nullable, nonatomic, retain) NSNumber *iAlbumArtistId;
 @property (nullable, nonatomic, retain) NSString *sAlbumArtistName;
+@property (nullable, nonatomic, retain) NSString *sAlbumArtistNameIndex;
 
 @property (nullable, nonatomic, retain) NSNumber *iGenreId;
 @property (nullable, nonatomic, retain) NSString *sGenreName;
+@property (nullable, nonatomic, retain) NSString *sGenreNameIndex;
 
 @property (nullable, nonatomic, retain) NSNumber *iPlaylistId;
 @property (nullable, nonatomic, retain) NSString *sPlaylistName;
@@ -48,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *sLyrics;
 @property (nullable, nonatomic, retain) NSString *sArworkName;
 
+@property (nullable, nonatomic, retain) NSNumber *iYear;
 @property (nullable, nonatomic, retain) NSNumber *iRate;
 @property (nullable, nonatomic, retain) NSNumber *iTrack;
 @property (nullable, nonatomic, retain) NSNumber *iPlayCount;

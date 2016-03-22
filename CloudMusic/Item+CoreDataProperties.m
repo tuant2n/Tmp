@@ -30,21 +30,26 @@
 
 @dynamic iAlbumArtistId;
 @dynamic sAlbumArtistName;
+@dynamic sAlbumArtistNameIndex;
 
-@dynamic sPlaylistName;
-@dynamic sLyrics;
-@dynamic sGenreName;
-
-@dynamic sArworkName;
+@dynamic iArtistId;
 @dynamic sArtistName;
+@dynamic sArtistNameIndex;
 
+@dynamic iGenreId;
+@dynamic sGenreName;
+@dynamic sGenreNameIndex;
+
+@dynamic iPlaylistId;
+@dynamic sPlaylistName;
+
+@dynamic sLyrics;
+@dynamic sArworkName;
+
+@dynamic iYear;
 @dynamic iTrack;
 @dynamic iRate;
-@dynamic iPlaylistId;
 @dynamic iPlayCount;
-@dynamic iGenreId;
-@dynamic iArtistId;
-
 @dynamic fDuration;
 
 @end
