@@ -89,14 +89,24 @@
 
 #pragma mark - UITableViewDataSource
 
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    NSMutableArray *arrList = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController sectionIndexTitles]];
+    [arrList insertObject:UITableViewIndexSearch atIndex:0];
+    
+    return arrList;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    if(index == 0)
+        [tableView scrollRectToVisible:tableView.tableHeaderView.frame animated: NO];
+    return (index - 1);
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [[self.fetchedResultsController sections] count];
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    return [self.fetchedResultsController sectionIndexTitles];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -260,7 +270,7 @@
 - (void)hideHeaderView
 {
     if (self.tblList.tableHeaderView) {
-//        self.tblList.contentOffset = CGPointMake(0,self.headerView.contentView.bounds.size.height);
+        self.tblList.contentOffset = CGPointMake(0.0, self.tblList.tableHeaderView.bounds.size.height);
     }
 }
 
