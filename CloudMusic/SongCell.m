@@ -26,6 +26,8 @@
 @property (nonatomic, weak) IBOutlet UIImageView *iTunesIcon;
 @property (nonatomic, weak) IBOutlet UIView *line;
 
+@property (nonatomic, strong) VYPlayIndicator *musicEq;
+
 @end
 
 @implementation SongCell
@@ -40,6 +42,11 @@
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     
     placeHolder = [UIImage imageNamed:@"filetype_audio"];
+    
+    self.musicEq = [[VYPlayIndicator alloc] init];
+    [self.musicEq setColor:[UIColor redColor]];
+    self.musicEq.frame = self.vMusicEq.bounds;
+    [self.vMusicEq.layer addSublayer:self.musicEq];
 }
 
 - (void)configWithItem:(Item *)item
@@ -50,6 +57,19 @@
     self.lblSongDesc.attributedText = item.sSongDesc;
     
     self.lblDuration.text = item.sDuration;
+    self.iTunesIcon.hidden = item.isCloud;
+    
+    [self isPlaying:item.isPlaying];
+}
+
+- (void)isPlaying:(BOOL)isPlaying
+{
+    if (isPlaying) {
+        [self.musicEq animatePlayback];
+    }
+    else {
+        [self.musicEq stopPlayback];
+    }
 }
 
 - (void)setLineHidden:(BOOL)isHidden

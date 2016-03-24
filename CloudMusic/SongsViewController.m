@@ -14,6 +14,8 @@
 
 #import "SongCell.h"
 #import "SongHeaderTitle.h"
+#import "TableFooterCell.h"
+#import "TableHeaderCell.h"
 
 #import "PCSEQVisualizer.h"
 
@@ -25,6 +27,10 @@
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingView;
+
+@property (nonatomic, strong) TableFooterCell *footerView;
+@property (nonatomic, strong) TableHeaderCell *headerView;
 
 @end
 
@@ -57,6 +63,10 @@
     if (![self.fetchedResultsController performFetch:&error]) {
         NSLog(@"Fetch error: %@", error);
     }
+    else {
+        [self setupFooterView];
+    }
+    [self setShowLoadingView:NO];
 }
 
 - (void)setupUI
@@ -70,13 +80,11 @@
     
     [self.tblList registerNib:[UINib nibWithNibName:@"SongCell" bundle:nil] forCellReuseIdentifier:@"SongCellId"];
     [self.tblList registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
+
+    [self.tblList setTableHeaderView:self.headerView.contentView];
+    [self.tblList setTableFooterView:self.footerView.contentView];
     
-    [self.tblList setTableFooterView:[UIView new]];
-//    self.tblList.separatorInset = UIEdgeInsetsMake(0.0, 5.0, 0.0, 20.0);
-    
-    if ([self.tblList respondsToSelector:@selector(layoutMargins)]) {
-        self.tblList.layoutMargins = UIEdgeInsetsMake(0.0, 5.0, 0.0, 20.0);
-    }
+    [self setShowLoadingView:YES];
 }
 
 #pragma mark - UITableViewDataSource
@@ -100,7 +108,7 @@
 {
     SongHeaderTitle *header = (SongHeaderTitle *)[tableView dequeueReusableCellWithIdentifier:@"SongHeaderTitleId"];
     [header setTitle:[self tableView:tableView titleForHeaderInSection:section]];
-    return header;
+    return header.contentView;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -194,6 +202,66 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tblList endUpdates];
+    [self setupFooterView];
+}
+
+#pragma mark - UI
+
+- (TableFooterCell *)footerView
+{
+    if (!_footerView) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableFooterCell" owner:self options:nil];
+        if ([nib count] > 0) {
+            _footerView = [nib objectAtIndex:0];
+        }
+    }
+    return _footerView;
+}
+
+- (void)setupFooterView
+{
+    NSString *sContent = nil;
+    int itemCount = (int)[self.fetchedResultsController.fetchedObjects count];
+    
+    if (itemCount <= 1) {
+        sContent = [NSString stringWithFormat:@"%d Song",itemCount];
+    }
+    else {
+         sContent = [NSString stringWithFormat:@"%d Songs",itemCount];
+    }
+    
+    [self.footerView setContent:sContent];
+}
+
+- (void)setShowLoadingView:(BOOL)isShow
+{
+    if (isShow) {
+        [self.loadingView startAnimating];
+    }
+    else {
+        [self.loadingView startAnimating];
+    }
+    
+    self.loadingView.hidden = !isShow;
+    self.tblList.hidden = isShow;
+}
+
+- (TableHeaderCell *)headerView
+{
+    if (!_headerView) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableHeaderCell" owner:self options:nil];
+        if ([nib count] > 0) {
+            _headerView = [nib objectAtIndex:0];
+        }
+    }
+    return _headerView;
+}
+
+- (void)hideHeaderView
+{
+    if (self.tblList.tableHeaderView) {
+//        self.tblList.contentOffset = CGPointMake(0,self.headerView.contentView.bounds.size.height);
+    }
 }
 
 #pragma mark - MusicEq
@@ -202,7 +270,6 @@
 {
     if (!_musicEq) {
         _musicEq = [[PCSEQVisualizer alloc] initWithNumberOfBars:3 barWidth:2 height:18.0 color:0x006bd5];
-        _musicEq.userInteractionEnabled = NO;
     }
     return _musicEq;
 }
@@ -239,6 +306,8 @@
 {
     [super viewWillAppear:animated];
     
+    [self hideHeaderView];
+    
     if ([[GlobalParameter sharedInstance] isPlay]) {
         [self.musicEq startEq];
     }
@@ -251,7 +320,7 @@
 
 - (void)openPlayer:(id)sender
 {
-    
+    [self setShowLoadingView:YES];
 }
 
 - (void)didReceiveMemoryWarning

@@ -20,7 +20,7 @@
 
 - (void)awakeFromNib
 {
-    self.lblTitle.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:10.0];
+    self.lblTitle.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
     self.lblTitle.textColor = [Utils colorWithRGBHex:0x9c9c9c];
     
     self.contentView.backgroundColor = [Utils colorWithRGBHex:0xf7f7f7];
@@ -33,7 +33,7 @@
 
 + (CGFloat)height
 {
-    return 22.0;
+    return 20.0;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

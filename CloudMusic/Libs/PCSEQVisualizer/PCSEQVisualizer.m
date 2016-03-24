@@ -30,6 +30,7 @@
         self.frame = CGRectMake(0, 0, barWidth*(2*numberOfBars - 1), maxHeight);
         self.backgroundColor = [UIColor clearColor];
         self.hidden = NO;
+        self.userInteractionEnabled = NO;
 
         self.barArray = [[NSMutableArray alloc]initWithCapacity:numberOfBars];
         for (int i = 0; i < numberOfBars; i++)

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="S96-yR-t3f">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="S96-yR-t3f">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
         <!--Files-->
@@ -16,6 +16,7 @@
                     <view key="view" contentMode="scaleToFill" id="XP4-2q-nwO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Files" id="SNp-7x-cpK"/>
@@ -35,6 +36,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" id="INp-9r-MOY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                 </tabBarController>
@@ -53,6 +55,7 @@
                     <view key="view" contentMode="scaleToFill" id="MpY-Eg-heo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
@@ -72,6 +75,7 @@
                     <view key="view" contentMode="scaleToFill" id="5ee-wf-ppm">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="More" id="lv0-0J-KNm"/>
@@ -96,6 +100,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="r8o-w9-sEx" userLabel="tblList">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="ijK-Rf-qj5" id="xwf-Rp-DHQ"/>
@@ -103,6 +108,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="r8o-w9-sEx" secondAttribute="bottom" id="Fl6-Yy-a14"/>
@@ -133,6 +139,7 @@
                     <view key="view" contentMode="scaleToFill" id="Nit-tj-ASq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Playlists" id="OSx-Lw-h8b"/>
@@ -152,6 +159,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="W6f-en-vlm">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="AVU-yx-wzr" kind="relationship" relationship="rootViewController" id="xTM-uZ-3O8"/>
@@ -175,17 +183,27 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zxd-O0-Lun" userLabel="tblList">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="dLF-xL-ehf" id="SHi-wM-DWi"/>
                                     <outlet property="delegate" destination="dLF-xL-ehf" id="Eck-W9-A66"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="O5C-UD-5iO" userLabel="loadingView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <animations/>
+                            </activityIndicatorView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="O5C-UD-5iO" secondAttribute="trailing" id="86U-b4-Xv6"/>
                             <constraint firstAttribute="trailing" secondItem="zxd-O0-Lun" secondAttribute="trailing" id="FPP-OG-car"/>
                             <constraint firstItem="zxd-O0-Lun" firstAttribute="top" secondItem="U0B-Fe-psb" secondAttribute="top" id="KHr-ym-9cJ"/>
+                            <constraint firstItem="O5C-UD-5iO" firstAttribute="leading" secondItem="U0B-Fe-psb" secondAttribute="leading" id="Kce-BY-GyT"/>
+                            <constraint firstAttribute="bottom" secondItem="O5C-UD-5iO" secondAttribute="bottom" id="MrV-yo-Dht"/>
+                            <constraint firstItem="O5C-UD-5iO" firstAttribute="top" secondItem="U0B-Fe-psb" secondAttribute="top" id="U1z-SD-5xH"/>
                             <constraint firstItem="zxd-O0-Lun" firstAttribute="leading" secondItem="U0B-Fe-psb" secondAttribute="leading" id="VJn-83-Bfp"/>
                             <constraint firstAttribute="bottom" secondItem="zxd-O0-Lun" secondAttribute="bottom" id="tC8-TY-g98"/>
                         </constraints>
@@ -194,6 +212,7 @@
                     <navigationItem key="navigationItem" id="klR-CF-0Qe"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="loadingView" destination="O5C-UD-5iO" id="fdg-pj-j5t"/>
                         <outlet property="tblList" destination="zxd-O0-Lun" id="e8f-ab-lTL"/>
                     </connections>
                 </viewController>
@@ -210,9 +229,10 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pwm-oa-QKF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <connections>
-                        <segue destination="dLF-xL-ehf" kind="relationship" relationship="rootViewController" id="IZc-tO-fU2"/>
+                        <segue destination="dLF-xL-ehf" kind="relationship" relationship="rootViewController" id="jrQ-cl-fwJ"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LIE-nq-hkV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -228,6 +248,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="uph-Eu-8Nn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="ijK-Rf-qj5" kind="relationship" relationship="rootViewController" id="dAj-xi-zZ4"/>
@@ -246,6 +267,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="f4y-L3-OKh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="0Yp-tq-MX6" kind="relationship" relationship="rootViewController" id="Bcp-MX-J9x"/>
@@ -264,6 +286,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2vE-wZ-wRK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="dxL-5s-s9d" kind="relationship" relationship="rootViewController" id="4JI-7Z-2O2"/>
@@ -282,6 +305,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gJp-M3-p5A">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="WBI-v2-hFR" kind="relationship" relationship="rootViewController" id="4QF-eQ-9rZ"/>
@@ -305,6 +329,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="g3c-1a-r8D" userLabel="tblList">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="WBI-v2-hFR" id="iB1-RA-7af"/>
@@ -312,6 +337,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="g3c-1a-r8D" firstAttribute="leading" secondItem="uN9-49-Ta3" secondAttribute="leading" id="S8y-AP-ru4"/>
@@ -340,6 +366,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zQh-Fm-7kW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="uLr-ht-eVZ" kind="relationship" relationship="rootViewController" id="Mif-oC-rGl"/>
@@ -361,15 +388,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZAr-EU-ZgU" userLabel="tblList">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ZAr-EU-ZgU" userLabel="tblList">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <animations/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="uLr-ht-eVZ" id="UxQ-Sy-h6w"/>
                                     <outlet property="delegate" destination="uLr-ht-eVZ" id="Xhf-gM-U7h"/>
                                 </connections>
                             </tableView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ZAr-EU-ZgU" firstAttribute="top" secondItem="GZG-L9-dC7" secondAttribute="top" id="3qH-HY-xom"/>
@@ -398,6 +427,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZML-dO-KWj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="ITq-zo-tbc" kind="relationship" relationship="rootViewController" id="JMg-jk-6UV"/>
@@ -418,6 +448,7 @@
                     <view key="view" contentMode="scaleToFill" id="xN6-hF-S7K">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Playlists" id="UYE-gX-l4H"/>

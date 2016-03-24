@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSURL *sLocalArtworkUrl;
 @property (nonatomic, strong) NSAttributedString *sSongDesc;;
 
+@property (nonatomic, assign) BOOL isPlaying;
+
 - (void)updateWithMediaItem:(MPMediaItem *)item;
 
 @end

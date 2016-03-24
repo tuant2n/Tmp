@@ -12,17 +12,12 @@
 #import "Item.h"
 #import <MediaPlayer/MediaPlayer.h>
 
-typedef enum {
-    kSourceTypeItunes = 0,
-    kSourceTypeCloud = 1,
-} kSourceType;
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Item (CoreDataProperties)
 
 @property (nullable, nonatomic, retain) NSString *sAssetUrl;
-@property (nullable, nonatomic, retain) NSNumber *iType;
+@property (nonatomic, assign) BOOL isCloud;
 
 @property (nullable, nonatomic, retain) NSNumber *iSongId;
 @property (nullable, nonatomic, retain) NSString *sSongName;

@@ -54,7 +54,7 @@ static DataManagement *_sharedInstance = nil;
 - (void)removeAllData
 {
     NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%d != %d", @"iType",kSourceTypeCloud];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"isCloud",@NO];
     [fetchSongRequest setPredicate:predicate];
     
     NSError *error = nil;
@@ -63,10 +63,6 @@ static DataManagement *_sharedInstance = nil;
     if (!error) {
         for (Item *item in listData) {
             [[self managedObjectContext] deleteObject:item];
-            
-//            NSArray *keys = [[[item entity] attributesByName] allKeys];
-//            NSDictionary *dict = [item dictionaryWithValuesForKeys:keys];
-//            NSLog(@"%@",dict);
         }
     }
 }

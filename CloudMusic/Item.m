@@ -15,6 +15,8 @@
 
 @implementation Item
 
+@synthesize isPlaying;
+
 @synthesize sLocalArtworkUrl;
 @synthesize sSongDesc;
 
@@ -26,7 +28,7 @@
 - (void)updateWithMediaItem:(MPMediaItem *)item
 {
     self.sAssetUrl = [item.itemAssetURL absoluteString];
-    self.iType = [NSNumber numberWithInt:kSourceTypeCloud];
+    self.isCloud = NO;
     
     self.iSongId = item.itemPersistentID;
     [self setSongName:item.itemTitle];
