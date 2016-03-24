@@ -8,10 +8,15 @@
 
 #import "Item.h"
 
-#import "MPMediaItem+Accessors.h"
 #import "Utils.h"
 
+#import "NSAttributedString+CCLFormat.h"
+#import "MPMediaItem+Accessors.h"
+
 @implementation Item
+
+@synthesize sLocalArtworkUrl;
+@synthesize sSongDesc;
 
 /*
  @property (nullable, nonatomic, retain) NSNumber *iPlaylistId;
@@ -43,7 +48,7 @@
         NSString *sArtworkName = [NSString stringWithFormat:@"%@.png",self.iSongId];
         BOOL isSaveArtwork = [UIImagePNGRepresentation(artwork) writeToFile:[[Utils artworkPath] stringByAppendingPathComponent:sArtworkName] atomically:YES];
         if (isSaveArtwork) {
-            self.sArworkName = sArtworkName;
+            self.sArtworkName = sArtworkName;
         }
     }
     
@@ -52,7 +57,8 @@
     self.iRate = item.itemRating;
     self.iTrack = item.itemAlbumTrackNumber;
     self.iPlayCount = item.itemPlayCount;
-    self.fDuration = item.itemPlaybackDuration;
+    
+    [self setSongDuration:item.playbackDuration];
 }
 
 - (void)setSongName:(NSString *)sSongName
@@ -89,6 +95,64 @@
 {
     self.sGenreName = sGenreName;
     self.sGenreNameIndex = [[Utils standardLocaleString:self.sGenreName] lowercaseString];
+}
+
+- (void)setSongDuration:(int)fDuration
+{
+    self.fDuration = [NSNumber numberWithInt:fDuration];
+    self.sDuration = [Utils timeFormattedForSong:fDuration];
+}
+
+- (NSURL *)sLocalArtworkUrl
+{
+    if (!sLocalArtworkUrl && self.sArtworkName) {
+        sLocalArtworkUrl = [NSURL fileURLWithPath:[[Utils artworkPath] stringByAppendingPathComponent:self.sArtworkName]];
+    }
+    return sLocalArtworkUrl;
+}
+
+- (NSAttributedString *)sSongDesc
+{
+    if (!sSongDesc)
+    {
+        NSAttributedString *sArtist = nil;
+        if (self.sArtistName) {
+            sArtist = [[NSAttributedString alloc] initWithString:self.sArtistName
+                                                      attributes:@{
+                                      NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Medium" size:14.0],
+                                      NSForegroundColorAttributeName:[UIColor blackColor],
+                                      }];
+        }
+        
+        NSAttributedString *sAlbumName = nil;
+        if (self.sAlbumName)
+        {
+            sAlbumName = [[NSAttributedString alloc] initWithString:self.sAlbumName
+                                                         attributes:@{
+                         NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue" size:14.0],
+                         NSForegroundColorAttributeName:[Utils colorWithRGBHex:0x6a6a6a],
+                         }];
+        }
+        
+        if (sArtist) {
+            if (sAlbumName) {
+                sSongDesc = [NSAttributedString attributedStringWithFormat:@"%@ %@",sArtist,sAlbumName];
+            }
+            else {
+                sSongDesc = sArtist;
+            }
+        }
+        else {
+            if (sAlbumName) {
+                sSongDesc = sAlbumName;
+            }
+            else {
+                sSongDesc = [NSAttributedString attributedStringWithFormat:@""];
+            }
+        }
+        
+    }
+    return sSongDesc;
 }
 
 @end

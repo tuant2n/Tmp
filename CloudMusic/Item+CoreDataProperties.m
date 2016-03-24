@@ -44,12 +44,13 @@
 @dynamic sPlaylistName;
 
 @dynamic sLyrics;
-@dynamic sArworkName;
+@dynamic sArtworkName;
 
 @dynamic iYear;
 @dynamic iTrack;
 @dynamic iRate;
 @dynamic iPlayCount;
 @dynamic fDuration;
+@dynamic sDuration;
 
 @end

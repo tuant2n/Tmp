@@ -51,7 +51,7 @@
         [duration setExpression:sumExpression];
         [duration setExpressionResultType:NSInteger32AttributeType];
         
-        NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArworkName"];
+        NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArtworkName"];
         NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
         NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
         [artwork setName: @"artwork"];

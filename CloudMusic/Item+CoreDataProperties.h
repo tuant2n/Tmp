@@ -49,13 +49,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *sPlaylistName;
 
 @property (nullable, nonatomic, retain) NSString *sLyrics;
-@property (nullable, nonatomic, retain) NSString *sArworkName;
+@property (nullable, nonatomic, retain) NSString *sArtworkName;
 
 @property (nullable, nonatomic, retain) NSNumber *iYear;
 @property (nullable, nonatomic, retain) NSNumber *iRate;
 @property (nullable, nonatomic, retain) NSNumber *iTrack;
 @property (nullable, nonatomic, retain) NSNumber *iPlayCount;
 @property (nullable, nonatomic, retain) NSNumber *fDuration;
+@property (nullable, nonatomic, retain) NSString *sDuration;
 
 @end
 

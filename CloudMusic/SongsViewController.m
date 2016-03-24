@@ -12,6 +12,9 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
+#import "SongCell.h"
+#import "SongHeaderTitle.h"
+
 #import "PCSEQVisualizer.h"
 
 @interface SongsViewController () <NSFetchedResultsControllerDelegate>
@@ -61,7 +64,19 @@
     self.title = @"Songs";
     self.navigationItem.rightBarButtonItem = self.barMusicEq;
     
-    [self.tblList registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    self.tblList.sectionIndexColor = [Utils colorWithRGBHex:0x006bd5];
+    self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
+    self.tblList.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
+    
+    [self.tblList registerNib:[UINib nibWithNibName:@"SongCell" bundle:nil] forCellReuseIdentifier:@"SongCellId"];
+    [self.tblList registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
+    
+    [self.tblList setTableFooterView:[UIView new]];
+//    self.tblList.separatorInset = UIEdgeInsetsMake(0.0, 5.0, 0.0, 20.0);
+    
+    if ([self.tblList respondsToSelector:@selector(layoutMargins)]) {
+        self.tblList.layoutMargins = UIEdgeInsetsMake(0.0, 5.0, 0.0, 20.0);
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -76,7 +91,20 @@
     return [self.fetchedResultsController sectionIndexTitles];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return [SongHeaderTitle height];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    SongHeaderTitle *header = (SongHeaderTitle *)[tableView dequeueReusableCellWithIdentifier:@"SongHeaderTitleId"];
+    [header setTitle:[self tableView:tableView titleForHeaderInSection:section]];
+    return header;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
     return [sectionInfo name];
 }
@@ -87,19 +115,25 @@
     return [sectionInfo numberOfObjects];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [SongCell height];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    SongCell *cell = (SongCell *)[tableView dequeueReusableCellWithIdentifier:@"SongCellId" forIndexPath:indexPath];
     
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
+    [cell setLineHidden:(indexPath.row == [sectionInfo numberOfObjects] - 1)];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(SongCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = item.sSongName;
-    cell.detailTextLabel.text = item.sAlbumName;
+    [cell configWithItem:item];
 }
 
 #pragma mark - Fetched Results Controller Delegate
@@ -126,7 +160,7 @@
             break;
             
         case NSFetchedResultsChangeUpdate: {
-            [self configureCell:(UITableViewCell *)[self.tblList cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:(SongCell *)[self.tblList cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
         }
             break;
             
