@@ -12,14 +12,19 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
-#import "SongCell.h"
+#import "SongsCell.h"
 #import "SongHeaderTitle.h"
-#import "TableFooterCell.h"
-#import "TableHeaderCell.h"
+
+#import "TableFooterView.h"
+#import "TableHeaderView.h"
 
 #import "PCSEQVisualizer.h"
+#import "MGSwipeButton.h"
 
-@interface SongsViewController () <NSFetchedResultsControllerDelegate>
+@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate>
+{
+
+}
 
 @property (nonatomic, strong) PCSEQVisualizer *musicEq;
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
@@ -29,8 +34,8 @@
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingView;
 
-@property (nonatomic, strong) TableFooterCell *footerView;
-@property (nonatomic, strong) TableHeaderCell *headerView;
+@property (nonatomic, strong) TableFooterView *footerView;
+@property (nonatomic, strong) TableHeaderView *headerView;
 
 @end
 
@@ -38,8 +43,8 @@
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
-    if (!_fetchedResultsController) {
-        
+    if (!_fetchedResultsController)
+    {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
         request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"sSongNameIndex" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
         
@@ -78,11 +83,13 @@
     self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
     self.tblList.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
     
-    [self.tblList registerNib:[UINib nibWithNibName:@"SongCell" bundle:nil] forCellReuseIdentifier:@"SongCellId"];
+    [self.tblList registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
     [self.tblList registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
 
-    [self.tblList setTableHeaderView:self.headerView.contentView];
-    [self.tblList setTableFooterView:self.footerView.contentView];
+    [self.headerView setupForSongsVC];
+    [self.tblList setTableHeaderView:self.headerView];
+    
+    [self.tblList setTableFooterView:self.footerView];
     
     [self setShowLoadingView:YES];
 }
@@ -93,14 +100,12 @@
 {
     NSMutableArray *arrList = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController sectionIndexTitles]];
     [arrList insertObject:UITableViewIndexSearch atIndex:0];
-    
     return arrList;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
-    if(index == 0)
-        [tableView scrollRectToVisible:tableView.tableHeaderView.frame animated: NO];
+    if(index == 0) [tableView scrollRectToVisible:tableView.tableHeaderView.frame animated: NO];
     return (index - 1);
 }
 
@@ -135,12 +140,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [SongCell height];
+    return [SongsCell height];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SongCell *cell = (SongCell *)[tableView dequeueReusableCellWithIdentifier:@"SongCellId" forIndexPath:indexPath];
+    SongsCell *cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
+    cell.delegate = self;
+    cell.allowsMultipleSwipe = NO;
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
     [cell setLineHidden:(indexPath.row == [sectionInfo numberOfObjects] - 1)];
@@ -148,10 +155,30 @@
     return cell;
 }
 
-- (void)configureCell:(SongCell *)cell atIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(SongsCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell configWithItem:item];
+}
+
+
+- (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
+{
+    NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
+    if (!indexPath) {
+        return YES;
+    }
+    
+    if (direction == MGSwipeDirectionLeftToRight)
+    {
+        Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        
+        if (item.isCloud.boolValue && index == 0) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 #pragma mark - Fetched Results Controller Delegate
@@ -178,7 +205,7 @@
             break;
             
         case NSFetchedResultsChangeUpdate: {
-            [self configureCell:(SongCell *)[self.tblList cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:(SongsCell *)[self.tblList cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
         }
             break;
             
@@ -189,7 +216,6 @@
             break;
     }
 }
-
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
@@ -217,10 +243,10 @@
 
 #pragma mark - UI
 
-- (TableFooterCell *)footerView
+- (TableFooterView *)footerView
 {
     if (!_footerView) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableFooterCell" owner:self options:nil];
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableFooterView" owner:self options:nil];
         if ([nib count] > 0) {
             _footerView = [nib objectAtIndex:0];
         }
@@ -256,10 +282,10 @@
     self.tblList.hidden = isShow;
 }
 
-- (TableHeaderCell *)headerView
+- (TableHeaderView *)headerView
 {
     if (!_headerView) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableHeaderCell" owner:self options:nil];
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableHeaderView" owner:self options:nil];
         if ([nib count] > 0) {
             _headerView = [nib objectAtIndex:0];
         }
@@ -330,7 +356,7 @@
 
 - (void)openPlayer:(id)sender
 {
-    [self setShowLoadingView:YES];
+
 }
 
 - (void)didReceiveMemoryWarning

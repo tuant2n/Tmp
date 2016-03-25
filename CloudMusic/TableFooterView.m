@@ -1,27 +1,29 @@
 //
-//  TableFooterCell.m
+//  TableFooterView.m
 //  CloudMusic
 //
-//  Created by TuanTN on 3/24/16.
+//  Created by TuanTN8 on 3/25/16.
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
-#import "TableFooterCell.h"
+#import "TableFooterView.h"
 
 #import "Utils.h"
 
-@interface TableFooterCell()
+@interface TableFooterView()
 
 @property (nonatomic, weak) IBOutlet UIView *line;
 @property (nonatomic, weak) IBOutlet UILabel *lblContent;
 
 @end
 
-@implementation TableFooterCell
+@implementation TableFooterView
 
 - (void)awakeFromNib
 {
-    self.contentView.backgroundColor = [UIColor clearColor];
+    [super awakeFromNib];
+    
+    self.backgroundColor = [UIColor clearColor];
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     
     self.lblContent.textColor = [Utils colorWithRGBHex:0x6a6a6a];

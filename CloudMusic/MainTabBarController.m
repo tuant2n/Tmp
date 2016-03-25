@@ -14,6 +14,14 @@
 #import "DataManagement.h"
 #import "GlobalParameter.h"
 
+#import "FilesViewController.h"
+#import "SongsViewController.h"
+#import "AlbumsViewController.h"
+#import "PlaylistsViewController.h"
+#import "ArtistsViewController.h"
+#import "GenresViewController.h"
+#import "SettingsViewController.h"
+
 #import "MPMediaItem+Accessors.h"
 #import "HCDCoreDataStackController.h"
 
@@ -67,27 +75,34 @@
 
 - (void)setupTabbar
 {
-    navFilesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"NavFilesViewController"];
+    navFilesVC = [[UINavigationController alloc] initWithRootViewController:[[FilesViewController alloc] initWithNibName:@"FilesViewController" bundle:nil]];
+    navFilesVC.navigationBar.translucent = NO;
     navFilesVC.tabBarItem = [Utils tabbarItemWithTitle:@"Files" unselectedImage:@"files.png" selectedImage:@"files-selected.png"];
     
-    navSongsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"NavSongsViewController"];
+    navSongsVC = [[UINavigationController alloc] initWithRootViewController:[[SongsViewController alloc] initWithNibName:@"SongsViewController" bundle:nil]];
+    navSongsVC.navigationBar.translucent = NO;
     navSongsVC.tabBarItem = [Utils tabbarItemWithTitle:@"Songs" unselectedImage:@"songs.png" selectedImage:@"songs-selected.png"];
     
-    navAlbumsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"NavAlbumsViewController"];
+    navAlbumsVC = [[UINavigationController alloc] initWithRootViewController:[[AlbumsViewController alloc] initWithNibName:@"AlbumsViewController" bundle:nil]];
+    navAlbumsVC.navigationBar.translucent = NO;
     navAlbumsVC.tabBarItem = [Utils tabbarItemWithTitle:@"Albums" unselectedImage:@"albums.png" selectedImage:@"albums-selected.png"];
     
-    navPlaylistsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"NavPlaylistsViewController"];
+    navPlaylistsVC = [[UINavigationController alloc] initWithRootViewController:[[PlaylistsViewController alloc] initWithNibName:@"PlaylistsViewController" bundle:nil]];
+    navPlaylistsVC.navigationBar.translucent = NO;
     navPlaylistsVC.tabBarItem = [Utils tabbarItemWithTitle:@"Playlists" unselectedImage:@"playlists.png" selectedImage:@"playlists-selected.png"];
-    
-    navArtists = [self.storyboard instantiateViewControllerWithIdentifier:@"NavArtistsViewController"];
+
+    navArtists = [[UINavigationController alloc] initWithRootViewController:[[ArtistsViewController alloc] initWithNibName:@"ArtistsViewController" bundle:nil]];
+    navArtists.navigationBar.translucent = NO;
     navArtists.tabBarItem = [Utils tabbarItemWithTitle:@"Artists" unselectedImage:@"artists.png" selectedImage:@"artists-selected.png"];
     
-    navGenres = [self.storyboard instantiateViewControllerWithIdentifier:@"NavGenresViewController"];
+    navGenres = [[UINavigationController alloc] initWithRootViewController:[[GenresViewController alloc] initWithNibName:@"GenresViewController" bundle:nil]];
+    navGenres.navigationBar.translucent = NO;
     navGenres.tabBarItem = [Utils tabbarItemWithTitle:@"Genres" unselectedImage:@"genres.png" selectedImage:@"genres-selected.png"];
     
-    navSettingsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"NavSettingsViewController"];
+    navSettingsVC = [[UINavigationController alloc] initWithRootViewController:[[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil]];
+    navSettingsVC.navigationBar.translucent = NO;
     navSettingsVC.tabBarItem = [Utils tabbarItemWithTitle:@"Settings" unselectedImage:@"settings.png" selectedImage:@"settings-selected.png"];
-    
+
     [self setupMoreNavVC];
     
     [self setViewControllers:[NSArray arrayWithObjects:navFilesVC,navSongsVC,navAlbumsVC,navPlaylistsVC,navArtists,navGenres,navSettingsVC,nil]];

@@ -28,7 +28,7 @@
 - (void)updateWithMediaItem:(MPMediaItem *)item
 {
     self.sAssetUrl = [item.itemAssetURL absoluteString];
-    self.isCloud = NO;
+    self.isCloud = @NO;
     
     self.iSongId = item.itemPersistentID;
     [self setSongName:item.itemTitle];

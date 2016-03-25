@@ -10,4 +10,8 @@
 
 @interface TableHeaderView : UIView
 
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+
+- (void)setupForSongsVC;
+
 @end

@@ -124,6 +124,10 @@
      @{NSForegroundColorAttributeName:navigationTextColor,
        NSFontAttributeName:navigationFont,
        NSShadowAttributeName:shadowText}];
+    
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setBackgroundColor:[self colorWithRGBHex:0xf7f7f7]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor grayColor]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setPlaceholder:@"Search"];
 }
 
 + (UIButton *)createBarButton:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector

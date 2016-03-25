@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#import "MainTabBarController.h"
+
 #import "Utils.h"
 
 @interface AppDelegate ()
@@ -20,7 +22,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    [Utils configNavigationBar];
     [Utils configTabbarAppearce];
+    
+    self.window.rootViewController = [[MainTabBarController alloc] init];
+    [self.window makeKeyAndVisible];
     
     return YES;
 }

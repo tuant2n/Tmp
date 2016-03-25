@@ -10,6 +10,12 @@
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+#define T_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define T_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
+
+#define DEVICE_SIZE CGSizeMake(MIN(T_WIDTH, T_HEIGHT),MAX(T_WIDTH, T_HEIGHT))
+#define DEVICE_SCALE [UIScreen mainScreen].scale
+
 @interface Utils : NSObject
 
 #pragma mark - UIColor
@@ -31,6 +37,7 @@
 + (void)configTabbarAppearce;
 + (UITabBarItem *)tabbarItemWithTitle:(NSString *)title unselectedImage:(NSString *)sUnselectedImage selectedImage:(NSString *)sSelectedImage;
 
++ (void)configNavigationBar;
 + (UIButton *)createBarButton:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector;
 + (UIButton *)createBarButtonWithTitle:(NSString *)sTitle textColor:(UInt32)hexColor position:(UIControlContentHorizontalAlignment)position target:(id)target action:(SEL)selector;
 
