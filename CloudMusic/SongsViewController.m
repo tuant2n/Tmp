@@ -98,10 +98,10 @@
 {
     [self.headerView setupForSongsVC];
     
-    self.searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:self.headerView.searchBar contentsController:self];
-    self.searchDisplay.searchResultsDataSource = self;
-    self.searchDisplay.searchResultsDelegate = self;
-    self.searchDisplay.delegate = self;
+//    self.searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:self.headerView.searchBar contentsController:self];
+//    self.searchDisplay.searchResultsDataSource = self;
+//    self.searchDisplay.searchResultsDelegate = self;
+//    self.searchDisplay.delegate = self;
     
     self.headerView.searchBar.delegate = self;
     
@@ -146,8 +146,11 @@
     if (!active) {
 //        [disableViewOverlay removeFromSuperview];
         [searchBar resignFirstResponder];
+        [self.headerView setHeight:150.0];
+        
     }
     else {
+        [self.headerView setHeight:100.0];
 //        self.disableViewOverlay.alpha = 0;
 //        [self.view addSubview:self.disableViewOverlay];
 //        
@@ -165,6 +168,8 @@
 //                                             animated:NO];
 //        }
     }
+    
+    self.tblList.tableHeaderView = self.headerView;
     [searchBar setShowsCancelButton:active animated:YES];
 }
 

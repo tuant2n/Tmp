@@ -14,4 +14,6 @@
 
 - (void)setupForSongsVC;
 
+- (void)setHeight:(float)fHeight;
+
 @end
