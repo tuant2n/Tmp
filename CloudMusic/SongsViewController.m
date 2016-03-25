@@ -21,7 +21,7 @@
 #import "PCSEQVisualizer.h"
 #import "MGSwipeButton.h"
 
-@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate>
+@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UISearchDisplayDelegate,UITableViewDelegate,UITableViewDataSource>
 {
 
 }
@@ -30,6 +30,8 @@
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+
+@property (nonatomic) UISearchDisplayController *searchDisplay;
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingView;
@@ -86,12 +88,106 @@
     [self.tblList registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
     [self.tblList registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
 
-    [self.headerView setupForSongsVC];
-    [self.tblList setTableHeaderView:self.headerView];
-    
+    [self setupHeaderBar];
     [self.tblList setTableFooterView:self.footerView];
     
     [self setShowLoadingView:YES];
+}
+
+- (void)setupHeaderBar
+{
+    [self.headerView setupForSongsVC];
+    
+    self.searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:self.headerView.searchBar contentsController:self];
+    self.searchDisplay.searchResultsDataSource = self;
+    self.searchDisplay.searchResultsDelegate = self;
+    self.searchDisplay.delegate = self;
+    
+    self.headerView.searchBar.delegate = self;
+    
+    [self.tblList setTableHeaderView:self.headerView];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [self searchBar:searchBar activate:YES];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    searchBar.text = nil;
+    [self searchBar:searchBar activate:NO];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    // You'll probably want to do this on another thread
+    // SomeService is just a dummy class representing some
+    // api that you are using to do the search
+//    NSArray *results = [SomeService doSearch:searchBar.text];
+//    
+//    [searchBar setShowsCancelButton:NO animated:YES];
+//    [searchBar resignFirstResponder];
+//    self.theTableView.allowsSelection = YES;
+//    self.theTableView.scrollEnabled = YES;
+//    
+//    [self.tableData removeAllObjects];
+//    [self.tableData addObjectsFromArray:results];
+//    [self.theTableView reloadData];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar activate:(BOOL) active
+{
+    self.tblList.allowsSelection = !active;
+    self.tblList.scrollEnabled = !active;
+    
+    if (!active) {
+//        [disableViewOverlay removeFromSuperview];
+        [searchBar resignFirstResponder];
+    }
+    else {
+//        self.disableViewOverlay.alpha = 0;
+//        [self.view addSubview:self.disableViewOverlay];
+//        
+//        [UIView beginAnimations:@"FadeIn" context:nil];
+//        [UIView setAnimationDuration:0.5];
+//        self.disableViewOverlay.alpha = 0.6;
+//        [UIView commitAnimations];
+//        
+//        // probably not needed if you have a details view since you
+//        // will go there on selection
+//        NSIndexPath *selected = [self.theTableView
+//                                 indexPathForSelectedRow];
+//        if (selected) {
+//            [self.theTableView deselectRowAtIndexPath:selected
+//                                             animated:NO];
+//        }
+    }
+    [searchBar setShowsCancelButton:active animated:YES];
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+{
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    
+    self.searchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
+    self.searchDisplayController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
+}
+
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
+{
+
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+
+    return YES;
 }
 
 #pragma mark - UITableViewDataSource
@@ -160,7 +256,6 @@
     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell configWithItem:item];
 }
-
 
 - (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
 {
