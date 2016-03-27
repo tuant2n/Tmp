@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "HCDCoreDataStackController.h"
+
 #import "Item.h"
+#import "AlbumObj.h"
 
 @interface DataManagement : NSObject
 
@@ -24,6 +26,9 @@
 - (void)removeAllData;
 - (void)syncData;
 - (void)saveData;
+
+- (NSArray *)getListAlbumFilterByName:(NSString *)sName;
+- (NSArray *)getListArtistFilterByName:(NSString *)sName;
 
 #pragma mark - iTunes Sync
 

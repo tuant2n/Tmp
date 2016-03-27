@@ -46,7 +46,7 @@
 - (void)setupData
 {
 #if !(TARGET_OS_SIMULATOR)
-    long lastTimeAppSync = 0;//[[DataManagement sharedInstance] getLastTimeAppSync];
+    long lastTimeAppSync = [[DataManagement sharedInstance] getLastTimeAppSync];
     long lastTimeDeviceSync = [[[MPMediaLibrary defaultMediaLibrary] lastModifiedDate] timeIntervalSince1970];
     
     if (lastTimeAppSync != lastTimeDeviceSync)

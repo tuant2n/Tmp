@@ -18,57 +18,40 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gss-Ub-Fnl" userLabel="content">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2S1-HP-aab">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2S1-HP-aab" userLabel="imgvArtwork">
                                 <rect key="frame" x="5" y="5" width="70" height="70"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="2S1-HP-aab" secondAttribute="height" multiplier="1:1" id="Bxh-iL-P08"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zvt-HI-8eg" userLabel="imgvListIcon">
-                                <rect key="frame" x="305" y="0.0" width="10" height="80"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="10" id="iFp-fs-NQR"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ipod-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="fBC-Hr-QUk" userLabel="imgvIcon">
-                                <rect key="frame" x="285" y="0.0" width="20" height="80"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="oQb-Ub-DfB"/>
-                                </constraints>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XsS-hr-Es2" userLabel="vInfo">
-                                <rect key="frame" x="80" y="5" width="205" height="70"/>
+                                <rect key="frame" x="80" y="25" width="195" height="50"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Flu-ft-5qb" userLabel="lblAlbumArtistName">
-                                        <rect key="frame" x="0.0" y="40" width="205" height="20"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ổ Ỵ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofK-a5-jmX" userLabel="lblAlbumName">
+                                        <rect key="frame" x="0.0" y="0.0" width="195" height="18"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ổ ỵ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Flu-ft-5qb" userLabel="lblAlbumInfo">
+                                        <rect key="frame" x="0.0" y="18" width="195" height="18"/>
                                         <animations/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="sbs-sg-inQ"/>
+                                            <constraint firstAttribute="height" constant="18" id="CM8-51-s9O"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ổ Ỵ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8I6-hc-4mF" userLabel="lblAlbumDesc">
-                                        <rect key="frame" x="0.0" y="60" width="205" height="10"/>
+                                        <rect key="frame" x="0.0" y="36" width="195" height="14"/>
                                         <animations/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="10" id="Rjz-e9-DvG"/>
+                                            <constraint firstAttribute="height" constant="14" id="f3v-rM-DCG"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofK-a5-jmX" userLabel="lblAlbumName">
-                                        <rect key="frame" x="0.0" y="10" width="205" height="30"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="QGN-hT-Bdd"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -76,33 +59,72 @@
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="Flu-ft-5qb" secondAttribute="trailing" id="2sT-oh-0iX"/>
-                                    <constraint firstAttribute="trailing" secondItem="8I6-hc-4mF" secondAttribute="trailing" id="IKA-O2-dKO"/>
-                                    <constraint firstItem="Flu-ft-5qb" firstAttribute="leading" secondItem="XsS-hr-Es2" secondAttribute="leading" id="NOd-5y-muH"/>
-                                    <constraint firstAttribute="trailing" secondItem="ofK-a5-jmX" secondAttribute="trailing" id="YQ3-jf-XpO"/>
-                                    <constraint firstItem="8I6-hc-4mF" firstAttribute="leading" secondItem="XsS-hr-Es2" secondAttribute="leading" id="cuk-X6-XO4"/>
-                                    <constraint firstItem="ofK-a5-jmX" firstAttribute="leading" secondItem="XsS-hr-Es2" secondAttribute="leading" id="dfs-65-OjI"/>
-                                    <constraint firstItem="Flu-ft-5qb" firstAttribute="top" secondItem="ofK-a5-jmX" secondAttribute="bottom" id="hJL-TH-kMw"/>
-                                    <constraint firstAttribute="bottom" secondItem="8I6-hc-4mF" secondAttribute="bottom" id="k7w-vw-TLa"/>
-                                    <constraint firstItem="8I6-hc-4mF" firstAttribute="top" secondItem="Flu-ft-5qb" secondAttribute="bottom" id="zyO-32-kDs"/>
+                                    <constraint firstAttribute="height" constant="50" id="0zb-9t-AKz"/>
+                                    <constraint firstItem="Flu-ft-5qb" firstAttribute="leading" secondItem="XsS-hr-Es2" secondAttribute="leading" id="6mB-rb-BBU"/>
+                                    <constraint firstItem="Flu-ft-5qb" firstAttribute="top" secondItem="ofK-a5-jmX" secondAttribute="bottom" id="Hfe-ea-m3T"/>
+                                    <constraint firstItem="8I6-hc-4mF" firstAttribute="top" secondItem="Flu-ft-5qb" secondAttribute="bottom" id="TH4-Lq-Vuk"/>
+                                    <constraint firstAttribute="trailing" secondItem="8I6-hc-4mF" secondAttribute="trailing" id="Ydd-b1-wU5"/>
+                                    <constraint firstItem="ofK-a5-jmX" firstAttribute="leading" secondItem="XsS-hr-Es2" secondAttribute="leading" id="Zgi-BO-aaR"/>
+                                    <constraint firstItem="ofK-a5-jmX" firstAttribute="top" secondItem="XsS-hr-Es2" secondAttribute="top" id="ajb-cb-uOr"/>
+                                    <constraint firstAttribute="trailing" secondItem="Flu-ft-5qb" secondAttribute="trailing" id="fKi-gh-V2d"/>
+                                    <constraint firstItem="8I6-hc-4mF" firstAttribute="leading" secondItem="XsS-hr-Es2" secondAttribute="leading" id="mxI-cb-H56"/>
+                                    <constraint firstAttribute="trailing" secondItem="ofK-a5-jmX" secondAttribute="trailing" id="oKc-KV-kg9"/>
+                                    <constraint firstAttribute="bottom" secondItem="8I6-hc-4mF" secondAttribute="bottom" id="ylM-pS-bXU"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yUn-mj-I6D" userLabel="vExternal">
+                                <rect key="frame" x="275" y="0.0" width="30" height="80"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBW-Tt-qLV" userLabel="vMusicEq">
+                                        <rect key="frame" x="11" y="13" width="8" height="14"/>
+                                        <animations/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="14" id="15m-rB-fR0"/>
+                                            <constraint firstAttribute="width" constant="8" id="GGM-2y-fhc"/>
+                                        </constraints>
+                                    </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ipod-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="fBC-Hr-QUk" userLabel="imgvIcon">
+                                        <rect key="frame" x="0.0" y="30" width="30" height="20"/>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="f5p-4N-M2V"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="fBC-Hr-QUk" secondAttribute="trailing" id="0ue-M8-0bk"/>
+                                    <constraint firstItem="fBC-Hr-QUk" firstAttribute="leading" secondItem="yUn-mj-I6D" secondAttribute="leading" id="2ia-7a-3pM"/>
+                                    <constraint firstItem="fBC-Hr-QUk" firstAttribute="centerY" secondItem="yUn-mj-I6D" secondAttribute="centerY" id="MeQ-3L-NnZ"/>
+                                    <constraint firstItem="fBC-Hr-QUk" firstAttribute="top" secondItem="YBW-Tt-qLV" secondAttribute="bottom" constant="3" id="NQm-em-TyL"/>
+                                    <constraint firstAttribute="width" constant="30" id="RyF-Uf-fht"/>
+                                    <constraint firstItem="YBW-Tt-qLV" firstAttribute="centerX" secondItem="yUn-mj-I6D" secondAttribute="centerX" id="tJV-Mg-DGW"/>
+                                </constraints>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zvt-HI-8eg" userLabel="imgvListIcon">
+                                <rect key="frame" x="305" y="0.0" width="10" height="80"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="10" id="iFp-fs-NQR"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="yUn-mj-I6D" secondAttribute="bottom" id="6yl-pX-mL9"/>
                             <constraint firstAttribute="bottom" secondItem="Zvt-HI-8eg" secondAttribute="bottom" id="7zy-Zf-Wzk"/>
-                            <constraint firstAttribute="bottom" secondItem="XsS-hr-Es2" secondAttribute="bottom" constant="5" id="8c1-mm-MSj"/>
                             <constraint firstItem="Zvt-HI-8eg" firstAttribute="top" secondItem="Gss-Ub-Fnl" secondAttribute="top" id="D0g-eZ-enb"/>
                             <constraint firstItem="2S1-HP-aab" firstAttribute="top" secondItem="Gss-Ub-Fnl" secondAttribute="top" constant="5" id="IBE-mw-pw1"/>
-                            <constraint firstItem="fBC-Hr-QUk" firstAttribute="top" secondItem="Gss-Ub-Fnl" secondAttribute="top" id="NuC-hx-LWz"/>
-                            <constraint firstItem="fBC-Hr-QUk" firstAttribute="leading" secondItem="XsS-hr-Es2" secondAttribute="trailing" id="Wzo-CL-Iy9"/>
-                            <constraint firstAttribute="bottom" secondItem="fBC-Hr-QUk" secondAttribute="bottom" id="YUy-1d-c6D"/>
+                            <constraint firstItem="yUn-mj-I6D" firstAttribute="top" secondItem="Gss-Ub-Fnl" secondAttribute="top" id="NQi-8x-ZTH"/>
+                            <constraint firstItem="XsS-hr-Es2" firstAttribute="leading" secondItem="2S1-HP-aab" secondAttribute="trailing" constant="5" id="WNZ-Lx-j1k"/>
                             <constraint firstAttribute="trailing" secondItem="Zvt-HI-8eg" secondAttribute="trailing" constant="5" id="afA-4a-9js"/>
-                            <constraint firstItem="Zvt-HI-8eg" firstAttribute="leading" secondItem="fBC-Hr-QUk" secondAttribute="trailing" id="i40-ob-fJY"/>
-                            <constraint firstItem="XsS-hr-Es2" firstAttribute="top" secondItem="Gss-Ub-Fnl" secondAttribute="top" constant="5" id="iaD-TL-eMR"/>
+                            <constraint firstAttribute="bottom" secondItem="XsS-hr-Es2" secondAttribute="bottom" constant="5" id="boe-Rc-EIF"/>
+                            <constraint firstItem="Zvt-HI-8eg" firstAttribute="leading" secondItem="yUn-mj-I6D" secondAttribute="trailing" id="jWV-eF-Ah2"/>
                             <constraint firstAttribute="bottom" secondItem="2S1-HP-aab" secondAttribute="bottom" constant="5" id="pkr-V9-vec"/>
-                            <constraint firstItem="XsS-hr-Es2" firstAttribute="leading" secondItem="2S1-HP-aab" secondAttribute="trailing" constant="5" id="qP0-Wf-ThD"/>
+                            <constraint firstItem="yUn-mj-I6D" firstAttribute="leading" secondItem="XsS-hr-Es2" secondAttribute="trailing" id="pwW-hk-wDL"/>
                             <constraint firstItem="2S1-HP-aab" firstAttribute="leading" secondItem="Gss-Ub-Fnl" secondAttribute="leading" constant="5" id="v9i-Cd-x0F"/>
                         </constraints>
                     </view>
@@ -127,6 +149,15 @@
                 </constraints>
             </tableViewCellContentView>
             <animations/>
+            <connections>
+                <outlet property="imgvArtwork" destination="2S1-HP-aab" id="e2D-ln-2cM"/>
+                <outlet property="imgvIcon" destination="fBC-Hr-QUk" id="rey-uM-vw0"/>
+                <outlet property="lblAlbumDesc" destination="8I6-hc-4mF" id="3H6-IF-22h"/>
+                <outlet property="lblAlbumInfo" destination="Flu-ft-5qb" id="sVj-tp-ckK"/>
+                <outlet property="lblAlbumName" destination="ofK-a5-jmX" id="j6J-7d-11M"/>
+                <outlet property="line" destination="H61-yK-3gD" id="rGS-Nv-BC4"/>
+                <outlet property="vMusicEq" destination="YBW-Tt-qLV" id="YDx-iP-HsU"/>
+            </connections>
             <point key="canvasLocation" x="443" y="323"/>
         </tableViewCell>
     </objects>

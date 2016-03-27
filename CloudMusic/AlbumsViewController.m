@@ -22,7 +22,7 @@
 @property (nonatomic, strong) PCSEQVisualizer *musicEq;
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
 
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSMutableArray *albumsArray;
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 @property (nonatomic, weak) IBOutlet UITableView *tblSearchResult;
@@ -36,68 +36,27 @@
 
 @implementation AlbumsViewController
 
-- (NSFetchedResultsController *)fetchedResultsController
+- (NSMutableArray *)albumsArray
 {
-    if (!_fetchedResultsController)
-    {
-        NSEntityDescription *itemEntity = [[DataManagement sharedInstance] itemEntity];
-        
-        NSAttributeDescription *iAlbumId = [itemEntity.attributesByName objectForKey:@"iAlbumId"];
-        NSAttributeDescription *sAlbumName = [itemEntity.attributesByName objectForKey:@"sAlbumName"];
-        NSAttributeDescription *sArtistName = [itemEntity.attributesByName objectForKey:@"sAlbumArtistName"];
-        NSAttributeDescription *iYear = [itemEntity.attributesByName objectForKey:@"iYear"];
-        
-        NSExpression *listSongId = [NSExpression expressionForKeyPath:@"iSongId"];
-        NSExpression *countExpression = [NSExpression expressionForFunction:@"count:" arguments:@[listSongId]];
-        NSExpressionDescription *numberOfSong = [[NSExpressionDescription alloc] init];
-        [numberOfSong setName: @"numberOfSong"];
-        [numberOfSong setExpression:countExpression];
-        [numberOfSong setExpressionResultType:NSInteger32AttributeType];
-        
-        NSExpression *listDuration = [NSExpression expressionForKeyPath:@"fDuration"];
-        NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:@[listDuration]];
-        NSExpressionDescription *duration = [[NSExpressionDescription alloc] init];
-        [duration setName: @"duration"];
-        [duration setExpression:sumExpression];
-        [duration setExpressionResultType:NSInteger32AttributeType];
-        
-        NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArtworkName"];
-        NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
-        NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
-        [artwork setName: @"artwork"];
-        [artwork setExpression:maxExpression];
-        [artwork setExpressionResultType:NSStringAttributeType];
-        
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        [request setEntity:itemEntity];
-        [request setPropertiesToFetch:@[iAlbumId,sAlbumName,sArtistName,iYear,numberOfSong,duration,artwork]];
-        [request setPropertiesToGroupBy:@[iAlbumId,sAlbumName,sArtistName,iYear]];
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sAlbumNameIndex" ascending:YES];
-        [request setSortDescriptors:@[sortDescriptor]];
-        [request setResultType:NSDictionaryResultType];
-        
-        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
-
-        NSArray *fetchedObjects = [[[DataManagement sharedInstance] managedObjectContext] executeFetchRequest:request error:nil];
-        NSLog(@"%lu",(unsigned long)fetchedObjects.count);
-        NSLog(@"%@",fetchedObjects);
+    if (!_albumsArray) {
+        _albumsArray = [[NSMutableArray alloc] init];
     }
-    return _fetchedResultsController;
+    return _albumsArray;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self setupUI];
-    [self performFetch];
+    [self getData];
 }
 
-- (void)performFetch
+- (void)getData
 {
-    NSError *error = nil;
-    if (![self.fetchedResultsController performFetch:&error]) {
-        NSLog(@"Fetch error: %@", error);
-    }
+    [self.albumsArray removeAllObjects];
+    [self.albumsArray addObjectsFromArray:[[DataManagement sharedInstance] getListAlbumFilterByName:nil]];;
+    [self.tblList reloadData];
+    [self setupFooterView];
 }
 
 - (void)setupUI
@@ -232,15 +191,14 @@
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return [[self.fetchedResultsController sections] count];
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
+    if (tableView == self.tblSearchResult) {
+        return 0;
+    }
+    else {
+        return self.albumsArray.count;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -251,6 +209,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AlbumsCell *cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
+    [cell setLineHidden:(indexPath.row == self.albumsArray.count - 1)];
     
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
@@ -258,8 +217,8 @@
 
 - (void)configureCell:(AlbumsCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    id item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [item objectForKey:@"sAlbumName"];
+    AlbumObj *album = self.albumsArray[indexPath.row];
+    [cell config:album];
 }
 
 - (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
@@ -297,13 +256,13 @@
 - (void)setupFooterView
 {
     NSString *sContent = nil;
-    int itemCount = (int)[self.fetchedResultsController.fetchedObjects count];
+    int itemCount = (int)self.albumsArray.count;
     
     if (itemCount <= 1) {
-        sContent = [NSString stringWithFormat:@"%d Song",itemCount];
+        sContent = [NSString stringWithFormat:@"%d Album",itemCount];
     }
     else {
-        sContent = [NSString stringWithFormat:@"%d Songs",itemCount];
+        sContent = [NSString stringWithFormat:@"%d Albums",itemCount];
     }
     
     [self.footerView setContent:sContent];

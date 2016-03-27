@@ -223,7 +223,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (tableView == self.tblSearchResult) {
-        return 1;
+        return 0;
     }
     else {
         return [[self.fetchedResultsController sections] count];
@@ -251,7 +251,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.tblSearchResult) {
-        return 40;
+        return 0;
     }
     else {
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
@@ -270,15 +270,15 @@
     cell.delegate = self;
     cell.allowsMultipleSwipe = NO;
     
-//    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
-//    [cell setLineHidden:(indexPath.row == [sectionInfo numberOfObjects] - 1)];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
+    [cell setLineHidden:(indexPath.row == [sectionInfo numberOfObjects] - 1)];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
 - (void)configureCell:(SongsCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Item *item = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell configWithItem:item];
 }
 

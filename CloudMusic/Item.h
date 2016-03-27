@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Item : NSManagedObject
 
 @property (nonatomic, strong) NSURL *sLocalArtworkUrl;
-@property (nonatomic, strong) NSAttributedString *sSongDesc;;
+@property (nonatomic, strong) NSAttributedString *sSongDesc;
 
 @property (nonatomic, assign) BOOL isPlaying;
 

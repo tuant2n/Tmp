@@ -9,7 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "MGSwipeTableCell.h"
 
+@class AlbumObj;
+
 @interface AlbumsCell : MGSwipeTableCell
+
+- (void)config:(AlbumObj *)item;
+- (void)setLineHidden:(BOOL)isHidden;
+- (void)isPlaying:(BOOL)isPlaying;
 
 + (CGFloat)height;
 

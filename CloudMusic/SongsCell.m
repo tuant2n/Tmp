@@ -25,11 +25,12 @@
 
 @property (nonatomic, weak) IBOutlet UIImageView *imgvArtwork;
 @property (nonatomic, weak) IBOutlet UILabel *lblSongName, *lblSongDesc, *lblDuration;
+
 @property (nonatomic, weak) IBOutlet UIView *vMusicEq;
+@property (nonatomic, strong) VYPlayIndicator *musicEq;
+
 @property (nonatomic, weak) IBOutlet UIImageView *imgvIcon;
 @property (nonatomic, weak) IBOutlet UIView *line;
-
-@property (nonatomic, strong) VYPlayIndicator *musicEq;
 
 @end
 

@@ -7,7 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AlbumsViewController">
             <connections>
+                <outlet property="disableView" destination="b3P-VK-8Uh" id="XHA-5H-m14"/>
+                <outlet property="keyboardLayout" destination="Fvz-Qx-nQa" id="oE5-li-wq8"/>
                 <outlet property="tblList" destination="mVb-Fx-9fB" id="Orv-8C-QUU"/>
+                <outlet property="tblSearchResult" destination="isi-3y-voZ" id="0v8-QT-2aW"/>
                 <outlet property="view" destination="iN0-l3-epB" id="TtT-O2-Cc9"/>
             </connections>
         </placeholder>
@@ -25,13 +28,31 @@
                         <outlet property="delegate" destination="-1" id="8XE-ZW-qWe"/>
                     </connections>
                 </tableView>
+                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="isi-3y-voZ" userLabel="tblSearchResult">
+                    <rect key="frame" x="0.0" y="50" width="320" height="366"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b3P-VK-8Uh" userLabel="disableView">
+                    <rect key="frame" x="0.0" y="50" width="320" height="366"/>
+                    <animations/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="b3P-VK-8Uh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="BAa-vY-iDG"/>
+                <constraint firstAttribute="bottom" secondItem="isi-3y-voZ" secondAttribute="bottom" id="Fvz-Qx-nQa"/>
+                <constraint firstItem="isi-3y-voZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="KVq-4h-WW2"/>
+                <constraint firstAttribute="trailing" secondItem="isi-3y-voZ" secondAttribute="trailing" id="N7M-x0-Jth"/>
                 <constraint firstAttribute="trailing" secondItem="mVb-Fx-9fB" secondAttribute="trailing" id="PSW-i0-Brb"/>
+                <constraint firstAttribute="trailing" secondItem="b3P-VK-8Uh" secondAttribute="trailing" id="UTs-aq-DVa"/>
                 <constraint firstItem="mVb-Fx-9fB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="UVF-D8-Ur2"/>
+                <constraint firstAttribute="bottom" secondItem="b3P-VK-8Uh" secondAttribute="bottom" id="kvQ-kn-w6h"/>
+                <constraint firstItem="b3P-VK-8Uh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="nNu-EX-jGR"/>
                 <constraint firstAttribute="bottom" secondItem="mVb-Fx-9fB" secondAttribute="bottom" id="orC-bH-Bsg"/>
+                <constraint firstItem="isi-3y-voZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="pvI-h4-a3k"/>
                 <constraint firstItem="mVb-Fx-9fB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="wIA-Ua-8Ui"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>

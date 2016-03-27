@@ -97,6 +97,144 @@ static DataManagement *_sharedInstance = nil;
     [self.coreDataController save];
 }
 
+- (NSArray *)getListAlbumFilterByName:(NSString *)sName
+{
+    NSEntityDescription *itemEntity = [self itemEntity];
+    
+    NSAttributeDescription *iAlbumId = [itemEntity.attributesByName objectForKey:@"iAlbumId"];
+    NSAttributeDescription *sAlbumName = [itemEntity.attributesByName objectForKey:@"sAlbumName"];
+    NSAttributeDescription *sArtistName = [itemEntity.attributesByName objectForKey:@"sAlbumArtistName"];
+    NSAttributeDescription *iYear = [itemEntity.attributesByName objectForKey:@"iYear"];
+    
+    NSExpression *listSongId = [NSExpression expressionForKeyPath:@"iSongId"];
+    NSExpression *countExpression = [NSExpression expressionForFunction:@"count:" arguments:@[listSongId]];
+    NSExpressionDescription *numberOfSong = [[NSExpressionDescription alloc] init];
+    [numberOfSong setName: @"numberOfSong"];
+    [numberOfSong setExpression:countExpression];
+    [numberOfSong setExpressionResultType:NSInteger32AttributeType];
+    
+    NSExpression *listDuration = [NSExpression expressionForKeyPath:@"fDuration"];
+    NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:@[listDuration]];
+    NSExpressionDescription *duration = [[NSExpressionDescription alloc] init];
+    [duration setName: @"fDuration"];
+    [duration setExpression:sumExpression];
+    [duration setExpressionResultType:NSInteger32AttributeType];
+    
+    NSExpression *listCloud = [NSExpression expressionForKeyPath:@"isCloud"];
+    NSExpression *cloudExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listCloud]];
+    NSExpressionDescription *cloud = [[NSExpressionDescription alloc] init];
+    [cloud setName: @"isCloud"];
+    [cloud setExpression:cloudExpression];
+    [cloud setExpressionResultType:NSInteger32AttributeType];
+    
+    NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArtworkName"];
+    NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
+    NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
+    [artwork setName: @"sArtworkName"];
+    [artwork setExpression:maxExpression];
+    [artwork setExpressionResultType:NSStringAttributeType];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:itemEntity];
+    [request setPropertiesToFetch:@[iAlbumId,sAlbumName,sArtistName,iYear,numberOfSong,duration,artwork]];
+    [request setPropertiesToGroupBy:@[iAlbumId,sAlbumName,sArtistName,iYear]];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sAlbumNameIndex" ascending:YES];
+    [request setSortDescriptors:@[sortDescriptor]];
+    [request setResultType:NSDictionaryResultType];
+
+    NSArray *results = nil;
+    
+    NSArray *fetchedObjects = [[self managedObjectContext] executeFetchRequest:request error:nil];
+    if (sName) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sAlbumName like %@",sName];
+        results = [fetchedObjects filteredArrayUsingPredicate:predicate];
+    }
+    else {
+        results = fetchedObjects;
+    }
+    
+    NSMutableArray *albumsArray = [NSMutableArray new];
+    for (NSDictionary *albumInfo in results) {
+        AlbumObj *albumObj = [[AlbumObj alloc] initWithInfo:albumInfo];
+        if (!albumObj) {
+            continue;
+        }
+        [albumsArray addObject:albumObj];
+    }
+    
+    return albumsArray;
+}
+
+- (NSArray *)getListArtistFilterByName:(NSString *)sName
+{
+    NSEntityDescription *itemEntity = [self itemEntity];
+    
+    NSAttributeDescription *iAlbumId = [itemEntity.attributesByName objectForKey:@"iAlbumId"];
+    NSAttributeDescription *sAlbumName = [itemEntity.attributesByName objectForKey:@"sAlbumName"];
+    NSAttributeDescription *sArtistName = [itemEntity.attributesByName objectForKey:@"sAlbumArtistName"];
+    NSAttributeDescription *iYear = [itemEntity.attributesByName objectForKey:@"iYear"];
+    
+    NSExpression *listSongId = [NSExpression expressionForKeyPath:@"iSongId"];
+    NSExpression *countExpression = [NSExpression expressionForFunction:@"count:" arguments:@[listSongId]];
+    NSExpressionDescription *numberOfSong = [[NSExpressionDescription alloc] init];
+    [numberOfSong setName: @"numberOfSong"];
+    [numberOfSong setExpression:countExpression];
+    [numberOfSong setExpressionResultType:NSInteger32AttributeType];
+    
+    NSExpression *listDuration = [NSExpression expressionForKeyPath:@"fDuration"];
+    NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:@[listDuration]];
+    NSExpressionDescription *duration = [[NSExpressionDescription alloc] init];
+    [duration setName: @"fDuration"];
+    [duration setExpression:sumExpression];
+    [duration setExpressionResultType:NSInteger32AttributeType];
+    
+    NSExpression *listCloud = [NSExpression expressionForKeyPath:@"isCloud"];
+    NSExpression *cloudExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listCloud]];
+    NSExpressionDescription *cloud = [[NSExpressionDescription alloc] init];
+    [cloud setName: @"isCloud"];
+    [cloud setExpression:cloudExpression];
+    [cloud setExpressionResultType:NSInteger32AttributeType];
+    
+    NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArtworkName"];
+    NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
+    NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
+    [artwork setName: @"sArtworkName"];
+    [artwork setExpression:maxExpression];
+    [artwork setExpressionResultType:NSStringAttributeType];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:itemEntity];
+    [request setPropertiesToFetch:@[iAlbumId,sAlbumName,sArtistName,iYear,numberOfSong,duration,artwork]];
+    [request setPropertiesToGroupBy:@[iAlbumId,sAlbumName,sArtistName,iYear]];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sAlbumNameIndex" ascending:YES];
+    [request setSortDescriptors:@[sortDescriptor]];
+    [request setResultType:NSDictionaryResultType];
+    
+    NSArray *results = nil;
+    
+    NSArray *fetchedObjects = [[self managedObjectContext] executeFetchRequest:request error:nil];
+    if (sName) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sAlbumName like %@",sName];
+        results = [fetchedObjects filteredArrayUsingPredicate:predicate];
+    }
+    else {
+        results = fetchedObjects;
+    }
+    
+    NSMutableArray *albumsArray = [NSMutableArray new];
+    for (NSDictionary *albumInfo in results) {
+        AlbumObj *albumObj = [[AlbumObj alloc] initWithInfo:albumInfo];
+        if (!albumObj) {
+            continue;
+        }
+        [albumsArray addObject:albumObj];
+    }
+    
+    return albumsArray;
+}
+
 #pragma mark - iTunes Sync
 
 - (void)setLastTimeAppSync:(long)lTime

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -16,6 +16,7 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yba-fG-j0Z" userLabel="lblTitle">
                         <rect key="frame" x="10" y="0.0" width="265" height="39"/>
+                        <animations/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -23,11 +24,13 @@
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="edit-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="eIH-vd-sdO" userLabel="imgvIcon">
                         <rect key="frame" x="275" y="0.0" width="30" height="39"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="ajf-P3-uZe"/>
                         </constraints>
                     </imageView>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="Yba-fG-j0Z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="0Zz-sr-8VS"/>
                     <constraint firstAttribute="bottom" secondItem="Yba-fG-j0Z" secondAttribute="bottom" id="BLc-n3-k2x"/>
@@ -38,6 +41,7 @@
                     <constraint firstItem="Yba-fG-j0Z" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="mjV-FD-Lde"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="imgvIcon" destination="eIH-vd-sdO" id="qAo-eq-BDQ"/>
                 <outlet property="lblTitle" destination="Yba-fG-j0Z" id="fAt-Nu-mnf"/>
@@ -45,6 +49,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="edit-icon.png" width="13" height="13"/>
+        <image name="edit-icon.png" width="15" height="15"/>
     </resources>
 </document>

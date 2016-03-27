@@ -13,7 +13,7 @@
 
 #import "HeaderUtilObj.h"
 
-#define SEARCHBAR_HEIGHT 50.0
+#define SEARCHBAR_HEIGHT 51.0
 
 @interface TableHeaderView()
 {
@@ -21,6 +21,8 @@
 }
 
 @property (nonatomic, weak) IBOutlet UITableView *tblListUtils;
+@property (nonatomic, weak) IBOutlet UIView *line;
+
 @property (nonatomic, strong) NSMutableArray *arrListUtils;
 
 @end
@@ -43,6 +45,8 @@
 
 - (void)setupUI
 {
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
+    
     [self.searchBar setBackgroundImage:[UIImage new]];
     [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"textField-background"] forState:UIControlStateNormal];
     self.searchBar.opaque = NO;

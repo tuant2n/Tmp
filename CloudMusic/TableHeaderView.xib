@@ -8,7 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="qhS-WQ-ePv" customClass="TableHeaderView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="205"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="VOb-bC-B1b" userLabel="search Bar">
@@ -20,7 +20,7 @@
                     <textInputTraits key="textInputTraits"/>
                 </searchBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jam-1h-pDg" userLabel="tblListUtils">
-                    <rect key="frame" x="0.0" y="50" width="320" height="100"/>
+                    <rect key="frame" x="0.0" y="50" width="320" height="154"/>
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -28,6 +28,14 @@
                         <outlet property="delegate" destination="qhS-WQ-ePv" id="oSp-qY-Qzv"/>
                     </connections>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CjH-va-o3I" userLabel="line">
+                    <rect key="frame" x="0.0" y="204" width="320" height="1"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="zKD-iI-sMf"/>
+                    </constraints>
+                </view>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -35,18 +43,28 @@
                 <constraint firstAttribute="trailing" secondItem="jam-1h-pDg" secondAttribute="trailing" id="0Iu-D4-lnF"/>
                 <constraint firstItem="VOb-bC-B1b" firstAttribute="top" secondItem="qhS-WQ-ePv" secondAttribute="top" id="4p6-Wu-bIQ"/>
                 <constraint firstItem="jam-1h-pDg" firstAttribute="leading" secondItem="qhS-WQ-ePv" secondAttribute="leading" id="581-Yx-76p"/>
+                <constraint firstItem="CjH-va-o3I" firstAttribute="top" secondItem="jam-1h-pDg" secondAttribute="bottom" id="G0J-4J-ahI"/>
                 <constraint firstItem="jam-1h-pDg" firstAttribute="top" secondItem="VOb-bC-B1b" secondAttribute="bottom" id="UsO-UF-QII"/>
                 <constraint firstItem="VOb-bC-B1b" firstAttribute="leading" secondItem="qhS-WQ-ePv" secondAttribute="leading" id="gPE-p4-5rG"/>
                 <constraint firstAttribute="trailing" secondItem="VOb-bC-B1b" secondAttribute="trailing" id="jtS-JS-hQS"/>
+                <constraint firstAttribute="trailing" secondItem="CjH-va-o3I" secondAttribute="trailing" id="njY-fw-oJf"/>
+                <constraint firstAttribute="bottom" secondItem="CjH-va-o3I" secondAttribute="bottom" id="t82-f9-BXQ"/>
+                <constraint firstItem="CjH-va-o3I" firstAttribute="leading" secondItem="qhS-WQ-ePv" secondAttribute="leading" id="yEL-p6-Y3W"/>
                 <constraint firstAttribute="bottom" secondItem="jam-1h-pDg" secondAttribute="bottom" id="zc0-kM-sCI"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="zc0-kM-sCI"/>
+                </mask>
+            </variation>
             <connections>
+                <outlet property="line" destination="CjH-va-o3I" id="rej-hu-Iux"/>
                 <outlet property="searchBar" destination="VOb-bC-B1b" id="BR7-0A-3ux"/>
                 <outlet property="tblListUtils" destination="jam-1h-pDg" id="ieX-99-S7v"/>
             </connections>
-            <point key="canvasLocation" x="361" y="157"/>
+            <point key="canvasLocation" x="361" y="184.5"/>
         </view>
     </objects>
 </document>
