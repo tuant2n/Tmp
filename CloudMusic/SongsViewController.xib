@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SongsViewController">
             <connections>
-                <outlet property="loadingView" destination="M51-Vc-ElC" id="XO6-fv-f8t"/>
+                <outlet property="disableView" destination="SQq-RG-mNI" id="YeA-my-9AW"/>
+                <outlet property="keyboardLayout" destination="X5g-t3-kfg" id="8fv-6M-ARy"/>
                 <outlet property="tblList" destination="zBD-R3-AIf" id="k6e-rm-sWl"/>
+                <outlet property="tblSearchResult" destination="Nuo-me-huP" id="j2e-vj-a4y"/>
                 <outlet property="view" destination="iN0-l3-epB" id="FnM-xc-AHr"/>
             </connections>
         </placeholder>
@@ -19,26 +21,43 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zBD-R3-AIf" userLabel="tblList">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="8ml-uI-y13"/>
                         <outlet property="delegate" destination="-1" id="vWN-ub-owE"/>
                     </connections>
                 </tableView>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="M51-Vc-ElC" userLabel="loadingView">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
-                </activityIndicatorView>
+                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Nuo-me-huP" userLabel="tblSearchResult">
+                    <rect key="frame" x="0.0" y="50" width="320" height="366"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Dxe-jd-UOd"/>
+                        <outlet property="delegate" destination="-1" id="hWc-Z3-qn1"/>
+                    </connections>
+                </tableView>
+                <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SQq-RG-mNI" userLabel="disableView">
+                    <rect key="frame" x="0.0" y="50" width="320" height="366"/>
+                    <animations/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="M51-Vc-ElC" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="59B-96-cy6"/>
+                <constraint firstItem="SQq-RG-mNI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="10G-f5-91h"/>
                 <constraint firstItem="zBD-R3-AIf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="6Hv-tz-VEY"/>
+                <constraint firstItem="Nuo-me-huP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="KGh-gp-Zki"/>
+                <constraint firstAttribute="bottom" secondItem="SQq-RG-mNI" secondAttribute="bottom" id="Kv2-05-Rb5"/>
+                <constraint firstAttribute="trailing" secondItem="SQq-RG-mNI" secondAttribute="trailing" id="LtR-LX-xdL"/>
+                <constraint firstItem="Nuo-me-huP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="OtA-N1-XEZ"/>
+                <constraint firstAttribute="trailing" secondItem="Nuo-me-huP" secondAttribute="trailing" id="QKo-Nj-b73"/>
                 <constraint firstAttribute="bottom" secondItem="zBD-R3-AIf" secondAttribute="bottom" id="Vbg-Ot-gU5"/>
-                <constraint firstAttribute="trailing" secondItem="M51-Vc-ElC" secondAttribute="trailing" id="Zw7-ou-H8N"/>
+                <constraint firstAttribute="bottom" secondItem="Nuo-me-huP" secondAttribute="bottom" id="X5g-t3-kfg"/>
                 <constraint firstItem="zBD-R3-AIf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bRm-Bb-faK"/>
-                <constraint firstItem="M51-Vc-ElC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hpL-qD-Zcc"/>
-                <constraint firstAttribute="bottom" secondItem="M51-Vc-ElC" secondAttribute="bottom" id="iQi-bp-ydL"/>
                 <constraint firstAttribute="trailing" secondItem="zBD-R3-AIf" secondAttribute="trailing" id="jRs-or-s8e"/>
+                <constraint firstItem="SQq-RG-mNI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="jsD-oj-Kij"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>

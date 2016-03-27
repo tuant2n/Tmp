@@ -13,9 +13,11 @@
 
 #import "HeaderUtilObj.h"
 
+#define SEARCHBAR_HEIGHT 50.0
+
 @interface TableHeaderView()
 {
-    
+    float height;
 }
 
 @property (nonatomic, weak) IBOutlet UITableView *tblListUtils;
@@ -41,11 +43,12 @@
 
 - (void)setupUI
 {
-    [self.searchBar setBackgroundImage:[[UIImage alloc] init]];
+    [self.searchBar setBackgroundImage:[UIImage new]];
     [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"textField-background"] forState:UIControlStateNormal];
     self.searchBar.opaque = NO;
     self.searchBar.translucent = NO;
 
+    [self.tblListUtils setScrollEnabled:NO];
     [self.tblListUtils setTableFooterView:[UIView new]];
     [self.tblListUtils registerNib:[UINib nibWithNibName:@"TableHeaderCell" bundle:nil] forCellReuseIdentifier:@"TableHeaderCellId"];
 }
@@ -61,7 +64,19 @@
     [self.arrListUtils addObject:shuffle];
 
     int numberOfRow = (int)self.arrListUtils.count;
-    [self setHeight:numberOfRow * [TableHeaderCell height] + 50.0];
+    height = numberOfRow * [TableHeaderCell height] + SEARCHBAR_HEIGHT;
+    
+    [self setActiveSearchBar:NO];
+}
+
+- (void)setActiveSearchBar:(BOOL)isActive
+{
+    if (!isActive) {
+        [self setHeight:height];
+    }
+    else {
+        [self setHeight:SEARCHBAR_HEIGHT];
+    }
 }
 
 - (void)setHeight:(float)fHeight

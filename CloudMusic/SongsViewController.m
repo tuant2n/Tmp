@@ -15,15 +15,9 @@
 #import "SongsCell.h"
 #import "SongHeaderTitle.h"
 
-#import "TableFooterView.h"
-#import "TableHeaderView.h"
-
-#import "PCSEQVisualizer.h"
-#import "MGSwipeButton.h"
-
-@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UISearchDisplayDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
 {
-
+    BOOL isActiveSearch;
 }
 
 @property (nonatomic, strong) PCSEQVisualizer *musicEq;
@@ -31,10 +25,10 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
-@property (nonatomic) UISearchDisplayController *searchDisplay;
-
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingView;
+@property (nonatomic, weak) IBOutlet UITableView *tblSearchResult;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *keyboardLayout;
+@property (nonatomic, weak) IBOutlet UIView *disableView;
 
 @property (nonatomic, strong) TableFooterView *footerView;
 @property (nonatomic, strong) TableHeaderView *headerView;
@@ -49,7 +43,6 @@
     {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
         request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"sSongNameIndex" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
-        
         _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:@"sSongFirstLetter" cacheName:nil];
         _fetchedResultsController.delegate = self;
         
@@ -71,15 +64,20 @@
         NSLog(@"Fetch error: %@", error);
     }
     else {
+        [self.tblList reloadData];
         [self setupFooterView];
     }
-    [self setShowLoadingView:NO];
 }
 
 - (void)setupUI
 {
     self.title = @"Songs";
     self.navigationItem.rightBarButtonItem = self.barMusicEq;
+    
+    self.disableView.backgroundColor = [UIColor blackColor];
+    self.disableView.alpha = 0.0;
+    self.disableView.hidden = YES;
+    [self.disableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSearch)]];
     
     self.tblList.sectionIndexColor = [Utils colorWithRGBHex:0x006bd5];
     self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
@@ -88,33 +86,33 @@
     [self.tblList registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
     [self.tblList registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
 
+    [self.tblSearchResult registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
+    [self.tblSearchResult registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
+    
     [self setupHeaderBar];
     [self.tblList setTableFooterView:self.footerView];
-    
-    [self setShowLoadingView:YES];
 }
 
 - (void)setupHeaderBar
 {
     [self.headerView setupForSongsVC];
-    
-//    self.searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:self.headerView.searchBar contentsController:self];
-//    self.searchDisplay.searchResultsDataSource = self;
-//    self.searchDisplay.searchResultsDelegate = self;
-//    self.searchDisplay.delegate = self;
-    
     self.headerView.searchBar.delegate = self;
+
+    self.keyboardLayout.priority = 750;
+    self.tblSearchResult.tableFooterView = nil;
     
     [self.tblList setTableHeaderView:self.headerView];
 }
 
 #pragma mark - UISearchBarDelegate
 
+- (void)closeSearch
+{
+    [self searchBar:self.headerView.searchBar activate:NO];
+}
+     
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     [self searchBar:searchBar activate:YES];
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
@@ -122,87 +120,87 @@
     [self searchBar:searchBar activate:NO];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    // You'll probably want to do this on another thread
-    // SomeService is just a dummy class representing some
-    // api that you are using to do the search
-//    NSArray *results = [SomeService doSearch:searchBar.text];
-//    
-//    [searchBar setShowsCancelButton:NO animated:YES];
-//    [searchBar resignFirstResponder];
-//    self.theTableView.allowsSelection = YES;
-//    self.theTableView.scrollEnabled = YES;
-//    
-//    [self.tableData removeAllObjects];
-//    [self.tableData addObjectsFromArray:results];
-//    [self.theTableView reloadData];
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar activate:(BOOL) active
+- (void)searchBar:(UISearchBar *)searchBar activate:(BOOL)isActive
 {
-    self.tblList.allowsSelection = !active;
-    self.tblList.scrollEnabled = !active;
+    isActiveSearch = isActive;
     
-    if (!active) {
-//        [disableViewOverlay removeFromSuperview];
-        [searchBar resignFirstResponder];
-        [self.headerView setHeight:150.0];
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.headerView setActiveSearchBar:isActiveSearch];
+        [self.tblList setTableHeaderView:self.headerView];
+    } completion:nil];
+    
+    self.tblList.allowsSelection = !isActiveSearch;
+    self.tblList.scrollEnabled = !isActiveSearch;
+
+    if (isActiveSearch) {
+        [self showOverlayDisable:YES];
         
+        self.tblSearchResult.delegate = self;
+        self.tblSearchResult.dataSource = self;
     }
     else {
-        [self.headerView setHeight:100.0];
-//        self.disableViewOverlay.alpha = 0;
-//        [self.view addSubview:self.disableViewOverlay];
-//        
-//        [UIView beginAnimations:@"FadeIn" context:nil];
-//        [UIView setAnimationDuration:0.5];
-//        self.disableViewOverlay.alpha = 0.6;
-//        [UIView commitAnimations];
-//        
-//        // probably not needed if you have a details view since you
-//        // will go there on selection
-//        NSIndexPath *selected = [self.theTableView
-//                                 indexPathForSelectedRow];
-//        if (selected) {
-//            [self.theTableView deselectRowAtIndexPath:selected
-//                                             animated:NO];
-//        }
+        [self showOverlayDisable:NO];
+        [searchBar resignFirstResponder];
+        
+        self.tblSearchResult.delegate = nil;
+        self.tblSearchResult.dataSource = nil;
     }
     
-    self.tblList.tableHeaderView = self.headerView;
-    [searchBar setShowsCancelButton:active animated:YES];
+    [self.tblList reloadSectionIndexTitles];
+    [searchBar setShowsCancelButton:isActiveSearch animated:YES];
 }
 
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+- (void)subscribeToKeyboard {
+    [self an_subscribeKeyboardWithAnimations:^(CGRect keyboardRect, NSTimeInterval duration, BOOL isShowing) {
+        if (isShowing) {
+            self.keyboardLayout.constant = CGRectGetHeight(keyboardRect);
+        } else {
+            self.keyboardLayout.constant = [[[self tabBarController] tabBar] bounds].size.height;
+        }
+        [self.tblSearchResult layoutIfNeeded];
+    } completion:nil];
+}
+
+- (void)showOverlayDisable:(BOOL)isShow
 {
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    if (isShow) {
+        self.disableView.hidden = NO;
+        self.tblSearchResult.alpha = 0.0;
+        self.tblSearchResult.hidden = NO;
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.disableView.alpha = 0.5;
+        } completion:nil];
+    }
+    else {
+        self.disableView.alpha = 0.0;
+        self.disableView.hidden = YES;
+        self.tblSearchResult.hidden = YES;
+    }
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if (searchText.length > 0) {
+        self.disableView.hidden = YES;
+        self.tblSearchResult.alpha = 1.0;
+        self.tblSearchResult.hidden = NO;
+    }
+    else {
+        self.disableView.hidden = NO;
+        self.tblSearchResult.alpha = 0.0;
+        self.tblSearchResult.hidden = YES;
+    }
     
-    self.searchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
-    self.searchDisplayController.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
-}
-
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
-{
-
-}
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-{
-
-    return YES;
+    [self.tblSearchResult reloadData];
 }
 
 #pragma mark - UITableViewDataSource
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    NSMutableArray *arrList = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController sectionIndexTitles]];
-    [arrList insertObject:UITableViewIndexSearch atIndex:0];
-    return arrList;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
@@ -210,9 +208,26 @@
     return (index - 1);
 }
 
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    if (tableView == self.tblSearchResult || isActiveSearch) {
+        return nil;
+    }
+    else {
+        NSMutableArray *arrList = [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController sectionIndexTitles]];
+        [arrList insertObject:UITableViewIndexSearch atIndex:0];
+        return arrList;
+    }
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[self.fetchedResultsController sections] count];
+    if (tableView == self.tblSearchResult) {
+        return 1;
+    }
+    else {
+        return [[self.fetchedResultsController sections] count];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -235,8 +250,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
+    if (tableView == self.tblSearchResult) {
+        return 40;
+    }
+    else {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+        return [sectionInfo numberOfObjects];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -250,15 +270,15 @@
     cell.delegate = self;
     cell.allowsMultipleSwipe = NO;
     
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
-    [cell setLineHidden:(indexPath.row == [sectionInfo numberOfObjects] - 1)];
+//    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
+//    [cell setLineHidden:(indexPath.row == [sectionInfo numberOfObjects] - 1)];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
 - (void)configureCell:(SongsCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    Item *item = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     [cell configWithItem:item];
 }
 
@@ -369,19 +389,6 @@
     [self.footerView setContent:sContent];
 }
 
-- (void)setShowLoadingView:(BOOL)isShow
-{
-    if (isShow) {
-        [self.loadingView startAnimating];
-    }
-    else {
-        [self.loadingView startAnimating];
-    }
-    
-    self.loadingView.hidden = !isShow;
-    self.tblList.hidden = isShow;
-}
-
 - (TableHeaderView *)headerView
 {
     if (!_headerView) {
@@ -435,6 +442,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self an_unsubscribeKeyboard];
+    [self searchBar:self.headerView.searchBar activate:NO];
     [self.musicEq stopEq:NO];
 }
 
@@ -442,6 +452,7 @@
 {
     [super viewWillAppear:animated];
     
+    [self subscribeToKeyboard];
     [self hideHeaderView];
     
     if ([[GlobalParameter sharedInstance] isPlay]) {
@@ -450,6 +461,10 @@
     else {
         [self.musicEq stopEq:NO];
     }
+}
+
+- (void)dealloc {
+    [self an_unsubscribeKeyboard];
 }
 
 #pragma mark - Method

@@ -14,6 +14,7 @@
 
 - (void)setupForSongsVC;
 
+- (void)setActiveSearchBar:(BOOL)isActive;
 - (void)setHeight:(float)fHeight;
 
 @end

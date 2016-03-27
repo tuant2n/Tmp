@@ -74,7 +74,7 @@
     
     self.lblDuration.text = item.sDuration;
     
-    if (!item.isCloud.boolValue) {
+    if (item.isCloud.boolValue) {
         self.imgvIcon.image = cloudIcon;
         self.leftButtons = @[deleteBtn,addToPlaylistBtn,editBtn];
     }

@@ -71,6 +71,16 @@
 		3C4926F41C9528320065B1DD /* ArtistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926F31C9528320065B1DD /* ArtistsViewController.m */; };
 		3C4926F81C9528460065B1DD /* GenresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926F71C9528460065B1DD /* GenresViewController.m */; };
 		3C4926FC1C952AC40065B1DD /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926FB1C952AC40065B1DD /* SettingsViewController.m */; };
+		3C6DB0D61CA667D200F68D3E /* textField-search.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C6DB0D31CA667D200F68D3E /* textField-search.png */; };
+		3C6DB0D71CA667D200F68D3E /* textField-search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C6DB0D41CA667D200F68D3E /* textField-search@2x.png */; };
+		3C6DB0D81CA667D200F68D3E /* textField-search@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C6DB0D51CA667D200F68D3E /* textField-search@3x.png */; };
+		3C6DB0FA1CA694CE00F68D3E /* UIViewController+KeyboardAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6DB0F91CA694CE00F68D3E /* UIViewController+KeyboardAnimation.m */; };
+		3C6DB0FE1CA6CC1A00F68D3E /* AlbumsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6DB0FC1CA6CC1A00F68D3E /* AlbumsCell.m */; };
+		3C6DB0FF1CA6CC1A00F68D3E /* AlbumsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C6DB0FD1CA6CC1A00F68D3E /* AlbumsCell.xib */; };
+		3C6DB1031CA6D0CE00F68D3E /* list-item-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C6DB1001CA6D0CE00F68D3E /* list-item-icon.png */; };
+		3C6DB1041CA6D0CE00F68D3E /* list-item-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C6DB1011CA6D0CE00F68D3E /* list-item-icon@2x.png */; };
+		3C6DB1051CA6D0CE00F68D3E /* list-item-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C6DB1021CA6D0CE00F68D3E /* list-item-icon@3x.png */; };
+		3C6DB1091CA6DACB00F68D3E /* AlbumObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6DB1081CA6DACB00F68D3E /* AlbumObj.m */; };
 		3C8D3D931CA56F8F008EB7A8 /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8D3D901CA56F8F008EB7A8 /* MGSwipeButton.m */; };
 		3C8D3D941CA56F8F008EB7A8 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8D3D921CA56F8F008EB7A8 /* MGSwipeTableCell.m */; };
 		3C8D3D981CA5774E008EB7A8 /* btnEditSong.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C8D3D951CA5774E008EB7A8 /* btnEditSong.png */; };
@@ -231,6 +241,19 @@
 		3C4926F71C9528460065B1DD /* GenresViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenresViewController.m; sourceTree = "<group>"; };
 		3C4926FA1C952AC40065B1DD /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		3C4926FB1C952AC40065B1DD /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		3C6DB0D31CA667D200F68D3E /* textField-search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "textField-search.png"; sourceTree = "<group>"; };
+		3C6DB0D41CA667D200F68D3E /* textField-search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "textField-search@2x.png"; sourceTree = "<group>"; };
+		3C6DB0D51CA667D200F68D3E /* textField-search@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "textField-search@3x.png"; sourceTree = "<group>"; };
+		3C6DB0F81CA694CE00F68D3E /* UIViewController+KeyboardAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+KeyboardAnimation.h"; sourceTree = "<group>"; };
+		3C6DB0F91CA694CE00F68D3E /* UIViewController+KeyboardAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+KeyboardAnimation.m"; sourceTree = "<group>"; };
+		3C6DB0FB1CA6CC1A00F68D3E /* AlbumsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumsCell.h; sourceTree = "<group>"; };
+		3C6DB0FC1CA6CC1A00F68D3E /* AlbumsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumsCell.m; sourceTree = "<group>"; };
+		3C6DB0FD1CA6CC1A00F68D3E /* AlbumsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumsCell.xib; sourceTree = "<group>"; };
+		3C6DB1001CA6D0CE00F68D3E /* list-item-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-item-icon.png"; sourceTree = "<group>"; };
+		3C6DB1011CA6D0CE00F68D3E /* list-item-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-item-icon@2x.png"; sourceTree = "<group>"; };
+		3C6DB1021CA6D0CE00F68D3E /* list-item-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-item-icon@3x.png"; sourceTree = "<group>"; };
+		3C6DB1071CA6DACB00F68D3E /* AlbumObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumObj.h; sourceTree = "<group>"; };
+		3C6DB1081CA6DACB00F68D3E /* AlbumObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumObj.m; sourceTree = "<group>"; };
 		3C8D3D8F1CA56F8F008EB7A8 /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
 		3C8D3D901CA56F8F008EB7A8 /* MGSwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeButton.m; sourceTree = "<group>"; };
 		3C8D3D911CA56F8F008EB7A8 /* MGSwipeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeTableCell.h; sourceTree = "<group>"; };
@@ -528,6 +551,31 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
+		3C6DB0EF1CA68C3D00F68D3E /* NgKeyboardTracker */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NgKeyboardTracker;
+			sourceTree = "<group>";
+		};
+		3C6DB0F71CA694CE00F68D3E /* UIViewController+KeyboardAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				3C6DB0F81CA694CE00F68D3E /* UIViewController+KeyboardAnimation.h */,
+				3C6DB0F91CA694CE00F68D3E /* UIViewController+KeyboardAnimation.m */,
+			);
+			path = "UIViewController+KeyboardAnimation";
+			sourceTree = "<group>";
+		};
+		3C6DB1061CA6DAB400F68D3E /* Object */ = {
+			isa = PBXGroup;
+			children = (
+				3C6DB1071CA6DACB00F68D3E /* AlbumObj.h */,
+				3C6DB1081CA6DACB00F68D3E /* AlbumObj.m */,
+			);
+			name = Object;
+			sourceTree = "<group>";
+		};
 		3C8D3D8E1CA56F8F008EB7A8 /* MGSwipeTableCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -562,6 +610,9 @@
 		3CB1052B1CA419DB0087D20A /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				3C6DB1001CA6D0CE00F68D3E /* list-item-icon.png */,
+				3C6DB1011CA6D0CE00F68D3E /* list-item-icon@2x.png */,
+				3C6DB1021CA6D0CE00F68D3E /* list-item-icon@3x.png */,
 				3C8D3DA11CA58155008EB7A8 /* btnAddPlaylist.png */,
 				3C8D3DA21CA58155008EB7A8 /* btnAddPlaylist@2x.png */,
 				3C8D3DA31CA58155008EB7A8 /* btnAddPlaylist@3x.png */,
@@ -588,11 +639,9 @@
 			isa = PBXGroup;
 			children = (
 				7B066A681CA4EAEF0078FD53 /* TableHeaderView */,
+				7BC678061CA63D1300FB92AB /* TableFooterView */,
 				3CE4B8C61C983E65004447CD /* MoreTableViewDelegate.h */,
 				3CE4B8C71C983E65004447CD /* MoreTableViewDelegate.m */,
-				7B066A631CA4D8620078FD53 /* TableFooterView.h */,
-				7B066A641CA4D8620078FD53 /* TableFooterView.m */,
-				7B066A661CA4D8720078FD53 /* TableFooterView.xib */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -624,6 +673,9 @@
 		7B066A751CA4F9770078FD53 /* HeaderView */ = {
 			isa = PBXGroup;
 			children = (
+				3C6DB0D31CA667D200F68D3E /* textField-search.png */,
+				3C6DB0D41CA667D200F68D3E /* textField-search@2x.png */,
+				3C6DB0D51CA667D200F68D3E /* textField-search@3x.png */,
 				7B066A851CA50BF00078FD53 /* textField-background.png */,
 				7B066A861CA50BF00078FD53 /* textField-background@2x.png */,
 				7B066A871CA50BF00078FD53 /* textField-background@3x.png */,
@@ -640,6 +692,8 @@
 		7BA4EE9B1C9000A600157284 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3C6DB0F71CA694CE00F68D3E /* UIViewController+KeyboardAnimation */,
+				3C6DB0EF1CA68C3D00F68D3E /* NgKeyboardTracker */,
 				3C8D3D8E1CA56F8F008EB7A8 /* MGSwipeTableCell */,
 				7BF65F5A1CA3FFAF007B198D /* NSAttributedStringFormat */,
 				7BF65F211CA3D782007B198D /* SDWebImage */,
@@ -649,6 +703,16 @@
 				7B007E2A1C924FE90083AA31 /* PCSEQVisualizer */,
 			);
 			path = Libs;
+			sourceTree = "<group>";
+		};
+		7BC678061CA63D1300FB92AB /* TableFooterView */ = {
+			isa = PBXGroup;
+			children = (
+				7B066A631CA4D8620078FD53 /* TableFooterView.h */,
+				7B066A641CA4D8620078FD53 /* TableFooterView.m */,
+				7B066A661CA4D8720078FD53 /* TableFooterView.xib */,
+			);
+			name = TableFooterView;
 			sourceTree = "<group>";
 		};
 		7BD1793F1C9D5122004CD5AF /* HardCoreData */ = {
@@ -705,6 +769,9 @@
 				3C09C6FC1C8C6910004A44E2 /* AlbumsViewController.h */,
 				3C09C6FD1C8C6910004A44E2 /* AlbumsViewController.m */,
 				7B066A571CA4CD730078FD53 /* AlbumsViewController.xib */,
+				3C6DB0FB1CA6CC1A00F68D3E /* AlbumsCell.h */,
+				3C6DB0FC1CA6CC1A00F68D3E /* AlbumsCell.m */,
+				3C6DB0FD1CA6CC1A00F68D3E /* AlbumsCell.xib */,
 			);
 			name = Albums;
 			sourceTree = "<group>";
@@ -740,6 +807,7 @@
 		7BF5C8D61C915E2D00175C6F /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				3C6DB1061CA6DAB400F68D3E /* Object */,
 				3CA4E2A61C9E876F00168B48 /* DataObject */,
 				7BD179471C9D5159004CD5AF /* DataManagement */,
 				3CAC3FEC1C92F573000FFF60 /* GlobalParameter.h */,
@@ -884,6 +952,7 @@
 				3CB105361CA419DB0087D20A /* ipod-item-icon@2x.png in Resources */,
 				3C8D3DA61CA58155008EB7A8 /* btnAddPlaylist@3x.png in Resources */,
 				3C4926C41C93EBCC0065B1DD /* genres.png in Resources */,
+				3C6DB1041CA6D0CE00F68D3E /* list-item-icon@2x.png in Resources */,
 				3C8D3D9F1CA57B5F008EB7A8 /* btnDelete@2x.png in Resources */,
 				3C4926D91C93EBCC0065B1DD /* songs-selected.png in Resources */,
 				3C4926E31C93EE1B0065B1DD /* icn-add-music-normal.png in Resources */,
@@ -906,6 +975,7 @@
 				7B066A7B1CA4F9770078FD53 /* shuffle-icon@3x.png in Resources */,
 				3C4926BB1C93EBCC0065B1DD /* files-selected.png in Resources */,
 				3C4926D41C93EBCC0065B1DD /* settings-selected@2x.png in Resources */,
+				3C6DB0D61CA667D200F68D3E /* textField-search.png in Resources */,
 				3C09C6E91C8C664F004A44E2 /* LaunchScreen.storyboard in Resources */,
 				7B066A8E1CA5152C0078FD53 /* cloud-item-icon.png in Resources */,
 				7B066A621CA4D0190078FD53 /* SettingsViewController.xib in Resources */,
@@ -931,6 +1001,7 @@
 				3C4926B91C93EBCC0065B1DD /* artists@2x.png in Resources */,
 				3C4926DA1C93EBCC0065B1DD /* songs-selected@2x.png in Resources */,
 				3CB105351CA419DB0087D20A /* ipod-item-icon.png in Resources */,
+				3C6DB1031CA6D0CE00F68D3E /* list-item-icon.png in Resources */,
 				7BF65F1C1CA3C665007B198D /* SongHeaderTitle.xib in Resources */,
 				3C4926CC1C93EBCC0065B1DD /* more@3x.png in Resources */,
 				7B066A581CA4CD730078FD53 /* AlbumsViewController.xib in Resources */,
@@ -941,9 +1012,12 @@
 				3C4926AF1C93EBCC0065B1DD /* albums-selected.png in Resources */,
 				7B066A671CA4D8720078FD53 /* TableFooterView.xib in Resources */,
 				3C4926CE1C93EBCC0065B1DD /* playlists-selected@2x.png in Resources */,
+				3C6DB1051CA6D0CE00F68D3E /* list-item-icon@3x.png in Resources */,
 				7B066A5E1CA4CF490078FD53 /* ArtistsViewController.xib in Resources */,
 				3CB105321CA419DB0087D20A /* filetype_audio.png in Resources */,
+				3C6DB0D81CA667D200F68D3E /* textField-search@3x.png in Resources */,
 				7B066A7F1CA4FAA20078FD53 /* edit-icon.png in Resources */,
+				3C6DB0FF1CA6CC1A00F68D3E /* AlbumsCell.xib in Resources */,
 				3C4926CF1C93EBCC0065B1DD /* playlists-selected@3x.png in Resources */,
 				3C4926BD1C93EBCC0065B1DD /* files-selected@3x.png in Resources */,
 				3C4926DE1C93EBCC0065B1DD /* songs@3x.png in Resources */,
@@ -968,6 +1042,7 @@
 				7B066A801CA4FAA20078FD53 /* edit-icon@2x.png in Resources */,
 				3C4926BA1C93EBCC0065B1DD /* artists@3x.png in Resources */,
 				3C4926BF1C93EBCC0065B1DD /* files@2x.png in Resources */,
+				3C6DB0D71CA667D200F68D3E /* textField-search@2x.png in Resources */,
 				7B066A8F1CA5152C0078FD53 /* cloud-item-icon@2x.png in Resources */,
 				3C4926B51C93EBCC0065B1DD /* artists-selected.png in Resources */,
 				3C4926B11C93EBCC0065B1DD /* albums-selected@3x.png in Resources */,
@@ -986,6 +1061,7 @@
 				3C8D3D941CA56F8F008EB7A8 /* MGSwipeTableCell.m in Sources */,
 				3CA4E3141C9ECE9400168B48 /* Item.m in Sources */,
 				7BF65F521CA3D782007B198D /* UIView+WebCacheOperation.m in Sources */,
+				3C6DB1091CA6DACB00F68D3E /* AlbumObj.m in Sources */,
 				7BD179461C9D5122004CD5AF /* HCDCoreDataStackController.m in Sources */,
 				7BF65F511CA3D782007B198D /* UIImageView+WebCache.m in Sources */,
 				3C09C7041C8C6962004A44E2 /* PlaylistsViewController.m in Sources */,
@@ -998,6 +1074,7 @@
 				7BF65F1B1CA3C665007B198D /* SongHeaderTitle.m in Sources */,
 				7BF5C8D91C915E3F00175C6F /* Utils.m in Sources */,
 				7BF65F601CA3FFAF007B198D /* NSAttributedString+CCLFormat.m in Sources */,
+				3C6DB0FA1CA694CE00F68D3E /* UIViewController+KeyboardAnimation.m in Sources */,
 				3C8D3D931CA56F8F008EB7A8 /* MGSwipeButton.m in Sources */,
 				7B066A841CA4FCA50078FD53 /* HeaderUtilObj.m in Sources */,
 				3C09C6DE1C8C664E004A44E2 /* AppDelegate.m in Sources */,
@@ -1026,6 +1103,7 @@
 				3C09C6F51C8C6899004A44E2 /* SongsViewController.m in Sources */,
 				3C4926F41C9528320065B1DD /* ArtistsViewController.m in Sources */,
 				7BF65F481CA3D782007B198D /* SDWebImageDownloader.m in Sources */,
+				3C6DB0FE1CA6CC1A00F68D3E /* AlbumsCell.m in Sources */,
 				7BF65F431CA3D782007B198D /* MKAnnotationView+WebCache.m in Sources */,
 				3C09C6F21C8C6850004A44E2 /* FilesViewController.m in Sources */,
 				3C09C6DB1C8C664E004A44E2 /* main.m in Sources */,

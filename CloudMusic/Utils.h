@@ -10,6 +10,12 @@
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "TableFooterView.h"
+#import "TableHeaderView.h"
+
+#import "PCSEQVisualizer.h"
+#import "UIViewController+KeyboardAnimation.h"
+
 #define T_WIDTH ([[UIScreen mainScreen] bounds].size.width)
 #define T_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
 

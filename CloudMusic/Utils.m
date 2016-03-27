@@ -120,17 +120,20 @@
     [shadowText setShadowBlurRadius:0.0f];
     [shadowText setShadowOffset:CGSizeMake(0.0, 0.0)];
     
-    [[UINavigationBar appearance] setTitleTextAttributes:
-     @{NSForegroundColorAttributeName:navigationTextColor,
-       NSFontAttributeName:navigationFont,
-       NSShadowAttributeName:shadowText}];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:navigationTextColor,
+                                                           NSFontAttributeName:navigationFont,
+                                                           NSShadowAttributeName:shadowText}];
     
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setBackgroundColor:[self colorWithRGBHex:0xf7f7f7]];
+    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 20.0)];
+    UIImageView *searchIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 20.0)];
+    searchIcon.image = [UIImage imageNamed:@"textField-search"];
+    searchIcon.contentMode = UIViewContentModeCenter;
+    [leftView addSubview:searchIcon];
+    
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setLeftView:leftView];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setLeftViewMode:UITextFieldViewModeAlways];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor grayColor]];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setPlaceholder:@"Search"];
-    
-    [[UIImageView appearanceWhenContainedIn:[UISearchBar class], nil] setBounds:CGRectMake(0, 0, 25.0, 15.0)];
-    [[UIImageView appearanceWhenContainedIn:[UISearchBar class], nil] setContentMode:UIViewContentModeScaleAspectFit];
 }
 
 + (UIButton *)createBarButton:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector
