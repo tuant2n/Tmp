@@ -547,7 +547,7 @@
     [super viewWillDisappear:animated];
     
     [self an_unsubscribeKeyboard];
-    [self searchBar:self.headerView.searchBar activate:NO];
+//    [self searchBar:self.headerView.searchBar activate:NO];
     [self.musicEq stopEq:NO];
 }
 
