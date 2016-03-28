@@ -90,7 +90,7 @@
     [Utils registerNibForTableView:self.tblList];
     [Utils registerNibForTableView:self.tblSearchResult];
     
-    [self setupHeaderBar];
+//    [self setupHeaderBar];
     [self.tblList setTableFooterView:self.footerView];
 }
 
@@ -476,10 +476,8 @@
 
 - (void)openPlayer:(id)sender
 {
-    NSLog(@"%@",self.navigationController.viewControllers);
     SongsViewController *vc = [[SongsViewController alloc] initWithNibName:@"SongsViewController" bundle:nil];
-    [self.navigationController setViewControllers:@[self, vc] animated:YES];
-    NSLog(@"%@",self.navigationController.viewControllers);
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning

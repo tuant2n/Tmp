@@ -60,6 +60,8 @@
 
 - (void)setupForSongsVC
 {
+    return;
+    
     [self.arrListUtils removeAllObjects];
     
     HeaderUtilObj *edit = [[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist];
@@ -76,6 +78,8 @@
 
 - (void)setupForAlbumVC
 {
+    return;
+    
     [self.arrListUtils removeAllObjects];
     
     HeaderUtilObj *edit = [[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist];

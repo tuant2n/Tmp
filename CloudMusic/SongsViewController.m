@@ -12,6 +12,8 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
+#import "AlbumsViewController.h"
+
 @interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
 {
     BOOL isActiveSearch;
@@ -92,7 +94,7 @@
     [Utils registerNibForTableView:self.tblList];
     [Utils registerNibForTableView:self.tblSearchResult];
     
-    [self setupHeaderBar];
+//    [self setupHeaderBar];
     [self.tblList setTableFooterView:self.footerView];
 }
 
@@ -572,7 +574,8 @@
 
 - (void)openPlayer:(id)sender
 {
-
+    AlbumsViewController *vc = [[AlbumsViewController alloc] initWithNibName:@"AlbumsViewController" bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
