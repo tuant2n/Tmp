@@ -92,26 +92,31 @@
     self.navFilesVC = [[UINavigationController alloc] initWithRootViewController:[[FilesViewController alloc] initWithNibName:@"FilesViewController" bundle:nil]];
     self.navFilesVC.navigationBar.translucent = NO;
     self.navFilesVC.navigationBar.shadowImage = [UIImage new];
+    self.navFilesVC.interactivePopGestureRecognizer.enabled = YES;
     self.navFilesVC.tabBarItem = [Utils tabbarItemWithTitle:@"Files" unselectedImage:@"files.png" selectedImage:@"files-selected.png"];
     
     self.navSongsVC = [[UINavigationController alloc] initWithRootViewController:[[SongsViewController alloc] initWithNibName:@"SongsViewController" bundle:nil]];
     self.navSongsVC.navigationBar.translucent = NO;
     self.navSongsVC.navigationBar.shadowImage = [UIImage new];
+    self.navSongsVC.interactivePopGestureRecognizer.enabled = YES;
     self.navSongsVC.tabBarItem = [Utils tabbarItemWithTitle:@"Songs" unselectedImage:@"songs.png" selectedImage:@"songs-selected.png"];
     
-//    self.navAlbumsVC = [[UINavigationController alloc] initWithRootViewController:[[AlbumsViewController alloc] initWithNibName:@"AlbumsViewController" bundle:nil]];
-//    self.navAlbumsVC.navigationBar.translucent = NO;
-//    self.navAlbumsVC.navigationBar.shadowImage = [UIImage new];
-//    self.navAlbumsVC.tabBarItem = [Utils tabbarItemWithTitle:@"Albums" unselectedImage:@"albums.png" selectedImage:@"albums-selected.png"];
+    self.navAlbumsVC = [[UINavigationController alloc] initWithRootViewController:[[AlbumsViewController alloc] initWithNibName:@"AlbumsViewController" bundle:nil]];
+    self.navAlbumsVC.navigationBar.translucent = NO;
+    self.navAlbumsVC.navigationBar.shadowImage = [UIImage new];
+    self.navAlbumsVC.interactivePopGestureRecognizer.enabled = YES;
+    self.navAlbumsVC.tabBarItem = [Utils tabbarItemWithTitle:@"Albums" unselectedImage:@"albums.png" selectedImage:@"albums-selected.png"];
     
     self.navPlaylistsVC = [[UINavigationController alloc] initWithRootViewController:[[PlaylistsViewController alloc] initWithNibName:@"PlaylistsViewController" bundle:nil]];
     self.navPlaylistsVC.navigationBar.translucent = NO;
     self.navPlaylistsVC.navigationBar.shadowImage = [UIImage new];
+    self.navPlaylistsVC.interactivePopGestureRecognizer.enabled = YES;
     self.navPlaylistsVC.tabBarItem = [Utils tabbarItemWithTitle:@"Playlists" unselectedImage:@"playlists.png" selectedImage:@"playlists-selected.png"];
 
     self.navArtistsVC = [[UINavigationController alloc] initWithRootViewController:[[ArtistsViewController alloc] initWithNibName:@"ArtistsViewController" bundle:nil]];
     self.navArtistsVC.navigationBar.translucent = NO;
     self.navArtistsVC.navigationBar.shadowImage = [UIImage new];
+    self.navArtistsVC.interactivePopGestureRecognizer.enabled = YES;
     self.navArtistsVC.tabBarItem = [Utils tabbarItemWithTitle:@"Artists" unselectedImage:@"artists.png" selectedImage:@"artists-selected.png"];
     
     self.navGenresVC = [[UINavigationController alloc] initWithRootViewController:[[GenresViewController alloc] initWithNibName:@"GenresViewController" bundle:nil]];
@@ -122,9 +127,10 @@
     self.navSettingsVC = [[UINavigationController alloc] initWithRootViewController:[[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil]];
     self.navSettingsVC.navigationBar.translucent = NO;
     self.navSettingsVC.navigationBar.shadowImage = [UIImage new];
+    self.navSettingsVC.interactivePopGestureRecognizer.enabled = YES;
     self.navSettingsVC.tabBarItem = [Utils tabbarItemWithTitle:@"Settings" unselectedImage:@"settings.png" selectedImage:@"settings-selected.png"];
     
-    [self setViewControllers:[NSArray arrayWithObjects:self.navFilesVC,self.navSongsVC,self.navPlaylistsVC,self.navArtistsVC,self.navGenresVC,self.navSettingsVC,nil]];
+    [self setViewControllers:[NSArray arrayWithObjects:self.navFilesVC,self.navSongsVC,self.navAlbumsVC,self.navPlaylistsVC,self.navArtistsVC,self.navGenresVC,self.navSettingsVC,nil]];
     [self setSelectedViewController:self.navFilesVC];
     self.delegate = self;
     
