@@ -1,41 +1,34 @@
 //
-//  AlbumObj.m
+//  AlbumArtistObj.m
 //  CloudMusic
 //
-//  Created by TuanTN on 3/26/16.
+//  Created by TuanTN8 on 3/28/16.
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
-#import "AlbumObj.h"
+#import "AlbumArtistObj.h"
 
 #import "Utils.h"
 
-@implementation AlbumObj
+@implementation AlbumArtistObj
 
 - (id)initWithInfo:(NSDictionary *)info
 {
     self = [super init];
     
     if (self) {
-        self.iAlbumId = [info objectForKey:@"iAlbumId"];
-        self.sAlbumName = [info objectForKey:@"sAlbumName"];
+        self.iAlbumArtistId = [info objectForKey:@"iAlbumArtistId"];
         self.sAlbumArtistName = [info objectForKey:@"sAlbumArtistName"];
-        
+
         if ([info objectForKey:@"sArtworkName"]) {
             self.sLocalArtworkUrl = [NSURL fileURLWithPath:[[Utils artworkPath] stringByAppendingPathComponent:[info objectForKey:@"sArtworkName"]]];
         }
         
         self.isCloud = [[info objectForKey:@"isCloud"] boolValue];
         
-        self.iYear = [[info objectForKey:@"iYear"] intValue];
-        self.sAlbumInfo = self.sAlbumArtistName;
-        if (self.iYear > 0) {
-            self.sAlbumInfo = [NSString stringWithFormat:@"%@, %d",self.sAlbumInfo,self.iYear];
-        }
-
+        self.numberOfAlbum = [[info objectForKey:@"numberOfAlbum"] intValue];
         int numberOfSong = [[info objectForKey:@"numberOfSong"] intValue];
-        int fDuration = [[info objectForKey:@"fDuration"] intValue];
-        self.sAlbumDesc = [NSString stringWithFormat:@"%d Songs, %@",numberOfSong,[Utils timeFormattedForList:fDuration]];
+        self.sAlbumArtistDesc = [NSString stringWithFormat:@"%d Albums, %d Songs",self.numberOfAlbum,numberOfSong];
     }
     
     return self;

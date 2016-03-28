@@ -18,6 +18,7 @@
 @interface TableHeaderView()
 {
     float height;
+    BOOL hasIndexTitles;
 }
 
 @property (nonatomic, weak) IBOutlet UITableView *tblListUtils;
@@ -45,8 +46,6 @@
 
 - (void)setupUI
 {
-    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
-    
     [self.searchBar setBackgroundImage:[UIImage new]];
     [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"textField-background"] forState:UIControlStateNormal];
     self.searchBar.opaque = NO;
@@ -61,12 +60,52 @@
 {
     [self.arrListUtils removeAllObjects];
     
-    HeaderUtilObj *edit = [[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeEdit];
+    HeaderUtilObj *edit = [[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist];
     [self.arrListUtils addObject:edit];
     
     HeaderUtilObj *shuffle = [[HeaderUtilObj alloc] initWithTitle:@"Shuffle" icon:@"shuffle-icon" type:kHeaderUtilTypeShuffle];
     [self.arrListUtils addObject:shuffle];
 
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xf7f7f7];
+    hasIndexTitles = YES;
+    
+    [self setupDefault];
+}
+
+- (void)setupForAlbumVC
+{
+    [self.arrListUtils removeAllObjects];
+    
+    HeaderUtilObj *edit = [[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist];
+    [self.arrListUtils addObject:edit];
+    
+    HeaderUtilObj *shuffle = [[HeaderUtilObj alloc] initWithTitle:@"All Songs" icon:@"list-item-icon.png" type:kHeaderUtilTypeGoAllSongs];
+    [self.arrListUtils addObject:shuffle];
+    
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
+    hasIndexTitles = NO;
+    
+    [self setupDefault];
+}
+
+- (void)setupForArtistVC
+{
+    [self.arrListUtils removeAllObjects];
+    
+    HeaderUtilObj *edit = [[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist];
+    [self.arrListUtils addObject:edit];
+    
+    HeaderUtilObj *shuffle = [[HeaderUtilObj alloc] initWithTitle:@"All Albums" icon:@"list-item-icon.png" type:kHeaderUtilTypeGoAllAlbums];
+    [self.arrListUtils addObject:shuffle];
+    
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
+    hasIndexTitles = NO;
+    
+    [self setupDefault];
+}
+
+- (void)setupDefault
+{
     int numberOfRow = (int)self.arrListUtils.count;
     height = numberOfRow * [TableHeaderCell height] + SEARCHBAR_HEIGHT;
     
@@ -106,7 +145,7 @@
     TableHeaderCell *cell = (TableHeaderCell *)[tableView dequeueReusableCellWithIdentifier:@"TableHeaderCellId"];
     
     HeaderUtilObj *utilObj = self.arrListUtils[indexPath.row];
-    [cell configWithUtil:utilObj];
+    [cell configWithUtil:utilObj hasIndexTitles:hasIndexTitles];
     
     return cell;
 }
@@ -114,6 +153,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    HeaderUtilObj *utilObj = self.arrListUtils[indexPath.row];
+    if ([self.delegate respondsToSelector:@selector(selectUtility:)]) {
+        [self.delegate selectUtility:utilObj.iType];
+    }
 }
 
 

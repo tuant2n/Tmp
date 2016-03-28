@@ -9,13 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-typedef enum {
-    kHeaderUtilTypeEdit = 0,
-    kHeaderUtilTypeShuffle = 1,
-    kHeaderUtilTypeGoAllAlbums = 2,
-    kHeaderUtilTypeGoAllSongs = 3,
-    kHeaderUtilTypeCreatePlaylist = 4,
-} kHeaderUtilType;
+#import "TableHeaderView.h"
 
 @interface HeaderUtilObj : NSObject
 

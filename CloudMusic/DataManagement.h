@@ -11,6 +11,11 @@
 
 #import "Item.h"
 #import "AlbumObj.h"
+#import "AlbumArtistObj.h"
+
+#import "SongsCell.h"
+#import "AlbumsCell.h"
+#import "ArtistsCell.h"
 
 @interface DataManagement : NSObject
 
@@ -27,8 +32,9 @@
 - (void)syncData;
 - (void)saveData;
 
-- (NSArray *)getListAlbumFilterByName:(NSString *)sName;
-- (NSArray *)getListArtistFilterByName:(NSString *)sName;
+- (NSArray *)getListAlbumFilterByName:(NSString *)sName artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId;
+- (NSArray *)getListAlbumArtistFilterByName:(NSString *)sName;
+- (NSArray *)getListGenreFilterByName:(NSString *)sName;
 
 #pragma mark - iTunes Sync
 

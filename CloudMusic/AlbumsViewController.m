@@ -8,13 +8,13 @@
 
 #import "AlbumsViewController.h"
 
+#import "SongsViewController.h"
+
 #import "Utils.h"
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
-#import "AlbumsCell.h"
-
-@interface AlbumsViewController () <MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface AlbumsViewController () <MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
 {
     BOOL isActiveSearch;
 }
@@ -54,14 +54,19 @@
 - (void)getData
 {
     [self.albumsArray removeAllObjects];
-    [self.albumsArray addObjectsFromArray:[[DataManagement sharedInstance] getListAlbumFilterByName:nil]];;
+    [self.albumsArray addObjectsFromArray:[[DataManagement sharedInstance] getListAlbumFilterByName:nil artistId:self.iAlbumArtistId genreId:self.iGenreId]];
     [self.tblList reloadData];
     [self setupFooterView];
 }
 
 - (void)setupUI
 {
-    self.title = @"Albums";
+    if (self.sTitle) {
+        self.title = self.sTitle;
+    }
+    else {
+        self.title = @"Albums";
+    }
     self.navigationItem.rightBarButtonItem = self.barMusicEq;
     
     self.disableView.backgroundColor = [UIColor blackColor];
@@ -84,7 +89,7 @@
 
 - (void)setupHeaderBar
 {
-    [self.headerView setupForSongsVC];
+    [self.headerView setupForAlbumVC];
     self.headerView.searchBar.delegate = self;
     
     self.keyboardLayout.priority = 750;
@@ -230,11 +235,11 @@
     
     if (direction == MGSwipeDirectionLeftToRight)
     {
-//        Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//        
-//        if (item.isCloud.boolValue && index == 0) {
-//            return NO;
-//        }
+        AlbumObj *item = self.albumsArray[indexPath.row];
+        
+        if (item.isCloud && index == 0) {
+            return NO;
+        }
     }
     
     return YES;
@@ -274,9 +279,21 @@
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableHeaderView" owner:self options:nil];
         if ([nib count] > 0) {
             _headerView = [nib objectAtIndex:0];
+            _headerView.delegate = self;
         }
     }
     return _headerView;
+}
+
+- (void)selectUtility:(kHeaderUtilType)iType
+{
+    if (iType == kHeaderUtilTypeCreatePlaylist) {
+        
+    }
+    else if (iType == kHeaderUtilTypeGoAllSongs)
+    {
+        
+    }
 }
 
 - (void)hideHeaderView
@@ -350,7 +367,10 @@
 
 - (void)openPlayer:(id)sender
 {
-    
+    NSLog(@"%@",self.navigationController.viewControllers);
+    SongsViewController *vc = [[SongsViewController alloc] initWithNibName:@"SongsViewController" bundle:nil];
+    [self.navigationController setViewControllers:@[self, vc] animated:YES];
+    NSLog(@"%@",self.navigationController.viewControllers);
 }
 
 - (void)didReceiveMemoryWarning

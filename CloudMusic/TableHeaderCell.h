@@ -12,7 +12,7 @@
 
 @interface TableHeaderCell : UITableViewCell
 
-- (void)configWithUtil:(HeaderUtilObj *)utilObj;
+- (void)configWithUtil:(HeaderUtilObj *)utilObj hasIndexTitles:(BOOL)isTrue;
 
 + (CGFloat)height;
 

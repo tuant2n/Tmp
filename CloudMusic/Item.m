@@ -42,6 +42,8 @@
     self.iAlbumArtistId = item.itemAlbumArtistPID;
     [self setAlbumArtistName:item.itemAlbumArtist];
     
+    NSLog(@"%@",self.iAlbumArtistId);
+    
     self.iGenreId = item.itemGenrePID;
     [self setGenreName:item.itemGenre];
     

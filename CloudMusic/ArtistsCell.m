@@ -1,29 +1,29 @@
 //
-//  AlbumsCell.m
+//  ArtistsCell.m
 //  CloudMusic
 //
-//  Created by TuanTN on 3/26/16.
+//  Created by TuanTN8 on 3/28/16.
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
-#import "AlbumsCell.h"
+#import "ArtistsCell.h"
 
-#import "AlbumObj.h"
+#import "AlbumArtistObj.h"
 #import "Utils.h"
 
 #import "UIImageView+WebCache.h"
 #import "VYPlayIndicator.h"
 
-@interface AlbumsCell()
+@interface ArtistsCell()
 {
     UIImage *placeHolder;
     UIImage *iTunesIcon, *cloudIcon;
     
-    MGSwipeButton *editBtn, *deleteBtn, *addToPlaylistBtn;
+    MGSwipeButton *deleteBtn, *addToPlaylistBtn;
 }
 
 @property (nonatomic, weak) IBOutlet UIImageView *imgvArtwork;
-@property (nonatomic, weak) IBOutlet UILabel *lblAlbumName, *lblAlbumInfo, *lblAlbumDesc;
+@property (nonatomic, weak) IBOutlet UILabel *lblAlbumArtistName, *lblAlbumArtisDesc;
 
 @property (nonatomic, weak) IBOutlet UIView *vMusicEq;
 @property (nonatomic, strong) VYPlayIndicator *musicEq;
@@ -33,7 +33,7 @@
 
 @end
 
-@implementation AlbumsCell
+@implementation ArtistsCell
 
 - (void)awakeFromNib
 {
@@ -45,7 +45,8 @@
     self.imgvArtwork.contentMode = UIViewContentModeScaleAspectFill;
     
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
-
+    self.lblAlbumArtisDesc.textColor = [Utils colorWithRGBHex:0x6a6a6a];
+    
     self.musicEq = [[VYPlayIndicator alloc] init];
     [self.musicEq setColor:[UIColor redColor]];
     self.musicEq.frame = self.vMusicEq.bounds;
@@ -61,26 +62,24 @@
     
     deleteBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnDelete"] backgroundColor:[Utils colorWithRGBHex:0xFF0000]];
     addToPlaylistBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnAddPlaylist"] backgroundColor:[Utils colorWithRGBHex:0x03C9A9]];
-    editBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnEditSong"] backgroundColor:[Utils colorWithRGBHex:0x3498db]];
 }
 
-- (void)config:(AlbumObj *)item
+- (void)config:(AlbumArtistObj *)item
 {
     [self.imgvArtwork sd_setImageWithURL:item.sLocalArtworkUrl placeholderImage:placeHolder options:SDWebImageRetryFailed];
     
-    self.lblAlbumName.text = item.sAlbumName;
-    self.lblAlbumInfo.text = item.sAlbumInfo;
-    self.lblAlbumDesc.text = item.sAlbumDesc;
-    
+    self.lblAlbumArtistName.text = item.sAlbumArtistName;
+    self.lblAlbumArtisDesc.text = item.sAlbumArtistDesc;
+
     if (item.isCloud) {
         self.imgvIcon.image = cloudIcon;
-        self.leftButtons = @[deleteBtn,addToPlaylistBtn,editBtn];
+        self.leftButtons = @[deleteBtn,addToPlaylistBtn];
     }
     else {
         self.imgvIcon.image = iTunesIcon;
         self.leftButtons = @[addToPlaylistBtn];
     }
-
+    
     [self isPlaying:item.isPlaying];
 }
 
@@ -101,7 +100,7 @@
 
 + (CGFloat)height
 {
-    return 82.0;
+    return 62.0;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

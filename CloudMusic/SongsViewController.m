@@ -12,10 +12,9 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
-#import "SongsCell.h"
 #import "SongHeaderTitle.h"
 
-@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
 {
     BOOL isActiveSearch;
 }
@@ -73,7 +72,7 @@
 {
     self.title = @"Songs";
     self.navigationItem.rightBarButtonItem = self.barMusicEq;
-    
+
     self.disableView.backgroundColor = [UIColor blackColor];
     self.disableView.alpha = 0.0;
     self.disableView.hidden = YES;
@@ -395,6 +394,7 @@
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableHeaderView" owner:self options:nil];
         if ([nib count] > 0) {
             _headerView = [nib objectAtIndex:0];
+            _headerView.delegate = self;
         }
     }
     return _headerView;
@@ -404,6 +404,16 @@
 {
     if (self.tblList.tableHeaderView) {
         self.tblList.contentOffset = CGPointMake(0.0, self.tblList.tableHeaderView.bounds.size.height);
+    }
+}
+
+- (void)selectUtility:(kHeaderUtilType)iType
+{
+    if (iType == kHeaderUtilTypeCreatePlaylist) {
+        
+    }
+    else if (iType == kHeaderUtilTypeShuffle) {
+        
     }
 }
 

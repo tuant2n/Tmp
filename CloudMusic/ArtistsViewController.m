@@ -12,194 +12,288 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
-#import "PCSEQVisualizer.h"
 
-@interface ArtistsViewController () <NSFetchedResultsControllerDelegate>
+@interface ArtistsViewController () <MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
+{
+    BOOL isActiveSearch;
+}
 
 @property (nonatomic, strong) PCSEQVisualizer *musicEq;
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
 
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSMutableArray *artistArray;
+
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
+@property (nonatomic, weak) IBOutlet UITableView *tblSearchResult;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *keyboardLayout;
+@property (nonatomic, weak) IBOutlet UIView *disableView;
+
+@property (nonatomic, strong) TableFooterView *footerView;
+@property (nonatomic, strong) TableHeaderView *headerView;
 
 @end
 
 @implementation ArtistsViewController
 
-- (NSFetchedResultsController *)fetchedResultsController
+- (NSMutableArray *)artistArray
 {
-    if (!_fetchedResultsController)
-    {
-        NSEntityDescription *itemEntity = [[DataManagement sharedInstance] itemEntity];
-        
-        NSAttributeDescription *iAlbumArtistId = [itemEntity.attributesByName objectForKey:@"iAlbumArtistId"];
-        NSAttributeDescription *sAlbumArtistName = [itemEntity.attributesByName objectForKey:@"sAlbumArtistName"];
-        
-        NSExpression *listSongId = [NSExpression expressionForKeyPath:@"iSongId"];
-        NSExpression *countSongExpression = [NSExpression expressionForFunction:@"count:" arguments:@[listSongId]];
-        NSExpressionDescription *numberOfSong = [[NSExpressionDescription alloc] init];
-        [numberOfSong setName: @"numberOfSong"];
-        [numberOfSong setExpression:countSongExpression];
-        [numberOfSong setExpressionResultType:NSInteger32AttributeType];
-        
-        NSExpression *listAlbumId = [NSExpression expressionForKeyPath:@"iAlbumId"];
-        NSExpression *distinct = [NSExpression expressionForFunction:@"distinct:" arguments:@[listAlbumId]];
-        NSExpression *countAlbumExpression = [NSExpression expressionForFunction:@"count:" arguments:@[distinct]];
-        NSExpressionDescription *numberOfAlbum = [[NSExpressionDescription alloc] init];
-        [numberOfAlbum setName: @"numberOfAlbum"];
-        [numberOfAlbum setExpression:countAlbumExpression];
-        [numberOfAlbum setExpressionResultType:NSInteger32AttributeType];
-        
-        NSExpression *listDuration = [NSExpression expressionForKeyPath:@"fDuration"];
-        NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:@[listDuration]];
-        NSExpressionDescription *duration = [[NSExpressionDescription alloc] init];
-        [duration setName: @"duration"];
-        [duration setExpression:sumExpression];
-        [duration setExpressionResultType:NSInteger32AttributeType];
-        
-        NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArtworkName"];
-        NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
-        NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
-        [artwork setName: @"artwork"];
-        [artwork setExpression:maxExpression];
-        [artwork setExpressionResultType:NSStringAttributeType];
-        
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        [request setEntity:itemEntity];
-        [request setPropertiesToFetch:@[iAlbumArtistId,sAlbumArtistName,numberOfSong,numberOfAlbum,duration,artwork]];
-        [request setPropertiesToGroupBy:@[iAlbumArtistId,sAlbumArtistName]];
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sArtistNameIndex" ascending:YES];
-        [request setSortDescriptors:@[sortDescriptor]];
-        [request setResultType:NSDictionaryResultType];
-        
-        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
-        
-        NSError *error = nil;
-        NSArray *fetchedObjects = [[[DataManagement sharedInstance] managedObjectContext] executeFetchRequest:request error:&error];
-        NSLog(@"%lu",(unsigned long)fetchedObjects.count);
-        NSLog(@"%@",fetchedObjects);
+    if (!_artistArray) {
+        _artistArray = [[NSMutableArray alloc] init];
     }
-    return _fetchedResultsController;
+    return _artistArray;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self setupUI];
-    [self performFetch];
+    [self getData];
 }
 
-- (void)performFetch
+- (void)getData
 {
-    NSError *error = nil;
-    if (![self.fetchedResultsController performFetch:&error]) {
-        NSLog(@"Fetch error: %@", error);
-    }
+    [self.artistArray removeAllObjects];
+    [self.artistArray addObjectsFromArray:[[DataManagement sharedInstance] getListAlbumArtistFilterByName:nil]];
+    [self.tblList reloadData];
+    [self setupFooterView];
 }
 
 - (void)setupUI
 {
-    self.title = @"Artist";
+    self.title = @"Artists";
     self.navigationItem.rightBarButtonItem = self.barMusicEq;
     
-    [self.tblList registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    self.disableView.backgroundColor = [UIColor blackColor];
+    self.disableView.alpha = 0.0;
+    self.disableView.hidden = YES;
+    [self.disableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSearch)]];
+    
+    self.tblList.sectionIndexColor = [Utils colorWithRGBHex:0x006bd5];
+    self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
+    self.tblList.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
+    
+    [self.tblList registerNib:[UINib nibWithNibName:@"ArtistsCell" bundle:nil] forCellReuseIdentifier:@"ArtistsCellId"];
+    
+    [self.tblSearchResult registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
+    [self.tblSearchResult registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
+    
+    [self setupHeaderBar];
+    [self.tblList setTableFooterView:self.footerView];
+}
+
+- (void)setupHeaderBar
+{
+    [self.headerView setupForArtistVC];
+    self.headerView.searchBar.delegate = self;
+    
+    self.keyboardLayout.priority = 750;
+    self.tblSearchResult.tableFooterView = nil;
+    
+    [self.tblList setTableHeaderView:self.headerView];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)closeSearch
+{
+    [self searchBar:self.headerView.searchBar activate:NO];
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [self searchBar:searchBar activate:YES];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    searchBar.text = nil;
+    [self searchBar:searchBar activate:NO];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar activate:(BOOL)isActive
+{
+    isActiveSearch = isActive;
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.headerView setActiveSearchBar:isActiveSearch];
+        [self.tblList setTableHeaderView:self.headerView];
+    } completion:nil];
+    
+    self.tblList.allowsSelection = !isActiveSearch;
+    self.tblList.scrollEnabled = !isActiveSearch;
+    
+    if (isActiveSearch) {
+        [self showOverlayDisable:YES];
+        
+        self.tblSearchResult.delegate = self;
+        self.tblSearchResult.dataSource = self;
+    }
+    else {
+        [self showOverlayDisable:NO];
+        [searchBar resignFirstResponder];
+        
+        self.tblSearchResult.delegate = nil;
+        self.tblSearchResult.dataSource = nil;
+    }
+    
+    [self.tblList reloadSectionIndexTitles];
+    [searchBar setShowsCancelButton:isActiveSearch animated:YES];
+}
+
+- (void)subscribeToKeyboard {
+    [self an_subscribeKeyboardWithAnimations:^(CGRect keyboardRect, NSTimeInterval duration, BOOL isShowing) {
+        if (isShowing) {
+            self.keyboardLayout.constant = CGRectGetHeight(keyboardRect);
+        } else {
+            self.keyboardLayout.constant = [[[self tabBarController] tabBar] bounds].size.height;
+        }
+        [self.tblSearchResult layoutIfNeeded];
+    } completion:nil];
+}
+
+- (void)showOverlayDisable:(BOOL)isShow
+{
+    if (isShow) {
+        self.disableView.hidden = NO;
+        self.tblSearchResult.alpha = 0.0;
+        self.tblSearchResult.hidden = NO;
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.disableView.alpha = 0.5;
+        } completion:nil];
+    }
+    else {
+        self.disableView.alpha = 0.0;
+        self.disableView.hidden = YES;
+        self.tblSearchResult.hidden = YES;
+    }
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if (searchText.length > 0) {
+        self.disableView.hidden = YES;
+        self.tblSearchResult.alpha = 1.0;
+        self.tblSearchResult.hidden = NO;
+    }
+    else {
+        self.disableView.hidden = NO;
+        self.tblSearchResult.alpha = 0.0;
+        self.tblSearchResult.hidden = YES;
+    }
+    
+    [self.tblSearchResult reloadData];
 }
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return [[self.fetchedResultsController sections] count];
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    return [self.fetchedResultsController sectionIndexTitles];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    return [sectionInfo name];
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
+    if (tableView == self.tblSearchResult) {
+        return 0;
+    }
+    else {
+        return self.artistArray.count;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [ArtistsCell height];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    ArtistsCell *cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
+    [cell setLineHidden:(indexPath.row == self.artistArray.count - 1)];
     
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(ArtistsCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    id item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [item objectForKey:@"sAlbumArtistName"];
+    AlbumArtistObj *artist = self.artistArray[indexPath.row];
+    [cell config:artist];
 }
 
-#pragma mark - Fetched Results Controller Delegate
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+- (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
 {
-    [self.tblList beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
-{
-    switch(type)
+    NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
+    if (!indexPath) {
+        return YES;
+    }
+    
+    if (direction == MGSwipeDirectionLeftToRight)
     {
-        case NSFetchedResultsChangeInsert: {
-            [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        AlbumObj *item = self.artistArray[indexPath.row];
+        
+        if (item.isCloud && index == 0) {
+            return NO;
         }
-            
-            break;
-            
-        case NSFetchedResultsChangeDelete: {
-            [self.tblList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    
+    return YES;
+}
+
+#pragma mark - UI
+
+- (TableFooterView *)footerView
+{
+    if (!_footerView) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableFooterView" owner:self options:nil];
+        if ([nib count] > 0) {
+            _footerView = [nib objectAtIndex:0];
         }
-            
-            break;
-            
-        case NSFetchedResultsChangeUpdate: {
-            [self configureCell:(UITableViewCell *)[self.tblList cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+    }
+    return _footerView;
+}
+
+- (void)setupFooterView
+{
+    NSString *sContent = nil;
+    int itemCount = (int)self.artistArray.count;
+    
+    if (itemCount <= 1) {
+        sContent = [NSString stringWithFormat:@"%d Artist",itemCount];
+    }
+    else {
+        sContent = [NSString stringWithFormat:@"%d Artists",itemCount];
+    }
+    
+    [self.footerView setContent:sContent];
+}
+
+- (TableHeaderView *)headerView
+{
+    if (!_headerView) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableHeaderView" owner:self options:nil];
+        if ([nib count] > 0) {
+            _headerView = [nib objectAtIndex:0];
+            _headerView.delegate = self;
         }
-            break;
-            
-        case NSFetchedResultsChangeMove: {
-            [self.tblList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
+    }
+    return _headerView;
+}
+
+- (void)selectUtility:(kHeaderUtilType)iType
+{
+    if (iType == kHeaderUtilTypeCreatePlaylist) {
+        
+    }
+    else if (iType == kHeaderUtilTypeGoAllAlbums) {
+        
     }
 }
 
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+- (void)hideHeaderView
 {
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert: {
-            [self.tblList insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-            
-        case NSFetchedResultsChangeDelete: {
-            [self.tblList deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-        default:
-            break;
+    if (self.tblList.tableHeaderView) {
+        self.tblList.contentOffset = CGPointMake(0.0, self.tblList.tableHeaderView.bounds.size.height);
     }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tblList endUpdates];
 }
 
 #pragma mark - MusicEq
@@ -208,7 +302,6 @@
 {
     if (!_musicEq) {
         _musicEq = [[PCSEQVisualizer alloc] initWithNumberOfBars:3 barWidth:2 height:18.0 color:0x006bd5];
-        _musicEq.userInteractionEnabled = NO;
     }
     return _musicEq;
 }
@@ -238,6 +331,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self an_unsubscribeKeyboard];
+    [self searchBar:self.headerView.searchBar activate:NO];
     [self.musicEq stopEq:NO];
 }
 
@@ -245,12 +341,19 @@
 {
     [super viewWillAppear:animated];
     
+    [self subscribeToKeyboard];
+    [self hideHeaderView];
+    
     if ([[GlobalParameter sharedInstance] isPlay]) {
         [self.musicEq startEq];
     }
     else {
         [self.musicEq stopEq:NO];
     }
+}
+
+- (void)dealloc {
+    [self an_unsubscribeKeyboard];
 }
 
 #pragma mark - Method

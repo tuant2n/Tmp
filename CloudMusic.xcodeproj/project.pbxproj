@@ -132,6 +132,10 @@
 		7B066A8F1CA5152C0078FD53 /* cloud-item-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B066A8C1CA5152C0078FD53 /* cloud-item-icon@2x.png */; };
 		7B066A901CA5152C0078FD53 /* cloud-item-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B066A8D1CA5152C0078FD53 /* cloud-item-icon@3x.png */; };
 		7B066AD61CA53F4E0078FD53 /* SongsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B066AD51CA53F4E0078FD53 /* SongsCell.m */; };
+		7B08960F1CA8C26E00264CD1 /* AlbumArtistObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B08960E1CA8C26E00264CD1 /* AlbumArtistObj.m */; };
+		7B0896131CA8C30000264CD1 /* ArtistsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0896111CA8C30000264CD1 /* ArtistsCell.m */; };
+		7B0896141CA8C30000264CD1 /* ArtistsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B0896121CA8C30000264CD1 /* ArtistsCell.xib */; };
+		7B0896281CA8E3A400264CD1 /* PlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B0896271CA8E3A400264CD1 /* PlayerViewController.xib */; };
 		7BD179451C9D5122004CD5AF /* HCDCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179411C9D5122004CD5AF /* HCDCoreDataStack.m */; };
 		7BD179461C9D5122004CD5AF /* HCDCoreDataStackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179431C9D5122004CD5AF /* HCDCoreDataStackController.m */; };
 		7BD1794A1C9D522C004CD5AF /* DataManagement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179491C9D522C004CD5AF /* DataManagement.m */; };
@@ -318,6 +322,12 @@
 		7B066A8D1CA5152C0078FD53 /* cloud-item-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cloud-item-icon@3x.png"; sourceTree = "<group>"; };
 		7B066AD41CA53F4E0078FD53 /* SongsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongsCell.h; sourceTree = "<group>"; };
 		7B066AD51CA53F4E0078FD53 /* SongsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongsCell.m; sourceTree = "<group>"; };
+		7B08960D1CA8C26E00264CD1 /* AlbumArtistObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArtistObj.h; sourceTree = "<group>"; };
+		7B08960E1CA8C26E00264CD1 /* AlbumArtistObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumArtistObj.m; sourceTree = "<group>"; };
+		7B0896101CA8C30000264CD1 /* ArtistsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtistsCell.h; sourceTree = "<group>"; };
+		7B0896111CA8C30000264CD1 /* ArtistsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtistsCell.m; sourceTree = "<group>"; };
+		7B0896121CA8C30000264CD1 /* ArtistsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistsCell.xib; sourceTree = "<group>"; };
+		7B0896271CA8E3A400264CD1 /* PlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerViewController.xib; sourceTree = "<group>"; };
 		7BD179401C9D5122004CD5AF /* HCDCoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCDCoreDataStack.h; sourceTree = "<group>"; };
 		7BD179411C9D5122004CD5AF /* HCDCoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCDCoreDataStack.m; sourceTree = "<group>"; };
 		7BD179421C9D5122004CD5AF /* HCDCoreDataStackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCDCoreDataStackController.h; sourceTree = "<group>"; };
@@ -527,6 +537,9 @@
 				3C4926F21C9528320065B1DD /* ArtistsViewController.h */,
 				3C4926F31C9528320065B1DD /* ArtistsViewController.m */,
 				7B066A5D1CA4CF490078FD53 /* ArtistsViewController.xib */,
+				7B0896101CA8C30000264CD1 /* ArtistsCell.h */,
+				7B0896111CA8C30000264CD1 /* ArtistsCell.m */,
+				7B0896121CA8C30000264CD1 /* ArtistsCell.xib */,
 			);
 			name = Artists;
 			sourceTree = "<group>";
@@ -572,6 +585,8 @@
 			children = (
 				3C6DB1071CA6DACB00F68D3E /* AlbumObj.h */,
 				3C6DB1081CA6DACB00F68D3E /* AlbumObj.m */,
+				7B08960D1CA8C26E00264CD1 /* AlbumArtistObj.h */,
+				7B08960E1CA8C26E00264CD1 /* AlbumArtistObj.m */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -791,6 +806,7 @@
 			children = (
 				7BF5C8D11C915D2100175C6F /* PlayerViewController.h */,
 				7BF5C8D21C915D2100175C6F /* PlayerViewController.m */,
+				7B0896271CA8E3A400264CD1 /* PlayerViewController.xib */,
 			);
 			name = Player;
 			sourceTree = "<group>";
@@ -979,6 +995,7 @@
 				3C09C6E91C8C664F004A44E2 /* LaunchScreen.storyboard in Resources */,
 				7B066A8E1CA5152C0078FD53 /* cloud-item-icon.png in Resources */,
 				7B066A621CA4D0190078FD53 /* SettingsViewController.xib in Resources */,
+				7B0896141CA8C30000264CD1 /* ArtistsCell.xib in Resources */,
 				3C4926B81C93EBCC0065B1DD /* artists.png in Resources */,
 				3C4926DC1C93EBCC0065B1DD /* songs.png in Resources */,
 				3C4926D71C93EBCC0065B1DD /* settings@2x.png in Resources */,
@@ -1005,6 +1022,7 @@
 				7BF65F1C1CA3C665007B198D /* SongHeaderTitle.xib in Resources */,
 				3C4926CC1C93EBCC0065B1DD /* more@3x.png in Resources */,
 				7B066A581CA4CD730078FD53 /* AlbumsViewController.xib in Resources */,
+				7B0896281CA8E3A400264CD1 /* PlayerViewController.xib in Resources */,
 				7B066A891CA50BF00078FD53 /* textField-background@2x.png in Resources */,
 				3CB105341CA419DB0087D20A /* filetype_audio@3x.png in Resources */,
 				7B066A811CA4FAA20078FD53 /* edit-icon@3x.png in Resources */,
@@ -1067,6 +1085,8 @@
 				3C09C7041C8C6962004A44E2 /* PlaylistsViewController.m in Sources */,
 				3C4926F81C9528460065B1DD /* GenresViewController.m in Sources */,
 				7BF65F441CA3D782007B198D /* NSData+ImageContentType.m in Sources */,
+				7B0896131CA8C30000264CD1 /* ArtistsCell.m in Sources */,
+				7B08960F1CA8C26E00264CD1 /* AlbumArtistObj.m in Sources */,
 				3C4926FC1C952AC40065B1DD /* SettingsViewController.m in Sources */,
 				3C09C6FE1C8C6910004A44E2 /* AlbumsViewController.m in Sources */,
 				7BF65F4C1CA3D782007B198D /* UIButton+WebCache.m in Sources */,

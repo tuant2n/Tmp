@@ -22,12 +22,9 @@
 {
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    [Utils configNavigationBar];
-    [Utils configTabbarAppearce];
+    [self.window makeKeyAndVisible];
     
     self.window.rootViewController = [[MainTabBarController alloc] init];
-    [self.window makeKeyAndVisible];
     
     return YES;
 }
