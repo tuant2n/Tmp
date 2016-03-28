@@ -50,7 +50,9 @@
     [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"textField-background"] forState:UIControlStateNormal];
     self.searchBar.opaque = NO;
     self.searchBar.translucent = NO;
-
+    self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    
     [self.tblListUtils setScrollEnabled:NO];
     [self.tblListUtils setTableFooterView:[UIView new]];
     [self.tblListUtils registerNib:[UINib nibWithNibName:@"TableHeaderCell" bundle:nil] forCellReuseIdentifier:@"TableHeaderCellId"];
@@ -98,6 +100,19 @@
     HeaderUtilObj *shuffle = [[HeaderUtilObj alloc] initWithTitle:@"All Albums" icon:@"list-item-icon.png" type:kHeaderUtilTypeGoAllAlbums];
     [self.arrListUtils addObject:shuffle];
     
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
+    hasIndexTitles = NO;
+    
+    [self setupDefault];
+}
+
+- (void)setupForGenreVC
+{
+    [self.arrListUtils removeAllObjects];
+    
+    HeaderUtilObj *edit = [[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist];
+    [self.arrListUtils addObject:edit];
+
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     hasIndexTitles = NO;
     

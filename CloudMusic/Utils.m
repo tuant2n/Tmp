@@ -178,6 +178,21 @@
     return button;
 }
 
++ (void)registerNibForTableView:(UITableView *)tblView
+{
+    [tblView registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
+    [tblView registerNib:[UINib nibWithNibName:@"AlbumsCell" bundle:nil] forCellReuseIdentifier:@"AlbumsCellId"];
+    [tblView registerNib:[UINib nibWithNibName:@"ArtistsCell" bundle:nil] forCellReuseIdentifier:@"ArtistsCellId"];
+    [tblView registerNib:[UINib nibWithNibName:@"GenresCell" bundle:nil] forCellReuseIdentifier:@"GenresCellId"];
+    
+    [tblView registerNib:[UINib nibWithNibName:@"HeaderTitle" bundle:nil] forCellReuseIdentifier:@"HeaderTitleId"];
+}
+
++ (CGFloat)normalCellHeight
+{
+    return 62.0;
+}
+
 #pragma mark - Files
 
 + (NSString *)documentPath
@@ -228,6 +243,9 @@
         [arr addObject:newChar];
     }
     newString = [arr componentsJoinedByString:@""];
+    
+    newString = [newString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    newString = [newString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     return newString;
 }

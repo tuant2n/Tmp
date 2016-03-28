@@ -30,6 +30,7 @@ typedef enum {
 - (void)setupForSongsVC;
 - (void)setupForAlbumVC;
 - (void)setupForArtistVC;
+- (void)setupForGenreVC;
 
 - (void)setActiveSearchBar:(BOOL)isActive;
 - (void)setHeight:(float)fHeight;

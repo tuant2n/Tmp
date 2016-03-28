@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SongHeaderTitle : UITableViewCell
+@interface HeaderTitle : UITableViewCell
 
 - (void)setTitle:(NSString *)sTitle;
 + (CGFloat)height;

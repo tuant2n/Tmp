@@ -12,7 +12,6 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
-
 @interface ArtistsViewController () <MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
 {
     BOOL isActiveSearch;
@@ -72,10 +71,8 @@
     self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
     self.tblList.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
     
-    [self.tblList registerNib:[UINib nibWithNibName:@"ArtistsCell" bundle:nil] forCellReuseIdentifier:@"ArtistsCellId"];
-    
-    [self.tblSearchResult registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
-    [self.tblSearchResult registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
+    [Utils registerNibForTableView:self.tblList];
+    [Utils registerNibForTableView:self.tblSearchResult];
     
     [self setupHeaderBar];
     [self.tblList setTableFooterView:self.footerView];

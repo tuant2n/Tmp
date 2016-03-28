@@ -1,19 +1,19 @@
 //
-//  SongsCell.h
+//  GenresCell.h
 //  CloudMusic
 //
-//  Created by TuanTN8 on 3/25/16.
+//  Created by TuanTN on 3/28/16.
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "MGSwipeTableCell.h"
 
-@class Item;
+@class GenresObj;
 
-@interface SongsCell : MGSwipeTableCell
+@interface GenresCell : MGSwipeTableCell
 
-- (void)configWithItem:(Item *)item;
+- (void)config:(GenresObj *)item;
 - (void)setLineHidden:(BOOL)isHidden;
 - (void)isPlaying:(BOOL)isPlaying;
 

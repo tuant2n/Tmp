@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "DataManagement.h"
+
 @interface GlobalParameter : NSObject
 
-@property (nonatomic, strong) NSMutableArray *arrData;
-@property (nonatomic, strong) NSMutableArray *arrListSong, *arrListAlbum, *arrListArtist, *arrListGenre;
+@property (nonatomic, strong) Item *currentPlay;
 
 + (GlobalParameter *)sharedInstance;
 

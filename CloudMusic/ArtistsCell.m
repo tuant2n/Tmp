@@ -16,14 +16,16 @@
 
 @interface ArtistsCell()
 {
-    UIImage *placeHolder;
-    UIImage *iTunesIcon, *cloudIcon;
+    UIImage *placeHolder, *iTunesIcon, *cloudIcon;
+    UIColor *bgColor, *highlightColor;
     
     MGSwipeButton *deleteBtn, *addToPlaylistBtn;
 }
 
 @property (nonatomic, weak) IBOutlet UIImageView *imgvArtwork;
 @property (nonatomic, weak) IBOutlet UILabel *lblAlbumArtistName, *lblAlbumArtisDesc;
+
+@property (nonatomic, weak) IBOutlet UIView *vContent;
 
 @property (nonatomic, weak) IBOutlet UIView *vMusicEq;
 @property (nonatomic, strong) VYPlayIndicator *musicEq;
@@ -55,6 +57,9 @@
     placeHolder = [UIImage imageNamed:@"filetype_audio"];
     iTunesIcon = [UIImage imageNamed:@"ipod-item-icon"];
     cloudIcon = [UIImage imageNamed:@"cloud-item-icon"];
+    
+    bgColor = [UIColor whiteColor];
+    highlightColor = [Utils colorWithRGBHex:0xe4f2ff];
     
     self.leftSwipeSettings.transition = MGSwipeTransitionStatic;
     self.leftExpansion.buttonIndex = -1;
@@ -105,6 +110,19 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    [super setHighlighted:highlighted animated:animated];
+    
+    if (highlighted)
+    {
+        self.vContent.backgroundColor = highlightColor;
+    }
+    else {
+        self.vContent.backgroundColor = bgColor;
+    }
 }
 
 @end

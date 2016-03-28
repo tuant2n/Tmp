@@ -29,12 +29,21 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *keyboardLayout;
 @property (nonatomic, weak) IBOutlet UIView *disableView;
 
+@property (nonatomic, strong) NSMutableArray *arrResults;
 @property (nonatomic, strong) TableFooterView *footerView;
 @property (nonatomic, strong) TableHeaderView *headerView;
 
 @end
 
 @implementation AlbumsViewController
+
+- (NSMutableArray *)arrResults
+{
+    if (!_arrResults) {
+        _arrResults = [[NSMutableArray alloc] init];
+    }
+    return _arrResults;
+}
 
 - (NSMutableArray *)albumsArray
 {
@@ -78,10 +87,8 @@
     self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
     self.tblList.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
     
-    [self.tblList registerNib:[UINib nibWithNibName:@"AlbumsCell" bundle:nil] forCellReuseIdentifier:@"AlbumsCellId"];
-
-    [self.tblSearchResult registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
-    [self.tblSearchResult registerNib:[UINib nibWithNibName:@"SongHeaderTitle" bundle:nil] forCellReuseIdentifier:@"SongHeaderTitleId"];
+    [Utils registerNibForTableView:self.tblList];
+    [Utils registerNibForTableView:self.tblSearchResult];
     
     [self setupHeaderBar];
     [self.tblList setTableFooterView:self.footerView];
@@ -114,11 +121,6 @@
     [self searchBar:searchBar activate:NO];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-}
-
 - (void)searchBar:(UISearchBar *)searchBar activate:(BOOL)isActive
 {
     isActiveSearch = isActive;
@@ -132,12 +134,14 @@
     self.tblList.scrollEnabled = !isActiveSearch;
     
     if (isActiveSearch) {
+         [self.arrResults removeAllObjects];
         [self showOverlayDisable:YES];
         
         self.tblSearchResult.delegate = self;
         self.tblSearchResult.dataSource = self;
     }
     else {
+         [self.arrResults removeAllObjects];
         [self showOverlayDisable:NO];
         [searchBar resignFirstResponder];
         
@@ -194,12 +198,55 @@
     [self.tblSearchResult reloadData];
 }
 
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *searchString = [searchBar.text stringByReplacingCharactersInRange:range withString:text];
+    if (searchString.length > 0)
+    {
+        [self doSearch:searchString];
+    }
+    return YES;
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+    [self doSearch:searchBar.text];
+}
+
+- (void)doSearch:(NSString *)sSearch
+{
+    [self.arrResults removeAllObjects];
+    
+    [[DataManagement sharedInstance] search:sSearch block:^(NSArray *results)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             if (results) {
+                 [self.arrResults addObjectsFromArray:results];
+             }
+             [UIView transitionWithView:self.tblSearchResult duration:0.35f options:UIViewAnimationOptionTransitionCrossDissolve|UIViewAnimationOptionCurveEaseInOut animations:^{
+                 [self.tblSearchResult reloadData];
+             } completion:nil];
+         });
+     }];
+}
+
 #pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (tableView == self.tblSearchResult) {
+        return self.arrResults.count;
+    }
+    else {
+        return 1;
+    }
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.tblSearchResult) {
-        return 0;
+        return self.arrResults.count;
     }
     else {
         return self.albumsArray.count;
@@ -208,22 +255,84 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [AlbumsCell height];
+    if (tableView == self.tblSearchResult) {
+        return [Utils normalCellHeight];
+    }
+    else {
+        return [AlbumsCell height];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (tableView == self.tblSearchResult) {
+        return [HeaderTitle height];
+    }
+    else {
+        return 0.0;;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NSString *sTitle = nil;
+    
+    if (tableView == self.tblSearchResult) {
+        SearchResultObj *resultOj = self.arrResults[section];
+        sTitle = resultOj.sTitle;
+    }
+
+    HeaderTitle *header = (HeaderTitle *)[tableView dequeueReusableCellWithIdentifier:@"HeaderTitleId"];
+    [header setTitle:sTitle];
+    return header.contentView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlbumsCell *cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
-    [cell setLineHidden:(indexPath.row == self.albumsArray.count - 1)];
-    
-    [self configureCell:cell atIndexPath:indexPath];
-    return cell;
+    if (tableView == self.tblSearchResult) {
+        SearchResultObj *resultOj = self.arrResults[indexPath.section];
+        id itemObj = resultOj.resuls[indexPath.row];
+        return [self configCellWithItem:itemObj atIndex:indexPath tableView:tableView];
+    }
+    else {
+        AlbumsCell *cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
+        [cell setLineHidden:(indexPath.row == self.albumsArray.count - 1)];
+        
+        [self configureCell:cell atIndexPath:indexPath];
+        return cell;
+    }
 }
 
 - (void)configureCell:(AlbumsCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     AlbumObj *album = self.albumsArray[indexPath.row];
     [cell config:album];
+}
+
+- (UITableViewCell *)configCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    if ([itemObj isKindOfClass:[Item class]]) {
+        SongsCell *cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
+        [cell configWithItem:itemObj];
+        return cell;
+    }
+    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
+        AlbumsCell *cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
+        [cell config:itemObj];
+        return cell;
+    }
+    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
+        ArtistsCell *cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
+        [cell config:itemObj];
+        return cell;
+    }
+    else if ([itemObj isKindOfClass:[GenresObj class]]) {
+        GenresCell *cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
+        [cell config:itemObj];
+        return cell;
+    }
+    
+    return nil;
 }
 
 - (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion

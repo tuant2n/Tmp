@@ -42,8 +42,6 @@
     self.iAlbumArtistId = item.itemAlbumArtistPID;
     [self setAlbumArtistName:item.itemAlbumArtist];
     
-    NSLog(@"%@",self.iAlbumArtistId);
-    
     self.iGenreId = item.itemGenrePID;
     [self setGenreName:item.itemGenre];
     
@@ -63,6 +61,10 @@
     self.iPlayCount = item.itemPlayCount;
     
     [self setSongDuration:item.playbackDuration];
+    
+    if ([item.itemTitle hasPrefix:@"Âm"]) {
+        self.isCloud = @YES;
+    }
 }
 
 - (void)setSongName:(NSString *)sSongName

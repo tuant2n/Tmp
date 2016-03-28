@@ -34,12 +34,6 @@ static GlobalParameter *globalParameter = nil;
 - (void)initValue
 {
     isPlayingMusic = NO;
-    
-    _arrData = [[NSMutableArray alloc] init];
-    _arrListSong = [[NSMutableArray alloc] init];
-    _arrListAlbum = [[NSMutableArray alloc] init];
-    _arrListArtist = [[NSMutableArray alloc] init];
-    _arrListGenre = [[NSMutableArray alloc] init];
 }
 
 #pragma mark - Play State

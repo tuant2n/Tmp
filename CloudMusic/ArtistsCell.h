@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MGSwipeTableCell.h"
 
-#import "AlbumArtistObj.h"
+@class AlbumArtistObj;
 
 @interface ArtistsCell : MGSwipeTableCell
 

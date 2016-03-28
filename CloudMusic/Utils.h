@@ -47,6 +47,9 @@
 + (UIButton *)createBarButton:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector;
 + (UIButton *)createBarButtonWithTitle:(NSString *)sTitle textColor:(UInt32)hexColor position:(UIControlContentHorizontalAlignment)position target:(id)target action:(SEL)selector;
 
++ (void)registerNibForTableView:(UITableView *)tblView;
++ (CGFloat)normalCellHeight;
+
 #pragma mark - Files
 
 + (NSString *)documentPath;

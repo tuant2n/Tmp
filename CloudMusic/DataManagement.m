@@ -9,11 +9,15 @@
 #import "DataManagement.h"
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "SearchOperation.h"
+
 #import "Utils.h"
 
 static DataManagement *_sharedInstance = nil;
 
 @interface DataManagement()
+
+@property (nonatomic, strong) NSOperationQueue *searchQueue;
 
 @end
 
@@ -28,6 +32,19 @@ static DataManagement *_sharedInstance = nil;
         _sharedInstance = [[DataManagement alloc] init];
     });
     return _sharedInstance;
+}
+
+- (NSOperationQueue *)searchQueue
+{
+    if (_searchQueue) {
+        return _searchQueue;
+    }
+    
+    _searchQueue = [[NSOperationQueue alloc] init];
+    _searchQueue.name = @"queue.search";
+    _searchQueue.maxConcurrentOperationCount = 1;
+    
+    return _searchQueue;
 }
 
 - (HCDCoreDataStackController *)coreDataController
@@ -97,6 +114,39 @@ static DataManagement *_sharedInstance = nil;
     [self.coreDataController save];
 }
 
+- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[self itemEntity]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"sSongNameIndex" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
+    
+    NSMutableArray *filters = [NSMutableArray new];
+    if (sName) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sSongNameIndex CONTAINS[cd] %@",sName];
+        [filters addObject:predicate];
+    }
+    if (iArtistId) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iAlbumArtistId == %@",iArtistId];
+        [filters addObject:predicate];
+    }
+    if (iGenreId) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iGenreId == %@",iGenreId];
+        [filters addObject:predicate];
+    }
+    if (filters.count > 0) {
+        [request setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:filters]];
+    }
+    
+    return request;
+}
+
+- (NSArray *)getListSongFilterByName:(NSString *)sName
+{
+    NSFetchRequest *request = [self getListSongFilterByName:sName artistId:nil genreId:nil];
+    NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
+    return results;
+}
+
 - (NSArray *)getListAlbumFilterByName:(NSString *)sName artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId
 {
     NSEntityDescription *itemEntity = [self itemEntity];
@@ -139,7 +189,7 @@ static DataManagement *_sharedInstance = nil;
     
     NSMutableArray *filters = [NSMutableArray new];
     if (sName) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sAlbumName like %@",sName];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sAlbumNameIndex CONTAINS[cd] %@",sName];
         [filters addObject:predicate];
     }
     if (iArtistId) {
@@ -164,12 +214,12 @@ static DataManagement *_sharedInstance = nil;
     NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
     
     NSMutableArray *albumsArray = [NSMutableArray new];
-    for (NSDictionary *albumInfo in results) {
-        AlbumObj *albumObj = [[AlbumObj alloc] initWithInfo:albumInfo];
-        if (!albumObj) {
+    for (NSDictionary *info in results) {
+        AlbumObj *item = [[AlbumObj alloc] initWithInfo:info];
+        if (!item) {
             continue;
         }
-        [albumsArray addObject:albumObj];
+        [albumsArray addObject:item];
     }
     
     return albumsArray;
@@ -220,13 +270,12 @@ static DataManagement *_sharedInstance = nil;
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:itemEntity];
-    
-    NSMutableArray *filters = [NSMutableArray new];
+
     if (sName) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sAlbumArtistName like %@",sName];
-        [filters addObject:predicate];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sAlbumArtistNameIndex CONTAINS[cd] %@",sName];
+        [request setPredicate:predicate];
     }
-    
+
     [request setPropertiesToFetch:@[iAlbumArtistId,sAlbumArtistName,numberOfSong,numberOfAlbum,duration,cloud,artwork]];
     [request setPropertiesToGroupBy:@[iAlbumArtistId,sAlbumArtistName]];
     
@@ -236,21 +285,111 @@ static DataManagement *_sharedInstance = nil;
     
     NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
     
-    NSMutableArray *albumsArray = [NSMutableArray new];
-    for (NSDictionary *albumInfo in results) {
-        AlbumArtistObj *artistObj = [[AlbumArtistObj alloc] initWithInfo:albumInfo];
-        if (!artistObj) {
+    NSMutableArray *artistArray = [NSMutableArray new];
+    for (NSDictionary *info in results) {
+        AlbumArtistObj *item = [[AlbumArtistObj alloc] initWithInfo:info];
+        if (!item) {
             continue;
         }
-        [albumsArray addObject:artistObj];
+        [artistArray addObject:item];
     }
     
-    return albumsArray;
+    return artistArray;
 }
 
 - (NSArray *)getListGenreFilterByName:(NSString *)sName
 {
-    return nil;
+    NSEntityDescription *itemEntity = [[DataManagement sharedInstance] itemEntity];
+    
+    NSAttributeDescription *iGenreId = [itemEntity.attributesByName objectForKey:@"iGenreId"];
+    NSAttributeDescription *sGenreName = [itemEntity.attributesByName objectForKey:@"sGenreName"];
+    NSAttributeDescription *sGenreNameIndex = [itemEntity.attributesByName objectForKey:@"sGenreNameIndex"];
+    
+    NSExpression *listSongId = [NSExpression expressionForKeyPath:@"iSongId"];
+    NSExpression *countSongExpression = [NSExpression expressionForFunction:@"count:" arguments:@[listSongId]];
+    NSExpressionDescription *numberOfSong = [[NSExpressionDescription alloc] init];
+    [numberOfSong setName: @"numberOfSong"];
+    [numberOfSong setExpression:countSongExpression];
+    [numberOfSong setExpressionResultType:NSInteger32AttributeType];
+    
+    NSExpression *listAlbumId = [NSExpression expressionForKeyPath:@"iAlbumId"];
+    NSExpression *distinct = [NSExpression expressionForFunction:@"distinct:" arguments:@[listAlbumId]];
+    NSExpression *countAlbumExpression = [NSExpression expressionForFunction:@"count:" arguments:@[distinct]];
+    NSExpressionDescription *numberOfAlbum = [[NSExpressionDescription alloc] init];
+    [numberOfAlbum setName: @"numberOfAlbum"];
+    [numberOfAlbum setExpression:countAlbumExpression];
+    [numberOfAlbum setExpressionResultType:NSInteger32AttributeType];
+    
+    NSExpression *listDuration = [NSExpression expressionForKeyPath:@"fDuration"];
+    NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:@[listDuration]];
+    NSExpressionDescription *duration = [[NSExpressionDescription alloc] init];
+    [duration setName: @"fDuration"];
+    [duration setExpression:sumExpression];
+    [duration setExpressionResultType:NSInteger32AttributeType];
+    
+    NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArtworkName"];
+    NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
+    NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
+    [artwork setName: @"sArtworkName"];
+    [artwork setExpression:maxExpression];
+    [artwork setExpressionResultType:NSStringAttributeType];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:itemEntity];
+    
+    if (sName) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sGenreNameIndex CONTAINS[cd] %@",sName];
+        [request setPredicate:predicate];
+    }
+    
+    [request setPropertiesToFetch:@[iGenreId,sGenreName,sGenreNameIndex,numberOfSong,numberOfAlbum,duration,artwork]];
+    [request setPropertiesToGroupBy:@[iGenreId,sGenreName,sGenreNameIndex]];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sGenreNameIndex" ascending:YES];
+    [request setSortDescriptors:@[sortDescriptor]];
+    [request setResultType:NSDictionaryResultType];
+    
+    NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
+    
+    NSMutableArray *genresArray = [NSMutableArray new];
+    for (NSDictionary *info in results) {
+        GenresObj *item = [[GenresObj alloc] initWithInfo:info];
+        if (!item) {
+            continue;
+        }
+        [genresArray addObject:item];
+    }
+    
+    return genresArray;
+}
+
+#pragma mark - Search
+
+- (void)search:(NSString *)sSearch block:(void (^)(NSArray *results))block
+{
+    [self cancelSearch];
+
+    SearchOperation *operation = [[SearchOperation alloc] initWitSearchString:sSearch];
+    __weak SearchOperation *blockOperation = operation;
+    
+    [operation setCompletionBlock:^{
+        if (!blockOperation.isCancelled) {
+            if (block) {
+                block(blockOperation.resultArray);
+            }
+        }
+        else {
+            NSLog(@"CANCEL");
+        }
+    }];
+    [self.searchQueue addOperation:operation];
+}
+
+- (void)cancelSearch
+{
+    if ([self.searchQueue operationCount] > 0) {
+        [self.searchQueue cancelAllOperations];
+    }
 }
 
 #pragma mark - iTunes Sync

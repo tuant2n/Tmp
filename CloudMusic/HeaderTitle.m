@@ -6,17 +6,17 @@
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
-#import "SongHeaderTitle.h"
+#import "HeaderTitle.h"
 
 #import "Utils.h"
 
-@interface SongHeaderTitle()
+@interface HeaderTitle()
 
 @property (nonatomic, weak) IBOutlet UILabel *lblTitle;
 
 @end
 
-@implementation SongHeaderTitle
+@implementation HeaderTitle
 
 - (void)awakeFromNib
 {
