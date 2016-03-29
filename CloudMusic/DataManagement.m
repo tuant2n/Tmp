@@ -147,6 +147,12 @@ static DataManagement *_sharedInstance = nil;
     return results;
 }
 
+- (NSArray *)getListSongCloudFilterByName:(NSString *)sName
+{
+    NSPredicate *filterCloudItem = [NSPredicate predicateWithFormat:@"isCloud == %@",@YES];
+    return [[self getListSongFilterByName:sName] filteredArrayUsingPredicate:filterCloudItem];
+}
+
 - (NSArray *)getListAlbumFilterByName:(NSString *)sName artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId
 {
     NSEntityDescription *itemEntity = [self itemEntity];
@@ -353,7 +359,7 @@ static DataManagement *_sharedInstance = nil;
     
     NSMutableArray *genresArray = [NSMutableArray new];
     for (NSDictionary *info in results) {
-        GenresObj *item = [[GenresObj alloc] initWithInfo:info];
+        GenreObj *item = [[GenreObj alloc] initWithInfo:info];
         if (!item) {
             continue;
         }

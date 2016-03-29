@@ -30,7 +30,8 @@
     return self;
 }
 
-- (void)main {
+- (void)main
+{
     @autoreleasepool
     {
         if (_sSearch == nil) {
@@ -81,6 +82,18 @@
             artistResult.resuls = tmpArray;
             artistResult.sTitle = [NSString stringWithFormat:@"Artists (result: %d)",(int)tmpArray.count];
             [_resultArray addObject:artistResult];
+        }
+        
+        if (self.isCancelled) {
+            return;
+        }
+        
+        tmpArray = [[DataManagement sharedInstance] getListSongCloudFilterByName:_sSearch];
+        if (tmpArray.count > 0) {
+            SearchResultObj *songResult = [[SearchResultObj alloc] init];
+            songResult.resuls = tmpArray;
+            songResult.sTitle = [NSString stringWithFormat:@"Files (result: %d)",(int)tmpArray.count];
+            [_resultArray addObject:songResult];
         }
         
         if (self.isCancelled) {

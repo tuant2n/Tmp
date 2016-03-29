@@ -12,9 +12,9 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
-#import "AlbumsViewController.h"
+#import "SearchDisplayController.h"
 
-@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
+@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate,UISearchDisplayDelegate>
 {
     BOOL isActiveSearch;
     NSString *sCurrentSearch;
@@ -27,12 +27,16 @@
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 @property (nonatomic, weak) IBOutlet UITableView *tblSearchResult;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *keyboardLayout;
 @property (nonatomic, weak) IBOutlet UIView *disableView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *keyboardLayout;
 
 @property (nonatomic, strong) NSMutableArray *arrResults;
 @property (nonatomic, strong) TableFooterView *footerView;
 @property (nonatomic, strong) TableHeaderView *headerView;
+
+@property (nonatomic) SearchDisplayController *searchDisplay;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, weak) IBOutlet UIView *header;
 
 @end
 
@@ -94,19 +98,49 @@
     [Utils registerNibForTableView:self.tblList];
     [Utils registerNibForTableView:self.tblSearchResult];
     
-//    [self setupHeaderBar];
+    [self setupHeaderBar];
     [self.tblList setTableFooterView:self.footerView];
 }
 
 - (void)setupHeaderBar
 {
-    [self.headerView setupForSongsVC];
-    self.headerView.searchBar.delegate = self;
-
-    self.keyboardLayout.priority = 750;
-    self.tblSearchResult.tableFooterView = nil;
+//    self.headerView.searchBar.delegate = self;
+//    self.searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:self.headerView.searchBar contentsController:self];
+//    self.searchDisplay.delegate = self;
+//    [self.tblList setTableHeaderView:self.headerView];
     
-    [self.tblList setTableHeaderView:self.headerView];
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.definesPresentationContext = YES;
+//    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = YES;
+    
+    [self.searchDisplayController.searchBar becomeFirstResponder];
+    
+    self.searchDisplay = [[SearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+//    self.searchDisplayController.searchBar = self.headerView.searchBar;
+    self.searchDisplay.delegate = self;
+    self.headerView.backgroundColor = [UIColor redColor];
+    [self.tblList setTableHeaderView:self.searchBar];
+
+    [self.searchBar setBackgroundImage:[UIImage new]];
+    [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"textField-background"] forState:UIControlStateNormal];
+    self.searchBar.opaque = NO;
+    self.searchBar.translucent = NO;
+    
+//    self.searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:self.headerView.searchBar contentsController:self];
+//    [self.tblList setTableHeaderView:self.searchBar];
+    
+    self.keyboardLayout.constant = [[[self tabBarController] tabBar] bounds].size.height;
+    self.tblSearchResult.tableFooterView = nil;
+}
+
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+
+}
+
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
+
 }
 
 #pragma mark - UISearchBarDelegate
@@ -149,7 +183,7 @@
         if ([searchBar isFirstResponder]) {
             [searchBar resignFirstResponder];
         }
-        
+    
         self.tblSearchResult.delegate = nil;
         self.tblSearchResult.dataSource = nil;
     }
@@ -164,17 +198,6 @@
     
     [self.tblList reloadSectionIndexTitles];
     [searchBar setShowsCancelButton:isActiveSearch animated:YES];
-}
-
-- (void)subscribeToKeyboard {
-    [self an_subscribeKeyboardWithAnimations:^(CGRect keyboardRect, NSTimeInterval duration, BOOL isShowing) {
-        if (isShowing) {
-            self.keyboardLayout.constant = CGRectGetHeight(keyboardRect);
-        }
-        else {
-            self.keyboardLayout.constant = [[[self tabBarController] tabBar] bounds].size.height;
-        }
-    } completion:nil];
 }
 
 - (void)showOverlayDisable:(BOOL)isShow
@@ -241,9 +264,7 @@
             if (results) {
                 [self.arrResults addObjectsFromArray:results];
             }
-            [UIView transitionWithView:self.tblSearchResult duration:0.35f options:UIViewAnimationOptionTransitionCrossDissolve|UIViewAnimationOptionCurveEaseInOut animations:^{
-                [self.tblSearchResult reloadData];
-            } completion:nil];
+            [self.tblSearchResult reloadData];
         });
     }];
 }
@@ -365,13 +386,53 @@
         [cell config:itemObj];
         return cell;
     }
-    else if ([itemObj isKindOfClass:[GenresObj class]]) {
+    else if ([itemObj isKindOfClass:[GenreObj class]]) {
         GenresCell *cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
         [cell config:itemObj];
         return cell;
     }
     
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id itemObj = nil;
+    
+    if (tableView == self.tblSearchResult) {
+        SearchResultObj *resultOj = self.arrResults[indexPath.section];
+        itemObj = resultOj.resuls[indexPath.row];
+    }
+    else {
+        itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    }
+    
+    if (itemObj) {
+        [self.headerView resignKeyboard];
+    }
+    
+    if ([itemObj isKindOfClass:[Item class]]) {
+        [[GlobalParameter sharedInstance] setCurrentItemPlay:(Item *)itemObj];
+    }
+    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
+        
+    }
+    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
+        AlbumArtistObj *artist = (AlbumArtistObj *)itemObj;
+        
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        vc.sTitle = artist.sAlbumArtistName;
+        vc.iAlbumArtistId = artist.iAlbumArtistId;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if ([itemObj isKindOfClass:[GenreObj class]]) {
+        GenreObj *genre = (GenreObj *)itemObj;
+        
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        vc.sTitle = genre.sGenreName;
+        vc.iGenreId = genre.iGenreId;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
@@ -484,19 +545,20 @@
 - (TableHeaderView *)headerView
 {
     if (!_headerView) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableHeaderView" owner:self options:nil];
-        if ([nib count] > 0) {
-            _headerView = [nib objectAtIndex:0];
-            _headerView.delegate = self;
-        }
+        _headerView = [[TableHeaderView alloc] initForSongsVC];
+        _headerView.delegate = self;
     }
     return _headerView;
 }
 
 - (void)hideHeaderView
 {
+    if (isActiveSearch) {
+        return;
+    }
+    
     if (self.tblList.tableHeaderView) {
-        self.tblList.contentOffset = CGPointMake(0.0, self.tblList.tableHeaderView.bounds.size.height);
+        self.tblList.contentOffset = CGPointMake(0.0, [self.headerView getHeight]);
     }
 }
 
@@ -545,9 +607,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [self an_unsubscribeKeyboard];
-//    [self searchBar:self.headerView.searchBar activate:NO];
     [self.musicEq stopEq:NO];
 }
 
@@ -555,7 +614,6 @@
 {
     [super viewWillAppear:animated];
     
-    [self subscribeToKeyboard];
     [self hideHeaderView];
     
     if ([[GlobalParameter sharedInstance] isPlay]) {
@@ -566,16 +624,11 @@
     }
 }
 
-- (void)dealloc {
-    [self an_unsubscribeKeyboard];
-}
-
 #pragma mark - Method
 
 - (void)openPlayer:(id)sender
 {
-    AlbumsViewController *vc = [[AlbumsViewController alloc] initWithNibName:@"AlbumsViewController" bundle:nil];
-    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning

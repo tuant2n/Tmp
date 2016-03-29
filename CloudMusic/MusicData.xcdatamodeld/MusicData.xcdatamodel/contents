@@ -13,6 +13,7 @@
         <attribute name="iSongId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="iTrack" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="iYear" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="lTimeDownloaded" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="sAlbumArtistName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sAlbumArtistNameIndex" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sAlbumName" optional="YES" attributeType="String" syncable="YES"/>
@@ -31,6 +32,6 @@
         <attribute name="sSongNameIndex" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Item" positionX="-27" positionY="18" width="128" height="465"/>
+        <element name="Item" positionX="-27" positionY="18" width="128" height="480"/>
     </elements>
 </model>

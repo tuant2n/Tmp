@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GenresObj : NSObject
+@interface GenreObj : NSObject
 
 @property (nonatomic, strong) NSNumber *iGenreId;
 @property (nonatomic, strong) NSString *sGenreName, *sGenreDesc;

@@ -52,5 +52,6 @@
 @dynamic iPlayCount;
 @dynamic fDuration;
 @dynamic sDuration;
+@dynamic lTimeDownloaded;
 
 @end

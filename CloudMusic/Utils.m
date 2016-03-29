@@ -86,6 +86,8 @@
 
 + (void)configTabbarAppearce
 {
+    [[UITabBar appearance] setBackgroundImage:[[Utils imageWithColor:0xfbfbfb] stretchableImageWithLeftCapWidth:5 topCapHeight:5]];
+    
     UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:11.0];
     UIColor *selectedColor = [self colorWithRGBHex:0x006bd5];
     UIColor *normalColor = [self colorWithRGBHex:0x333333];
@@ -186,6 +188,8 @@
     [tblView registerNib:[UINib nibWithNibName:@"GenresCell" bundle:nil] forCellReuseIdentifier:@"GenresCellId"];
     
     [tblView registerNib:[UINib nibWithNibName:@"HeaderTitle" bundle:nil] forCellReuseIdentifier:@"HeaderTitleId"];
+    
+    tblView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 }
 
 + (CGFloat)normalCellHeight

@@ -13,7 +13,7 @@
 
 @interface GlobalParameter : NSObject
 
-@property (nonatomic, strong) Item *currentPlay;
+@property (nonatomic, strong) Item *currentItemPlay;
 
 + (GlobalParameter *)sharedInstance;
 
@@ -22,5 +22,6 @@
 - (void)startPlay;
 - (void)pausePlay;
 - (BOOL)isPlay;
+- (void)setCurrentPlayingItem:(Item *)itemObj;
 
 @end

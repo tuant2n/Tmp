@@ -52,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSNumber *iPlayCount;
 @property (nullable, nonatomic, retain) NSNumber *fDuration;
 @property (nullable, nonatomic, retain) NSString *sDuration;
+@property (nullable, nonatomic, retain) NSNumber *lTimeDownloaded;
 
 @end
 

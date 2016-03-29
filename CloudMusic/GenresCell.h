@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "MGSwipeTableCell.h"
 
-@class GenresObj;
+@class GenreObj;
 
 @interface GenresCell : MGSwipeTableCell
 
-- (void)config:(GenresObj *)item;
+- (void)config:(GenreObj *)item;
 - (void)setLineHidden:(BOOL)isHidden;
 - (void)isPlaying:(BOOL)isPlaying;
 

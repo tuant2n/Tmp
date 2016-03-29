@@ -8,7 +8,7 @@
 
 #import "GenresCell.h"
 
-#import "GenresObj.h"
+#import "GenreObj.h"
 #import "Utils.h"
 
 #import "UIImageView+WebCache.h"
@@ -69,7 +69,7 @@
     addToPlaylistBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnAddPlaylist"] backgroundColor:[Utils colorWithRGBHex:0x03C9A9]];
 }
 
-- (void)config:(GenresObj *)item
+- (void)config:(GenreObj *)item
 {
     [self.imgvArtwork sd_setImageWithURL:item.sLocalArtworkUrl placeholderImage:placeHolder options:SDWebImageRetryFailed];
     

@@ -25,14 +25,15 @@ typedef enum {
 @interface TableHeaderView : UIView
 
 @property (nonatomic, assign) id<TableHeaderViewDelegate> delegate;
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, strong) UISearchBar *searchBar;
 
-- (void)setupForSongsVC;
-- (void)setupForAlbumVC;
-- (void)setupForArtistVC;
-- (void)setupForGenreVC;
+- (id)initForSongsVC;
+- (id)initForAlbumsVC;
+- (id)initForArtistsVC;
+- (id)initForGenresVC;
 
+- (float)getHeight;
 - (void)setActiveSearchBar:(BOOL)isActive;
-- (void)setHeight:(float)fHeight;
+- (void)resignKeyboard;
 
 @end

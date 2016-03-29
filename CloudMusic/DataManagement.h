@@ -12,7 +12,7 @@
 #import "Item.h"
 #import "AlbumObj.h"
 #import "AlbumArtistObj.h"
-#import "GenresObj.h"
+#import "GenreObj.h"
 #import "SearchResultObj.h"
 
 #import "SongsCell.h"
@@ -20,6 +20,11 @@
 #import "ArtistsCell.h"
 #import "GenresCell.h"
 #import "HeaderTitle.h"
+
+#import "SongsViewController.h"
+#import "AlbumsViewController.h"
+#import "ArtistsViewController.h"
+#import "GenresViewController.h"
 
 @interface DataManagement : NSObject
 
@@ -39,6 +44,7 @@
 - (NSFetchRequest *)getListSongFilterByName:(NSString *)sName artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId;
 
 - (NSArray *)getListSongFilterByName:(NSString *)sName;
+- (NSArray *)getListSongCloudFilterByName:(NSString *)sName;
 - (NSArray *)getListAlbumFilterByName:(NSString *)sName artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId;
 - (NSArray *)getListAlbumArtistFilterByName:(NSString *)sName;
 - (NSArray *)getListGenreFilterByName:(NSString *)sName;

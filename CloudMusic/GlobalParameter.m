@@ -53,4 +53,23 @@ static GlobalParameter *globalParameter = nil;
     return isPlayingMusic;
 }
 
+- (void)setCurrentPlayingItem:(Item *)itemObj
+{
+    if ([self.currentItemPlay isEqual:itemObj]) {
+        return;
+    }
+    
+    NSMutableDictionary *musicInfo = [[NSMutableDictionary alloc] init];
+    
+    if (self.currentItemPlay) {
+        self.currentItemPlay.isPlaying = NO;
+        [musicInfo setObject:self.currentItemPlay forKey:@"lastItem"];
+    }
+    
+    self.currentItemPlay = itemObj;
+    self.currentItemPlay.isPlaying = YES;
+    [musicInfo setObject:self.currentItemPlay forKey:@"currentItem"];
+    [self startPlay];
+}
+
 @end

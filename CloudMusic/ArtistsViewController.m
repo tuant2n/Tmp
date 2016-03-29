@@ -12,9 +12,12 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
+#import "AlbumsViewController.h"
+
 @interface ArtistsViewController () <MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
 {
     BOOL isActiveSearch;
+    NSString *sCurrentSearch;
 }
 
 @property (nonatomic, strong) PCSEQVisualizer *musicEq;
@@ -27,12 +30,21 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *keyboardLayout;
 @property (nonatomic, weak) IBOutlet UIView *disableView;
 
+@property (nonatomic, strong) NSMutableArray *arrResults;
 @property (nonatomic, strong) TableFooterView *footerView;
 @property (nonatomic, strong) TableHeaderView *headerView;
 
 @end
 
 @implementation ArtistsViewController
+
+- (NSMutableArray *)arrResults
+{
+    if (!_arrResults) {
+        _arrResults = [[NSMutableArray alloc] init];
+    }
+    return _arrResults;
+}
 
 - (NSMutableArray *)artistArray
 {
@@ -80,13 +92,11 @@
 
 - (void)setupHeaderBar
 {
-    [self.headerView setupForArtistVC];
     self.headerView.searchBar.delegate = self;
-    
-    self.keyboardLayout.priority = 750;
-    self.tblSearchResult.tableFooterView = nil;
-    
     [self.tblList setTableHeaderView:self.headerView];
+    
+    self.keyboardLayout.constant = [[[self tabBarController] tabBar] bounds].size.height;
+    self.tblSearchResult.tableFooterView = nil;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -105,14 +115,34 @@
     [self searchBar:searchBar activate:NO];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-}
-
 - (void)searchBar:(UISearchBar *)searchBar activate:(BOOL)isActive
 {
+    if (isActiveSearch == isActive) {
+        return;
+    }
+    
     isActiveSearch = isActive;
+    
+    [self.arrResults removeAllObjects];
+    sCurrentSearch = nil;
+    
+    if (isActiveSearch)
+    {
+        [self showOverlayDisable:YES];
+        
+        self.tblSearchResult.delegate = self;
+        self.tblSearchResult.dataSource = self;
+    }
+    else {
+        [self showOverlayDisable:NO];
+        
+        if ([searchBar isFirstResponder]) {
+            [searchBar resignFirstResponder];
+        }
+        
+        self.tblSearchResult.delegate = nil;
+        self.tblSearchResult.dataSource = nil;
+    }
     
     [UIView animateWithDuration:0.2 animations:^{
         [self.headerView setActiveSearchBar:isActiveSearch];
@@ -122,33 +152,8 @@
     self.tblList.allowsSelection = !isActiveSearch;
     self.tblList.scrollEnabled = !isActiveSearch;
     
-    if (isActiveSearch) {
-        [self showOverlayDisable:YES];
-        
-        self.tblSearchResult.delegate = self;
-        self.tblSearchResult.dataSource = self;
-    }
-    else {
-        [self showOverlayDisable:NO];
-        [searchBar resignFirstResponder];
-        
-        self.tblSearchResult.delegate = nil;
-        self.tblSearchResult.dataSource = nil;
-    }
-    
     [self.tblList reloadSectionIndexTitles];
     [searchBar setShowsCancelButton:isActiveSearch animated:YES];
-}
-
-- (void)subscribeToKeyboard {
-    [self an_subscribeKeyboardWithAnimations:^(CGRect keyboardRect, NSTimeInterval duration, BOOL isShowing) {
-        if (isShowing) {
-            self.keyboardLayout.constant = CGRectGetHeight(keyboardRect);
-        } else {
-            self.keyboardLayout.constant = [[[self tabBarController] tabBar] bounds].size.height;
-        }
-        [self.tblSearchResult layoutIfNeeded];
-    } completion:nil];
 }
 
 - (void)showOverlayDisable:(BOOL)isShow
@@ -185,12 +190,82 @@
     [self.tblSearchResult reloadData];
 }
 
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *searchString = [searchBar.text stringByReplacingCharactersInRange:range withString:text];
+    [self doSearch:searchString];
+    return YES;
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+    [self doSearch:searchBar.text];
+}
+
+- (void)doSearch:(NSString *)sSearch
+{
+    sSearch = [sSearch stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (sSearch.length <= 0 || [sSearch isEqualToString:sCurrentSearch])
+    {
+        return;
+    }
+    
+    [self.arrResults removeAllObjects];
+    sCurrentSearch = sSearch;
+    
+    [[DataManagement sharedInstance] search:sSearch block:^(NSArray *results)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             if (results) {
+                 [self.arrResults addObjectsFromArray:results];
+             }
+             [self.tblSearchResult reloadData];
+         });
+     }];
+}
+
 #pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (tableView == self.tblSearchResult) {
+        return self.arrResults.count;
+    }
+    else {
+        return 1;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (tableView == self.tblSearchResult) {
+        return [HeaderTitle height];
+    }
+    else {
+        return 0.0;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NSString *sTitle = nil;
+    
+    if (tableView == self.tblSearchResult) {
+        SearchResultObj *resultOj = self.arrResults[section];
+        sTitle = resultOj.sTitle;
+    }
+    
+    HeaderTitle *header = (HeaderTitle *)[tableView dequeueReusableCellWithIdentifier:@"HeaderTitleId"];
+    [header setTitle:sTitle];
+    return header.contentView;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.tblSearchResult) {
-        return 0;
+        SearchResultObj *resultOj = self.arrResults[section];
+        return resultOj.resuls.count;
     }
     else {
         return self.artistArray.count;
@@ -199,22 +274,96 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [ArtistsCell height];
+    return [Utils normalCellHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ArtistsCell *cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
-    [cell setLineHidden:(indexPath.row == self.artistArray.count - 1)];
-    
-    [self configureCell:cell atIndexPath:indexPath];
-    return cell;
+    if (tableView == self.tblSearchResult) {
+        SearchResultObj *resultOj = self.arrResults[indexPath.section];
+        id itemObj = resultOj.resuls[indexPath.row];
+        return [self configCellWithItem:itemObj atIndex:indexPath tableView:tableView];
+    }
+    else {
+        ArtistsCell *cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
+        [cell setLineHidden:(indexPath.row == self.artistArray.count - 1)];
+        
+        [self configureCell:cell atIndexPath:indexPath];
+        return cell;
+    }
 }
 
 - (void)configureCell:(ArtistsCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     AlbumArtistObj *artist = self.artistArray[indexPath.row];
     [cell config:artist];
+}
+
+- (UITableViewCell *)configCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    if ([itemObj isKindOfClass:[Item class]]) {
+        SongsCell *cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
+        [cell configWithItem:itemObj];
+        return cell;
+    }
+    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
+        AlbumsCell *cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
+        [cell config:itemObj];
+        return cell;
+    }
+    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
+        ArtistsCell *cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
+        [cell config:itemObj];
+        return cell;
+    }
+    else if ([itemObj isKindOfClass:[GenreObj class]]) {
+        GenresCell *cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
+        [cell config:itemObj];
+        return cell;
+    }
+    
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id itemObj = nil;
+    
+    if (tableView == self.tblSearchResult) {
+        SearchResultObj *resultOj = self.arrResults[indexPath.section];
+        itemObj = resultOj.resuls[indexPath.row];
+    }
+    else {
+        itemObj = [self.artistArray objectAtIndex:indexPath.row];
+    }
+    
+    if (itemObj) {
+        [self.headerView resignKeyboard];
+    }
+    
+    if ([itemObj isKindOfClass:[Item class]]) {
+        [[GlobalParameter sharedInstance] setCurrentItemPlay:(Item *)itemObj];
+    }
+    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
+        
+    }
+    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
+        AlbumArtistObj *artist = (AlbumArtistObj *)itemObj;
+        
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        vc.sTitle = artist.sAlbumArtistName;
+        vc.iAlbumArtistId = artist.iAlbumArtistId;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
+    else if ([itemObj isKindOfClass:[GenreObj class]]) {
+        GenreObj *genre = (GenreObj *)itemObj;
+        
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        vc.sTitle = genre.sGenreName;
+        vc.iGenreId = genre.iGenreId;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
@@ -267,11 +416,8 @@
 - (TableHeaderView *)headerView
 {
     if (!_headerView) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableHeaderView" owner:self options:nil];
-        if ([nib count] > 0) {
-            _headerView = [nib objectAtIndex:0];
-            _headerView.delegate = self;
-        }
+        _headerView = [[TableHeaderView alloc] initForArtistsVC];
+        _headerView.delegate = self;
     }
     return _headerView;
 }
@@ -282,14 +428,19 @@
         
     }
     else if (iType == kHeaderUtilTypeGoAllAlbums) {
-        
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
 - (void)hideHeaderView
 {
+    if (isActiveSearch) {
+        return;
+    }
+    
     if (self.tblList.tableHeaderView) {
-        self.tblList.contentOffset = CGPointMake(0.0, self.tblList.tableHeaderView.bounds.size.height);
+        self.tblList.contentOffset = CGPointMake(0.0, [self.headerView getHeight]);
     }
 }
 
@@ -329,7 +480,6 @@
 {
     [super viewWillDisappear:animated];
     
-    [self an_unsubscribeKeyboard];
     [self searchBar:self.headerView.searchBar activate:NO];
     [self.musicEq stopEq:NO];
 }
@@ -338,7 +488,6 @@
 {
     [super viewWillAppear:animated];
     
-    [self subscribeToKeyboard];
     [self hideHeaderView];
     
     if ([[GlobalParameter sharedInstance] isPlay]) {
@@ -347,10 +496,6 @@
     else {
         [self.musicEq stopEq:NO];
     }
-}
-
-- (void)dealloc {
-    [self an_unsubscribeKeyboard];
 }
 
 #pragma mark - Method

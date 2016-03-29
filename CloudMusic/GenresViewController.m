@@ -82,13 +82,11 @@
 
 - (void)setupHeaderBar
 {
-    [self.headerView setupForGenreVC];
     self.headerView.searchBar.delegate = self;
-    
-    self.keyboardLayout.priority = 750;
-    self.tblSearchResult.tableFooterView = nil;
-    
     [self.tblList setTableHeaderView:self.headerView];
+    
+    self.keyboardLayout.constant = [[[self tabBarController] tabBar] bounds].size.height;
+    self.tblSearchResult.tableFooterView = nil;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -140,17 +138,6 @@
     
     [self.tblList reloadSectionIndexTitles];
     [searchBar setShowsCancelButton:isActiveSearch animated:YES];
-}
-
-- (void)subscribeToKeyboard {
-    [self an_subscribeKeyboardWithAnimations:^(CGRect keyboardRect, NSTimeInterval duration, BOOL isShowing) {
-        if (isShowing) {
-            self.keyboardLayout.constant = CGRectGetHeight(keyboardRect);
-        } else {
-            self.keyboardLayout.constant = [[[self tabBarController] tabBar] bounds].size.height;
-        }
-        [self.tblSearchResult layoutIfNeeded];
-    } completion:nil];
 }
 
 - (void)showOverlayDisable:(BOOL)isShow
@@ -215,7 +202,7 @@
 
 - (void)configureCell:(GenresCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    GenresObj *genre = self.artistArray[indexPath.row];
+    GenreObj *genre = self.artistArray[indexPath.row];
     [cell config:genre];
 }
 
@@ -228,7 +215,7 @@
     
     if (direction == MGSwipeDirectionLeftToRight)
     {
-        GenresObj *item = self.artistArray[indexPath.row];
+        GenreObj *item = self.artistArray[indexPath.row];
         
         if (item.isCloud && index == 0) {
             return NO;
@@ -269,11 +256,8 @@
 - (TableHeaderView *)headerView
 {
     if (!_headerView) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"TableHeaderView" owner:self options:nil];
-        if ([nib count] > 0) {
-            _headerView = [nib objectAtIndex:0];
-            _headerView.delegate = self;
-        }
+        _headerView = [[TableHeaderView alloc] initForGenresVC];
+        _headerView.delegate = self;
     }
     return _headerView;
 }
@@ -283,15 +267,16 @@
     if (iType == kHeaderUtilTypeCreatePlaylist) {
         
     }
-    else if (iType == kHeaderUtilTypeGoAllAlbums) {
-        
-    }
 }
 
 - (void)hideHeaderView
 {
+    if (isActiveSearch) {
+        return;
+    }
+    
     if (self.tblList.tableHeaderView) {
-        self.tblList.contentOffset = CGPointMake(0.0, self.tblList.tableHeaderView.bounds.size.height);
+        self.tblList.contentOffset = CGPointMake(0.0, [self.headerView getHeight]);
     }
 }
 
@@ -330,8 +315,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [self an_unsubscribeKeyboard];
+
     [self searchBar:self.headerView.searchBar activate:NO];
     [self.musicEq stopEq:NO];
 }
@@ -339,8 +323,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self subscribeToKeyboard];
+
     [self hideHeaderView];
     
     if ([[GlobalParameter sharedInstance] isPlay]) {
@@ -349,10 +332,6 @@
     else {
         [self.musicEq stopEq:NO];
     }
-}
-
-- (void)dealloc {
-    [self an_unsubscribeKeyboard];
 }
 
 #pragma mark - Method

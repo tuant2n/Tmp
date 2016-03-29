@@ -6,11 +6,11 @@
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
-#import "GenresObj.h"
+#import "GenreObj.h"
 
 #import "Utils.h"
 
-@implementation GenresObj
+@implementation GenreObj
 
 - (id)initWithInfo:(NSDictionary *)info
 {
