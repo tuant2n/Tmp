@@ -218,6 +218,7 @@
 {
     if ([self.searchBar isFirstResponder]) {
         [self.searchBar resignFirstResponder];
+        [self.searchBar setShowsCancelButton:NO animated:YES];
     }
 }
 
