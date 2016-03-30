@@ -27,7 +27,6 @@
 {
     if (!_musicEq) {
         _musicEq = [[PCSEQVisualizer alloc] initWithNumberOfBars:3 barWidth:2 height:18.0 color:0x006bd5];
-        _musicEq.userInteractionEnabled = NO;
     }
     return _musicEq;
 }
@@ -36,20 +35,7 @@
 {
     if (!_barMusicEq)
     {
-        UIButton *btnEqHolder = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btnEqHolder setFrame:CGRectMake(0.0, 0.0, 35.0, 35.0)];
-        btnEqHolder.backgroundColor = [UIColor clearColor];
-        [btnEqHolder addTarget:self action:@selector(openPlayer:) forControlEvents:UIControlEventTouchUpInside];
-        btnEqHolder.multipleTouchEnabled = NO;
-        btnEqHolder.exclusiveTouch = YES;
-        
-        CGRect frame = self.musicEq.frame;
-        frame.origin.x = (btnEqHolder.frame.size.width - frame.size.width);
-        frame.origin.y = (btnEqHolder.frame.size.height - frame.size.height) / 2.0;
-        self.musicEq.frame = frame;
-        [btnEqHolder addSubview:self.musicEq];
-        
-        _barMusicEq = [[UIBarButtonItem alloc] initWithCustomView:btnEqHolder];
+        _barMusicEq = [[UIBarButtonItem alloc] initWithCustomView:[Utils buttonMusicEqualizeqHolderWith:self.musicEq target:self action:@selector(openPlayer:)]];
     }
     return _barMusicEq;
 }
@@ -57,8 +43,7 @@
 - (UIBarButtonItem *)barBtnAddFile
 {
     if (!_barBtnAddFile) {
-        UIButton *btnAddFile = [Utils createBarButton:@"icn-add-music-normal.png" position:UIControlContentHorizontalAlignmentLeft target:self selector:@selector(addFile)];
-        _barBtnAddFile = [[UIBarButtonItem alloc] initWithCustomView:btnAddFile];
+        _barBtnAddFile = [[UIBarButtonItem alloc] initWithCustomView:[Utils createBarButton:@"icn-add-music-normal.png" position:UIControlContentHorizontalAlignmentLeft target:self selector:@selector(addFile)]];
     }
     return _barBtnAddFile;
 }
@@ -74,6 +59,8 @@
     self.title = @"Files";
     self.navigationItem.rightBarButtonItem = self.barMusicEq;
     self.navigationItem.leftBarButtonItem = self.barBtnAddFile;
+    [Utils configNavigationController:self.navigationController];
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
 }
 
 - (void)setupData

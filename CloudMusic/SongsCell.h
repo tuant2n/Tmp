@@ -7,15 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MGSwipeTableCell.h"
+#import "MainCell.h"
 
 @class Item;
 
-@interface SongsCell : MGSwipeTableCell
-
-- (void)configWithItem:(Item *)item;
-- (void)setLineHidden:(BOOL)isHidden;
-- (void)isPlaying:(BOOL)isPlaying;
+@interface SongsCell : MainCell
 
 + (CGFloat)height;
 

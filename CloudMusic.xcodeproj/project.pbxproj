@@ -108,8 +108,8 @@
 		3CB105361CA419DB0087D20A /* ipod-item-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB105301CA419DB0087D20A /* ipod-item-icon@2x.png */; };
 		3CB105371CA419DB0087D20A /* ipod-item-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB105311CA419DB0087D20A /* ipod-item-icon@3x.png */; };
 		3CB105521CA435C10087D20A /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB105511CA435C10087D20A /* TableHeaderView.m */; };
-		3CDC32AD1CAAD1380037B34B /* SearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CDC32AC1CAAD1380037B34B /* SearchDisplayController.m */; };
 		3CE4B8C81C983E65004447CD /* MoreTableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE4B8C71C983E65004447CD /* MoreTableViewDelegate.m */; };
+		3CF2A3651CAC199500EE89FC /* MainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF2A3641CAC199500EE89FC /* MainCell.m */; };
 		7B007E2D1C924FE90083AA31 /* PCSEQVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B007E2C1C924FE90083AA31 /* PCSEQVisualizer.m */; };
 		7B066A4D1CA4C9610078FD53 /* SongsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B066A4C1CA4C9610078FD53 /* SongsViewController.xib */; };
 		7B066A581CA4CD730078FD53 /* AlbumsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B066A571CA4CD730078FD53 /* AlbumsViewController.xib */; };
@@ -301,10 +301,10 @@
 		3CB105311CA419DB0087D20A /* ipod-item-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipod-item-icon@3x.png"; sourceTree = "<group>"; };
 		3CB105501CA435C10087D20A /* TableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableHeaderView.h; sourceTree = "<group>"; };
 		3CB105511CA435C10087D20A /* TableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableHeaderView.m; sourceTree = "<group>"; };
-		3CDC32AB1CAAD1380037B34B /* SearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchDisplayController.h; sourceTree = "<group>"; };
-		3CDC32AC1CAAD1380037B34B /* SearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchDisplayController.m; sourceTree = "<group>"; };
 		3CE4B8C61C983E65004447CD /* MoreTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreTableViewDelegate.h; sourceTree = "<group>"; };
 		3CE4B8C71C983E65004447CD /* MoreTableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreTableViewDelegate.m; sourceTree = "<group>"; };
+		3CF2A3631CAC199500EE89FC /* MainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainCell.h; sourceTree = "<group>"; };
+		3CF2A3641CAC199500EE89FC /* MainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainCell.m; sourceTree = "<group>"; };
 		7B007E2B1C924FE90083AA31 /* PCSEQVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCSEQVisualizer.h; sourceTree = "<group>"; };
 		7B007E2C1C924FE90083AA31 /* PCSEQVisualizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCSEQVisualizer.m; sourceTree = "<group>"; };
 		7B066A4C1CA4C9610078FD53 /* SongsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SongsViewController.xib; sourceTree = "<group>"; };
@@ -685,6 +685,8 @@
 				3C9199951CA939FF0099B451 /* HeaderTitle */,
 				3CE4B8C61C983E65004447CD /* MoreTableViewDelegate.h */,
 				3CE4B8C71C983E65004447CD /* MoreTableViewDelegate.m */,
+				3CF2A3631CAC199500EE89FC /* MainCell.h */,
+				3CF2A3641CAC199500EE89FC /* MainCell.m */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -819,8 +821,6 @@
 				7B066AD41CA53F4E0078FD53 /* SongsCell.h */,
 				7B066AD51CA53F4E0078FD53 /* SongsCell.m */,
 				7BF65F151CA3C285007B198D /* SongsCell.xib */,
-				3CDC32AB1CAAD1380037B34B /* SearchDisplayController.h */,
-				3CDC32AC1CAAD1380037B34B /* SearchDisplayController.m */,
 			);
 			name = Songs;
 			sourceTree = "<group>";
@@ -1150,7 +1150,6 @@
 				7BF65F4A1CA3D782007B198D /* SDWebImageManager.m in Sources */,
 				7BD1794A1C9D522C004CD5AF /* DataManagement.m in Sources */,
 				3CAC3FEE1C92F574000FFF60 /* GlobalParameter.m in Sources */,
-				3CDC32AD1CAAD1380037B34B /* SearchDisplayController.m in Sources */,
 				7BF65F201CA3CD48007B198D /* VYPlayIndicator.m in Sources */,
 				7BF65F4D1CA3D782007B198D /* UIImage+GIF.m in Sources */,
 				3CA4E3131C9ECE9400168B48 /* Item+CoreDataProperties.m in Sources */,
@@ -1159,6 +1158,7 @@
 				3C9199AB1CA93D750099B451 /* SearchOperation.m in Sources */,
 				7B066A651CA4D8620078FD53 /* TableFooterView.m in Sources */,
 				7BF65F4E1CA3D782007B198D /* UIImage+MultiFormat.m in Sources */,
+				3CF2A3651CAC199500EE89FC /* MainCell.m in Sources */,
 				7BF65F491CA3D782007B198D /* SDWebImageDownloaderOperation.m in Sources */,
 				7B066A6C1CA4EC050078FD53 /* TableHeaderCell.m in Sources */,
 				7B007E2D1C924FE90083AA31 /* PCSEQVisualizer.m in Sources */,

@@ -7,15 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MGSwipeTableCell.h"
+#import "MainCell.h"
 
 @class AlbumArtistObj;
 
-@interface ArtistsCell : MGSwipeTableCell
-
-- (void)config:(AlbumArtistObj *)item;
-- (void)setLineHidden:(BOOL)isHidden;
-- (void)isPlaying:(BOOL)isPlaying;
+@interface ArtistsCell : MainCell
 
 + (CGFloat)height;
 

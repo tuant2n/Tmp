@@ -39,7 +39,7 @@
         }
         
         _sSearch = [[Utils standardLocaleString:_sSearch] lowercaseString];
-        
+
         if (_sSearch.length <= 0) {
             return;
         }

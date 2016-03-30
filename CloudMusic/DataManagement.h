@@ -15,6 +15,7 @@
 #import "GenreObj.h"
 #import "SearchResultObj.h"
 
+#import "MainCell.h"
 #import "SongsCell.h"
 #import "AlbumsCell.h"
 #import "ArtistsCell.h"

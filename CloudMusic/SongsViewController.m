@@ -12,9 +12,7 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
-#import "SearchDisplayController.h"
-
-@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate,UISearchDisplayDelegate>
+@interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
 {
     BOOL isActiveSearch;
     NSString *sCurrentSearch;
@@ -28,15 +26,10 @@
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 @property (nonatomic, weak) IBOutlet UITableView *tblSearchResult;
 @property (nonatomic, weak) IBOutlet UIView *disableView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *keyboardLayout;
 
 @property (nonatomic, strong) NSMutableArray *arrResults;
 @property (nonatomic, strong) TableFooterView *footerView;
 @property (nonatomic, strong) TableHeaderView *headerView;
-
-@property (nonatomic) SearchDisplayController *searchDisplay;
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
-@property (nonatomic, weak) IBOutlet UIView *header;
 
 @end
 
@@ -85,7 +78,9 @@
 {
     self.title = @"Songs";
     self.navigationItem.rightBarButtonItem = self.barMusicEq;
-
+    [Utils configNavigationController:self.navigationController];
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
+    
     self.disableView.backgroundColor = [UIColor blackColor];
     self.disableView.alpha = 0.0;
     self.disableView.hidden = YES;
@@ -104,43 +99,9 @@
 
 - (void)setupHeaderBar
 {
-//    self.headerView.searchBar.delegate = self;
-//    self.searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:self.headerView.searchBar contentsController:self];
-//    self.searchDisplay.delegate = self;
-//    [self.tblList setTableHeaderView:self.headerView];
-    
-    self.extendedLayoutIncludesOpaqueBars = YES;
-    self.definesPresentationContext = YES;
-//    self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.automaticallyAdjustsScrollViewInsets = YES;
-    
-    [self.searchDisplayController.searchBar becomeFirstResponder];
-    
-    self.searchDisplay = [[SearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-//    self.searchDisplayController.searchBar = self.headerView.searchBar;
-    self.searchDisplay.delegate = self;
-    self.headerView.backgroundColor = [UIColor redColor];
-    [self.tblList setTableHeaderView:self.searchBar];
-
-    [self.searchBar setBackgroundImage:[UIImage new]];
-    [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"textField-background"] forState:UIControlStateNormal];
-    self.searchBar.opaque = NO;
-    self.searchBar.translucent = NO;
-    
-//    self.searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:self.headerView.searchBar contentsController:self];
-//    [self.tblList setTableHeaderView:self.searchBar];
-    
-    self.keyboardLayout.constant = [[[self tabBarController] tabBar] bounds].size.height;
+    self.headerView.searchBar.delegate = self;
+    [self.tblList setTableHeaderView:self.headerView];
     self.tblSearchResult.tableFooterView = nil;
-}
-
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-
-}
-
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-
 }
 
 #pragma mark - UISearchBarDelegate
@@ -155,12 +116,13 @@
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    searchBar.text = nil;
     [self searchBar:searchBar activate:NO];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar activate:(BOOL)isActive
 {
+    [searchBar setShowsCancelButton:isActive animated:YES];
+    
     if (isActiveSearch == isActive) {
         return;
     }
@@ -169,6 +131,7 @@
     
     [self.arrResults removeAllObjects];
     sCurrentSearch = nil;
+    self.headerView.searchBar.text = sCurrentSearch;
     
     if (isActiveSearch)
     {
@@ -188,7 +151,7 @@
         self.tblSearchResult.dataSource = nil;
     }
     
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
         [self.headerView setActiveSearchBar:isActiveSearch];
         [self.tblList setTableHeaderView:self.headerView];
     } completion:nil];
@@ -197,60 +160,46 @@
     self.tblList.scrollEnabled = !isActiveSearch;
     
     [self.tblList reloadSectionIndexTitles];
-    [searchBar setShowsCancelButton:isActiveSearch animated:YES];
 }
 
 - (void)showOverlayDisable:(BOOL)isShow
 {
-    if (isShow) {
+    if (isShow)
+    {
         self.disableView.hidden = NO;
-        self.tblSearchResult.alpha = 0.0;
         self.tblSearchResult.hidden = NO;
         
         [UIView animateWithDuration:0.2 animations:^{
             self.disableView.alpha = 0.5;
+            self.tblSearchResult.alpha = 0.0;
         } completion:nil];
     }
     else {
-        self.disableView.alpha = 0.0;
         self.disableView.hidden = YES;
         self.tblSearchResult.hidden = YES;
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.disableView.alpha = 0.0;
+            self.tblSearchResult.alpha = 0.0;
+        } completion:nil];
     }
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    if (searchText.length > 0) {
-        self.disableView.hidden = YES;
-        self.tblSearchResult.alpha = 1.0;
-        self.tblSearchResult.hidden = NO;
-    }
-    else {
-        self.disableView.hidden = NO;
-        self.tblSearchResult.alpha = 0.0;
-        self.tblSearchResult.hidden = YES;
-    }
-    
-    [self.tblSearchResult reloadData];
-}
-
-- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    NSString *searchString = [searchBar.text stringByReplacingCharactersInRange:range withString:text];
-    [self doSearch:searchString];
-    return YES;
+    [self doSearch:searchText];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
-    [self doSearch:searchBar.text];
+    [searchBar setShowsCancelButton:NO animated:YES];
 }
 
 - (void)doSearch:(NSString *)sSearch
 {
     sSearch = [sSearch stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (sSearch.length <= 0 || [sSearch isEqualToString:sCurrentSearch])
+    if ([sSearch isEqualToString:sCurrentSearch])
     {
         return;
     }
@@ -258,15 +207,30 @@
     [self.arrResults removeAllObjects];
     sCurrentSearch = sSearch;
     
-    [[DataManagement sharedInstance] search:sSearch block:^(NSArray *results)
+    if (sSearch.length <= 0)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (results) {
-                [self.arrResults addObjectsFromArray:results];
-            }
+        [UIView animateWithDuration:0.2 animations:^{
+            self.disableView.hidden = NO;
+            self.tblSearchResult.alpha = 0.0;
             [self.tblSearchResult reloadData];
-        });
-    }];
+        } completion:nil];
+    }
+    else {
+        [[DataManagement sharedInstance] search:sSearch block:^(NSArray *results) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (results) {
+                    [self.arrResults addObjectsFromArray:results];
+                }
+                
+                self.disableView.hidden = YES;
+                self.tblSearchResult.alpha = 1.0;
+                
+                [UIView transitionWithView:self.tblSearchResult duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    [self.tblSearchResult reloadData];
+                } completion:nil];
+            });
+        }];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -346,53 +310,57 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    MainCell *cell = nil;
+    id cellItem = nil;
+    BOOL isHiddenSeperator = NO;
+    
     if (tableView == self.tblSearchResult) {
         SearchResultObj *resultOj = self.arrResults[indexPath.section];
-        id itemObj = resultOj.resuls[indexPath.row];
-        return [self configCellWithItem:itemObj atIndex:indexPath tableView:tableView];
+        cellItem = resultOj.resuls[indexPath.row];
+        isHiddenSeperator = (indexPath.row == [resultOj.resuls count] - 1);
     }
     else {
-        SongsCell *cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
-        cell.delegate = self;
-        cell.allowsMultipleSwipe = NO;
-        
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
-        [cell setLineHidden:(indexPath.row == [sectionInfo numberOfObjects] - 1)];
-        [self configureCell:cell atIndexPath:indexPath];
-        return cell;
-    }
-}
-
-- (void)configureCell:(SongsCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [cell configWithItem:item];
-}
-
-- (UITableViewCell *)configCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
-{
-    if ([itemObj isKindOfClass:[Item class]]) {
-        SongsCell *cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
-        [cell configWithItem:itemObj];
-        return cell;
-    }
-    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
-        AlbumsCell *cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
-        [cell config:itemObj];
-        return cell;
-    }
-    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
-        ArtistsCell *cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
-        [cell config:itemObj];
-        return cell;
-    }
-    else if ([itemObj isKindOfClass:[GenreObj class]]) {
-        GenresCell *cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
-        [cell config:itemObj];
-        return cell;
+        cellItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
     }
     
-    return nil;
+    cell = [self configCellWithItem:cellItem atIndex:indexPath tableView:tableView];
+    
+    if (cell) {
+        [cell setLineHidden:isHiddenSeperator];
+        cell.delegate = self;
+        cell.allowsMultipleSwipe = NO;
+    }
+
+    return cell;
+}
+
+- (void)configureCell:(MainCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [cell config:item];
+}
+
+- (MainCell *)configCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    MainCell *cell = nil;
+    
+    if ([itemObj isKindOfClass:[Item class]]) {
+        cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
+    }
+    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
+        cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
+    }
+    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
+        cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
+    }
+    else if ([itemObj isKindOfClass:[GenreObj class]]) {
+        cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
+    }
+    
+    [cell config:itemObj];
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -586,20 +554,7 @@
 {
     if (!_barMusicEq)
     {
-        UIButton *btnEqHolder = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btnEqHolder setFrame:CGRectMake(0.0, 0.0, 35.0, 35.0)];
-        btnEqHolder.backgroundColor = [UIColor clearColor];
-        [btnEqHolder addTarget:self action:@selector(openPlayer:) forControlEvents:UIControlEventTouchUpInside];
-        btnEqHolder.multipleTouchEnabled = NO;
-        btnEqHolder.exclusiveTouch = YES;
-        
-        CGRect frame = self.musicEq.frame;
-        frame.origin.x = (btnEqHolder.frame.size.width - frame.size.width);
-        frame.origin.y = (btnEqHolder.frame.size.height - frame.size.height) / 2.0;
-        self.musicEq.frame = frame;
-        [btnEqHolder addSubview:self.musicEq];
-        
-        _barMusicEq = [[UIBarButtonItem alloc] initWithCustomView:btnEqHolder];
+        _barMusicEq = [[UIBarButtonItem alloc] initWithCustomView:[Utils buttonMusicEqualizeqHolderWith:self.musicEq target:self action:@selector(openPlayer:)]];
     }
     return _barMusicEq;
 }

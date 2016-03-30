@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -8,9 +8,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SongsViewController">
             <connections>
                 <outlet property="disableView" destination="SQq-RG-mNI" id="YeA-my-9AW"/>
-                <outlet property="keyboardLayout" destination="Cgr-vr-CrN" id="eZ1-LA-78w"/>
-                <outlet property="searchBar" destination="eLx-Kz-AsE" id="cRB-Pd-Sgb"/>
-                <outlet property="searchDisplayController" destination="FDj-8o-Ujk" id="ZBa-Fl-acD"/>
                 <outlet property="tblList" destination="zBD-R3-AIf" id="k6e-rm-sWl"/>
                 <outlet property="tblSearchResult" destination="Nuo-me-huP" id="j2e-vj-a4y"/>
                 <outlet property="view" destination="iN0-l3-epB" id="FnM-xc-AHr"/>
@@ -44,38 +41,22 @@
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="SQq-RG-mNI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="10G-f5-91h"/>
                 <constraint firstItem="zBD-R3-AIf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="6Hv-tz-VEY"/>
-                <constraint firstItem="Nuo-me-huP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="6hC-pt-Pi4"/>
-                <constraint firstAttribute="bottom" secondItem="Nuo-me-huP" secondAttribute="bottom" id="Cgr-vr-CrN"/>
-                <constraint firstAttribute="bottom" secondItem="SQq-RG-mNI" secondAttribute="bottom" id="Kv2-05-Rb5"/>
-                <constraint firstAttribute="trailing" secondItem="SQq-RG-mNI" secondAttribute="trailing" id="LtR-LX-xdL"/>
+                <constraint firstItem="Nuo-me-huP" firstAttribute="bottom" secondItem="zBD-R3-AIf" secondAttribute="bottom" id="Jkf-7n-kSn"/>
+                <constraint firstItem="Nuo-me-huP" firstAttribute="leading" secondItem="zBD-R3-AIf" secondAttribute="leading" id="KjR-f2-3uD"/>
+                <constraint firstItem="SQq-RG-mNI" firstAttribute="trailing" secondItem="Nuo-me-huP" secondAttribute="trailing" id="LBQ-0Q-7qO"/>
+                <constraint firstItem="SQq-RG-mNI" firstAttribute="bottom" secondItem="Nuo-me-huP" secondAttribute="bottom" id="Oc1-AC-Dne"/>
+                <constraint firstItem="SQq-RG-mNI" firstAttribute="leading" secondItem="Nuo-me-huP" secondAttribute="leading" id="SWP-la-kv3"/>
                 <constraint firstAttribute="bottom" secondItem="zBD-R3-AIf" secondAttribute="bottom" id="Vbg-Ot-gU5"/>
                 <constraint firstItem="zBD-R3-AIf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bRm-Bb-faK"/>
-                <constraint firstAttribute="trailing" secondItem="Nuo-me-huP" secondAttribute="trailing" id="bfD-Br-Y4r"/>
+                <constraint firstItem="Nuo-me-huP" firstAttribute="top" secondItem="zBD-R3-AIf" secondAttribute="top" constant="50" id="htP-vg-uWY"/>
                 <constraint firstAttribute="trailing" secondItem="zBD-R3-AIf" secondAttribute="trailing" id="jRs-or-s8e"/>
-                <constraint firstItem="SQq-RG-mNI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="jsD-oj-Kij"/>
-                <constraint firstItem="Nuo-me-huP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="sXD-np-8ZE"/>
+                <constraint firstItem="SQq-RG-mNI" firstAttribute="top" secondItem="Nuo-me-huP" secondAttribute="top" id="k8N-Cj-D8L"/>
+                <constraint firstItem="Nuo-me-huP" firstAttribute="trailing" secondItem="zBD-R3-AIf" secondAttribute="trailing" id="yya-5z-zfJ"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-            <nil key="simulatedBottomBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="518" y="201"/>
         </view>
-        <searchDisplayController id="FDj-8o-Ujk">
-            <connections>
-                <outlet property="delegate" destination="-1" id="beb-0p-FD7"/>
-                <outlet property="searchContentsController" destination="-1" id="WZS-M6-8QO"/>
-                <outlet property="searchResultsDataSource" destination="-1" id="7D5-Va-rJ3"/>
-                <outlet property="searchResultsDelegate" destination="-1" id="LZM-Ef-9Bb"/>
-            </connections>
-        </searchDisplayController>
-        <searchBar contentMode="redraw" id="eLx-Kz-AsE">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <animations/>
-            <textInputTraits key="textInputTraits"/>
-            <point key="canvasLocation" x="164" y="208"/>
-        </searchBar>
     </objects>
 </document>

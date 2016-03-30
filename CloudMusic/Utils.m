@@ -86,8 +86,6 @@
 
 + (void)configTabbarAppearce
 {
-    [[UITabBar appearance] setBackgroundImage:[[Utils imageWithColor:0xfbfbfb] stretchableImageWithLeftCapWidth:5 topCapHeight:5]];
-    
     UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:11.0];
     UIColor *selectedColor = [self colorWithRGBHex:0x006bd5];
     UIColor *normalColor = [self colorWithRGBHex:0x333333];
@@ -99,6 +97,8 @@
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:selectedColor,
                                                         NSFontAttributeName:font}
                                              forState:UIControlStateSelected];
+    
+    [[UITabBar appearance] setBackgroundImage:[[self imageWithColor:0xf9f9f9] stretchableImageWithLeftCapWidth:5 topCapHeight:5]];
 }
 
 + (UITabBarItem *)tabbarItemWithTitle:(NSString *)title unselectedImage:(NSString *)sUnselectedImage selectedImage:(NSString *)sSelectedImage
@@ -127,6 +127,7 @@
                                                            NSShadowAttributeName:shadowText}];
     
     UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 20.0)];
+    leftView.backgroundColor = [UIColor redColor];
     UIImageView *searchIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 20.0)];
     searchIcon.image = [UIImage imageNamed:@"textField-search"];
     searchIcon.contentMode = UIViewContentModeCenter;
@@ -136,6 +137,14 @@
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setLeftViewMode:UITextFieldViewModeAlways];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor grayColor]];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setPlaceholder:@"Search"];
+}
+
++ (void)configNavigationController:(UINavigationController *)navController
+{
+    navController.navigationBar.opaque = NO;
+    navController.navigationBar.translucent = NO;
+    navController.navigationBar.shadowImage = [UIImage new];
+    navController.interactivePopGestureRecognizer.enabled = YES;
 }
 
 + (UIButton *)createBarButton:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector
@@ -178,6 +187,24 @@
     [button setTitleColor:highlightedColor forState:UIControlStateDisabled];
     
     return button;
+}
+
++ (UIButton *)buttonMusicEqualizeqHolderWith:(PCSEQVisualizer *)musicEq target:(id)target action:(SEL)selector
+{
+    UIButton *btnEqHolder = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnEqHolder setFrame:CGRectMake(0.0, 0.0, 35.0, 35.0)];
+    btnEqHolder.backgroundColor = [UIColor clearColor];
+    [btnEqHolder addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    btnEqHolder.multipleTouchEnabled = NO;
+    btnEqHolder.exclusiveTouch = YES;
+    
+    CGRect frame = musicEq.frame;
+    frame.origin.x = (btnEqHolder.frame.size.width - frame.size.width);
+    frame.origin.y = (btnEqHolder.frame.size.height - frame.size.height) / 2.0;
+    musicEq.frame = frame;
+    [btnEqHolder addSubview:musicEq];
+    
+    return btnEqHolder;
 }
 
 + (void)registerNibForTableView:(UITableView *)tblView
