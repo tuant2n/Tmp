@@ -20,6 +20,8 @@
 @property (nonatomic, weak) IBOutlet UIView *bgView;
 @property (nonatomic, weak) IBOutlet UILabel *lblTitle;
 @property (nonatomic, weak) IBOutlet UIImageView *imgvIcon;
+@property (nonatomic, weak) IBOutlet UIView *line;
+
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *imgvIconLayout;
 
 @end
@@ -29,6 +31,9 @@
 - (void)awakeFromNib
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
+    
     bgColor = [UIColor whiteColor];
     highlightColor = [Utils lighterColorForColor:[UIColor lightGrayColor] andDelta:0.3];
 }
@@ -44,6 +49,11 @@
     else {
         self.imgvIconLayout.constant = 5.0;
     }
+}
+
+- (void)setLineHidden:(BOOL)isHidden
+{
+    self.line.hidden = isHidden;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -65,7 +75,7 @@
 
 + (CGFloat)height
 {
-    return 44.0;
+    return 37.0;
 }
 
 @end

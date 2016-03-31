@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class AlbumObj;
+
 @interface AlbumListViewController : UIViewController
+
+@property (strong, nonatomic) AlbumObj *currentAlbum;
 
 @end

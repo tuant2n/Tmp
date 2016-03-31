@@ -17,6 +17,8 @@
 {
     UIImage *placeHolder, *iTunesIcon, *cloudIcon;
     UIColor *bgColor, *highlightColor;
+    
+    MGSwipeButton *editBtn, *deleteBtn, *addToPlaylistBtn;
 }
 
 @end
@@ -47,11 +49,25 @@
     self.leftSwipeSettings.transition = MGSwipeTransitionStatic;
     self.leftExpansion.buttonIndex = -1;
     self.leftExpansion.fillOnTrigger = YES;
+    
+    deleteBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnDelete"] backgroundColor:[Utils colorWithRGBHex:0xFF0000]];
+    addToPlaylistBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnAddPlaylist"] backgroundColor:[Utils colorWithRGBHex:0x03C9A9]];
+    editBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnEditSong"] backgroundColor:[Utils colorWithRGBHex:0x3498db]];
 }
 
 - (void)config:(id)item
 {
     
+}
+
++ (CGFloat)normalCellHeight
+{
+    return 62.0;
+}
+
++ (CGFloat)largeCellHeight
+{
+    return 82.0;
 }
 
 - (void)setItemType:(BOOL)isCloud
@@ -62,6 +78,26 @@
 - (void)setArtwork:(NSURL *)sArtworkUrl
 {
     [self.imgvArtwork sd_setImageWithURL:sArtworkUrl placeholderImage:placeHolder options:SDWebImageRetryFailed];
+}
+
+- (void)configMenuButton:(BOOL)isCloud isEdit:(BOOL)isEdit
+{
+    NSMutableArray *arrayBtn = [NSMutableArray new];
+    
+    if (isCloud)
+    {
+        [arrayBtn addObject:deleteBtn];
+        [arrayBtn addObject:addToPlaylistBtn];
+        
+        if (isEdit) {
+            [arrayBtn addObject:editBtn];
+        }
+    }
+    else {
+        [arrayBtn addObject:addToPlaylistBtn];
+    }
+    
+    self.leftButtons = arrayBtn;
 }
 
 - (void)setLineHidden:(BOOL)isHidden

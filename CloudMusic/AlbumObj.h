@@ -10,13 +10,14 @@
 
 @interface AlbumObj : NSObject
 
-@property (nonatomic, strong) NSNumber *iAlbumId;
+@property (nonatomic, strong) NSNumber *iAlbumId, *iArtistId, *iGenreId;
 @property (nonatomic, strong) NSString *sAlbumName, *sAlbumArtistName;
 @property (nonatomic, strong) NSURL *sLocalArtworkUrl;
 
-@property (nonatomic, assign) BOOL isCloud, isPlaying;
-@property (nonatomic, assign) int iYear;
+@property (nonatomic, strong) NSNumber *iYear;
 @property (nonatomic, strong) NSString *sAlbumDesc, *sAlbumInfo;
+
+@property (nonatomic, assign) BOOL isCloud, isPlaying;
 
 - (id)initWithInfo:(NSDictionary *)info;
 

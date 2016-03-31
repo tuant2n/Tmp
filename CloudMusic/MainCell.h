@@ -23,11 +23,17 @@
 @property (nonatomic, strong) VYPlayIndicator *musicEq;
 
 @property (nonatomic, weak) IBOutlet UIImageView *imgvIcon;
+@property (nonatomic, weak) IBOutlet UIImageView *imgvListIcon;
+
++ (CGFloat)normalCellHeight;
++ (CGFloat)largeCellHeight;
 
 - (void)config:(id)item;
 
 - (void)setItemType:(BOOL)isCloud;
 - (void)setArtwork:(NSURL *)sArtworkUrl;
+- (void)configMenuButton:(BOOL)isCloud isEdit:(BOOL)isEdit;
+
 - (void)setLineHidden:(BOOL)isHidden;
 - (void)isPlaying:(BOOL)isPlaying;
 

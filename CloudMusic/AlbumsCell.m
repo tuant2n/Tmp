@@ -12,11 +12,9 @@
 #import "Utils.h"
 
 @interface AlbumsCell()
-{
-    MGSwipeButton *editBtn, *deleteBtn, *addToPlaylistBtn;
-}
 
 @property (nonatomic, weak) IBOutlet UILabel *lblAlbumName, *lblAlbumInfo, *lblAlbumDesc;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *vInfoPosition;
 
 @end
 
@@ -25,10 +23,6 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-
-    deleteBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnDelete"] backgroundColor:[Utils colorWithRGBHex:0xFF0000]];
-    addToPlaylistBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnAddPlaylist"] backgroundColor:[Utils colorWithRGBHex:0x03C9A9]];
-    editBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnEditSong"] backgroundColor:[Utils colorWithRGBHex:0x3498db]];
 }
 
 - (void)config:(AlbumObj *)item
@@ -39,20 +33,16 @@
     self.lblAlbumInfo.text = item.sAlbumInfo;
     self.lblAlbumDesc.text = item.sAlbumDesc;
     
-    if (item.isCloud) {
-        self.leftButtons = @[deleteBtn,addToPlaylistBtn,editBtn];
-    }
-    else {
-        self.leftButtons = @[addToPlaylistBtn];
-    }
-
+    [self configMenuButton:item.isCloud isEdit:YES];
     [self setItemType:item.isCloud];
     [self isPlaying:item.isPlaying];
 }
 
-+ (CGFloat)height
+- (void)hideExtenal
 {
-    return 82.0;
+    self.imgvIcon.hidden = YES;
+    self.imgvListIcon.hidden = YES;
+    [self.vInfoPosition setConstant:15.0];
 }
 
 @end

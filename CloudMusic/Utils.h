@@ -49,7 +49,6 @@
 + (UIButton *)buttonMusicEqualizeqHolderWith:(PCSEQVisualizer *)musicEq target:(id)target action:(SEL)selector;
 
 + (void)registerNibForTableView:(UITableView *)tblView;
-+ (CGFloat)normalCellHeight;
 
 #pragma mark - Files
 

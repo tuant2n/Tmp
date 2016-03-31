@@ -21,11 +21,15 @@
 #import "ArtistsCell.h"
 #import "GenresCell.h"
 #import "HeaderTitle.h"
+#import "ListSongCell.h"
 
 #import "SongsViewController.h"
 #import "AlbumsViewController.h"
+#import "AlbumListViewController.h"
 #import "ArtistsViewController.h"
 #import "GenresViewController.h"
+
+#import "SearchOperation.h"
 
 @interface DataManagement : NSObject
 
@@ -42,7 +46,7 @@
 - (void)syncData;
 - (void)saveData;
 
-- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId;
+- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSNumber *)iAlbumId artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId year:(NSNumber *)iYear;
 
 - (NSArray *)getListSongFilterByName:(NSString *)sName;
 - (NSArray *)getListSongCloudFilterByName:(NSString *)sName;
@@ -52,7 +56,7 @@
 
 #pragma mark - Search
 
-- (void)search:(NSString *)sSearch block:(void (^)(NSArray *results))block;
+- (void)search:(NSString *)sSearch searchType:(kSearchType)iSearchType block:(void (^)(NSArray *results))block;
 - (void)cancelSearch;
 
 #pragma mark - iTunes Sync

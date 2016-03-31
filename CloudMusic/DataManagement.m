@@ -9,8 +9,6 @@
 #import "DataManagement.h"
 #import <MediaPlayer/MediaPlayer.h>
 
-#import "SearchOperation.h"
-
 #import "Utils.h"
 
 static DataManagement *_sharedInstance = nil;
@@ -114,15 +112,20 @@ static DataManagement *_sharedInstance = nil;
     [self.coreDataController save];
 }
 
-- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId
+- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSNumber *)iAlbumId artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId year:(NSNumber *)iYear
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[self itemEntity]];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"sSongNameIndex" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
     
     NSMutableArray *filters = [NSMutableArray new];
+    
     if (sName) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sSongNameIndex CONTAINS[cd] %@",sName];
+        [filters addObject:predicate];
+    }
+    if (iAlbumId) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iAlbumId == %@",iAlbumId];
         [filters addObject:predicate];
     }
     if (iArtistId) {
@@ -133,6 +136,11 @@ static DataManagement *_sharedInstance = nil;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iGenreId == %@",iGenreId];
         [filters addObject:predicate];
     }
+    if (iYear) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iYear == %@",iYear];
+        [filters addObject:predicate];
+    }
+
     if (filters.count > 0) {
         [request setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:filters]];
     }
@@ -142,7 +150,7 @@ static DataManagement *_sharedInstance = nil;
 
 - (NSArray *)getListSongFilterByName:(NSString *)sName
 {
-    NSFetchRequest *request = [self getListSongFilterByName:sName artistId:nil genreId:nil];
+    NSFetchRequest *request = [self getListSongFilterByName:sName albumId:nil artistId:nil genreId:nil year:nil];
     NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
     return results;
 }
@@ -216,10 +224,10 @@ static DataManagement *_sharedInstance = nil;
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sAlbumNameIndex" ascending:YES];
     [request setSortDescriptors:@[sortDescriptor]];
     [request setResultType:NSDictionaryResultType];
-
-    NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
     
     NSMutableArray *albumsArray = [NSMutableArray new];
+    NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
+    
     for (NSDictionary *info in results) {
         AlbumObj *item = [[AlbumObj alloc] initWithInfo:info];
         if (!item) {
@@ -371,11 +379,11 @@ static DataManagement *_sharedInstance = nil;
 
 #pragma mark - Search
 
-- (void)search:(NSString *)sSearch block:(void (^)(NSArray *results))block
+- (void)search:(NSString *)sSearch searchType:(kSearchType)iSearchType block:(void (^)(NSArray *results))block
 {
     [self cancelSearch];
 
-    SearchOperation *operation = [[SearchOperation alloc] initWitSearchString:sSearch];
+    SearchOperation *operation = [[SearchOperation alloc] initWitSearchString:sSearch searchType:iSearchType];
     __weak SearchOperation *blockOperation = operation;
     
     [operation setCompletionBlock:^{

@@ -16,8 +16,10 @@
 {
     self = [super init];
     
-    if (self) {
+    if (self)
+    {
         self.iAlbumId = [info objectForKey:@"iAlbumId"];
+        
         self.sAlbumName = [info objectForKey:@"sAlbumName"];
         self.sAlbumArtistName = [info objectForKey:@"sAlbumArtistName"];
         
@@ -27,10 +29,10 @@
         
         self.isCloud = [[info objectForKey:@"isCloud"] boolValue];
         
-        self.iYear = [[info objectForKey:@"iYear"] intValue];
+        self.iYear = [info objectForKey:@"iYear"];
         self.sAlbumInfo = self.sAlbumArtistName;
-        if (self.iYear > 0) {
-            self.sAlbumInfo = [NSString stringWithFormat:@"%@, %d",self.sAlbumInfo,self.iYear];
+        if (self.iYear.intValue > 0) {
+            self.sAlbumInfo = [NSString stringWithFormat:@"%@, %d",self.sAlbumInfo,self.iYear.intValue];
         }
 
         int numberOfSong = [[info objectForKey:@"numberOfSong"] intValue];

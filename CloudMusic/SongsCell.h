@@ -13,6 +13,4 @@
 
 @interface SongsCell : MainCell
 
-+ (CGFloat)height;
-
 @end

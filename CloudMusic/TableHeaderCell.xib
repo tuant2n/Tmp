@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yba-fG-j0Z" userLabel="lblTitle">
-                                <rect key="frame" x="10" y="0.0" width="265" height="39"/>
+                                <rect key="frame" x="15" y="0.0" width="260" height="39"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -39,7 +39,7 @@
                             <constraint firstAttribute="bottom" secondItem="Yba-fG-j0Z" secondAttribute="bottom" id="HM6-P7-cTs"/>
                             <constraint firstItem="eIH-vd-sdO" firstAttribute="leading" secondItem="Yba-fG-j0Z" secondAttribute="trailing" id="brJ-TG-m2e"/>
                             <constraint firstAttribute="bottom" secondItem="eIH-vd-sdO" secondAttribute="bottom" id="lY7-jU-QVQ"/>
-                            <constraint firstItem="Yba-fG-j0Z" firstAttribute="leading" secondItem="GMF-QP-H7g" secondAttribute="leading" constant="10" id="uaa-BY-luv"/>
+                            <constraint firstItem="Yba-fG-j0Z" firstAttribute="leading" secondItem="GMF-QP-H7g" secondAttribute="leading" constant="15" id="uaa-BY-luv"/>
                         </constraints>
                     </view>
                 </subviews>

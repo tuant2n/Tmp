@@ -16,16 +16,18 @@
 @interface SearchOperation()
 
 @property (nonatomic, strong) NSString *sSearch;
+@property (nonatomic, assign) kSearchType iSearchType;
 
 @end
 
 @implementation SearchOperation
 
-- (id)initWitSearchString:(NSString *)sSearch
+- (id)initWitSearchString:(NSString *)sSearch searchType:(kSearchType)iSearchType
 {
     self = [super init];
     if (self) {
         self.sSearch = sSearch;
+        self.iSearchType = iSearchType;
     }
     return self;
 }
@@ -47,17 +49,19 @@
         if (self.isCancelled) {
             return;
         }
-        
-        _resultArray = [[NSMutableArray alloc] init];
+    
+        NSMutableArray *results = [[NSMutableArray alloc] init];
         
         NSArray *tmpArray = nil;
         
         tmpArray = [[DataManagement sharedInstance] getListSongFilterByName:_sSearch];
-        if (tmpArray.count > 0) {
+        if (tmpArray.count > 0)
+        {
             SearchResultObj *songResult = [[SearchResultObj alloc] init];
             songResult.resuls = tmpArray;
             songResult.sTitle = [NSString stringWithFormat:@"Songs (result: %d)",(int)tmpArray.count];
-            [_resultArray addObject:songResult];
+            songResult.iOrder = (self.iSearchType == kSearchTypeSong) ? 1 : 0;
+            [results addObject:songResult];
         }
         
         if (self.isCancelled) {
@@ -65,11 +69,13 @@
         }
         
         tmpArray = [[DataManagement sharedInstance] getListAlbumFilterByName:_sSearch artistId:nil genreId:nil];
-        if (tmpArray.count > 0) {
+        if (tmpArray.count > 0)
+        {
             SearchResultObj *albumResult = [[SearchResultObj alloc] init];
             albumResult.resuls = tmpArray;
             albumResult.sTitle = [NSString stringWithFormat:@"Albums (result: %d)",(int)tmpArray.count];
-            [_resultArray addObject:albumResult];
+            albumResult.iOrder = (self.iSearchType == kSearchTypeAlbum) ? 1 : 0;
+            [results addObject:albumResult];
         }
         
         if (self.isCancelled) {
@@ -77,11 +83,13 @@
         }
         
         tmpArray = [[DataManagement sharedInstance] getListAlbumArtistFilterByName:_sSearch];
-        if (tmpArray.count > 0) {
+        if (tmpArray.count > 0)
+        {
             SearchResultObj *artistResult = [[SearchResultObj alloc] init];
             artistResult.resuls = tmpArray;
             artistResult.sTitle = [NSString stringWithFormat:@"Artists (result: %d)",(int)tmpArray.count];
-            [_resultArray addObject:artistResult];
+            artistResult.iOrder = (self.iSearchType == kSearchTypeArtist) ? 1 : 0;
+            [results addObject:artistResult];
         }
         
         if (self.isCancelled) {
@@ -89,11 +97,13 @@
         }
         
         tmpArray = [[DataManagement sharedInstance] getListSongCloudFilterByName:_sSearch];
-        if (tmpArray.count > 0) {
-            SearchResultObj *songResult = [[SearchResultObj alloc] init];
-            songResult.resuls = tmpArray;
-            songResult.sTitle = [NSString stringWithFormat:@"Files (result: %d)",(int)tmpArray.count];
-            [_resultArray addObject:songResult];
+        if (tmpArray.count > 0)
+        {
+            SearchResultObj *fileResult = [[SearchResultObj alloc] init];
+            fileResult.resuls = tmpArray;
+            fileResult.sTitle = [NSString stringWithFormat:@"Files (result: %d)",(int)tmpArray.count];
+            fileResult.iOrder = (self.iSearchType == kSearchTypeFile) ? 1 : 0;
+            [results addObject:fileResult];
         }
         
         if (self.isCancelled) {
@@ -101,16 +111,22 @@
         }
         
         tmpArray = [[DataManagement sharedInstance] getListGenreFilterByName:_sSearch];
-        if (tmpArray.count > 0) {
+        if (tmpArray.count > 0)
+        {
             SearchResultObj *genreResult = [[SearchResultObj alloc] init];
             genreResult.resuls = tmpArray;
             genreResult.sTitle = [NSString stringWithFormat:@"Genres (result: %d)",(int)tmpArray.count];
-            [_resultArray addObject:genreResult];
+            genreResult.iOrder = (self.iSearchType == kSearchTypeGenre) ? 1 : 0;
+            [results addObject:genreResult];
         }
         
         if (self.isCancelled) {
             return;
         }
+        
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"iOrder" ascending:NO];
+        NSArray *sortedArray = [results sortedArrayUsingDescriptors:@[sortDescriptor]];
+        _resultArray = [[NSMutableArray alloc] initWithArray:sortedArray];
     }
 }
 

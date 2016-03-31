@@ -8,9 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    kSearchTypeNone,
+    kSearchTypeFile,
+    kSearchTypeSong,
+    kSearchTypeAlbum,
+    kSearchTypeArtist,
+    kSearchTypeGenre,
+} kSearchType;
+
 @interface SearchOperation : NSOperation
 
 @property (nonatomic, strong) NSMutableArray *resultArray;
-- (id)initWitSearchString:(NSString *)sSearch;
+
+- (id)initWitSearchString:(NSString *)sSearch searchType:(kSearchType)iType;
 
 @end

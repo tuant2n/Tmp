@@ -118,8 +118,14 @@
     return (NSDate *)[self valueForProperty:MPMediaItemPropertyReleaseDate];
 }
 
-- (NSNumber *)year {
-    return [self valueForProperty:@"year"];
+- (NSNumber *)year
+{
+    if ([self valueForProperty:@"year"]) {
+        return [self valueForProperty:@"year"];
+    }
+    else {
+        return nil;
+    }
 }
 
 - (NSNumber *)itemBeatsPerMinute {

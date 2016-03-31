@@ -11,6 +11,8 @@
 #import "TableHeaderCell.h"
 #import "Utils.h"
 
+#import "DataManagement.h"
+
 #import "HeaderUtilObj.h"
 
 #define SEARCHBAR_HEIGHT 50.0
@@ -79,6 +81,18 @@
     return self;
 }
 
+- (id)initForAlbumListVC:(AlbumObj *)album
+{
+    self = [super init];
+    
+    if (self) {
+        [self setupForAlbumListVC:album];
+        [self initUI];
+    }
+    
+    return self;
+}
+
 - (void)initUI
 {
     //
@@ -130,7 +144,8 @@
     
     [self.tblListUtils setScrollEnabled:NO];
     [self.tblListUtils setTableFooterView:[UIView new]];
-    [self.tblListUtils registerNib:[UINib nibWithNibName:@"TableHeaderCell" bundle:nil] forCellReuseIdentifier:@"TableHeaderCellId"];
+    
+    [Utils registerNibForTableView:self.tblListUtils];
 }
 
 - (NSMutableArray *)arrListUtils
@@ -192,10 +207,34 @@
     [self setupDefault];
 }
 
+- (void)setupForAlbumListVC:(AlbumObj *)album
+{
+    [self.arrListUtils removeAllObjects];
+    
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Shuffle" icon:@"shuffle-icon" type:kHeaderUtilTypeShuffle]];
+    [self.arrListUtils addObject:album];
+    
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
+    hasIndexTitles = NO;
+    
+    [self setupDefault];
+}
+
+
 - (void)setupDefault
 {
-    int numberOfRow = (int)self.arrListUtils.count;
-    height = numberOfRow * [TableHeaderCell height] + SEARCHBAR_HEIGHT + LINE_SEPERATOR_HEIGHT;
+    height = 0;
+    
+    for (id item in self.arrListUtils) {
+        if ([item isKindOfClass:[HeaderUtilObj class]]) {
+            height += [TableHeaderCell height];
+        }
+        else {
+            height += [MainCell largeCellHeight];
+        }
+    }
+    
+    height += SEARCHBAR_HEIGHT + LINE_SEPERATOR_HEIGHT;
     [self setActiveSearchBar:NO];
 }
 
@@ -237,17 +276,35 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [TableHeaderCell height];
+    id item = self.arrListUtils[indexPath.row];
+    
+    if ([item isKindOfClass:[HeaderUtilObj class]]) {
+        return [TableHeaderCell height];
+    }
+    else {
+        return [MainCell largeCellHeight];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    HeaderUtilObj *utilObj = self.arrListUtils[indexPath.row];
+    id item = self.arrListUtils[indexPath.row];
     
-    TableHeaderCell *cell = (TableHeaderCell *)[tableView dequeueReusableCellWithIdentifier:@"TableHeaderCellId"];
-    [cell configWithUtil:utilObj hasIndexTitles:hasIndexTitles];
-    
-    return cell;
+    if ([item isKindOfClass:[HeaderUtilObj class]]) {
+        TableHeaderCell *cell = (TableHeaderCell *)[tableView dequeueReusableCellWithIdentifier:@"TableHeaderCellId"];
+        [cell configWithUtil:item hasIndexTitles:hasIndexTitles];
+        [cell setLineHidden:(indexPath.row == self.arrListUtils.count - 1)];
+        
+        return cell;
+    }
+    else {
+        AlbumsCell *cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId"];
+        [cell config:item];
+        [cell hideExtenal];
+        [cell setLineHidden:YES];
+        
+        return cell;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

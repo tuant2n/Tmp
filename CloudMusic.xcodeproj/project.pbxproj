@@ -142,6 +142,10 @@
 		7B0896281CA8E3A400264CD1 /* PlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B0896271CA8E3A400264CD1 /* PlayerViewController.xib */; };
 		7B1533621CAA863B0099DD9C /* AlbumListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B1533601CAA863B0099DD9C /* AlbumListViewController.m */; };
 		7B1533631CAA863B0099DD9C /* AlbumListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B1533611CAA863B0099DD9C /* AlbumListViewController.xib */; };
+		7B4CD88A1CACDFE00041BE4E /* MakePlaylistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4CD8881CACDFE00041BE4E /* MakePlaylistViewController.m */; };
+		7B4CD88B1CACDFE00041BE4E /* MakePlaylistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4CD8891CACDFE00041BE4E /* MakePlaylistViewController.xib */; };
+		7B4CD8911CAD09D50041BE4E /* ListSongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4CD88F1CAD09D50041BE4E /* ListSongCell.m */; };
+		7B4CD8921CAD09D50041BE4E /* ListSongCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4CD8901CAD09D50041BE4E /* ListSongCell.xib */; };
 		7BD179451C9D5122004CD5AF /* HCDCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179411C9D5122004CD5AF /* HCDCoreDataStack.m */; };
 		7BD179461C9D5122004CD5AF /* HCDCoreDataStackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179431C9D5122004CD5AF /* HCDCoreDataStackController.m */; };
 		7BD1794A1C9D522C004CD5AF /* DataManagement.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD179491C9D522C004CD5AF /* DataManagement.m */; };
@@ -345,6 +349,12 @@
 		7B15335F1CAA863B0099DD9C /* AlbumListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumListViewController.h; sourceTree = "<group>"; };
 		7B1533601CAA863B0099DD9C /* AlbumListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumListViewController.m; sourceTree = "<group>"; };
 		7B1533611CAA863B0099DD9C /* AlbumListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumListViewController.xib; sourceTree = "<group>"; };
+		7B4CD8871CACDFE00041BE4E /* MakePlaylistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakePlaylistViewController.h; sourceTree = "<group>"; };
+		7B4CD8881CACDFE00041BE4E /* MakePlaylistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakePlaylistViewController.m; sourceTree = "<group>"; };
+		7B4CD8891CACDFE00041BE4E /* MakePlaylistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MakePlaylistViewController.xib; sourceTree = "<group>"; };
+		7B4CD88E1CAD09D50041BE4E /* ListSongCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListSongCell.h; sourceTree = "<group>"; };
+		7B4CD88F1CAD09D50041BE4E /* ListSongCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListSongCell.m; sourceTree = "<group>"; };
+		7B4CD8901CAD09D50041BE4E /* ListSongCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListSongCell.xib; sourceTree = "<group>"; };
 		7BD179401C9D5122004CD5AF /* HCDCoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCDCoreDataStack.h; sourceTree = "<group>"; };
 		7BD179411C9D5122004CD5AF /* HCDCoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCDCoreDataStack.m; sourceTree = "<group>"; };
 		7BD179421C9D5122004CD5AF /* HCDCoreDataStackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCDCoreDataStackController.h; sourceTree = "<group>"; };
@@ -752,8 +762,51 @@
 				7B15335F1CAA863B0099DD9C /* AlbumListViewController.h */,
 				7B1533601CAA863B0099DD9C /* AlbumListViewController.m */,
 				7B1533611CAA863B0099DD9C /* AlbumListViewController.xib */,
+				7B4CD88E1CAD09D50041BE4E /* ListSongCell.h */,
+				7B4CD88F1CAD09D50041BE4E /* ListSongCell.m */,
+				7B4CD8901CAD09D50041BE4E /* ListSongCell.xib */,
 			);
 			name = AlbumListViewController;
+			sourceTree = "<group>";
+		};
+		7B4CD8851CACDFA00041BE4E /* PlaylistsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3C09C7021C8C6962004A44E2 /* PlaylistsViewController.h */,
+				3C09C7031C8C6962004A44E2 /* PlaylistsViewController.m */,
+				7B066A5B1CA4CE790078FD53 /* PlaylistsViewController.xib */,
+			);
+			name = PlaylistsViewController;
+			sourceTree = "<group>";
+		};
+		7B4CD8861CACDFC40041BE4E /* MakePlaylistViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7B4CD8871CACDFE00041BE4E /* MakePlaylistViewController.h */,
+				7B4CD8881CACDFE00041BE4E /* MakePlaylistViewController.m */,
+				7B4CD8891CACDFE00041BE4E /* MakePlaylistViewController.xib */,
+			);
+			name = MakePlaylistViewController;
+			sourceTree = "<group>";
+		};
+		7B4CD88C1CACE0B30041BE4E /* SongsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3C09C6F31C8C6899004A44E2 /* SongsViewController.h */,
+				3C09C6F41C8C6899004A44E2 /* SongsViewController.m */,
+				7B066A4C1CA4C9610078FD53 /* SongsViewController.xib */,
+				7B066AD41CA53F4E0078FD53 /* SongsCell.h */,
+				7B066AD51CA53F4E0078FD53 /* SongsCell.m */,
+				7BF65F151CA3C285007B198D /* SongsCell.xib */,
+			);
+			name = SongsViewController;
+			sourceTree = "<group>";
+		};
+		7B4CD88D1CACE0BB0041BE4E /* EditSongViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = EditSongViewController;
 			sourceTree = "<group>";
 		};
 		7BA4EE9B1C9000A600157284 /* Libs */ = {
@@ -815,12 +868,8 @@
 		7BF5C8C41C9153EE00175C6F /* Songs */ = {
 			isa = PBXGroup;
 			children = (
-				3C09C6F31C8C6899004A44E2 /* SongsViewController.h */,
-				3C09C6F41C8C6899004A44E2 /* SongsViewController.m */,
-				7B066A4C1CA4C9610078FD53 /* SongsViewController.xib */,
-				7B066AD41CA53F4E0078FD53 /* SongsCell.h */,
-				7B066AD51CA53F4E0078FD53 /* SongsCell.m */,
-				7BF65F151CA3C285007B198D /* SongsCell.xib */,
+				7B4CD88C1CACE0B30041BE4E /* SongsViewController */,
+				7B4CD88D1CACE0BB0041BE4E /* EditSongViewController */,
 			);
 			name = Songs;
 			sourceTree = "<group>";
@@ -837,9 +886,8 @@
 		7BF5C8C61C91540400175C6F /* Playlists */ = {
 			isa = PBXGroup;
 			children = (
-				3C09C7021C8C6962004A44E2 /* PlaylistsViewController.h */,
-				3C09C7031C8C6962004A44E2 /* PlaylistsViewController.m */,
-				7B066A5B1CA4CE790078FD53 /* PlaylistsViewController.xib */,
+				7B4CD8861CACDFC40041BE4E /* MakePlaylistViewController */,
+				7B4CD8851CACDFA00041BE4E /* PlaylistsViewController */,
 			);
 			name = Playlists;
 			sourceTree = "<group>";
@@ -1009,6 +1057,7 @@
 			files = (
 				3C4926D01C93EBCC0065B1DD /* playlists.png in Resources */,
 				7BF65F171CA3C285007B198D /* SongsCell.xib in Resources */,
+				7B4CD8921CAD09D50041BE4E /* ListSongCell.xib in Resources */,
 				3CB105361CA419DB0087D20A /* ipod-item-icon@2x.png in Resources */,
 				3C8D3DA61CA58155008EB7A8 /* btnAddPlaylist@3x.png in Resources */,
 				3C4926C41C93EBCC0065B1DD /* genres.png in Resources */,
@@ -1053,6 +1102,7 @@
 				3C4926C21C93EBCC0065B1DD /* genres-selected@2x.png in Resources */,
 				3C4926D31C93EBCC0065B1DD /* settings-selected.png in Resources */,
 				3C4926D21C93EBCC0065B1DD /* playlists@3x.png in Resources */,
+				7B4CD88B1CACDFE00041BE4E /* MakePlaylistViewController.xib in Resources */,
 				3C8D3D981CA5774E008EB7A8 /* btnEditSong.png in Resources */,
 				3C4926D61C93EBCC0065B1DD /* settings.png in Resources */,
 				3C8D3D9A1CA5774E008EB7A8 /* btnEditSong@3x.png in Resources */,
@@ -1131,6 +1181,8 @@
 				3C09C7041C8C6962004A44E2 /* PlaylistsViewController.m in Sources */,
 				3C4926F81C9528460065B1DD /* GenresViewController.m in Sources */,
 				7BF65F441CA3D782007B198D /* NSData+ImageContentType.m in Sources */,
+				7B4CD88A1CACDFE00041BE4E /* MakePlaylistViewController.m in Sources */,
+				7B4CD8911CAD09D50041BE4E /* ListSongCell.m in Sources */,
 				7B0896131CA8C30000264CD1 /* ArtistsCell.m in Sources */,
 				7B08960F1CA8C26E00264CD1 /* AlbumArtistObj.m in Sources */,
 				3C4926FC1C952AC40065B1DD /* SettingsViewController.m in Sources */,

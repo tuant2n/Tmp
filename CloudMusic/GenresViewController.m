@@ -202,7 +202,7 @@
     [self.arrResults removeAllObjects];
     sCurrentSearch = sSearch;
     
-    if (sSearch.length <= 0)
+    if (sCurrentSearch.length <= 0)
     {
         [UIView animateWithDuration:0.2 animations:^{
             self.disableView.hidden = NO;
@@ -211,20 +211,21 @@
         } completion:nil];
     }
     else {
-        [[DataManagement sharedInstance] search:sSearch block:^(NSArray *results) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (results) {
-                    [self.arrResults addObjectsFromArray:results];
-                }
-                
-                self.disableView.hidden = YES;
-                self.tblSearchResult.alpha = 1.0;
-                
-                [UIView transitionWithView:self.tblSearchResult duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    [self.tblSearchResult reloadData];
-                } completion:nil];
-            });
-        }];
+        [[DataManagement sharedInstance] search:sCurrentSearch searchType:kSearchTypeGenre block:^(NSArray *results)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 if (results) {
+                     [self.arrResults addObjectsFromArray:results];
+                 }
+                 
+                 self.disableView.hidden = YES;
+                 self.tblSearchResult.alpha = 1.0;
+                 
+                 [UIView transitionWithView:self.tblSearchResult duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                     [self.tblSearchResult reloadData];
+                 } completion:nil];
+             });
+         }];
     }
 }
 
@@ -277,7 +278,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [Utils normalCellHeight];
+    return [MainCell normalCellHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -298,10 +299,13 @@
     
     cell = [self configCellWithItem:cellItem atIndex:indexPath tableView:tableView];
     
-    if (cell) {
-        [cell setLineHidden:isHiddenSeperator];
+    if (cell && cellItem)
+    {
         cell.delegate = self;
         cell.allowsMultipleSwipe = NO;
+        
+        [cell config:cellItem];
+        [cell setLineHidden:isHiddenSeperator];
     }
     
     return cell;
@@ -323,10 +327,55 @@
     else if ([itemObj isKindOfClass:[GenreObj class]]) {
         cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
     }
-    
-    [cell config:itemObj];
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id itemObj = nil;
+    
+    if (tableView == self.tblSearchResult) {
+        SearchResultObj *resultOj = self.arrResults[indexPath.section];
+        itemObj = resultOj.resuls[indexPath.row];
+    }
+    else {
+        itemObj = [self.genreArray objectAtIndex:indexPath.row];
+    }
+    
+    if (itemObj) {
+        [self.headerView resignKeyboard];
+        [self doActionWithItem:itemObj];
+    }
+}
+
+- (void)doActionWithItem:(id)item
+{
+    if ([item isKindOfClass:[Item class]]) {
+        [[GlobalParameter sharedInstance] setCurrentItemPlay:(Item *)item];
+    }
+    else if ([item isKindOfClass:[AlbumObj class]]) {
+        AlbumListViewController *vc = [[AlbumListViewController alloc] init];
+        vc.currentAlbum = (AlbumObj *)item;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if ([item isKindOfClass:[AlbumArtistObj class]]) {
+        AlbumArtistObj *artist = (AlbumArtistObj *)item;
+        
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        vc.sTitle = artist.sAlbumArtistName;
+        vc.iAlbumArtistId = artist.iAlbumArtistId;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if ([item isKindOfClass:[GenreObj class]]) {
+        GenreObj *genre = (GenreObj *)item;
+        
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        vc.sTitle = genre.sGenreName;
+        vc.iGenreId = genre.iGenreId;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 
 - (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
 {

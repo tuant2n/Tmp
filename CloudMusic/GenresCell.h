@@ -13,6 +13,4 @@
 
 @interface GenresCell : MainCell
 
-+ (CGFloat)height;
-
 @end

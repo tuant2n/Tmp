@@ -13,6 +13,6 @@
 
 @interface AlbumsCell : MainCell
 
-+ (CGFloat)height;
+- (void)hideExtenal;
 
 @end

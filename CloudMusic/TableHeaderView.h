@@ -16,6 +16,8 @@ typedef enum {
     kHeaderUtilTypeCreatePlaylist = 4,
 } kHeaderUtilType;
 
+@class AlbumObj;
+
 @protocol TableHeaderViewDelegate <NSObject>
 
 - (void)selectUtility:(kHeaderUtilType)iType;
@@ -31,6 +33,7 @@ typedef enum {
 - (id)initForAlbumsVC;
 - (id)initForArtistsVC;
 - (id)initForGenresVC;
+- (id)initForAlbumListVC:(AlbumObj *)album;
 
 - (float)getHeight;
 - (void)setActiveSearchBar:(BOOL)isActive;

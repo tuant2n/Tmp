@@ -213,15 +213,14 @@
     [tblView registerNib:[UINib nibWithNibName:@"AlbumsCell" bundle:nil] forCellReuseIdentifier:@"AlbumsCellId"];
     [tblView registerNib:[UINib nibWithNibName:@"ArtistsCell" bundle:nil] forCellReuseIdentifier:@"ArtistsCellId"];
     [tblView registerNib:[UINib nibWithNibName:@"GenresCell" bundle:nil] forCellReuseIdentifier:@"GenresCellId"];
-    
     [tblView registerNib:[UINib nibWithNibName:@"HeaderTitle" bundle:nil] forCellReuseIdentifier:@"HeaderTitleId"];
     
+    [tblView registerNib:[UINib nibWithNibName:@"TableHeaderCell" bundle:nil] forCellReuseIdentifier:@"TableHeaderCellId"];
+    
+    [tblView registerNib:[UINib nibWithNibName:@"ListSongCell" bundle:nil] forCellReuseIdentifier:@"ListSongCellId"];
+    
     tblView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-}
-
-+ (CGFloat)normalCellHeight
-{
-    return 62.0;
+    tblView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 #pragma mark - Files

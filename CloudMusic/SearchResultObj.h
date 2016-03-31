@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) NSString *sTitle;
 @property (nonatomic, strong) NSArray *resuls;
+@property (nonatomic, assign) int iOrder;
 
 @end

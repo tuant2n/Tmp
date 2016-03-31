@@ -13,7 +13,4 @@
 
 @interface ArtistsCell : MainCell
 
-+ (CGFloat)height;
-
-
 @end
