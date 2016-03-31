@@ -423,17 +423,6 @@
     }
 }
 
-- (void)hideHeaderView
-{
-    if (isActiveSearch) {
-        return;
-    }
-    
-    if (self.tblList.tableHeaderView) {
-        self.tblList.contentOffset = CGPointMake(0.0, [self.headerView getHeight]);
-    }
-}
-
 #pragma mark - MusicEq
 
 - (PCSEQVisualizer *)musicEq
@@ -462,8 +451,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self hideHeaderView];
     
     if ([[GlobalParameter sharedInstance] isPlay]) {
         [self.musicEq startEq];

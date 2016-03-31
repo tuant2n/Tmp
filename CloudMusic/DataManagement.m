@@ -101,8 +101,6 @@ static DataManagement *_sharedInstance = nil;
         for (MPMediaItem *song in songList) {
             Item *item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Item class]) inManagedObjectContext:backgroundContext];
             [item updateWithMediaItem:song];
-            
-            NSLog(@"%@",item);
         }
         
         [backgroundContext save:nil];

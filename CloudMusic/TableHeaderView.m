@@ -19,7 +19,6 @@
 
 @interface TableHeaderView() <UITableViewDataSource,UITableViewDelegate>
 {
-    float utilHeight;
     BOOL hasIndexTitles;
 }
 
@@ -168,26 +167,16 @@
 - (void)setupDefault
 {
     float height = 0;
-    utilHeight = 0;
-
     for (id item in self.arrListUtils) {
         if ([item isKindOfClass:[HeaderUtilObj class]]) {
-            utilHeight += [TableHeaderCell height];
+            height += [TableHeaderCell height];
         }
         else {
             height += [MainCell largeCellHeight];
         }
     }
-    
-    utilHeight += SEARCHBAR_HEIGHT + LINE_SEPERATOR_HEIGHT;
-    height += utilHeight;
-    
+    height += SEARCHBAR_HEIGHT + LINE_SEPERATOR_HEIGHT;
     [self setHeight:height];
-}
-
-- (float)getHeight
-{
-    return utilHeight;
 }
 
 - (void)resignKeyboard

@@ -35,7 +35,6 @@ typedef enum {
 - (id)initForGenresVC;
 - (id)initForAlbumListVC:(AlbumObj *)album;
 
-- (float)getHeight;
 - (void)resignKeyboard;
 
 @end
