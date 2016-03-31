@@ -10,7 +10,7 @@
 
 @interface GenreObj : NSObject
 
-@property (nonatomic, strong) NSNumber *iGenreId;
+@property (nonatomic, strong) NSString *iGenreId;
 @property (nonatomic, strong) NSString *sGenreName, *sGenreDesc;
 @property (nonatomic, strong) NSURL *sLocalArtworkUrl;
 

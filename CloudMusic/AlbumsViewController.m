@@ -66,7 +66,7 @@
 - (void)getData
 {
     [self.albumsArray removeAllObjects];
-    [self.albumsArray addObjectsFromArray:[[DataManagement sharedInstance] getListAlbumFilterByName:nil artistId:self.iAlbumArtistId genreId:self.iGenreId]];
+    [self.albumsArray addObjectsFromArray:[[DataManagement sharedInstance] getListAlbumFilterByName:nil albumArtistId:self.iAlbumArtistId genreId:self.iGenreId]];
     [self.tblList reloadData];
     [self setupFooterView];
 }
@@ -152,12 +152,7 @@
         self.tblSearchResult.delegate = nil;
         self.tblSearchResult.dataSource = nil;
     }
-    
-    [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
-        [self.headerView setActiveSearchBar:isActiveSearch];
-        [self.tblList setTableHeaderView:self.headerView];
-    } completion:nil];
-    
+
     self.tblList.allowsSelection = !isActiveSearch;
     self.tblList.scrollEnabled = !isActiveSearch;
     
@@ -356,35 +351,7 @@
     
     if (itemObj) {
         [self.headerView resignKeyboard];
-        [self doActionWithItem:itemObj];
-    }
-}
-
-- (void)doActionWithItem:(id)item
-{
-    if ([item isKindOfClass:[Item class]]) {
-        [[GlobalParameter sharedInstance] setCurrentItemPlay:(Item *)item];
-    }
-    else if ([item isKindOfClass:[AlbumObj class]]) {
-        AlbumListViewController *vc = [[AlbumListViewController alloc] init];
-        vc.currentAlbum = (AlbumObj *)item;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else if ([item isKindOfClass:[AlbumArtistObj class]]) {
-        AlbumArtistObj *artist = (AlbumArtistObj *)item;
-        
-        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
-        vc.sTitle = artist.sAlbumArtistName;
-        vc.iAlbumArtistId = artist.iAlbumArtistId;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else if ([item isKindOfClass:[GenreObj class]]) {
-        GenreObj *genre = (GenreObj *)item;
-        
-        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
-        vc.sTitle = genre.sGenreName;
-        vc.iGenreId = genre.iGenreId;
-        [self.navigationController pushViewController:vc animated:YES];
+        [[DataManagement sharedInstance] doActionWithItem:itemObj fromNavigation:self.navigationController];
     }
 }
 

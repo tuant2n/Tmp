@@ -10,7 +10,7 @@
 
 @interface AlbumArtistObj : NSObject
 
-@property (nonatomic, strong) NSNumber *iAlbumArtistId;
+@property (nonatomic, strong) NSString *iAlbumArtistId;
 @property (nonatomic, strong) NSString *sAlbumArtistName, *sAlbumArtistDesc;
 @property (nonatomic, strong) NSURL *sLocalArtworkUrl;
 @property (nonatomic, assign) int  numberOfAlbum;

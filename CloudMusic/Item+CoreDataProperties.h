@@ -19,24 +19,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *sAssetUrl;
 @property (nullable, nonatomic, retain) NSNumber *isCloud;
 
-@property (nullable, nonatomic, retain) NSNumber *iSongId;
+@property (nullable, nonatomic, retain) NSString *iSongId;
 @property (nullable, nonatomic, retain) NSString *sSongName;
 @property (nullable, nonatomic, retain) NSString *sSongNameIndex;
 @property (nullable, nonatomic, retain) NSString *sSongFirstLetter;
 
-@property (nullable, nonatomic, retain) NSNumber *iAlbumId;
+@property (nullable, nonatomic, retain) NSString *iAlbumId;
 @property (nullable, nonatomic, retain) NSString *sAlbumName;
 @property (nullable, nonatomic, retain) NSString *sAlbumNameIndex;
 
-@property (nullable, nonatomic, retain) NSNumber *iArtistId;
+@property (nullable, nonatomic, retain) NSString *iArtistId;
 @property (nullable, nonatomic, retain) NSString *sArtistName;
 @property (nullable, nonatomic, retain) NSString *sArtistNameIndex;
 
-@property (nullable, nonatomic, retain) NSNumber *iAlbumArtistId;
+@property (nullable, nonatomic, retain) NSString *iAlbumArtistId;
 @property (nullable, nonatomic, retain) NSString *sAlbumArtistName;
 @property (nullable, nonatomic, retain) NSString *sAlbumArtistNameIndex;
 
-@property (nullable, nonatomic, retain) NSNumber *iGenreId;
+@property (nullable, nonatomic, retain) NSString *iGenreId;
 @property (nullable, nonatomic, retain) NSString *sGenreName;
 @property (nullable, nonatomic, retain) NSString *sGenreNameIndex;
 

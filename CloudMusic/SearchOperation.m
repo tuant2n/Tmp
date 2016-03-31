@@ -68,7 +68,7 @@
             return;
         }
         
-        tmpArray = [[DataManagement sharedInstance] getListAlbumFilterByName:_sSearch artistId:nil genreId:nil];
+        tmpArray = [[DataManagement sharedInstance] getListAlbumFilterByName:_sSearch albumArtistId:nil genreId:nil];
         if (tmpArray.count > 0)
         {
             SearchResultObj *albumResult = [[SearchResultObj alloc] init];

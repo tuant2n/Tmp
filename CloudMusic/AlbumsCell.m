@@ -12,9 +12,15 @@
 #import "Utils.h"
 
 @interface AlbumsCell()
+{
+    BOOL isNotActive;
+}
 
 @property (nonatomic, weak) IBOutlet UILabel *lblAlbumName, *lblAlbumInfo, *lblAlbumDesc;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *vInfoPosition;
+
+@property (nonatomic, weak) IBOutlet UIView *vExternal;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *vExternalWidth;;
 
 @end
 
@@ -40,9 +46,26 @@
 
 - (void)hideExtenal
 {
-    self.imgvIcon.hidden = YES;
+    self.vExternal.hidden = YES;
     self.imgvListIcon.hidden = YES;
+    
+    [self.vExternalWidth setConstant:0.0];
     [self.vInfoPosition setConstant:15.0];
+    
+    self.leftButtons = nil;
+    isNotActive = YES;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    if (!isNotActive) {
+        [super setHighlighted:highlighted animated:animated];
+    }
 }
 
 @end

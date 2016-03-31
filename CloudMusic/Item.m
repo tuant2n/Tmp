@@ -30,19 +30,19 @@
     self.sAssetUrl = [item.itemAssetURL absoluteString];
     self.isCloud = @NO;
     
-    self.iSongId = item.itemPersistentID;
+    self.iSongId = [item.itemPersistentID stringValue];
     [self setSongName:item.itemTitle];
     
-    self.iAlbumId = item.itemAlbumPID;
+    self.iAlbumId = [NSString stringWithFormat:@"%@ - %@",[item.itemAlbumPID stringValue],[item.year stringValue]];
     [self setAlbumName:item.itemAlbumTitle];
     
-    self.iArtistId = item.itemArtistPID;
+    self.iArtistId = [item.itemArtistPID stringValue];
     [self setArtistName:item.itemArtist];
     
-    self.iAlbumArtistId = item.itemAlbumArtistPID;
+    self.iAlbumArtistId = [item.itemAlbumArtistPID stringValue];
     [self setAlbumArtistName:item.itemAlbumArtist];
     
-    self.iGenreId = item.itemGenrePID;
+    self.iGenreId = [item.itemGenrePID stringValue];
     [self setGenreName:item.itemGenre];
     
     UIImage *artwork = [item.itemArtwork imageWithSize:item.itemArtwork.bounds.size];

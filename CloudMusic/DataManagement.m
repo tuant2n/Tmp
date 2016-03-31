@@ -10,6 +10,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 #import "Utils.h"
+#import "GlobalParameter.h"
 
 static DataManagement *_sharedInstance = nil;
 
@@ -100,6 +101,8 @@ static DataManagement *_sharedInstance = nil;
         for (MPMediaItem *song in songList) {
             Item *item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Item class]) inManagedObjectContext:backgroundContext];
             [item updateWithMediaItem:song];
+            
+            NSLog(@"%@",item);
         }
         
         [backgroundContext save:nil];
@@ -112,7 +115,7 @@ static DataManagement *_sharedInstance = nil;
     [self.coreDataController save];
 }
 
-- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSNumber *)iAlbumId artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId year:(NSNumber *)iYear
+- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId year:(NSString *)iYear
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[self itemEntity]];
@@ -125,15 +128,15 @@ static DataManagement *_sharedInstance = nil;
         [filters addObject:predicate];
     }
     if (iAlbumId) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iAlbumId == %@",iAlbumId];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iAlbumId ==[c] %@",iAlbumId];
         [filters addObject:predicate];
     }
     if (iArtistId) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iAlbumArtistId == %@",iArtistId];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iAlbumArtistId ==[c] %@",iArtistId];
         [filters addObject:predicate];
     }
     if (iGenreId) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iGenreId == %@",iGenreId];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iGenreId ==[c] %@",iGenreId];
         [filters addObject:predicate];
     }
     if (iYear) {
@@ -161,7 +164,7 @@ static DataManagement *_sharedInstance = nil;
     return [[self getListSongFilterByName:sName] filteredArrayUsingPredicate:filterCloudItem];
 }
 
-- (NSArray *)getListAlbumFilterByName:(NSString *)sName artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId
+- (NSArray *)getListAlbumFilterByName:(NSString *)sName albumArtistId:(NSString *)iAlbumArtistId genreId:(NSString *)iGenreId
 {
     NSEntityDescription *itemEntity = [self itemEntity];
     
@@ -206,12 +209,12 @@ static DataManagement *_sharedInstance = nil;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sAlbumNameIndex CONTAINS[cd] %@",sName];
         [filters addObject:predicate];
     }
-    if (iArtistId) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iAlbumArtistId == %@",iArtistId];
+    if (iAlbumArtistId) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iAlbumArtistId ==[c] %@",iAlbumArtistId];
         [filters addObject:predicate];
     }
     if (iGenreId) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iGenreId == %@",iGenreId];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iGenreId ==[c] %@",iGenreId];
         [filters addObject:predicate];
     }
     if (filters.count > 0) {
@@ -298,7 +301,7 @@ static DataManagement *_sharedInstance = nil;
     [request setResultType:NSDictionaryResultType];
     
     NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
-    
+
     NSMutableArray *artistArray = [NSMutableArray new];
     for (NSDictionary *info in results) {
         AlbumArtistObj *item = [[AlbumArtistObj alloc] initWithInfo:info];
@@ -403,6 +406,41 @@ static DataManagement *_sharedInstance = nil;
 {
     if ([self.searchQueue operationCount] > 0) {
         [self.searchQueue cancelAllOperations];
+    }
+}
+
+#pragma mark - DoAction
+
+- (void)doActionWithItem:(id)item fromNavigation:(UINavigationController *)navController
+{
+    if ([item isKindOfClass:[Item class]]) {
+        [[GlobalParameter sharedInstance] setCurrentItemPlay:(Item *)item];
+    }
+    else if ([item isKindOfClass:[AlbumObj class]]) {
+        AlbumListViewController *vc = [[AlbumListViewController alloc] init];
+        vc.currentAlbum = (AlbumObj *)item;
+        [navController pushViewController:vc animated:YES];
+    }
+    else if ([item isKindOfClass:[AlbumArtistObj class]]) {
+        AlbumArtistObj *artist = (AlbumArtistObj *)item;
+        
+        if (artist.numberOfAlbum == 1) {
+            
+        }
+        else {
+            AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+            vc.sTitle = artist.sAlbumArtistName;
+            vc.iAlbumArtistId = artist.iAlbumArtistId;
+            [navController pushViewController:vc animated:YES];
+        }
+    }
+    else if ([item isKindOfClass:[GenreObj class]]) {
+        GenreObj *genre = (GenreObj *)item;
+        
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        vc.sTitle = genre.sGenreName;
+        vc.iGenreId = genre.iGenreId;
+        [navController pushViewController:vc animated:YES];
     }
 }
 

@@ -46,11 +46,11 @@
 - (void)syncData;
 - (void)saveData;
 
-- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSNumber *)iAlbumId artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId year:(NSNumber *)iYear;
+- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId year:(NSNumber *)iYear;
 
 - (NSArray *)getListSongFilterByName:(NSString *)sName;
 - (NSArray *)getListSongCloudFilterByName:(NSString *)sName;
-- (NSArray *)getListAlbumFilterByName:(NSString *)sName artistId:(NSNumber *)iArtistId genreId:(NSNumber *)iGenreId;
+- (NSArray *)getListAlbumFilterByName:(NSString *)sName albumArtistId:(NSString *)iAlbumArtistId genreId:(NSString *)iGenreId;
 - (NSArray *)getListAlbumArtistFilterByName:(NSString *)sName;
 - (NSArray *)getListGenreFilterByName:(NSString *)sName;
 
@@ -58,6 +58,10 @@
 
 - (void)search:(NSString *)sSearch searchType:(kSearchType)iSearchType block:(void (^)(NSArray *results))block;
 - (void)cancelSearch;
+
+#pragma mark - DoAction
+
+- (void)doActionWithItem:(id)item fromNavigation:(UINavigationController *)navController;
 
 #pragma mark - iTunes Sync
 

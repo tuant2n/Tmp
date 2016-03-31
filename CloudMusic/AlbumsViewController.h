@@ -10,7 +10,7 @@
 
 @interface AlbumsViewController : UIViewController
 
-@property (nonatomic, strong) NSNumber *iAlbumArtistId, *iGenreId;
+@property (nonatomic, strong) NSString *iAlbumArtistId, *iGenreId;
 @property (nonatomic, strong) NSString *sTitle;
 
 @end

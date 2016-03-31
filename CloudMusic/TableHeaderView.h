@@ -36,7 +36,6 @@ typedef enum {
 - (id)initForAlbumListVC:(AlbumObj *)album;
 
 - (float)getHeight;
-- (void)setActiveSearchBar:(BOOL)isActive;
 - (void)resignKeyboard;
 
 @end

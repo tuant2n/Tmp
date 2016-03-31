@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="14F27" minimumToolsVersion="Xcode 7.0">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
     <entity name="Item" representedClassName="Item" syncable="YES">
         <attribute name="fDuration" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
-        <attribute name="iAlbumArtistId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="iAlbumId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="iArtistId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="iGenreId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="iAlbumArtistId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iAlbumId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iArtistId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iGenreId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iPlayCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="iPlaylistId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="iPlaylistId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iRate" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isCloud" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
-        <attribute name="iSongId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="iSongId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iTrack" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="iYear" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="lTimeDownloaded" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
