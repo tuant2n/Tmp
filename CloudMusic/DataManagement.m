@@ -113,7 +113,7 @@ static DataManagement *_sharedInstance = nil;
     [self.coreDataController save];
 }
 
-- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId year:(NSString *)iYear
+- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[self itemEntity]];
@@ -137,10 +137,6 @@ static DataManagement *_sharedInstance = nil;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iGenreId ==[c] %@",iGenreId];
         [filters addObject:predicate];
     }
-    if (iYear) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iYear == %@",iYear];
-        [filters addObject:predicate];
-    }
 
     if (filters.count > 0) {
         [request setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:filters]];
@@ -151,7 +147,7 @@ static DataManagement *_sharedInstance = nil;
 
 - (NSArray *)getListSongFilterByName:(NSString *)sName
 {
-    NSFetchRequest *request = [self getListSongFilterByName:sName albumId:nil artistId:nil genreId:nil year:nil];
+    NSFetchRequest *request = [self getListSongFilterByName:sName albumId:nil artistId:nil genreId:nil];
     NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
     return results;
 }
@@ -186,7 +182,7 @@ static DataManagement *_sharedInstance = nil;
     [duration setExpressionResultType:NSInteger32AttributeType];
     
     NSExpression *listCloud = [NSExpression expressionForKeyPath:@"isCloud"];
-    NSExpression *cloudExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listCloud]];
+    NSExpression *cloudExpression = [NSExpression expressionForFunction:@"min:" arguments:@[listCloud]];
     NSExpressionDescription *cloud = [[NSExpressionDescription alloc] init];
     [cloud setName: @"isCloud"];
     [cloud setExpression:cloudExpression];
@@ -219,7 +215,7 @@ static DataManagement *_sharedInstance = nil;
         [request setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:filters]];
     }
     
-    [request setPropertiesToFetch:@[iAlbumId,sAlbumName,sAlbumArtistName,iYear,numberOfSong,duration,artwork]];
+    [request setPropertiesToFetch:@[iAlbumId,sAlbumName,sAlbumArtistName,iYear,cloud,numberOfSong,duration,artwork]];
     [request setPropertiesToGroupBy:@[iAlbumId,sAlbumName,sAlbumArtistName,iYear]];
     
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sAlbumNameIndex" ascending:YES];
@@ -422,15 +418,10 @@ static DataManagement *_sharedInstance = nil;
     else if ([item isKindOfClass:[AlbumArtistObj class]]) {
         AlbumArtistObj *artist = (AlbumArtistObj *)item;
         
-        if (artist.numberOfAlbum == 1) {
-            
-        }
-        else {
-            AlbumsViewController *vc = [[AlbumsViewController alloc] init];
-            vc.sTitle = artist.sAlbumArtistName;
-            vc.iAlbumArtistId = artist.iAlbumArtistId;
-            [navController pushViewController:vc animated:YES];
-        }
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        vc.sTitle = artist.sAlbumArtistName;
+        vc.iAlbumArtistId = artist.iAlbumArtistId;
+        [navController pushViewController:vc animated:YES];
     }
     else if ([item isKindOfClass:[GenreObj class]]) {
         GenreObj *genre = (GenreObj *)item;

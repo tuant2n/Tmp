@@ -1,18 +1,18 @@
 //
-//  MakePlaylistViewController.m
+//  EditSongViewController.m
 //  CloudMusic
 //
-//  Created by TuanTN8 on 3/31/16.
+//  Created by TuanTN on 4/1/16.
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
-#import "MakePlaylistViewController.h"
+#import "EditSongViewController.h"
 
-@interface MakePlaylistViewController ()
+@interface EditSongViewController ()
 
 @end
 
-@implementation MakePlaylistViewController
+@implementation EditSongViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

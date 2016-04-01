@@ -62,7 +62,7 @@
     
     [self setSongDuration:item.playbackDuration];
     
-    if ([item.itemTitle hasPrefix:@"Âm"]) {
+    if ([item.itemTitle hasPrefix:@"Mùa"]) {
         self.isCloud = @YES;
     }
 }

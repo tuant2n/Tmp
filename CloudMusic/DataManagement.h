@@ -46,7 +46,7 @@
 - (void)syncData;
 - (void)saveData;
 
-- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId year:(NSNumber *)iYear;
+- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId;
 
 - (NSArray *)getListSongFilterByName:(NSString *)sName;
 - (NSArray *)getListSongCloudFilterByName:(NSString *)sName;

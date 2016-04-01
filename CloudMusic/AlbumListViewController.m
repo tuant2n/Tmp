@@ -47,7 +47,7 @@
 {
     if (!_fetchedResultsController)
     {
-        NSFetchRequest *request = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:self.currentAlbum.iAlbumId artistId:self.currentAlbum.iArtistId genreId:self.currentAlbum.iGenreId year:self.currentAlbum.iYear];
+        NSFetchRequest *request = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:self.currentAlbum.iAlbumId artistId:self.currentAlbum.iArtistId genreId:self.currentAlbum.iGenreId];
         _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
         _fetchedResultsController.delegate = self;
         
@@ -356,6 +356,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     id itemObj = nil;
     
     if (tableView == self.tblSearchResult) {

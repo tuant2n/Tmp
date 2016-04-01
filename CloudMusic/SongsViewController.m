@@ -47,7 +47,7 @@
 {
     if (!_fetchedResultsController)
     {
-        NSFetchRequest *request = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:nil artistId:nil genreId:nil year:nil];
+        NSFetchRequest *request = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:nil artistId:nil genreId:nil];
         _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:@"sSongFirstLetter" cacheName:nil];
         _fetchedResultsController.delegate = self;
         
@@ -362,6 +362,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     id itemObj = nil;
     
     if (tableView == self.tblSearchResult) {
