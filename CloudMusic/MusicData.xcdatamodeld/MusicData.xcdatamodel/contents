@@ -5,11 +5,11 @@
         <attribute name="iAlbumArtistId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iAlbumId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iArtistId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iCloud" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="iGenreId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iPlayCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="iPlaylistId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iRate" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="isCloud" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
         <attribute name="iSongId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iTrack" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="iYear" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>

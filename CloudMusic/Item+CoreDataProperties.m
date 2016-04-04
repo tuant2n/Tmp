@@ -17,7 +17,7 @@
 @implementation Item (CoreDataProperties)
 
 @dynamic sAssetUrl;
-@dynamic isCloud;
+@dynamic iCloud;
 
 @dynamic iSongId;
 @dynamic sSongName;

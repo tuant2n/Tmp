@@ -13,7 +13,7 @@
 #import "AlbumObj.h"
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
-#import "SearchResultObj.h"
+#import "DataObj.h"
 
 #import "MainCell.h"
 #import "SongsCell.h"

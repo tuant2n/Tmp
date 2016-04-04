@@ -12,6 +12,8 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
+#import "EditViewController.h"
+
 @interface SongsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
 {
     BOOL isActiveSearch;
@@ -269,7 +271,7 @@
     NSString *sTitle = nil;
     
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultOj = self.arrResults[section];
+        DataObj *resultOj = self.arrResults[section];
         sTitle = resultOj.sTitle;
     }
     else {
@@ -290,8 +292,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultOj = self.arrResults[section];
-        return resultOj.resuls.count;
+        DataObj *resultOj = self.arrResults[section];
+        return resultOj.listData.count;
     }
     else {
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
@@ -311,9 +313,9 @@
     BOOL isHiddenSeperator = NO;
     
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultOj = self.arrResults[indexPath.section];
-        cellItem = resultOj.resuls[indexPath.row];
-        isHiddenSeperator = (indexPath.row == [resultOj.resuls count] - 1);
+        DataObj *resultOj = self.arrResults[indexPath.section];
+        cellItem = resultOj.listData[indexPath.row];
+        isHiddenSeperator = (indexPath.row == [resultOj.listData count] - 1);
     }
     else {
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
@@ -367,8 +369,8 @@
     id itemObj = nil;
     
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultOj = self.arrResults[indexPath.section];
-        itemObj = resultOj.resuls[indexPath.row];
+        DataObj *resultOj = self.arrResults[indexPath.section];
+        itemObj = resultOj.listData[indexPath.row];
     }
     else {
         itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -391,8 +393,23 @@
     {
         Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
-        if (item.isCloud.boolValue && index == 0) {
-            return NO;
+        if (item.isCloud) {
+            if (index == 0) {
+                // Delete
+                return NO;
+            }
+            else if (index == 1) {
+                // Add To Playlít
+            }
+            else if (index == 2) {
+                EditViewController *vc = [[EditViewController alloc] init];
+                vc.song = item;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+            }
+        }
+        else {
+            
         }
     }
     

@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SearchResultObj : NSObject
+@interface DataObj : NSObject
 
 @property (nonatomic, strong) NSString *sTitle;
-@property (nonatomic, strong) NSArray *resuls;
+@property (nonatomic, strong) NSArray *listData;
 @property (nonatomic, assign) int iOrder;
 
 @end

@@ -167,17 +167,17 @@
     return button;
 }
 
-+ (UIButton *)createBarButtonWithTitle:(NSString *)sTitle textColor:(UInt32)hexColor position:(UIControlContentHorizontalAlignment)position target:(id)target action:(SEL)selector
++ (UIButton *)createBarButtonWithTitle:(NSString *)sTitle font:(UIFont *)font textColor:(UInt32)hexColor position:(UIControlContentHorizontalAlignment)position target:(id)target action:(SEL)selector
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:CGRectMake(0.0, 0.0, 50.0, 35.0)];
+    [button setFrame:CGRectMake(0.0, 0.0, 70.0, 35.0)];
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     [button setContentHorizontalAlignment:position];
     button.multipleTouchEnabled = NO;
     button.exclusiveTouch = YES;
     
     [button setTitle:sTitle forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:14.0];
+    button.titleLabel.font = font;
     
     UIColor *normalColor = [Utils colorWithRGBHex:hexColor];
     UIColor *highlightedColor = [Utils colorWithRGBHex:hexColor andAlpha:0.4];

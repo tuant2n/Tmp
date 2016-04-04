@@ -24,7 +24,7 @@
             self.sLocalArtworkUrl = [NSURL fileURLWithPath:[[Utils artworkPath] stringByAppendingPathComponent:[info objectForKey:@"sArtworkName"]]];
         }
         
-        self.isCloud = [[info objectForKey:@"isCloud"] boolValue];
+        self.isCloud = ([[info objectForKey:@"iCloud"] intValue] == 1);
         
         int numberOfSong = [[info objectForKey:@"numberOfSong"] intValue];
         int fDuration = [[info objectForKey:@"fDuration"] intValue];

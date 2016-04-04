@@ -258,7 +258,7 @@
     NSString *sTitle = nil;
     
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultOj = self.arrResults[section];
+        DataObj *resultOj = self.arrResults[section];
         sTitle = resultOj.sTitle;
     }
     
@@ -270,8 +270,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultOj = self.arrResults[section];
-        return resultOj.resuls.count;
+        DataObj *resultOj = self.arrResults[section];
+        return resultOj.listData.count;
     }
     else {
         return self.albumsArray.count;
@@ -295,9 +295,9 @@
     BOOL isHiddenSeperator = NO;
     
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultObj = self.arrResults[indexPath.section];
-        cellItem = resultObj.resuls[indexPath.row];
-        isHiddenSeperator = (indexPath.row == [resultObj.resuls count] - 1);
+        DataObj *resultObj = self.arrResults[indexPath.section];
+        cellItem = resultObj.listData[indexPath.row];
+        isHiddenSeperator = (indexPath.row == [resultObj.listData count] - 1);
     }
     else {
         cellItem = self.albumsArray[indexPath.row];
@@ -344,8 +344,8 @@
     id itemObj = nil;
     
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultOj = self.arrResults[indexPath.section];
-        itemObj = resultOj.resuls[indexPath.row];
+        DataObj *resultOj = self.arrResults[indexPath.section];
+        itemObj = resultOj.listData[indexPath.row];
     }
     else {
         itemObj = [self.albumsArray objectAtIndex:indexPath.row];

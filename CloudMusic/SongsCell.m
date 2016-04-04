@@ -35,8 +35,8 @@
     self.lblSongDesc.attributedText = item.sSongDesc;
     self.lblDuration.text = item.sDuration;
     
-    [self configMenuButton:item.isCloud.boolValue isEdit:YES];
-    [self setItemType:item.isCloud.boolValue];
+    [self configMenuButton:item.isCloud isEdit:YES];
+    [self setItemType:item.isCloud];
     [self isPlaying:item.isPlaying];
 }
 

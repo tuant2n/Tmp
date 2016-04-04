@@ -17,6 +17,7 @@
 
 @synthesize isPlaying;
 
+@synthesize isCloud;
 @synthesize sLocalArtworkUrl;
 @synthesize sSongDesc;
 
@@ -28,8 +29,7 @@
 - (void)updateWithMediaItem:(MPMediaItem *)item
 {
     self.sAssetUrl = [item.itemAssetURL absoluteString];
-    self.isCloud = @NO;
-    
+
     self.iSongId = [item.itemPersistentID stringValue];
     [self setSongName:item.itemTitle];
     
@@ -63,7 +63,7 @@
     [self setSongDuration:item.playbackDuration];
     
     if ([item.itemTitle hasPrefix:@"Mùa"]) {
-        self.isCloud = @YES;
+        self.iCloud = @1;
     }
 }
 
@@ -159,6 +159,11 @@
         
     }
     return sSongDesc;
+}
+
+- (BOOL)isCloud
+{
+    return [self.iCloud intValue] == 1;
 }
 
 @end

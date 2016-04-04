@@ -6,8 +6,8 @@
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
-#import "SearchResultObj.h"
+#import "DataObj.h"
 
-@implementation SearchResultObj
+@implementation DataObj
 
 @end

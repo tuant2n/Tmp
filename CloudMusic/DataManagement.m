@@ -70,7 +70,7 @@ static DataManagement *_sharedInstance = nil;
 - (void)removeAllData
 {
     NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"isCloud",@NO];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"iCloud",@1];
     [fetchSongRequest setPredicate:predicate];
     
     NSError *error = nil;
@@ -154,7 +154,7 @@ static DataManagement *_sharedInstance = nil;
 
 - (NSArray *)getListSongCloudFilterByName:(NSString *)sName
 {
-    NSPredicate *filterCloudItem = [NSPredicate predicateWithFormat:@"isCloud == %@",@YES];
+    NSPredicate *filterCloudItem = [NSPredicate predicateWithFormat:@"iCloud == %@",@1];
     return [[self getListSongFilterByName:sName] filteredArrayUsingPredicate:filterCloudItem];
 }
 
@@ -181,10 +181,10 @@ static DataManagement *_sharedInstance = nil;
     [duration setExpression:sumExpression];
     [duration setExpressionResultType:NSInteger32AttributeType];
     
-    NSExpression *listCloud = [NSExpression expressionForKeyPath:@"isCloud"];
+    NSExpression *listCloud = [NSExpression expressionForKeyPath:@"iCloud"];
     NSExpression *cloudExpression = [NSExpression expressionForFunction:@"min:" arguments:@[listCloud]];
     NSExpressionDescription *cloud = [[NSExpressionDescription alloc] init];
-    [cloud setName: @"isCloud"];
+    [cloud setName: @"iCloud"];
     [cloud setExpression:cloudExpression];
     [cloud setExpressionResultType:NSInteger32AttributeType];
     
@@ -265,10 +265,10 @@ static DataManagement *_sharedInstance = nil;
     [duration setExpression:sumExpression];
     [duration setExpressionResultType:NSInteger32AttributeType];
     
-    NSExpression *listCloud = [NSExpression expressionForKeyPath:@"isCloud"];
-    NSExpression *cloudExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listCloud]];
+    NSExpression *listCloud = [NSExpression expressionForKeyPath:@"iCloud"];
+    NSExpression *cloudExpression = [NSExpression expressionForFunction:@"min:" arguments:@[listCloud]];
     NSExpressionDescription *cloud = [[NSExpressionDescription alloc] init];
-    [cloud setName: @"isCloud"];
+    [cloud setName: @"iCloud"];
     [cloud setExpression:cloudExpression];
     [cloud setExpressionResultType:NSInteger32AttributeType];
     

@@ -59,7 +59,7 @@
 {
     self.lblSongName.text = item.sSongName;
     self.lblDuration.text = item.sDuration;
-    self.imgvIcon.image = item.isCloud.boolValue ? cloudIcon:iTunesIcon;
+    self.imgvIcon.image = item.isCloud ? cloudIcon:iTunesIcon;
 }
 
 + (CGFloat)height

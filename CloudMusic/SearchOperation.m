@@ -9,7 +9,7 @@
 #import "SearchOperation.h"
 
 #import "DataManagement.h"
-#import "SearchResultObj.h"
+#import "DataObj.h"
 
 #import "Utils.h"
 
@@ -57,8 +57,8 @@
         tmpArray = [[DataManagement sharedInstance] getListSongFilterByName:_sSearch];
         if (tmpArray.count > 0)
         {
-            SearchResultObj *songResult = [[SearchResultObj alloc] init];
-            songResult.resuls = tmpArray;
+            DataObj *songResult = [[DataObj alloc] init];
+            songResult.listData = tmpArray;
             songResult.sTitle = [NSString stringWithFormat:@"Songs (result: %d)",(int)tmpArray.count];
             songResult.iOrder = (self.iSearchType == kSearchTypeSong) ? 1 : 0;
             [results addObject:songResult];
@@ -71,8 +71,8 @@
         tmpArray = [[DataManagement sharedInstance] getListAlbumFilterByName:_sSearch albumArtistId:nil genreId:nil];
         if (tmpArray.count > 0)
         {
-            SearchResultObj *albumResult = [[SearchResultObj alloc] init];
-            albumResult.resuls = tmpArray;
+            DataObj *albumResult = [[DataObj alloc] init];
+            albumResult.listData = tmpArray;
             albumResult.sTitle = [NSString stringWithFormat:@"Albums (result: %d)",(int)tmpArray.count];
             albumResult.iOrder = (self.iSearchType == kSearchTypeAlbum) ? 1 : 0;
             [results addObject:albumResult];
@@ -85,8 +85,8 @@
         tmpArray = [[DataManagement sharedInstance] getListAlbumArtistFilterByName:_sSearch];
         if (tmpArray.count > 0)
         {
-            SearchResultObj *artistResult = [[SearchResultObj alloc] init];
-            artistResult.resuls = tmpArray;
+            DataObj *artistResult = [[DataObj alloc] init];
+            artistResult.listData = tmpArray;
             artistResult.sTitle = [NSString stringWithFormat:@"Artists (result: %d)",(int)tmpArray.count];
             artistResult.iOrder = (self.iSearchType == kSearchTypeArtist) ? 1 : 0;
             [results addObject:artistResult];
@@ -99,8 +99,8 @@
         tmpArray = [[DataManagement sharedInstance] getListSongCloudFilterByName:_sSearch];
         if (tmpArray.count > 0)
         {
-            SearchResultObj *fileResult = [[SearchResultObj alloc] init];
-            fileResult.resuls = tmpArray;
+            DataObj *fileResult = [[DataObj alloc] init];
+            fileResult.listData = tmpArray;
             fileResult.sTitle = [NSString stringWithFormat:@"Files (result: %d)",(int)tmpArray.count];
             fileResult.iOrder = (self.iSearchType == kSearchTypeFile) ? 1 : 0;
             [results addObject:fileResult];
@@ -113,8 +113,8 @@
         tmpArray = [[DataManagement sharedInstance] getListGenreFilterByName:_sSearch];
         if (tmpArray.count > 0)
         {
-            SearchResultObj *genreResult = [[SearchResultObj alloc] init];
-            genreResult.resuls = tmpArray;
+            DataObj *genreResult = [[DataObj alloc] init];
+            genreResult.listData = tmpArray;
             genreResult.sTitle = [NSString stringWithFormat:@"Genres (result: %d)",(int)tmpArray.count];
             genreResult.iOrder = (self.iSearchType == kSearchTypeGenre) ? 1 : 0;
             [results addObject:genreResult];

@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Item (CoreDataProperties)
 
 @property (nullable, nonatomic, retain) NSString *sAssetUrl;
-@property (nullable, nonatomic, retain) NSNumber *isCloud;
+@property (nullable, nonatomic, retain) NSNumber *iCloud;
 
 @property (nullable, nonatomic, retain) NSString *iSongId;
 @property (nullable, nonatomic, retain) NSString *sSongName;

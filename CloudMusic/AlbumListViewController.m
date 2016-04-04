@@ -262,7 +262,7 @@
     NSString *sTitle = nil;
     
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultOj = self.arrResults[section];
+        DataObj *resultOj = self.arrResults[section];
         sTitle = resultOj.sTitle;
     }
     
@@ -274,8 +274,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultOj = self.arrResults[section];
-        return resultOj.resuls.count;
+        DataObj *resultOj = self.arrResults[section];
+        return resultOj.listData.count;
     }
     else {
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
@@ -298,9 +298,9 @@
     id cellItem = nil;
     
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultObj = self.arrResults[indexPath.section];
-        cellItem = resultObj.resuls[indexPath.row];
-        BOOL isHiddenSeperator = (indexPath.row == [resultObj.resuls count] - 1);
+        DataObj *resultObj = self.arrResults[indexPath.section];
+        cellItem = resultObj.listData[indexPath.row];
+        BOOL isHiddenSeperator = (indexPath.row == [resultObj.listData count] - 1);
         
         MainCell *cell = [self configCellWithItem:cellItem atIndex:indexPath tableView:tableView];
         
@@ -361,8 +361,8 @@
     id itemObj = nil;
     
     if (tableView == self.tblSearchResult) {
-        SearchResultObj *resultOj = self.arrResults[indexPath.section];
-        itemObj = resultOj.resuls[indexPath.row];
+        DataObj *resultOj = self.arrResults[indexPath.section];
+        itemObj = resultOj.listData[indexPath.row];
     }
     else {
         itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -385,7 +385,7 @@
     {
         Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
-        if (item.isCloud.boolValue && index == 0) {
+        if (item.isCloud && index == 0) {
             return NO;
         }
     }

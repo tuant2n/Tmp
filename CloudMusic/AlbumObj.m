@@ -27,7 +27,7 @@
             self.sLocalArtworkUrl = [NSURL fileURLWithPath:[[Utils artworkPath] stringByAppendingPathComponent:[info objectForKey:@"sArtworkName"]]];
         }
         
-        self.isCloud = [[info objectForKey:@"isCloud"] boolValue];
+        self.isCloud = ([[info objectForKey:@"iCloud"] intValue] == 1);
         
         self.iYear = [info objectForKey:@"iYear"];
         self.sAlbumInfo = self.sAlbumArtistName;
