@@ -11,7 +11,7 @@
 #import "TagObj.h"
 #import "Utils.h"
 
-@interface TagCell()
+@interface TagCell() <UITextFieldDelegate>
 {
     
 }
@@ -30,6 +30,8 @@
     
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     self.lblTagName.textColor = [Utils colorWithRGBHex:0x006bd5];
+    
+    self.tfTagContent.delegate = self;
 }
 
 - (void)configWithTag:(TagObj *)tagObj
@@ -127,6 +129,7 @@
             break;
     }
 }
+
 - (void)setHiddenLine:(BOOL)isHidden
 {
     self.line.hidden = isHidden;
@@ -135,6 +138,13 @@
 + (CGFloat)height
 {
     return 44.0;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (self.tagObj.iTagType == kTagTypeElement) {
+        self.tagObj.value = textField.text;
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

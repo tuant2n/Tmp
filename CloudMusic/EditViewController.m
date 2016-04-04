@@ -19,6 +19,8 @@
 #import "DataManagement.h"
 #import "Utils.h"
 
+#import "IQKeyboardManager.h"
+
 @interface EditViewController ()
 
 @property (nonatomic, strong) NSMutableArray *arrListTag;
@@ -167,11 +169,11 @@
     file.iElementType = kElementTypeFilename;
     file.value = song.fileInfo.sFileName;
     file.isEditable = NO;
-    [arrSection3 addObject:folder];
+    [arrSection3 addObject:file];
     
     TagObj *copyTitle = [[TagObj alloc] init];
     copyTitle.iTagType = kTagTypeAction;
-    copyTitle.iTagActionType = kTagActionTypeWriteTitle;
+    copyTitle.iTagActionType = kTagActionTypeCopyTitle;
     [arrSection3 addObject:copyTitle];
     
     [self.arrListTag addObject:arrSection3];
@@ -219,6 +221,11 @@
     //
     NSMutableArray *arrSection5 = [NSMutableArray new];
     
+    TagObj *clearLyric = [[TagObj alloc] init];
+    clearLyric.iTagType = kTagTypeAction;
+    clearLyric.iTagActionType = kTagActionTypeClearLyric;
+    [arrSection5 addObject:clearLyric];
+    
     TagObj *lyric = [[TagObj alloc] init];
     lyric.iTagType = kTagTypeElement;
     lyric.iElementType = kElementTypeLyrics;
@@ -246,11 +253,13 @@
 
 - (void)touchCancel
 {
+    [[IQKeyboardManager sharedManager] resignFirstResponder];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)touchDone
 {
+    [[IQKeyboardManager sharedManager] resignFirstResponder];
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
@@ -283,7 +292,7 @@
     TagObj *tag = data[indexPath.row];
     
     if (tag.iTagType == kTagTypeElement && tag.iElementType == kElementTypeLyrics) {
-        
+        return [TagLyricCell height];
     }
     return [TagCell height];
 }
@@ -299,6 +308,7 @@
         {
             if (tag.iElementType == kElementTypeLyrics) {
                 TagLyricCell *cell = (TagLyricCell *)[tableView dequeueReusableCellWithIdentifier:@"TagLyricCellId" forIndexPath:indexPath];
+                [cell configWithTag:tag];
                 return cell;
             }
             else {
@@ -331,6 +341,91 @@
     }
     
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *data = self.arrListTag[indexPath.section];
+    TagObj *tag = data[indexPath.row];
+    
+    switch (tag.iTagType)
+    {
+        case kTagTypeAction:
+        {
+            if (tag.iTagActionType == kTagActionTypeCopyTitle)
+            {
+                NSIndexPath *tagIndexPath = [self getTagWithType:kTagTypeElement elementType:kElementTypeFilename];
+                if (tagIndexPath)
+                {
+                    TagObj *tagObj = self.arrListTag[tagIndexPath.section][tagIndexPath.row];
+                    tagObj.value = self.song.sSongName;
+                    
+                    TagCell *cell = (TagCell *)[self.tblList cellForRowAtIndexPath:tagIndexPath];
+                    if (cell) {
+                        [cell configWithTag:tagObj];
+                    }
+                }
+            }
+            else if (tag.iTagActionType == kTagActionTypeDelete)
+            {
+                
+            }
+            else if (tag.iTagActionType == kTagActionTypeClearLyric)
+            {
+                NSIndexPath *tagIndexPath = [self getTagWithType:kTagTypeElement elementType:kElementTypeLyrics];
+                if (tagIndexPath)
+                {
+                    TagObj *tagObj = self.arrListTag[tagIndexPath.section][tagIndexPath.row];
+                    tagObj.value = nil;
+                    
+                    TagLyricCell *cell = (TagLyricCell *)[self.tblList cellForRowAtIndexPath:tagIndexPath];
+                    if (cell) {
+                        [cell configWithTag:tagObj];
+                    }
+                }
+            }
+        }
+            break;
+            
+        case kTagTypeSaveToFile:
+        {
+            BOOL isWrite = ![tag.value boolValue];
+            tag.value = [NSNumber numberWithBool:isWrite];
+            
+            TagRadioButton *cell = (TagRadioButton *)[self.tblList cellForRowAtIndexPath:indexPath];
+            if (cell) {
+                [cell configWithValue:[tag.value boolValue]];
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (NSIndexPath *)getTagWithType:(kTagType)iTagType elementType:(kElementType)iElementType
+{
+    NSIndexPath *indexPath = nil;
+    
+    BOOL dobreak = NO;
+    for (int i = 0; !dobreak && i < self.arrListTag.count; i++)
+    {
+        NSArray *data = self.arrListTag[i];
+
+        for (int j = 0; j < data.count; j++)
+        {
+            TagObj *tag = data[j];
+            
+            if (tag.iTagType == iTagType && tag.iElementType == iElementType) {
+                indexPath = [NSIndexPath indexPathForRow:j inSection:i];
+                dobreak = YES;
+                break;
+            }
+        }
+    }
+    
+    return indexPath;
 }
 
 #pragma mark - UI

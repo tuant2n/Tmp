@@ -104,6 +104,7 @@ typedef enum {
     
     [self setupMoreNavVC];
     
+    [[IQKeyboardManager sharedManager] setShouldResignOnTouchOutside:YES];
     [[IQKeyboardManager sharedManager] setToolbarManageBehaviour:IQAutoToolbarByPosition];
 }  
 

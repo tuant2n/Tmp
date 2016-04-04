@@ -75,7 +75,7 @@ static DataManagement *_sharedInstance = nil;
 - (void)removeAllData
 {
     NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"iCloud",@1];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"iCloud",@0];
     [fetchSongRequest setPredicate:predicate];
     
     NSError *error = nil;
@@ -110,13 +110,15 @@ static DataManagement *_sharedInstance = nil;
             if (item.isCloud) {
                 FileInfo *fileInfo = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([FileInfo class]) inManagedObjectContext:backgroundContext];
                 item.fileInfo = fileInfo;
-                
                 [fileInfo updateFileInfo:item.sAssetUrl];
                 
+                // Test
                 fileInfo.sFolderName = @"Tuan 123";
                 fileInfo.sKind = @"MP3";
                 fileInfo.sSize = @"11.93 MB";
                 fileInfo.sBitRate = @"320 KBps";
+                
+                item.sLyrics = @"Đêm lại về, đêm tối tăm đêm lạnh câm \nNhìn mưa hắt lên ô cửa sổ, cuốn theo bao nhiêu tiếng lòng \nAnh lại về, giăng kín bao nhiêu niền tin \nNgày anh mang theo tất cả ngọt ngào đến ai \nRồi từng chiều con tim yếu đuối bước qua những nỗi buồn \nTập quen đi qua lối cũ hằng ngày, tập quen khi không có anh nữa \nEm không trông, thật lòng không mong cho dù thấp thoáng thấy dáng ai \nMùi hương thân quen khi xưa hu hù hu hú hu";
             }
         }
         

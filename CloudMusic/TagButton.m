@@ -32,13 +32,17 @@
 
 - (void)configWithActionType:(kTagActionType)iActionType
 {
-    if (iActionType == kTagActionTypeWriteTitle) {
+    if (iActionType == kTagActionTypeCopyTitle) {
         self.lblButtonTitle.text = @"Copy Title to Filename";
         self.lblButtonTitle.textColor = [UIColor blackColor];
     }
     else if (iActionType == kTagActionTypeDelete) {
         self.lblButtonTitle.text = @"Delete";
         self.lblButtonTitle.textColor = [UIColor redColor];
+    }
+    else if (iActionType == kTagActionTypeClearLyric) {
+        self.lblButtonTitle.text = @"Clear Lyrics";
+        self.lblButtonTitle.textColor = [UIColor blackColor];
     }
 }
 

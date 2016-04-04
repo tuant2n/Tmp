@@ -21,8 +21,10 @@
 
 @implementation TagLyricCell
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    self.tvLyric.contentInset = UIEdgeInsetsMake(-10.0, 0.0, 0.0, 0.0);
 }
 
 - (void)configWithTag:(TagObj *)tagObj
@@ -33,7 +35,7 @@
 
 + (CGFloat)height
 {
-    return 104.0;
+    return 144.0;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

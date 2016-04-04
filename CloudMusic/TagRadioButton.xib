@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write Tags To File" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2LG-ey-FzC" userLabel="lblTitle">
-                                <rect key="frame" x="15" y="0.0" width="252" height="43"/>
+                                <rect key="frame" x="20" y="0.0" width="247" height="43"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -36,7 +36,7 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="2LG-ey-FzC" firstAttribute="leading" secondItem="QsD-LG-JhO" secondAttribute="leading" constant="15" id="4iF-q0-ri9"/>
+                            <constraint firstItem="2LG-ey-FzC" firstAttribute="leading" secondItem="QsD-LG-JhO" secondAttribute="leading" constant="20" id="4iF-q0-ri9"/>
                             <constraint firstItem="Vnk-Pg-ch2" firstAttribute="leading" secondItem="2LG-ey-FzC" secondAttribute="trailing" id="7IN-rc-G2N"/>
                             <constraint firstAttribute="trailing" secondItem="Vnk-Pg-ch2" secondAttribute="trailing" constant="10" id="MJW-il-GTr"/>
                             <constraint firstItem="Vnk-Pg-ch2" firstAttribute="top" secondItem="QsD-LG-JhO" secondAttribute="top" id="e3j-7Y-pFz"/>
