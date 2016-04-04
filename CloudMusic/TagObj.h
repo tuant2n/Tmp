@@ -9,22 +9,43 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    kTagTypeTitle,
-    kTagTypeArtist,
-    kTagTypeAlbumArtist,
-    kTagTypeAlbum,
-    kTagTypeTrack,
-    kTagTypeGenre,
-    kTagTypeFolderName,
-    kTagTypeFilename,
-    kTagTypeTime,
-    kTagTypeKind,
-    kTagTypeSize,
-    kTagTypeBiteRate,
-    kTagTypeNumberOfPlay,
-    kTagTypeLyrics
+    kTagTypeElement,
+    kTagTypeAction,
+    kTagTypeSaveToFile,
 } kTagType;
 
+typedef enum {
+    kElementTypeNone,
+    kElementTypeTitle,
+    kElementTypeArtist,
+    kElementTypeAlbumArtist,
+    kElementTypeAlbum,
+    kElementTypeTrack,
+    kElementTypeYear,
+    kElementTypeGenre,
+    kElementTypeFolderName,
+    kElementTypeFilename,
+    kElementTypeTime,
+    kElementTypeKind,
+    kElementTypeSize,
+    kElementTypeBitRate,
+    kElementTypePlayed,
+    kElementTypeLyrics
+} kElementType;
+
+typedef enum {
+    kTagActionTypeNone,
+    kTagActionTypeDelete,
+    kTagActionTypeWriteTitle,
+} kTagActionType;
+
 @interface TagObj : NSObject
+
+@property (nonatomic, assign) kTagType iTagType;
+@property (nonatomic, assign) kElementType iElementType;
+@property (nonatomic, assign) kTagActionType iTagActionType;
+
+@property (nonatomic, assign) BOOL isEditable;
+@property (nonatomic, strong) id value;
 
 @end

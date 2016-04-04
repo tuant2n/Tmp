@@ -65,6 +65,11 @@ static DataManagement *_sharedInstance = nil;
     return [NSEntityDescription entityForName:NSStringFromClass([Item class]) inManagedObjectContext:self.managedObjectContext];
 }
 
+- (NSEntityDescription *)fileInfoEntity
+{
+    return [NSEntityDescription entityForName:NSStringFromClass([FileInfo class]) inManagedObjectContext:self.managedObjectContext];
+}
+
 #pragma mark - Data Method
 
 - (void)removeAllData
@@ -101,6 +106,18 @@ static DataManagement *_sharedInstance = nil;
         for (MPMediaItem *song in songList) {
             Item *item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Item class]) inManagedObjectContext:backgroundContext];
             [item updateWithMediaItem:song];
+            
+            if (item.isCloud) {
+                FileInfo *fileInfo = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([FileInfo class]) inManagedObjectContext:backgroundContext];
+                item.fileInfo = fileInfo;
+                
+                [fileInfo updateFileInfo:item.sAssetUrl];
+                
+                fileInfo.sFolderName = @"Tuan 123";
+                fileInfo.sKind = @"MP3";
+                fileInfo.sSize = @"11.93 MB";
+                fileInfo.sBitRate = @"320 KBps";
+            }
         }
         
         [backgroundContext save:nil];

@@ -2,7 +2,7 @@
 //  Item+CoreDataProperties.m
 //  CloudMusic
 //
-//  Created by TuanTN on 3/20/16.
+//  Created by TuanTN on 4/4/16.
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -11,47 +11,37 @@
 
 #import "Item+CoreDataProperties.h"
 
-#import "MPMediaItem+Accessors.h"
-#import "Utils.h"
-
 @implementation Item (CoreDataProperties)
 
-@dynamic sAssetUrl;
-@dynamic iCloud;
-
-@dynamic iSongId;
-@dynamic sSongName;
-@dynamic sSongNameIndex;
-@dynamic sSongFirstLetter;
-
-@dynamic iAlbumId;
-@dynamic sAlbumName;
-@dynamic sAlbumNameIndex;
-
+@dynamic fDuration;
 @dynamic iAlbumArtistId;
+@dynamic iAlbumId;
+@dynamic iArtistId;
+@dynamic iCloud;
+@dynamic iGenreId;
+@dynamic iPlayCount;
+@dynamic iPlaylistId;
+@dynamic iRate;
+@dynamic iSongId;
+@dynamic iTrack;
+@dynamic iYear;
+@dynamic lTimeDownloaded;
 @dynamic sAlbumArtistName;
 @dynamic sAlbumArtistNameIndex;
-
-@dynamic iArtistId;
+@dynamic sAlbumName;
+@dynamic sAlbumNameIndex;
 @dynamic sArtistName;
 @dynamic sArtistNameIndex;
-
-@dynamic iGenreId;
+@dynamic sArtworkName;
+@dynamic sAssetUrl;
+@dynamic sDuration;
 @dynamic sGenreName;
 @dynamic sGenreNameIndex;
-
-@dynamic iPlaylistId;
-@dynamic sPlaylistName;
-
 @dynamic sLyrics;
-@dynamic sArtworkName;
-
-@dynamic iYear;
-@dynamic iTrack;
-@dynamic iRate;
-@dynamic iPlayCount;
-@dynamic fDuration;
-@dynamic sDuration;
-@dynamic lTimeDownloaded;
+@dynamic sPlaylistName;
+@dynamic sSongFirstLetter;
+@dynamic sSongName;
+@dynamic sSongNameIndex;
+@dynamic fileInfo;
 
 @end

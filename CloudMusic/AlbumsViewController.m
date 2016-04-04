@@ -67,8 +67,17 @@
 {
     [self.albumsArray removeAllObjects];
     [self.albumsArray addObjectsFromArray:[[DataManagement sharedInstance] getListAlbumFilterByName:nil albumArtistId:self.iAlbumArtistId genreId:self.iGenreId]];
+    [self mergeData:self.albumsArray];
     [self.tblList reloadData];
     [self setupFooterView];
+}
+
+- (void)mergeData:(NSArray *)array
+{
+    for (AlbumObj *album in array) {
+        album.iGenreId = self.iGenreId;
+        album.iArtistId = self.iAlbumArtistId;
+    }
 }
 
 - (void)setupUI

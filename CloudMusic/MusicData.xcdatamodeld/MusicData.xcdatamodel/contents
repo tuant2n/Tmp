@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
+    <entity name="FileInfo" representedClassName="FileInfo" syncable="YES">
+        <attribute name="sBitRate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sFileName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sFolderName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sKind" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sSize" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="fileInfo" inverseEntity="Item" syncable="YES"/>
+    </entity>
     <entity name="Item" representedClassName="Item" syncable="YES">
         <attribute name="fDuration" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
         <attribute name="iAlbumArtistId" optional="YES" attributeType="String" syncable="YES"/>
@@ -30,8 +38,10 @@
         <attribute name="sSongFirstLetter" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sSongName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sSongNameIndex" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="fileInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FileInfo" inverseName="item" inverseEntity="FileInfo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Item" positionX="-27" positionY="18" width="128" height="480"/>
+        <element name="FileInfo" positionX="-27" positionY="171" width="128" height="135"/>
+        <element name="Item" positionX="-27" positionY="18" width="128" height="495"/>
     </elements>
 </model>

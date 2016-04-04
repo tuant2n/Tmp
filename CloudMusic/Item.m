@@ -8,6 +8,9 @@
 
 #import "Item.h"
 
+#import "FileInfo.h"
+
+#import "DataManagement.h"
 #import "Utils.h"
 
 #import "NSAttributedString+CCLFormat.h"

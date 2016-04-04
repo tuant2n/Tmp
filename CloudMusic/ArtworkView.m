@@ -9,6 +9,7 @@
 #import "ArtworkView.h"
 
 #import "Utils.h"
+#import "UIImageView+WebCache.h"
 
 @interface ArtworkView()
 
@@ -18,9 +19,14 @@
 
 @implementation ArtworkView
 
+- (void)setArtwotk:(NSURL *)sArtworkUrl
+{
+    [self.imgvArtwork sd_setImageWithURL:sArtworkUrl placeholderImage:[UIImage imageNamed:@"filetype_audio"] options:SDWebImageRetryFailed];
+}
+
 - (void)awakeFromNib
 {
-    self.backgroundColor = [Utils colorWithRGBHex:0xf7f7f7];
+    self.backgroundColor = [Utils colorWithRGBHex:0xf0f0f0];
 }
 
 @end

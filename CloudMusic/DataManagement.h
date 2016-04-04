@@ -10,6 +10,8 @@
 #import "HCDCoreDataStackController.h"
 
 #import "Item.h"
+#import "FileInfo.h"
+
 #import "AlbumObj.h"
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
@@ -39,6 +41,7 @@
 
 - (NSManagedObjectContext *)managedObjectContext;
 - (NSEntityDescription *)itemEntity;
+- (NSEntityDescription *)fileInfoEntity;
 
 #pragma mark - Data Method
 

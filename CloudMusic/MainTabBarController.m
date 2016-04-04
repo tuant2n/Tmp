@@ -22,8 +22,8 @@
 #import "GenresViewController.h"
 #import "SettingsViewController.h"
 
-#import "MPMediaItem+Accessors.h"
 #import "HCDCoreDataStackController.h"
+#import "IQKeyboardManager.h"
 
 typedef enum {
     kTabTypeFiles,
@@ -103,6 +103,8 @@ typedef enum {
     self.delegate = self;
     
     [self setupMoreNavVC];
+    
+    [[IQKeyboardManager sharedManager] setToolbarManageBehaviour:IQAutoToolbarByPosition];
 }  
 
 - (void)setupMoreNavVC

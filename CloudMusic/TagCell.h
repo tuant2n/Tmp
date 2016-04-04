@@ -8,7 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class TagObj;
+
 @interface TagCell : UITableViewCell
+
+@property (nonatomic, strong) TagObj *tagObj;
+
+- (void)configWithTag:(TagObj *)tagObj;
+- (void)setHiddenLine:(BOOL)isHidden;
 
 + (CGFloat)height;
 

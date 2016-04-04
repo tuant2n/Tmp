@@ -10,4 +10,6 @@
 
 @interface ArtworkView : UIView
 
+- (void)setArtwotk:(NSURL *)sArtworkUrl;
+
 @end
