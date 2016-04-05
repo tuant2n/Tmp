@@ -42,7 +42,7 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    if (self.tagObj.iTagType == kTagTypeElement) {
+    if (self.tagObj.iTagType == kTagTypeLyrics) {
         self.tagObj.value = textView.text;
     }
 }

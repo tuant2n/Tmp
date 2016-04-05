@@ -19,7 +19,7 @@
 - (void)setArtwotk:(NSURL *)sUrl;
 - (void)setArtworkImage:(UIImage *)image;
 
-- (BOOL)hasArtwork;
+- (BOOL)isChangeArtwork;
 - (UIImage *)artwork;
 
 @end

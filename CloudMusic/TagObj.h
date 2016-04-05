@@ -11,7 +11,8 @@
 typedef enum {
     kTagTypeElement,
     kTagTypeAction,
-    kTagTypeSaveToFile,
+    kTagTypeWriteTag,
+    kTagTypeLyrics,
 } kTagType;
 
 typedef enum {
@@ -30,7 +31,6 @@ typedef enum {
     kElementTypeSize,
     kElementTypeBitRate,
     kElementTypePlayed,
-    kElementTypeLyrics
 } kElementType;
 
 typedef enum {

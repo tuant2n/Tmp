@@ -15,6 +15,7 @@
 #import "DataManagement.h"
 
 #import "SongsViewController.h"
+#import "EditViewController.h"
 
 @interface AlbumsViewController () <MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
 {
@@ -388,8 +389,22 @@
     {
         AlbumObj *item = self.albumsArray[indexPath.row];
         
-        if (item.isCloud && index == 0) {
-            return NO;
+        if (item.isCloud) {
+            if (index == 0) {
+                return NO;
+            }
+            else if (index == 1) {
+                // Add To Playlít
+            }
+            else if (index == 2) {
+                EditViewController *vc = [[EditViewController alloc] init];
+                vc.album = item;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+            }
+        }
+        else {
+            
         }
     }
     

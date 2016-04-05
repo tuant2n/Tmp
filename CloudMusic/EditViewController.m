@@ -153,7 +153,7 @@
     NSMutableArray *arrSection2 = [NSMutableArray new];
     
     TagObj *writeTag = [[TagObj alloc] init];
-    writeTag.iTagType = kTagTypeSaveToFile;
+    writeTag.iTagType = kTagTypeWriteTag;
     writeTag.value = @YES;
     [arrSection2 addObject:writeTag];
     
@@ -232,8 +232,7 @@
     [arrSection5 addObject:clearLyric];
     
     TagObj *lyric = [[TagObj alloc] init];
-    lyric.iTagType = kTagTypeElement;
-    lyric.iElementType = kElementTypeLyrics;
+    lyric.iTagType = kTagTypeLyrics;
     lyric.value = song.sLyrics;
     lyric.isEditable = YES;
     [arrSection5 addObject:lyric];
@@ -257,73 +256,125 @@
     {
         for (TagObj *tag in data)
         {
-            if (tag.iTagType != kTagTypeElement) {
-                continue;
-            }
-            
-            switch (tag.iElementType)
+            if (tag.iTagType == kTagTypeElement)
             {
-                case kElementTypeTitle:
+                switch (tag.iElementType)
                 {
-                    [self.song setSongName:tag.value];
+                    case kElementTypeTitle:
+                    {
+                        [self.song setSongName:tag.value];
+                    }
+                        break;
+                        
+                    case kElementTypeArtist:
+                    {
+                        [self.song changeArtistName:tag.value];
+                    }
+                        break;
+                        
+                    case kElementTypeAlbumArtist:
+                    {
+                        [self.song changeAlbumArtistName:tag.value];
+                    }
+                        break;
+                        
+                    case kElementTypeAlbum:
+                    {
+                        [self.song changeAlbumName:tag.value];
+                    }
+                        break;
+                        
+                    case kElementTypeGenre:
+                    {
+                        [self.song changeGenreName:tag.value];
+                    }
+                        break;
+                        
+                    case kElementTypeTrack:
+                    case kElementTypeYear:
+                    {
+                        self.song.iTrack = @([tag.value intValue]);
+                    }
+                        break;
+                        
+                    case kElementTypeFilename:
+                    {
+                        
+                    }
+                        break;
+                        
+                    default:
+                        break;
                 }
-                    break;
-                    
-                case kElementTypeArtist:
-                {
-                    [self.song changeArtistName:tag.value];
-                }
-                    break;
-                    
-                case kElementTypeAlbumArtist:
-                {
-                    [self.song changeAlbumArtistName:tag.value];
-                }
-                    break;
-                    
-                case kElementTypeAlbum:
-                {
-                    [self.song changeAlbumName:tag.value];
-                }
-                    break;
-                    
-                case kElementTypeGenre:
-                {
-                    [self.song changeGenreName:tag.value];
-                }
-                    break;
-                    
-                case kElementTypeTrack:
-                case kElementTypeYear:
-                {
-                    self.song.iTrack = @([tag.value intValue]);
-                }
-                    break;
-                    
-                case kElementTypeFilename:
-                {
-                    
-                }
-                    break;
-                    
-                case kElementTypeLyrics:
-                {
-                    self.song.sLyrics = tag.value;
-                }
-                    break;
-                    
-                default:
-                    break;
+            }
+            else if (tag.iTagType == kTagTypeLyrics)
+            {
+                self.song.sLyrics = tag.value;
             }
         }
+    }
+    
+    if ([self.artworkView isChangeArtwork]) {
+        [self.song setArtwork:[self.artworkView artwork]];
     }
     
     [self save];
 }
 
-- (void)getTagListFromAlbum:(AlbumObj *)album
+- (void)getTagListFromAlbum:(AlbumObj *)albumObj
 {
+    //
+    NSMutableArray *arrSection1 = [NSMutableArray new];
     
+    TagObj *artist = [[TagObj alloc] init];
+    artist.iTagType = kTagTypeElement;
+    artist.iElementType = kElementTypeArtist;
+    artist.value = albumObj.sArtistName;
+    artist.isEditable = YES;
+    [arrSection1 addObject:artist];
+    
+    TagObj *albumArtist = [[TagObj alloc] init];
+    albumArtist.iTagType = kTagTypeElement;
+    albumArtist.iElementType = kElementTypeAlbumArtist;
+    albumArtist.value = albumObj.sAlbumArtistName;
+    albumArtist.isEditable = YES;
+    [arrSection1 addObject:albumArtist];
+    
+    TagObj *album = [[TagObj alloc] init];
+    album.iTagType = kTagTypeElement;
+    album.iElementType = kElementTypeAlbum;
+    album.value = albumObj.sAlbumName;
+    album.isEditable = YES;
+    [arrSection1 addObject:album];
+    
+    TagObj *year = [[TagObj alloc] init];
+    year.iTagType = kTagTypeElement;
+    year.iElementType = kElementTypeYear;
+    year.value = [albumObj.iYear stringValue];
+    year.isEditable = YES;
+    [arrSection1 addObject:year];
+
+    [self.arrListTag addObject:arrSection1];
+    
+    //
+    NSMutableArray *arrSection2 = [NSMutableArray new];
+    
+    TagObj *writeTag = [[TagObj alloc] init];
+    writeTag.iTagType = kTagTypeWriteTag;
+    writeTag.value = @YES;
+    [arrSection2 addObject:writeTag];
+    
+    [self.arrListTag addObject:arrSection2];
+    
+    //
+    NSMutableArray *arrSection3 = [NSMutableArray new];
+    
+    TagObj *delete = [[TagObj alloc] init];
+    delete.iTagType = kTagTypeAction;
+    delete.iTagActionType = kTagActionTypeDelete;
+    [arrSection3 addObject:delete];
+    
+    [self.arrListTag addObject:arrSection3];
 }
 
 - (void)saveDataToAlbum
@@ -383,7 +434,7 @@
     NSArray *data = self.arrListTag[indexPath.section];
     TagObj *tag = data[indexPath.row];
     
-    if (tag.iTagType == kTagTypeElement && tag.iElementType == kElementTypeLyrics) {
+    if (tag.iTagType == kTagTypeLyrics) {
         return [TagLyricCell height];
     }
     return [TagCell height];
@@ -398,17 +449,10 @@
     {
         case kTagTypeElement:
         {
-            if (tag.iElementType == kElementTypeLyrics) {
-                TagLyricCell *cell = (TagLyricCell *)[tableView dequeueReusableCellWithIdentifier:@"TagLyricCellId" forIndexPath:indexPath];
-                [cell configWithTag:tag];
-                return cell;
-            }
-            else {
-                TagCell *cell = (TagCell *)[tableView dequeueReusableCellWithIdentifier:@"TagCellId" forIndexPath:indexPath];
-                [cell configWithTag:tag];
-                [cell setHiddenLine:(indexPath.row == data.count - 1)];
-                return cell;
-            }
+            TagCell *cell = (TagCell *)[tableView dequeueReusableCellWithIdentifier:@"TagCellId" forIndexPath:indexPath];
+            [cell configWithTag:tag];
+            [cell setHiddenLine:(indexPath.row == data.count - 1)];
+            return cell;
         }
             break;
             
@@ -420,10 +464,18 @@
         }
             break;
             
-        case kTagTypeSaveToFile:
+        case kTagTypeWriteTag:
         {
             TagRadioButton *cell = (TagRadioButton *)[tableView dequeueReusableCellWithIdentifier:@"TagRadioButtonId" forIndexPath:indexPath];
             [cell configWithValue:[tag.value boolValue]];
+            return cell;
+        }
+            break;
+            
+        case kTagTypeLyrics:
+        {
+            TagLyricCell *cell = (TagLyricCell *)[tableView dequeueReusableCellWithIdentifier:@"TagLyricCellId" forIndexPath:indexPath];
+            [cell configWithTag:tag];
             return cell;
         }
             break;
@@ -465,7 +517,7 @@
             }
             else if (tag.iTagActionType == kTagActionTypeClearLyric)
             {
-                NSIndexPath *tagIndexPath = [self getTagWithType:kTagTypeElement elementType:kElementTypeLyrics];
+                NSIndexPath *tagIndexPath = [self getTagWithType:kTagTypeLyrics elementType:kElementTypeNone];
                 if (tagIndexPath)
                 {
                     TagObj *tagObj = self.arrListTag[tagIndexPath.section][tagIndexPath.row];
@@ -480,7 +532,7 @@
         }
             break;
             
-        case kTagTypeSaveToFile:
+        case kTagTypeWriteTag:
         {
             BOOL isWrite = ![tag.value boolValue];
             tag.value = [NSNumber numberWithBool:isWrite];
@@ -537,7 +589,11 @@
 
 - (void)changeArtwork
 {
-    BOOL hasArtwork = [self.artworkView hasArtwork];
+    BOOL hasArtwork = NO;
+    if ([self.artworkView artwork]) {
+        hasArtwork = YES;
+    }
+    
     BOOL hasImageOnClipboard = [UIPasteboard generalPasteboard].image;
     
     NSMutableArray *arrayAction = [NSMutableArray new];
@@ -558,16 +614,18 @@
             otherButtonTitles:arrayAction
                      tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex)
      {
-         if (buttonIndex == actionSheet.destructiveButtonIndex) {
+         NSString *sTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+         
+         if ([sTitle isEqualToString:@"Delete Artwork"]) {
              [self.artworkView setArtwotk:nil];
          }
-         else if (buttonIndex == 1) {
+         else if ([sTitle isEqualToString:@"Choose from Camera Roll"]) {
              [self presentViewController:self.imagePickerController animated:YES completion:NULL];
          }
-         else if (buttonIndex == 2) {
+         else if ([sTitle isEqualToString:@"Copy"]) {
              [[UIPasteboard generalPasteboard] setImage:[self.artworkView artwork]];
          }
-         else if (buttonIndex == 3) {
+         else if ([sTitle isEqualToString:@"Paste"]) {
              [self.artworkView setArtworkImage:[UIPasteboard generalPasteboard].image];
          }
      }];
@@ -589,22 +647,12 @@
 
 - (void)qb_imagePickerController:(QBImagePickerController *)imagePickerController didSelectAsset:(ALAsset *)asset
 {
-    ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
-    {
-        ALAssetRepresentation *rep = [myasset defaultRepresentation];
-        CGImageRef ref = [rep fullResolutionImage];
-        if (ref)
-        {
-            UIImage *tmpImage = [UIImage imageWithCGImage:ref scale:[rep scale] orientation:(UIImageOrientation)[rep orientation]];
-            UIImage *image = [tmpImage imageCroppedToFitSize:CGSizeMake(150.0, 150.0)];
-            
-            [self.artworkView setArtworkImage:image];
-            [self dismissViewControllerAnimated:YES completion:NULL];
-        }
-    };
+    UIImage *tmpImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]];
+    UIImage *image = [tmpImage imageCroppedToFitSize:CGSizeMake(300.0, 300.0)];
     
-    ALAssetsLibrary *assetslibrary = [[ALAssetsLibrary alloc] init];
-    [assetslibrary assetForURL:asset.defaultRepresentation.url resultBlock:resultblock failureBlock:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.artworkView setArtworkImage:image];
+    }];
 }
 
 - (void)qb_imagePickerControllerDidCancel:(QBImagePickerController *)imagePickerController

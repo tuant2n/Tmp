@@ -33,10 +33,12 @@
     if (!sArtworkUrl) {
         self.imgvArtwork.hidden = YES;
         self.vEdit.hidden = NO;
+        artwork = nil;
     }
     else {
         self.imgvArtwork.hidden = NO;
         self.vEdit.hidden = YES;
+        
         [self.imgvArtwork sd_setImageWithURL:sArtworkUrl placeholderImage:[UIImage imageNamed:@"filetype_audio"] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) \
         {
             if (!error) {
@@ -52,16 +54,19 @@
     
     artwork = image;
     self.imgvArtwork.image = artwork;
-}
-
-- (BOOL)hasArtwork
-{
-    return artwork;
+    
+    self.imgvArtwork.hidden = NO;
+    self.vEdit.hidden = YES;
 }
 
 - (UIImage *)artwork
 {
     return artwork;
+}
+
+- (BOOL)isChangeArtwork
+{
+    return isChange;
 }
 
 - (IBAction)touchChangeArtwork:(id)sender
@@ -74,7 +79,9 @@
 - (void)awakeFromNib
 {
     self.backgroundColor = [Utils colorWithRGBHex:0xf0f0f0];
+    
     isChange = NO;
+    artwork = nil;
 }
 
 @end

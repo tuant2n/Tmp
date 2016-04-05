@@ -50,11 +50,7 @@
     
     UIImage *artwork = [item.itemArtwork imageWithSize:item.itemArtwork.bounds.size];
     if (artwork) {
-        NSString *sArtworkName = [NSString stringWithFormat:@"%@.png",self.iSongId];
-        BOOL isSaveArtwork = [UIImagePNGRepresentation(artwork) writeToFile:[[Utils artworkPath] stringByAppendingPathComponent:sArtworkName] atomically:YES];
-        if (isSaveArtwork) {
-            self.sArtworkName = sArtworkName;
-        }
+        [self setArtwork:artwork];
     }
     
     self.sLyrics = item.itemLyrics;
@@ -67,6 +63,16 @@
     
     if ([item.itemTitle hasPrefix:@"Mùa"]) {
         self.iCloud = @1;
+    }
+}
+
+- (void)setArtwork:(UIImage *)artwork
+{
+    NSString *sArtworkName = [NSString stringWithFormat:@"%@-%@.png",self.iSongId,[Utils getTimestamp]];
+    BOOL isSaveArtwork = [UIImagePNGRepresentation(artwork) writeToFile:[[Utils artworkPath] stringByAppendingPathComponent:sArtworkName] atomically:YES];
+    if (isSaveArtwork) {
+        self.sArtworkName = sArtworkName;
+        sLocalArtworkUrl = nil;
     }
 }
 

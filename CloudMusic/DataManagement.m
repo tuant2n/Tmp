@@ -214,6 +214,13 @@ static DataManagement *_sharedInstance = nil;
     [artwork setExpression:maxExpression];
     [artwork setExpressionResultType:NSStringAttributeType];
     
+    NSExpression *listArtist = [NSExpression expressionForKeyPath:@"sArtistName"];
+    NSExpression *minExpression = [NSExpression expressionForFunction:@"min:" arguments:@[listArtist]];
+    NSExpressionDescription *artistName = [[NSExpressionDescription alloc] init];
+    [artistName setName: @"sArtistName"];
+    [artistName setExpression:minExpression];
+    [artistName setExpressionResultType:NSStringAttributeType];
+
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:itemEntity];
     
@@ -234,7 +241,7 @@ static DataManagement *_sharedInstance = nil;
         [request setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:filters]];
     }
     
-    [request setPropertiesToFetch:@[iAlbumId,sAlbumName,sAlbumArtistName,iYear,cloud,numberOfSong,duration,artwork]];
+    [request setPropertiesToFetch:@[iAlbumId,sAlbumName,sAlbumArtistName,iYear,cloud,numberOfSong,duration,artwork,artistName]];
     [request setPropertiesToGroupBy:@[iAlbumId,sAlbumName,sAlbumArtistName,iYear]];
     
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sAlbumNameIndex" ascending:YES];

@@ -22,6 +22,7 @@
         
         self.sAlbumName = [info objectForKey:@"sAlbumName"];
         self.sAlbumArtistName = [info objectForKey:@"sAlbumArtistName"];
+        self.sArtistName = [info objectForKey:@"sArtistName"];
         
         if ([info objectForKey:@"sArtworkName"]) {
             self.sLocalArtworkUrl = [NSURL fileURLWithPath:[[Utils artworkPath] stringByAppendingPathComponent:[info objectForKey:@"sArtworkName"]]];

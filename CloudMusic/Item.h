@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateWithMediaItem:(MPMediaItem *)item;
 
 - (void)setSongName:(NSString *)sSongName;
+- (void)setArtwork:(UIImage *)artwork;
 
 - (void)changeAlbumName:(NSString *)sAlbumName;
 - (void)changeArtistName:(NSString *)sArtistName;
