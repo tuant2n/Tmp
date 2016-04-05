@@ -361,4 +361,9 @@
     }
 }
 
++ (NSString *)getTimestamp
+{
+    return @(time(nil)).stringValue;
+}
+
 @end

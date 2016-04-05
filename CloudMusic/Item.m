@@ -88,10 +88,46 @@
     self.sAlbumNameIndex = [[Utils standardLocaleString:self.sAlbumName] lowercaseString];
 }
 
+- (void)changeAlbumName:(NSString *)sAlbumName
+{
+    if ([self.sAlbumName isEqualToString:sAlbumName]) {
+        return;
+    }
+    
+    NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName];
+    if (iAlbumId) {
+        self.iAlbumId = iAlbumId;
+    }
+    else {
+        self.iAlbumId = [NSString stringWithFormat:@"%@-%@",self.iAlbumId,[Utils getTimestamp]];
+    }
+    
+    sSongDesc = nil;
+    [self setAlbumName:sAlbumName];
+}
+
 - (void)setArtistName:(NSString *)sArtistName
 {
     self.sArtistName = sArtistName;
     self.sArtistNameIndex = [[Utils standardLocaleString:self.sArtistName] lowercaseString];
+}
+
+- (void)changeArtistName:(NSString *)sArtistName
+{
+    if ([self.sArtistName isEqualToString:sArtistName]) {
+        return;
+    }
+    
+    NSString *iArtistId = [[DataManagement sharedInstance] getArtistIdFromName:sArtistName];
+    if (iArtistId) {
+        self.iArtistId = iArtistId;
+    }
+    else {
+        self.iArtistId = [NSString stringWithFormat:@"%@-%@",self.iArtistId,[Utils getTimestamp]];
+    }
+    
+    sSongDesc = nil;
+    [self setArtistName:sArtistName];
 }
 
 - (void)setAlbumArtistName:(NSString *)sAlbumArtistName
@@ -100,10 +136,44 @@
     self.sAlbumArtistNameIndex = [[Utils standardLocaleString:self.sAlbumArtistName] lowercaseString];
 }
 
+- (void)changeAlbumArtistName:(NSString *)sAlbumArtistName
+{
+    if ([self.sAlbumArtistName isEqualToString:sAlbumArtistName]) {
+        return;
+    }
+    
+    NSString *iAlbumArtistId = [[DataManagement sharedInstance] getAlbumArtistIdFromName:sAlbumArtistName];
+    if (iAlbumArtistId) {
+        self.iAlbumArtistId = iAlbumArtistId;
+    }
+    else {
+        self.iAlbumArtistId = [NSString stringWithFormat:@"%@-%@",self.iAlbumArtistId,[Utils getTimestamp]];
+    }
+    
+    [self setAlbumArtistName:sAlbumArtistName];
+}
+
 - (void)setGenreName:(NSString *)sGenreName
 {
     self.sGenreName = sGenreName;
     self.sGenreNameIndex = [[Utils standardLocaleString:self.sGenreName] lowercaseString];
+}
+
+- (void)changeGenreName:(NSString *)sGenreName
+{
+    if ([self.sGenreName isEqualToString:sGenreName]) {
+        return;
+    }
+    
+    NSString *iGenreId = [[DataManagement sharedInstance] getGenreIdFromName:sGenreName];
+    if (iGenreId) {
+        self.iGenreId = iGenreId;
+    }
+    else {
+        self.iGenreId = [NSString stringWithFormat:@"%@-%@",self.iGenreId,[Utils getTimestamp]];
+    }
+    
+    [self setGenreName:sGenreName];
 }
 
 - (void)setSongDuration:(int)fDuration

@@ -246,7 +246,82 @@
     [self.arrListTag addObject:arrSection6];
 }
 
+- (void)saveDataToSong
+{
+    for (NSArray *data in self.arrListTag)
+    {
+        for (TagObj *tag in data)
+        {
+            if (tag.iTagType != kTagTypeElement) {
+                continue;
+            }
+            
+            switch (tag.iElementType)
+            {
+                case kElementTypeTitle:
+                {
+                    [self.song setSongName:tag.value];
+                }
+                    break;
+                    
+                case kElementTypeArtist:
+                {
+                    [self.song changeArtistName:tag.value];
+                }
+                    break;
+                    
+                case kElementTypeAlbumArtist:
+                {
+                    [self.song changeAlbumArtistName:tag.value];
+                }
+                    break;
+                    
+                case kElementTypeAlbum:
+                {
+                    [self.song changeAlbumName:tag.value];
+                }
+                    break;
+                    
+                case kElementTypeGenre:
+                {
+                    [self.song changeGenreName:tag.value];
+                }
+                    break;
+                    
+                case kElementTypeTrack:
+                case kElementTypeYear:
+                {
+                    self.song.iTrack = @([tag.value intValue]);
+                }
+                    break;
+                    
+                case kElementTypeFilename:
+                {
+                    
+                }
+                    break;
+                    
+                case kElementTypeLyrics:
+                {
+                    self.song.sLyrics = tag.value;
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+    }
+    
+    [[DataManagement sharedInstance] saveData];
+}
+
 - (void)getTagListFromAlbum:(AlbumObj *)album
+{
+    
+}
+
+- (void)saveDataToAlbum
 {
     
 }
@@ -260,9 +335,15 @@
 - (void)touchDone
 {
     [[IQKeyboardManager sharedManager] resignFirstResponder];
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+    
+    if (self.song) {
+        [self saveDataToSong];
+    }
+    else if (self.album) {
+        [self saveDataToAlbum];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource

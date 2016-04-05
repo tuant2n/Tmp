@@ -10,7 +10,7 @@
 
 #import "TagObj.h"
 
-@interface TagLyricCell()
+@interface TagLyricCell() <UITextViewDelegate>
 {
     
 }
@@ -24,7 +24,9 @@
 - (void)awakeFromNib
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    self.tvLyric.contentInset = UIEdgeInsetsMake(-10.0, 0.0, 0.0, 0.0);
+    
+    self.tvLyric.delegate = self;
+    self.tvLyric.contentInset = UIEdgeInsetsMake(-8.0, 0.0, 0.0, 0.0);
 }
 
 - (void)configWithTag:(TagObj *)tagObj
@@ -36,6 +38,13 @@
 + (CGFloat)height
 {
     return 144.0;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if (self.tagObj.iTagType == kTagTypeElement) {
+        self.tagObj.value = textView.text;
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

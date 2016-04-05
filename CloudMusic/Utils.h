@@ -66,5 +66,6 @@
 
 + (NSString *)timeFormattedForSong:(int)totalSeconds;
 + (NSString *)timeFormattedForList:(int)totalSeconds;
++ (NSString *)getTimestamp;
 
 @end

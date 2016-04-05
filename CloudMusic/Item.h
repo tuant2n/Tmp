@@ -23,6 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateWithMediaItem:(MPMediaItem *)item;
 
+- (void)setSongName:(NSString *)sSongName;
+
+- (void)changeAlbumName:(NSString *)sAlbumName;
+- (void)changeArtistName:(NSString *)sArtistName;
+- (void)changeAlbumArtistName:(NSString *)sAlbumArtistName;
+- (void)changeGenreName:(NSString *)sGenreName;
+
 @end
 
 NS_ASSUME_NONNULL_END

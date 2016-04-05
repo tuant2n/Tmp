@@ -57,6 +57,11 @@
 - (NSArray *)getListAlbumArtistFilterByName:(NSString *)sName;
 - (NSArray *)getListGenreFilterByName:(NSString *)sName;
 
+- (NSString *)getAlbumIdFromName:(NSString *)sAlbumName;
+- (NSString *)getAlbumArtistIdFromName:(NSString *)sAlbumArtistName;
+- (NSString *)getArtistIdFromName:(NSString *)sArtistName;
+- (NSString *)getGenreIdFromName:(NSString *)sGenreName;
+
 #pragma mark - Search
 
 - (void)search:(NSString *)sSearch searchType:(kSearchType)iSearchType block:(void (^)(NSArray *results))block;

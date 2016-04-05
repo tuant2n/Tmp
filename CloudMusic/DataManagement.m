@@ -393,6 +393,70 @@ static DataManagement *_sharedInstance = nil;
     return genresArray;
 }
 
+- (NSString *)getAlbumIdFromName:(NSString *)sAlbumName
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"sAlbumName",sAlbumName];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        Item *item = [listData lastObject];
+        return item.iAlbumId;
+    }
+    return nil;
+}
+
+- (NSString *)getAlbumArtistIdFromName:(NSString *)sAlbumArtistName
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"sAlbumArtistName",sAlbumArtistName];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        Item *item = [listData lastObject];
+        return item.iAlbumArtistId;
+    }
+    return nil;
+}
+
+- (NSString *)getArtistIdFromName:(NSString *)sArtistName
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"sArtistName",sArtistName];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        Item *item = [listData lastObject];
+        return item.iArtistId;
+    }
+    return nil;
+}
+
+- (NSString *)getGenreIdFromName:(NSString *)sGenreName
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"sGenreName",sGenreName];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        Item *item = [listData lastObject];
+        return item.iGenreId;
+    }
+    return nil;
+}
+
 #pragma mark - Search
 
 - (void)search:(NSString *)sSearch searchType:(kSearchType)iSearchType block:(void (^)(NSArray *results))block
