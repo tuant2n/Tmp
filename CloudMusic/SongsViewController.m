@@ -420,6 +420,10 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    if (isActiveSearch) {
+        [self searchBar:self.headerView.searchBar activate:NO];
+    }
+    
     [self.tblList beginUpdates];
 }
 

@@ -37,7 +37,7 @@
 
 + (CGFloat)height
 {
-    return 144.0;
+    return 175.0;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView

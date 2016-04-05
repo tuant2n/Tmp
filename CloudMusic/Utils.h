@@ -21,6 +21,8 @@
 #define DEVICE_SIZE CGSizeMake(MIN(T_WIDTH, T_HEIGHT),MAX(T_WIDTH, T_HEIGHT))
 #define DEVICE_SCALE [UIScreen mainScreen].scale
 
+#define NOTIFICATION_RELOAD_DATA @"NOTIFICATION_RELOAD_DATA"
+
 @interface Utils : NSObject
 
 #pragma mark - UIColor

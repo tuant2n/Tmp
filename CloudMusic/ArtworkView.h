@@ -8,8 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ArtworkViewDelegate <NSObject>
+- (void)changeArtwork;
+@end
+
 @interface ArtworkView : UIView
 
-- (void)setArtwotk:(NSURL *)sArtworkUrl;
+@property (nonatomic, assign) id<ArtworkViewDelegate> delegate;
+
+- (void)setArtwotk:(NSURL *)sUrl;
+- (void)setArtworkImage:(UIImage *)image;
+
+- (BOOL)hasArtwork;
+- (UIImage *)artwork;
 
 @end

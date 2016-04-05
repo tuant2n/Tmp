@@ -57,6 +57,8 @@
     [super viewDidLoad];
     [self setupUI];
     [self getData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:NOTIFICATION_RELOAD_DATA object:nil];
 }
 
 - (void)getData
@@ -65,6 +67,15 @@
     [self.artistArray addObjectsFromArray:[[DataManagement sharedInstance] getListAlbumArtistFilterByName:nil]];
     [self.tblList reloadData];
     [self setupFooterView];
+}
+
+- (void)reloadData:(NSNotification *)notification
+{
+    if (isActiveSearch) {
+        [self searchBar:self.headerView.searchBar activate:NO];
+    }
+    
+    [self getData];
 }
 
 - (void)setupUI

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,23 +13,75 @@
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e68-J1-8JC" userLabel="imgvArtwork">
                     <rect key="frame" x="20" y="20" width="70" height="70"/>
+                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="70" id="Kkc-rZ-C8I"/>
                         <constraint firstAttribute="width" constant="70" id="LvB-hO-zAU"/>
                     </constraints>
                 </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zMz-yc-hvr" userLabel="vEdit">
+                    <rect key="frame" x="20" y="20" width="70" height="70"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filetype_audio.png" translatesAutoresizingMaskIntoConstraints="NO" id="q2D-61-ecc">
+                            <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                            <animations/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6mD-kw-8kp" userLabel="lblEdit">
+                            <rect key="frame" x="0.0" y="54" width="70" height="16"/>
+                            <animations/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="jDU-wf-Xgv"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="11"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="q2D-61-ecc" secondAttribute="bottom" id="B8j-2X-mRb"/>
+                        <constraint firstItem="q2D-61-ecc" firstAttribute="leading" secondItem="zMz-yc-hvr" secondAttribute="leading" id="GPn-aX-eo9"/>
+                        <constraint firstItem="6mD-kw-8kp" firstAttribute="leading" secondItem="zMz-yc-hvr" secondAttribute="leading" id="P7w-jk-yHF"/>
+                        <constraint firstAttribute="trailing" secondItem="6mD-kw-8kp" secondAttribute="trailing" id="RMl-iC-5gn"/>
+                        <constraint firstAttribute="trailing" secondItem="q2D-61-ecc" secondAttribute="trailing" id="qhC-BE-c9w"/>
+                        <constraint firstItem="q2D-61-ecc" firstAttribute="top" secondItem="zMz-yc-hvr" secondAttribute="top" id="wIA-3m-RMu"/>
+                        <constraint firstAttribute="bottom" secondItem="6mD-kw-8kp" secondAttribute="bottom" id="xeU-me-xun"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emP-8E-J93" userLabel="btnChangeArtWork">
+                    <rect key="frame" x="20" y="20" width="70" height="70"/>
+                    <animations/>
+                    <connections>
+                        <action selector="touchChangeArtwork:" destination="jUV-0O-ggF" eventType="touchUpInside" id="7b9-qg-dwE"/>
+                    </connections>
+                </button>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="e68-J1-8JC" firstAttribute="centerY" secondItem="jUV-0O-ggF" secondAttribute="centerY" id="0lA-bL-9SP"/>
+                <constraint firstItem="zMz-yc-hvr" firstAttribute="leading" secondItem="e68-J1-8JC" secondAttribute="leading" id="1Of-Du-08F"/>
+                <constraint firstItem="zMz-yc-hvr" firstAttribute="bottom" secondItem="e68-J1-8JC" secondAttribute="bottom" id="4gg-Mm-J8S"/>
+                <constraint firstItem="emP-8E-J93" firstAttribute="top" secondItem="e68-J1-8JC" secondAttribute="top" id="71T-vx-CE9"/>
+                <constraint firstItem="emP-8E-J93" firstAttribute="leading" secondItem="e68-J1-8JC" secondAttribute="leading" id="Mnn-Yc-swY"/>
+                <constraint firstItem="zMz-yc-hvr" firstAttribute="trailing" secondItem="e68-J1-8JC" secondAttribute="trailing" id="WdM-lS-6i0"/>
+                <constraint firstItem="emP-8E-J93" firstAttribute="bottom" secondItem="e68-J1-8JC" secondAttribute="bottom" id="auL-sQ-Mvk"/>
+                <constraint firstItem="emP-8E-J93" firstAttribute="trailing" secondItem="e68-J1-8JC" secondAttribute="trailing" id="gY0-tH-k30"/>
                 <constraint firstItem="e68-J1-8JC" firstAttribute="leading" secondItem="jUV-0O-ggF" secondAttribute="leading" constant="20" id="jtN-zD-Pul"/>
+                <constraint firstItem="zMz-yc-hvr" firstAttribute="top" secondItem="e68-J1-8JC" secondAttribute="top" id="xET-Wt-NJs"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="imgvArtwork" destination="e68-J1-8JC" id="Qz5-g4-klL"/>
+                <outlet property="vEdit" destination="zMz-yc-hvr" id="O1p-zc-rcw"/>
             </connections>
-            <point key="canvasLocation" x="416" y="183"/>
+            <point key="canvasLocation" x="416" y="173"/>
         </view>
     </objects>
+    <resources>
+        <image name="filetype_audio.png" width="50" height="50"/>
+    </resources>
 </document>

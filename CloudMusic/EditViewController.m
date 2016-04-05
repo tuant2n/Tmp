@@ -20,13 +20,18 @@
 #import "Utils.h"
 
 #import "IQKeyboardManager.h"
+#import "UIActionSheet+Blocks.h"
+#import "QBImagePickerController.h"
+#import "UIImage+ProportionalFill.h"
 
-@interface EditViewController ()
+@interface EditViewController () <ArtworkViewDelegate,QBImagePickerControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *arrListTag;
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 @property (nonatomic, strong) ArtworkView *artworkView;
+
+@property (nonatomic, strong) QBImagePickerController *imagePickerController;
 
 @end
 
@@ -313,7 +318,7 @@
         }
     }
     
-    [[DataManagement sharedInstance] saveData];
+    [self save];
 }
 
 - (void)getTagListFromAlbum:(AlbumObj *)album
@@ -323,7 +328,15 @@
 
 - (void)saveDataToAlbum
 {
+    [self save];
+}
+
+- (void)save
+{
+    [[DataManagement sharedInstance] saveData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_RELOAD_DATA object:nil];
     
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)touchCancel
@@ -342,8 +355,6 @@
     else if (self.album) {
         [self saveDataToAlbum];
     }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
@@ -449,7 +460,8 @@
             }
             else if (tag.iTagActionType == kTagActionTypeDelete)
             {
-                
+                [[[DataManagement sharedInstance] managedObjectContext] deleteObject:self.song];
+                [self save];
             }
             else if (tag.iTagActionType == kTagActionTypeClearLyric)
             {
@@ -509,7 +521,7 @@
     return indexPath;
 }
 
-#pragma mark - UI
+#pragma mark - Artwotk
 
 - (ArtworkView *)artworkView
 {
@@ -517,9 +529,87 @@
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"ArtworkView" owner:self options:nil];
         if ([nib count] > 0) {
             _artworkView = [nib objectAtIndex:0];
+            _artworkView.delegate = self;
         }
     }
     return _artworkView;
+}
+
+- (void)changeArtwork
+{
+    BOOL hasArtwork = [self.artworkView hasArtwork];
+    BOOL hasImageOnClipboard = [UIPasteboard generalPasteboard].image;
+    
+    NSMutableArray *arrayAction = [NSMutableArray new];
+    [arrayAction addObject:@"Choose from Camera Roll"];
+    
+    if (hasArtwork) {
+        [arrayAction addObject:@"Copy"];
+    }
+    
+    if (hasImageOnClipboard) {
+        [arrayAction addObject:@"Paste"];
+    }
+    
+    [UIActionSheet showInView:self.view
+                    withTitle:nil
+            cancelButtonTitle:@"Cancel"
+       destructiveButtonTitle:(hasArtwork ? @"Delete Artwork":nil)
+            otherButtonTitles:arrayAction
+                     tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex)
+     {
+         if (buttonIndex == actionSheet.destructiveButtonIndex) {
+             [self.artworkView setArtwotk:nil];
+         }
+         else if (buttonIndex == 1) {
+             [self presentViewController:self.imagePickerController animated:YES completion:NULL];
+         }
+         else if (buttonIndex == 2) {
+             [[UIPasteboard generalPasteboard] setImage:[self.artworkView artwork]];
+         }
+         else if (buttonIndex == 3) {
+             [self.artworkView setArtworkImage:[UIPasteboard generalPasteboard].image];
+         }
+     }];
+}
+
+#pragma mark - ImagePicker
+
+- (QBImagePickerController *)imagePickerController
+{
+    if (!_imagePickerController) {
+        _imagePickerController = [QBImagePickerController new];
+        _imagePickerController.filterType = QBImagePickerControllerFilterTypePhotos;
+        _imagePickerController.allowsMultipleSelection = NO;
+        _imagePickerController.showsNumberOfSelectedAssets = YES;
+        _imagePickerController.delegate = self;
+    }
+    return _imagePickerController;
+}
+
+- (void)qb_imagePickerController:(QBImagePickerController *)imagePickerController didSelectAsset:(ALAsset *)asset
+{
+    ALAssetsLibraryAssetForURLResultBlock resultblock = ^(ALAsset *myasset)
+    {
+        ALAssetRepresentation *rep = [myasset defaultRepresentation];
+        CGImageRef ref = [rep fullResolutionImage];
+        if (ref)
+        {
+            UIImage *tmpImage = [UIImage imageWithCGImage:ref scale:[rep scale] orientation:(UIImageOrientation)[rep orientation]];
+            UIImage *image = [tmpImage imageCroppedToFitSize:CGSizeMake(150.0, 150.0)];
+            
+            [self.artworkView setArtworkImage:image];
+            [self dismissViewControllerAnimated:YES completion:NULL];
+        }
+    };
+    
+    ALAssetsLibrary *assetslibrary = [[ALAssetsLibrary alloc] init];
+    [assetslibrary assetForURL:asset.defaultRepresentation.url resultBlock:resultblock failureBlock:nil];
+}
+
+- (void)qb_imagePickerControllerDidCancel:(QBImagePickerController *)imagePickerController
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)didReceiveMemoryWarning {
