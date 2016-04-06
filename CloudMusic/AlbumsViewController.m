@@ -391,10 +391,11 @@
         
         if (item.isCloud) {
             if (index == 0) {
+                [[DataManagement sharedInstance] deleteAlbum:item];
                 return NO;
             }
             else if (index == 1) {
-                // Add To Playlít
+                // Add To Playlist
             }
             else if (index == 2) {
                 EditViewController *vc = [[EditViewController alloc] init];

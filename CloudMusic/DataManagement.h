@@ -62,6 +62,9 @@
 - (NSString *)getArtistIdFromName:(NSString *)sArtistName;
 - (NSString *)getGenreIdFromName:(NSString *)sGenreName;
 
+- (void)deleteSong:(Item *)item;
+- (void)deleteAlbum:(AlbumObj *)album;
+
 #pragma mark - Search
 
 - (void)search:(NSString *)sSearch searchType:(kSearchType)iSearchType block:(void (^)(NSArray *results))block;

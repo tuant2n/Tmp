@@ -19,6 +19,8 @@
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
 @property (nonatomic, strong) UIBarButtonItem *barBtnAddFile;
 
+@property (nonatomic, weak) IBOutlet UIView *vNotFound;
+
 @end
 
 @implementation FilesViewController

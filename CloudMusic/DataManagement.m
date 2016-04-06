@@ -130,6 +130,7 @@ static DataManagement *_sharedInstance = nil;
 - (void)saveData
 {
     [self.coreDataController save];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_RELOAD_DATA object:nil];
 }
 
 - (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId
@@ -462,6 +463,24 @@ static DataManagement *_sharedInstance = nil;
         return item.iGenreId;
     }
     return nil;
+}
+
+- (void)deleteSong:(Item *)item
+{
+    [[self managedObjectContext] deleteObject:item];
+    [self saveData];
+}
+
+- (void)deleteAlbum:(AlbumObj *)album
+{
+    NSFetchRequest *request = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:album.iAlbumId artistId:nil genreId:nil];
+    NSArray *listSongs = [[[DataManagement sharedInstance] managedObjectContext] executeFetchRequest:request error:nil];
+    
+    for (Item *song in listSongs) {
+        [[self managedObjectContext] deleteObject:song];
+    }
+    
+    [self saveData];
 }
 
 #pragma mark - Search

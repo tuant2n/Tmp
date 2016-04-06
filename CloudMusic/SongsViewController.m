@@ -395,7 +395,7 @@
         
         if (item.isCloud) {
             if (index == 0) {
-                // Delete
+                [[DataManagement sharedInstance] deleteSong:item];
                 return NO;
             }
             else if (index == 1) {

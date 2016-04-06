@@ -490,8 +490,6 @@
 - (void)save
 {
     [[DataManagement sharedInstance] saveData];
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_RELOAD_DATA object:nil];
-    
     [self touchCancel];
 }
 
@@ -616,7 +614,13 @@
             }
             else if (tag.iTagActionType == kTagActionTypeDelete)
             {
-                [[[DataManagement sharedInstance] managedObjectContext] deleteObject:self.song];
+                if (self.song) {
+                    [[DataManagement sharedInstance] deleteSong:self.song];
+                }
+                else if (self.album) {
+                    [[DataManagement sharedInstance] deleteAlbum:self.album];
+                }
+                
                 [self save];
             }
         }
