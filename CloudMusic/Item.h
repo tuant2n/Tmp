@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setSongName:(NSString *)sSongName;
 - (void)setArtwork:(UIImage *)artwork;
+- (void)setAlbumName:(NSString *)sAlbumName;
+- (void)setArtistName:(NSString *)sArtistName;
+- (void)setAlbumArtistName:(NSString *)sAlbumArtistName;
 
 - (void)changeAlbumName:(NSString *)sAlbumName;
 - (void)changeArtistName:(NSString *)sArtistName;

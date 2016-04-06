@@ -37,7 +37,6 @@ typedef enum {
     kTagActionTypeNone,
     kTagActionTypeDelete,
     kTagActionTypeCopyTitle,
-    kTagActionTypeClearLyric,
 } kTagActionType;
 
 @interface TagObj : NSObject

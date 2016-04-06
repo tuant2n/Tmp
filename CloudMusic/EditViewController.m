@@ -226,11 +226,6 @@
     //
     NSMutableArray *arrSection5 = [NSMutableArray new];
     
-    TagObj *clearLyric = [[TagObj alloc] init];
-    clearLyric.iTagType = kTagTypeAction;
-    clearLyric.iTagActionType = kTagActionTypeClearLyric;
-    [arrSection5 addObject:clearLyric];
-    
     TagObj *lyric = [[TagObj alloc] init];
     lyric.iTagType = kTagTypeLyrics;
     lyric.value = song.sLyrics;
@@ -291,9 +286,14 @@
                         break;
                         
                     case kElementTypeTrack:
-                    case kElementTypeYear:
                     {
                         self.song.iTrack = @([tag.value intValue]);
+                    }
+                        break;
+                        
+                    case kElementTypeYear:
+                    {
+                        self.song.iYear = @([tag.value intValue]);
                     }
                         break;
                         
@@ -326,6 +326,13 @@
     //
     NSMutableArray *arrSection1 = [NSMutableArray new];
     
+    TagObj *album = [[TagObj alloc] init];
+    album.iTagType = kTagTypeElement;
+    album.iElementType = kElementTypeAlbum;
+    album.value = albumObj.sAlbumName;
+    album.isEditable = YES;
+    [arrSection1 addObject:album];
+    
     TagObj *artist = [[TagObj alloc] init];
     artist.iTagType = kTagTypeElement;
     artist.iElementType = kElementTypeArtist;
@@ -339,13 +346,6 @@
     albumArtist.value = albumObj.sAlbumArtistName;
     albumArtist.isEditable = YES;
     [arrSection1 addObject:albumArtist];
-    
-    TagObj *album = [[TagObj alloc] init];
-    album.iTagType = kTagTypeElement;
-    album.iElementType = kElementTypeAlbum;
-    album.value = albumObj.sAlbumName;
-    album.isEditable = YES;
-    [arrSection1 addObject:album];
     
     TagObj *year = [[TagObj alloc] init];
     year.iTagType = kTagTypeElement;
@@ -379,6 +379,111 @@
 
 - (void)saveDataToAlbum
 {
+    NSFetchRequest *request = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:self.album.iAlbumId artistId:nil genreId:nil];
+    NSArray *listSongs = [[[DataManagement sharedInstance] managedObjectContext] executeFetchRequest:request error:nil];
+    
+    if (listSongs.count <= 0) {
+        [self touchCancel];
+        return;
+    }
+    
+    NSString *sAlbumName = nil;
+    NSString *sArtistName = nil;
+    NSString *sAlbumArtistName = nil;
+    NSString *sYear = nil;
+    
+    for (NSArray *data in self.arrListTag)
+    {
+        for (TagObj *tag in data)
+        {
+            if (tag.iTagType == kTagTypeElement)
+            {
+                switch (tag.iElementType)
+                {
+                    case kElementTypeArtist:
+                    {
+                        sArtistName = tag.value;
+                    }
+                        break;
+                        
+                    case kElementTypeAlbumArtist:
+                    {
+                        sAlbumArtistName = tag.value;
+                    }
+                        break;
+                        
+                    case kElementTypeAlbum:
+                    {
+                        sAlbumName = tag.value;
+                    }
+                        break;
+                        
+                    case kElementTypeYear:
+                    {
+                        sYear = tag.value;
+                    }
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+    
+    // Update Year
+    if ([self.album.iYear compare:@([sYear intValue])] != NSOrderedSame) {
+        for (Item *song in listSongs) {
+            song.iYear = @([sYear intValue]);
+        }
+    }
+    
+    if (![self.album.sAlbumName isEqualToString:sAlbumName])
+    {
+        NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName];
+        if (!iAlbumId) {
+            iAlbumId = [Utils getTimestamp];
+        }
+        
+        for (Item *song in listSongs) {
+            [song setAlbumName:sAlbumName];
+            song.iAlbumId = iAlbumId;
+        }
+    }
+    
+    if (![self.album.sArtistName isEqualToString:sArtistName])
+    {
+        NSString *iArtistId = [[DataManagement sharedInstance] getArtistIdFromName:sArtistName];
+        if (!iArtistId) {
+            iArtistId = [Utils getTimestamp];
+        }
+        
+        for (Item *song in listSongs) {
+            [song setArtistName:sArtistName];
+            song.iArtistId = iArtistId;
+        }
+    }
+    
+    if (![self.album.sAlbumArtistName isEqualToString:sAlbumArtistName])
+    {
+        NSString *iAlbumArtistId = [[DataManagement sharedInstance] getAlbumArtistIdFromName:sAlbumArtistName];
+        if (!iAlbumArtistId) {
+            iAlbumArtistId = [Utils getTimestamp];
+        }
+        
+        for (Item *song in listSongs) {
+            [song setAlbumArtistName:sAlbumArtistName];
+            song.iAlbumArtistId = iAlbumArtistId;
+        }
+    }
+    
+    if ([self.artworkView isChangeArtwork])
+    {
+        for (Item *song in listSongs) {
+            [song setArtwork:[self.artworkView artwork]];
+        }
+    }
+    
     [self save];
 }
 
@@ -387,7 +492,7 @@
     [[DataManagement sharedInstance] saveData];
     [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_RELOAD_DATA object:nil];
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self touchCancel];
 }
 
 - (void)touchCancel
@@ -425,8 +530,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *data = self.arrListTag[section];
-    return data.count;
+    return [self.arrListTag[section] count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -514,20 +618,6 @@
             {
                 [[[DataManagement sharedInstance] managedObjectContext] deleteObject:self.song];
                 [self save];
-            }
-            else if (tag.iTagActionType == kTagActionTypeClearLyric)
-            {
-                NSIndexPath *tagIndexPath = [self getTagWithType:kTagTypeLyrics elementType:kElementTypeNone];
-                if (tagIndexPath)
-                {
-                    TagObj *tagObj = self.arrListTag[tagIndexPath.section][tagIndexPath.row];
-                    tagObj.value = nil;
-                    
-                    TagLyricCell *cell = (TagLyricCell *)[self.tblList cellForRowAtIndexPath:tagIndexPath];
-                    if (cell) {
-                        [cell configWithTag:tagObj];
-                    }
-                }
             }
         }
             break;

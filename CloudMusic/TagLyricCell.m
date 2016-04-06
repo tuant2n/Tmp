@@ -10,12 +10,15 @@
 
 #import "TagObj.h"
 
+#import "Utils.h"
+
 @interface TagLyricCell() <UITextViewDelegate>
 {
     
 }
 
 @property (nonatomic, weak) IBOutlet UITextView *tvLyric;
+@property (nonatomic, weak) IBOutlet UIView *line;
 
 @end
 
@@ -24,6 +27,8 @@
 - (void)awakeFromNib
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     
     self.tvLyric.delegate = self;
     self.tvLyric.contentInset = UIEdgeInsetsMake(-8.0, 0.0, 0.0, 0.0);
@@ -35,9 +40,15 @@
     self.tvLyric.text = self.tagObj.value;
 }
 
+- (IBAction)touchClearLyrics:(id)sender
+{
+    self.tagObj.value = nil;
+    self.tvLyric.text = nil;
+}
+
 + (CGFloat)height
 {
-    return 175.0;
+    return 185.0;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView

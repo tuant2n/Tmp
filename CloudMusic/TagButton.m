@@ -40,10 +40,6 @@
         self.lblButtonTitle.text = @"Delete";
         self.lblButtonTitle.textColor = [UIColor redColor];
     }
-    else if (iActionType == kTagActionTypeClearLyric) {
-        self.lblButtonTitle.text = @"Clear Lyrics";
-        self.lblButtonTitle.textColor = [UIColor blackColor];
-    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
