@@ -22,6 +22,7 @@
 #define DEVICE_SCALE [UIScreen mainScreen].scale
 
 #define NOTIFICATION_RELOAD_DATA @"NOTIFICATION_RELOAD_DATA"
+#define NOTIFICATION_LOGIN_DROPBOX @"NOTIFICATION_LOGIN_DROPBOX"
 
 @interface Utils : NSObject
 
@@ -56,7 +57,7 @@
 
 + (NSString *)documentPath;
 + (NSString *)artworkPath;
-+ (NSString *)downloadPath;
++ (NSString *)dropboxPath;
 
 #pragma mark - NSString
 

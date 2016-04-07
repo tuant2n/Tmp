@@ -11,6 +11,8 @@
 #import "Utils.h"
 #import "GlobalParameter.h"
 
+#import "DropBoxManagementViewController.h"
+
 #import "PCSEQVisualizer.h"
 
 @interface FilesViewController ()
@@ -20,10 +22,56 @@
 @property (nonatomic, strong) UIBarButtonItem *barBtnAddFile;
 
 @property (nonatomic, weak) IBOutlet UIView *vNotFound;
+@property (nonatomic, weak) IBOutlet UIButton *btnConnectDropbox;
 
 @end
 
 @implementation FilesViewController
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self setupUI];
+}
+
+- (void)setupUI
+{
+    self.title = @"Files";
+    self.navigationItem.rightBarButtonItem = self.barMusicEq;
+    self.navigationItem.leftBarButtonItem = self.barBtnAddFile;
+    [Utils configNavigationController:self.navigationController];
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
+    
+    [self setupNotFound];
+}
+
+- (void)setupNotFound
+{
+    self.vNotFound.backgroundColor = [Utils colorWithRGBHex:0xf7f7f7];
+    
+    UIColor *color = [Utils colorWithRGBHex:0x0070df];
+    [self.btnConnectDropbox setTitleColor:color forState:UIControlStateNormal];
+    
+    [self.btnConnectDropbox setBackgroundImage:[Utils imageWithColor:0xffffff] forState:UIControlStateNormal];
+    [self.btnConnectDropbox setBackgroundImage:[Utils imageWithColor:0xd0d0d0] forState:UIControlStateHighlighted];
+    
+    self.btnConnectDropbox.layer.cornerRadius = 10.0;
+    self.btnConnectDropbox.layer.borderColor = color.CGColor;
+    self.btnConnectDropbox.layer.borderWidth = 1.5;
+    self.btnConnectDropbox.alpha = 0.85;
+    self.btnConnectDropbox.clipsToBounds = YES;
+}
+
+- (IBAction)touchConnectDropbox:(id)sender
+{
+    [self gotoDropbox];
+}
+
+- (void)setupData
+{
+    
+}
 
 - (PCSEQVisualizer *)musicEq
 {
@@ -48,26 +96,6 @@
         _barBtnAddFile = [[UIBarButtonItem alloc] initWithCustomView:[Utils createBarButton:@"icn-add-music-normal.png" position:UIControlContentHorizontalAlignmentLeft target:self selector:@selector(addFile)]];
     }
     return _barBtnAddFile;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self setupUI];
-}
-
-- (void)setupUI
-{
-    self.title = @"Files";
-    self.navigationItem.rightBarButtonItem = self.barMusicEq;
-    self.navigationItem.leftBarButtonItem = self.barBtnAddFile;
-    [Utils configNavigationController:self.navigationController];
-    self.edgesForExtendedLayout = UIRectEdgeBottom;
-}
-
-- (void)setupData
-{
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -96,8 +124,13 @@
 
 - (void)addFile
 {
-    [self.musicEq stopEq:YES];
-    [[GlobalParameter sharedInstance] pausePlay];
+    [self gotoDropbox];
+}
+
+- (void)gotoDropbox
+{
+    DropBoxManagementViewController *vc = [[DropBoxManagementViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning

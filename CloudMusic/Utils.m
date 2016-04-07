@@ -137,6 +137,12 @@
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setLeftViewMode:UITextFieldViewModeAlways];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor grayColor]];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setPlaceholder:@"Search"];
+    
+    if ([[UINavigationBar class] respondsToSelector:@selector(appearance)])
+    {
+        [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
+        [[UINavigationBar appearance] setTranslucent:NO];
+    }
 }
 
 + (void)configNavigationController:(UINavigationController *)navController
@@ -240,14 +246,14 @@
     return artworkPath;
 }
 
-+ (NSString *)downloadPath
++ (NSString *)dropboxPath
 {
-    NSString *downloadPath = [[self documentPath] stringByAppendingPathComponent:@"Downloaded"];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:downloadPath])
+    NSString *dropboxPath = [[self documentPath] stringByAppendingPathComponent:@"Dropbox"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:dropboxPath])
     {
-        [[NSFileManager defaultManager] createDirectoryAtPath:downloadPath withIntermediateDirectories:NO attributes:nil error:nil];
+        [[NSFileManager defaultManager] createDirectoryAtPath:dropboxPath withIntermediateDirectories:NO attributes:nil error:nil];
     }
-    return downloadPath;
+    return dropboxPath;
 }
 
 #pragma mark - NSString

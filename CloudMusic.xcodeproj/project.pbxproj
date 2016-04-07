@@ -71,6 +71,10 @@
 		3C4926F41C9528320065B1DD /* ArtistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926F31C9528320065B1DD /* ArtistsViewController.m */; };
 		3C4926F81C9528460065B1DD /* GenresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926F71C9528460065B1DD /* GenresViewController.m */; };
 		3C4926FC1C952AC40065B1DD /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926FB1C952AC40065B1DD /* SettingsViewController.m */; };
+		3C5927DD1CB6980900320D55 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5927DC1CB6980900320D55 /* Security.framework */; };
+		3C5927DF1CB6982F00320D55 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5927DE1CB6982F00320D55 /* DropboxSDK.framework */; };
+		3C5927ED1CB6A4DF00320D55 /* DropBoxManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C5927EB1CB6A4DF00320D55 /* DropBoxManagementViewController.m */; };
+		3C5927EE1CB6A4DF00320D55 /* DropBoxManagementViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C5927EC1CB6A4DF00320D55 /* DropBoxManagementViewController.xib */; };
 		3C6C2C791CB267B200F3E901 /* TagRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C2C771CB267B200F3E901 /* TagRadioButton.m */; };
 		3C6C2C7A1CB267B200F3E901 /* TagRadioButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C6C2C781CB267B200F3E901 /* TagRadioButton.xib */; };
 		3C6C2C7E1CB267C100F3E901 /* TagButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C2C7C1CB267C100F3E901 /* TagButton.m */; };
@@ -305,6 +309,11 @@
 		3C4926F71C9528460065B1DD /* GenresViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenresViewController.m; sourceTree = "<group>"; };
 		3C4926FA1C952AC40065B1DD /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		3C4926FB1C952AC40065B1DD /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		3C5927DC1CB6980900320D55 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		3C5927DE1CB6982F00320D55 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = ThirdParty/DropboxSDK.framework; sourceTree = "<group>"; };
+		3C5927EA1CB6A4DF00320D55 /* DropBoxManagementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxManagementViewController.h; sourceTree = "<group>"; };
+		3C5927EB1CB6A4DF00320D55 /* DropBoxManagementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBoxManagementViewController.m; sourceTree = "<group>"; };
+		3C5927EC1CB6A4DF00320D55 /* DropBoxManagementViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropBoxManagementViewController.xib; sourceTree = "<group>"; };
 		3C6C2C761CB267B200F3E901 /* TagRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagRadioButton.h; sourceTree = "<group>"; };
 		3C6C2C771CB267B200F3E901 /* TagRadioButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagRadioButton.m; sourceTree = "<group>"; };
 		3C6C2C781CB267B200F3E901 /* TagRadioButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagRadioButton.xib; sourceTree = "<group>"; };
@@ -562,6 +571,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C5927DF1CB6982F00320D55 /* DropboxSDK.framework in Frameworks */,
+				3C5927DD1CB6980900320D55 /* Security.framework in Frameworks */,
 				3C4926F01C94511C0065B1DD /* MediaPlayer.framework in Frameworks */,
 				7BF5C8E21C91613300175C6F /* CoreData.framework in Frameworks */,
 				7BF5C8E01C91609800175C6F /* CoreGraphics.framework in Frameworks */,
@@ -735,6 +746,16 @@
 				7B066A611CA4D0190078FD53 /* SettingsViewController.xib */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		3C5927E91CB6A4A700320D55 /* DropBoxLoginView */ = {
+			isa = PBXGroup;
+			children = (
+				3C5927EA1CB6A4DF00320D55 /* DropBoxManagementViewController.h */,
+				3C5927EB1CB6A4DF00320D55 /* DropBoxManagementViewController.m */,
+				3C5927EC1CB6A4DF00320D55 /* DropBoxManagementViewController.xib */,
+			);
+			name = DropBoxLoginView;
 			sourceTree = "<group>";
 		};
 		3C6C2C801CB26AC600F3E901 /* IQKeyboardManager */ = {
@@ -1191,6 +1212,7 @@
 				3C09C6F01C8C6850004A44E2 /* FilesViewController.h */,
 				3C09C6F11C8C6850004A44E2 /* FilesViewController.m */,
 				7B066A591CA4CDD50078FD53 /* FilesViewController.xib */,
+				3C5927E91CB6A4A700320D55 /* DropBoxLoginView */,
 			);
 			name = Files;
 			sourceTree = "<group>";
@@ -1263,6 +1285,8 @@
 		7BF5C8DC1C91606100175C6F /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				3C5927DE1CB6982F00320D55 /* DropboxSDK.framework */,
+				3C5927DC1CB6980900320D55 /* Security.framework */,
 				3C4926EF1C94511C0065B1DD /* MediaPlayer.framework */,
 				7BF5C8E11C91613300175C6F /* CoreData.framework */,
 				7BF5C8DF1C91609800175C6F /* CoreGraphics.framework */,
@@ -1432,6 +1456,7 @@
 				7B066A621CA4D0190078FD53 /* SettingsViewController.xib in Resources */,
 				7B0896141CA8C30000264CD1 /* ArtistsCell.xib in Resources */,
 				3C4926B81C93EBCC0065B1DD /* artists.png in Resources */,
+				3C5927EE1CB6A4DF00320D55 /* DropBoxManagementViewController.xib in Resources */,
 				3C4926DC1C93EBCC0065B1DD /* songs.png in Resources */,
 				3C4926D71C93EBCC0065B1DD /* settings@2x.png in Resources */,
 				7B066A901CA5152C0078FD53 /* cloud-item-icon@3x.png in Resources */,
@@ -1546,6 +1571,7 @@
 				7BF65F441CA3D782007B198D /* NSData+ImageContentType.m in Sources */,
 				3C6C2CDF1CB29F7C00F3E901 /* Item+CoreDataProperties.m in Sources */,
 				7B4CD88A1CACDFE00041BE4E /* MakePlaylistViewController.m in Sources */,
+				3C5927ED1CB6A4DF00320D55 /* DropBoxManagementViewController.m in Sources */,
 				7B4CD8911CAD09D50041BE4E /* ListSongCell.m in Sources */,
 				7B0896131CA8C30000264CD1 /* ArtistsCell.m in Sources */,
 				3C6C2CAA1CB26AC600F3E901 /* IQUIViewController+Additions.m in Sources */,
@@ -1737,6 +1763,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CloudMusic/ThirdParty",
+				);
 				INFOPLIST_FILE = CloudMusic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1754,6 +1784,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CloudMusic/ThirdParty",
+				);
 				INFOPLIST_FILE = CloudMusic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

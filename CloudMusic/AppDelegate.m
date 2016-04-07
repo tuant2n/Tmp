@@ -7,26 +7,94 @@
 //
 
 #import "AppDelegate.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 #import "MainTabBarController.h"
 #import "Utils.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <DBSessionDelegate,DBNetworkRequestDelegate>
+{
+    NSString *relinkUserId;
+}
 
 @end
 
 @implementation AppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
-    
     self.window.rootViewController = [[MainTabBarController alloc] init];
     
+    NSString *dropBoxAppKey = @"7g8osl380bj7x9j";
+    NSString *dropBoxAppSecret = @"dge3dlml97z3e34";
+    NSString *root = kDBRootDropbox;
+    
+    DBSession* session = [[DBSession alloc] initWithAppKey:dropBoxAppKey appSecret:dropBoxAppSecret root:root];
+    session.delegate = self;
+    [DBSession setSharedSession:session];
+    [DBRequest setNetworkRequestDelegate:self];
+    
     return YES;
+}
+
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked])
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_DROPBOX object:[NSNumber numberWithBool:YES]];
+        }
+        else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_DROPBOX object:[NSNumber numberWithBool:NO]];
+        }
+        return YES;
+    }
+    return NO;
+}
+
+#pragma mark - DBSessionDelegate methods
+
+- (void)sessionDidReceiveAuthorizationFailure:(DBSession *)session userId:(NSString *)userId
+{
+    relinkUserId = userId;
+    [[[UIAlertView alloc] initWithTitle:@"Dropbox Session Ended" message:@"Do you want to relink?" delegate:self
+                      cancelButtonTitle:@"Cancel" otherButtonTitles:@"Relink", nil] show];
+}
+
+#pragma mark UIAlertViewDelegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index
+{
+    if (index != alertView.cancelButtonIndex) {
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        UINavigationController *controller = (UINavigationController*)[mainStoryboard instantiateViewControllerWithIdentifier:@"NavigationController"];
+        [[DBSession sharedSession] linkFromController:[controller visibleViewController]];
+    }
+    relinkUserId = nil;
+}
+
+#pragma mark - DBNetworkRequestDelegate methods
+
+static int outstandingRequests;
+
+- (void)networkRequestStarted
+{
+    outstandingRequests++;
+    if (outstandingRequests == 1) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    }
+}
+
+- (void)networkRequestStopped
+{
+    outstandingRequests--;
+    if (outstandingRequests == 0) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
