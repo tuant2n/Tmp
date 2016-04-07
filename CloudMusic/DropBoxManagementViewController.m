@@ -60,7 +60,7 @@
 
 - (void)setupData
 {
-    loadData = @"";
+    loadData = @"/";
     
     if ([[DBSession sharedSession] isLinked]) {
         [self configWhenLinked];
@@ -86,6 +86,8 @@
 {
     self.navigationItem.rightBarButtonItem = self.btnLogout;
     [self fetchAllDropboxData];
+    
+    [self.restClient loadAccountInfo];
 }
 
 - (void)configWhenNotLinked
@@ -150,14 +152,31 @@
 
 }
 
-#pragma mark - DBRestClientDelegate Methods for GetLink
+#pragma mark - DBRestClientDelegate Methods for DownloadFile
 
-- (void)restClient:(DBRestClient*)restClient loadedSharableLink:(NSString*)link forFile:(NSString*)path
+- (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath contentType:(NSString *)contentType metadata:(DBMetadata *)metadata
 {
     
 }
 
-- (void)restClient:(DBRestClient*)restClient loadSharableLinkFailedWithError:(NSError*)error
+- (void)restClient:(DBRestClient *)client loadProgress:(CGFloat)progress forFile:(NSString *)destPath
+{
+    
+}
+
+- (void)restClient:(DBRestClient *)client loadFileFailedWithError:(NSError *)error
+{
+    
+}
+
+#pragma mark - DBRestClientDelegate Methods for DBAccountInfo
+
+- (void)restClient:(DBRestClient *)client loadedAccountInfo:(DBAccountInfo *)info
+{
+    NSLog(@"UserID: %@ %@", [info displayName], [info userId]);
+}
+
+- (void)restClient:(DBRestClient *)client loadAccountInfoFailedWithError:(NSError *)error
 {
     
 }
