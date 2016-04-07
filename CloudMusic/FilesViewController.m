@@ -24,6 +24,8 @@
 @property (nonatomic, weak) IBOutlet UIView *vNotFound;
 @property (nonatomic, weak) IBOutlet UIButton *btnConnectDropbox;
 
+@property (nonatomic, weak) IBOutlet UITableView *tblList;
+
 @end
 
 @implementation FilesViewController
@@ -44,6 +46,9 @@
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     
     [self setupNotFound];
+    [self setupTableView];
+    
+    [self setShowNotFoundView:YES];
 }
 
 - (void)setupNotFound
@@ -63,6 +68,11 @@
     self.btnConnectDropbox.clipsToBounds = YES;
 }
 
+- (void)setupTableView
+{
+    [self.tblList setTableFooterView:[UIView new]];
+}
+
 - (IBAction)touchConnectDropbox:(id)sender
 {
     [self gotoDropbox];
@@ -71,6 +81,20 @@
 - (void)setupData
 {
     
+}
+
+#pragma mark - Utils
+
+- (void)setShowNotFoundView:(BOOL)isShow
+{
+    if (isShow) {
+        self.vNotFound.hidden = NO;
+        [self.view bringSubviewToFront:self.vNotFound];
+    }
+    else {
+        self.vNotFound.hidden = YES;
+        [self.view sendSubviewToBack:self.vNotFound];
+    }
 }
 
 - (PCSEQVisualizer *)musicEq

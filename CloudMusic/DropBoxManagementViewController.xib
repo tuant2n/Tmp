@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DropBoxManagementViewController">
             <connections>
+                <outlet property="tblList" destination="zjG-Kb-ZbF" id="CNC-4C-yjq"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -14,8 +15,21 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="64" width="320" height="416"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zjG-Kb-ZbF">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="zjG-Kb-ZbF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="71T-mY-zlO"/>
+                <constraint firstAttribute="bottom" secondItem="zjG-Kb-ZbF" secondAttribute="bottom" id="d2R-76-5JJ"/>
+                <constraint firstItem="zjG-Kb-ZbF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dnh-og-Tch"/>
+                <constraint firstAttribute="trailing" secondItem="zjG-Kb-ZbF" secondAttribute="trailing" id="gXm-nM-bHy"/>
+            </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
