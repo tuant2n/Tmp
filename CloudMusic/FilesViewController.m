@@ -7,6 +7,7 @@
 //
 
 #import "FilesViewController.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 #import "Utils.h"
 #import "GlobalParameter.h"
@@ -34,7 +35,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self setupUI];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:NOTIFICATION_LOGIN_DROPBOX object:nil];
 }
 
 - (void)setupUI
@@ -45,37 +48,19 @@
     [Utils configNavigationController:self.navigationController];
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     
-    [self setupNotFound];
-    [self setupTableView];
-    
-    [self setShowNotFoundView:YES];
-}
-
-- (void)setupNotFound
-{
-    self.vNotFound.backgroundColor = [Utils colorWithRGBHex:0xf7f7f7];
-    
-    UIColor *color = [Utils colorWithRGBHex:0x0070df];
-    [self.btnConnectDropbox setTitleColor:color forState:UIControlStateNormal];
-    
-    [self.btnConnectDropbox setBackgroundImage:[Utils imageWithColor:0xffffff] forState:UIControlStateNormal];
-    [self.btnConnectDropbox setBackgroundImage:[Utils imageWithColor:0xd0d0d0] forState:UIControlStateHighlighted];
-    
-    self.btnConnectDropbox.layer.cornerRadius = 10.0;
-    self.btnConnectDropbox.layer.borderColor = color.CGColor;
-    self.btnConnectDropbox.layer.borderWidth = 1.5;
-    self.btnConnectDropbox.alpha = 0.85;
+    [self.btnConnectDropbox setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.btnConnectDropbox setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [self.btnConnectDropbox setBackgroundImage:[Utils imageWithColor:0x017ee6] forState:UIControlStateNormal];
+    self.btnConnectDropbox.layer.cornerRadius = 3.0;
     self.btnConnectDropbox.clipsToBounds = YES;
+    
+    [self setupTableView];
+    [self setShowNotFoundView:YES];
 }
 
 - (void)setupTableView
 {
     [self.tblList setTableFooterView:[UIView new]];
-}
-
-- (IBAction)touchConnectDropbox:(id)sender
-{
-    [self gotoDropbox];
 }
 
 - (void)setupData
@@ -117,7 +102,7 @@
 - (UIBarButtonItem *)barBtnAddFile
 {
     if (!_barBtnAddFile) {
-        _barBtnAddFile = [[UIBarButtonItem alloc] initWithCustomView:[Utils createBarButton:@"icn-add-music-normal.png" position:UIControlContentHorizontalAlignmentLeft target:self selector:@selector(addFile)]];
+        _barBtnAddFile = [[UIBarButtonItem alloc] initWithCustomView:[Utils createBarButton:@"icn-add-music-normal.png" position:UIControlContentHorizontalAlignmentLeft target:self selector:@selector(touchConnectDropbox:)]];
     }
     return _barBtnAddFile;
 }
@@ -146,7 +131,24 @@
     [[GlobalParameter sharedInstance] startPlay];
 }
 
-- (void)addFile
+#pragma mark - DropBox Connect
+
+- (IBAction)touchConnectDropbox:(id)sender
+{
+    [self connectToDropbox];
+}
+
+- (void)connectToDropbox
+{
+    if (![[DBSession sharedSession] isLinked]) {
+        [[DBSession sharedSession] linkFromController:self];
+    }
+    else {
+        [self gotoDropbox];
+    }
+}
+
+- (void)loginSuccess:(NSNotification *)notification
 {
     [self gotoDropbox];
 }

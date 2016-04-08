@@ -53,6 +53,8 @@
 
 + (void)registerNibForTableView:(UITableView *)tblView;
 
++ (BOOL)isLandscapeDevice;
+
 #pragma mark - Files
 
 + (NSString *)documentPath;

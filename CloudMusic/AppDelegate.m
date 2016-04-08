@@ -46,10 +46,7 @@
     if ([[DBSession sharedSession] handleOpenURL:url]) {
         if ([[DBSession sharedSession] isLinked])
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_DROPBOX object:[NSNumber numberWithBool:YES]];
-        }
-        else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_DROPBOX object:[NSNumber numberWithBool:NO]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_DROPBOX object:nil];
         }
         return YES;
     }

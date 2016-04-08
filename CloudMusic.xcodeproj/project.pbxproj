@@ -71,6 +71,12 @@
 		3C4926F41C9528320065B1DD /* ArtistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926F31C9528320065B1DD /* ArtistsViewController.m */; };
 		3C4926F81C9528460065B1DD /* GenresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926F71C9528460065B1DD /* GenresViewController.m */; };
 		3C4926FC1C952AC40065B1DD /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4926FB1C952AC40065B1DD /* SettingsViewController.m */; };
+		3C53414F1CB7EA62000BA5DD /* dropboxIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C53414C1CB7EA62000BA5DD /* dropboxIcon.png */; };
+		3C5341501CB7EA62000BA5DD /* dropboxIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C53414D1CB7EA62000BA5DD /* dropboxIcon@2x.png */; };
+		3C5341511CB7EA62000BA5DD /* dropboxIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C53414E1CB7EA62000BA5DD /* dropboxIcon@3x.png */; };
+		3C53415A1CB7FEAC000BA5DD /* dropboxIcon_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5341571CB7FEAC000BA5DD /* dropboxIcon_large.png */; };
+		3C53415B1CB7FEAC000BA5DD /* dropboxIcon_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5341581CB7FEAC000BA5DD /* dropboxIcon_large@2x.png */; };
+		3C53415C1CB7FEAC000BA5DD /* dropboxIcon_large@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C5341591CB7FEAC000BA5DD /* dropboxIcon_large@3x.png */; };
 		3C5927DD1CB6980900320D55 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5927DC1CB6980900320D55 /* Security.framework */; };
 		3C5927DF1CB6982F00320D55 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5927DE1CB6982F00320D55 /* DropboxSDK.framework */; };
 		3C5927ED1CB6A4DF00320D55 /* DropBoxManagementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C5927EB1CB6A4DF00320D55 /* DropBoxManagementViewController.m */; };
@@ -309,6 +315,12 @@
 		3C4926F71C9528460065B1DD /* GenresViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenresViewController.m; sourceTree = "<group>"; };
 		3C4926FA1C952AC40065B1DD /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		3C4926FB1C952AC40065B1DD /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		3C53414C1CB7EA62000BA5DD /* dropboxIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dropboxIcon.png; sourceTree = "<group>"; };
+		3C53414D1CB7EA62000BA5DD /* dropboxIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dropboxIcon@2x.png"; sourceTree = "<group>"; };
+		3C53414E1CB7EA62000BA5DD /* dropboxIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dropboxIcon@3x.png"; sourceTree = "<group>"; };
+		3C5341571CB7FEAC000BA5DD /* dropboxIcon_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dropboxIcon_large.png; sourceTree = "<group>"; };
+		3C5341581CB7FEAC000BA5DD /* dropboxIcon_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dropboxIcon_large@2x.png"; sourceTree = "<group>"; };
+		3C5341591CB7FEAC000BA5DD /* dropboxIcon_large@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dropboxIcon_large@3x.png"; sourceTree = "<group>"; };
 		3C5927DC1CB6980900320D55 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		3C5927DE1CB6982F00320D55 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = ThirdParty/DropboxSDK.framework; sourceTree = "<group>"; };
 		3C5927EA1CB6A4DF00320D55 /* DropBoxManagementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxManagementViewController.h; sourceTree = "<group>"; };
@@ -705,6 +717,12 @@
 		3C4926DF1C93EE1B0065B1DD /* Files */ = {
 			isa = PBXGroup;
 			children = (
+				3C5341571CB7FEAC000BA5DD /* dropboxIcon_large.png */,
+				3C5341581CB7FEAC000BA5DD /* dropboxIcon_large@2x.png */,
+				3C5341591CB7FEAC000BA5DD /* dropboxIcon_large@3x.png */,
+				3C53414C1CB7EA62000BA5DD /* dropboxIcon.png */,
+				3C53414D1CB7EA62000BA5DD /* dropboxIcon@2x.png */,
+				3C53414E1CB7EA62000BA5DD /* dropboxIcon@3x.png */,
 				3C4926E01C93EE1B0065B1DD /* icn-add-music-normal.png */,
 				3C4926E11C93EE1B0065B1DD /* icn-add-music-normal@2x.png */,
 				3C4926E21C93EE1B0065B1DD /* icn-add-music-normal@3x.png */,
@@ -1418,8 +1436,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C53415B1CB7FEAC000BA5DD /* dropboxIcon_large@2x.png in Resources */,
 				3C4926D01C93EBCC0065B1DD /* playlists.png in Resources */,
+				3C53414F1CB7EA62000BA5DD /* dropboxIcon.png in Resources */,
 				7BF65F171CA3C285007B198D /* SongsCell.xib in Resources */,
+				3C53415A1CB7FEAC000BA5DD /* dropboxIcon_large.png in Resources */,
 				7B4CD8921CAD09D50041BE4E /* ListSongCell.xib in Resources */,
 				3CB105361CA419DB0087D20A /* ipod-item-icon@2x.png in Resources */,
 				3C8D3DA61CA58155008EB7A8 /* btnAddPlaylist@3x.png in Resources */,
@@ -1460,6 +1481,7 @@
 				3C4926DC1C93EBCC0065B1DD /* songs.png in Resources */,
 				3C4926D71C93EBCC0065B1DD /* settings@2x.png in Resources */,
 				7B066A901CA5152C0078FD53 /* cloud-item-icon@3x.png in Resources */,
+				3C5341511CB7EA62000BA5DD /* dropboxIcon@3x.png in Resources */,
 				3C4926CA1C93EBCC0065B1DD /* more.png in Resources */,
 				3C4926D51C93EBCC0065B1DD /* settings-selected@3x.png in Resources */,
 				7B066A881CA50BF00078FD53 /* textField-background.png in Resources */,
@@ -1487,6 +1509,7 @@
 				7B0896281CA8E3A400264CD1 /* PlayerViewController.xib in Resources */,
 				7B066A891CA50BF00078FD53 /* textField-background@2x.png in Resources */,
 				3CB105341CA419DB0087D20A /* filetype_audio@3x.png in Resources */,
+				3C5341501CB7EA62000BA5DD /* dropboxIcon@2x.png in Resources */,
 				3C6C2CBF1CB2829900F3E901 /* uncheck.png in Resources */,
 				7B066A811CA4FAA20078FD53 /* edit-icon@3x.png in Resources */,
 				3C4926B71C93EBCC0065B1DD /* artists-selected@3x.png in Resources */,
@@ -1516,6 +1539,7 @@
 				3C8D3DA41CA58155008EB7A8 /* btnAddPlaylist.png in Resources */,
 				3C4926E41C93EE1B0065B1DD /* icn-add-music-normal@2x.png in Resources */,
 				3C4926D11C93EBCC0065B1DD /* playlists@2x.png in Resources */,
+				3C53415C1CB7FEAC000BA5DD /* dropboxIcon_large@3x.png in Resources */,
 				3C4926C11C93EBCC0065B1DD /* genres-selected.png in Resources */,
 				3C4926C31C93EBCC0065B1DD /* genres-selected@3x.png in Resources */,
 				3C4926CB1C93EBCC0065B1DD /* more@2x.png in Resources */,

@@ -229,6 +229,28 @@
     tblView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
++ (BOOL)isLandscapeDevice
+{
+    UIInterfaceOrientation iOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    UIDeviceOrientation dOrientation = [UIDevice currentDevice].orientation;
+    
+    BOOL landscape;
+    
+    if (dOrientation == UIDeviceOrientationUnknown || dOrientation == UIDeviceOrientationFaceUp || dOrientation == UIDeviceOrientationFaceDown) {
+        landscape = UIInterfaceOrientationIsLandscape(iOrientation);
+    }
+    else {
+        if (dOrientation == UIDeviceOrientationPortraitUpsideDown) {
+            landscape = YES;
+        }
+        else {
+            landscape = UIDeviceOrientationIsLandscape(dOrientation);
+        }
+    }
+    
+    return landscape;
+}
+
 #pragma mark - Files
 
 + (NSString *)documentPath

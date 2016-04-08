@@ -16,7 +16,7 @@
     NSString *loadData;
 }
 
-@property (nonatomic, strong) UIBarButtonItem *btnLogout, *btnLogin;
+@property (nonatomic, strong) UIBarButtonItem *btnLogout;
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 
 @property (nonatomic, strong) DBRestClient *restClient;
@@ -33,66 +33,27 @@
     return _btnLogout;
 }
 
-- (UIBarButtonItem *)btnLogin
-{
-    if (!_btnLogin) {
-        _btnLogin = [[UIBarButtonItem alloc] initWithCustomView:[Utils createBarButtonWithTitle:@"Log In" font:[UIFont fontWithName:@"HelveticaNeue-Medium" size:15.0] textColor:0x007cf6 position:UIControlContentHorizontalAlignmentRight target:self action:@selector(login)]];
-    }
-    return _btnLogin;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self setupUI];
-    [self setupData];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:NOTIFICATION_LOGIN_DROPBOX object:nil];
+    [self getData];
 }
 
 - (void)setupUI
 {
     self.title = @"Dropbox";
+    self.navigationItem.rightBarButtonItem = self.btnLogout;
     [Utils configNavigationController:self.navigationController];
     self.edgesForExtendedLayout = UIRectEdgeBottom;
 }
 
-- (void)setupData
+- (void)getData
 {
     loadData = @"/";
-    
-    if ([[DBSession sharedSession] isLinked]) {
-        [self configWhenLinked];
-    }
-    else {
-        [self configWhenNotLinked];
-    }
-}
-
-- (void)loginSuccess:(NSNotification *)notification
-{
-    BOOL isSuccess = [notification.object boolValue];
-    
-    if (isSuccess) {
-        [self configWhenLinked];
-    }
-    else {
-        [self configWhenNotLinked];
-    }
-}
-
-- (void)configWhenLinked
-{
-    self.navigationItem.rightBarButtonItem = self.btnLogout;
     [self fetchAllDropboxData];
-    
     [self.restClient loadAccountInfo];
-}
-
-- (void)configWhenNotLinked
-{
-    self.navigationItem.rightBarButtonItem = self.btnLogin;
 }
 
 #pragma mark - Dropbox Methods
@@ -195,6 +156,7 @@
     if ([[DBSession sharedSession] isLinked]) {
         [[DBSession sharedSession] unlinkAll];
     }
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
