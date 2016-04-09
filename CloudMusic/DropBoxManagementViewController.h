@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <DropboxSDK/DropboxSDK.h>
 
 @interface DropBoxManagementViewController : UIViewController
+
+@property (nonatomic, strong) DBMetadata *item;
 
 @end

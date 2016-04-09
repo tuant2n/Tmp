@@ -24,4 +24,14 @@
 - (BOOL)isPlay;
 - (void)setCurrentPlayingItem:(Item *)itemObj;
 
+#pragma mark - DropBoxInfo
+
+- (void)clearDropBoxInfo;
+
+- (void)setDropBoxName:(NSString *)sName;
+- (NSString *)getDropBoxName;
+
+- (void)setDropBoxId:(NSString *)sId;
+- (NSString *)getDropBoxId;
+
 @end

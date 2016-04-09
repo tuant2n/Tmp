@@ -153,6 +153,19 @@
     navController.interactivePopGestureRecognizer.enabled = YES;
 }
 
++ (UIBarButtonItem *)customBackNavigationWithTarget:(id)target selector:(SEL)selector
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setFrame:CGRectMake(0.0, 0.0, 50.0, 35.0)];
+    [button setBackgroundColor:[UIColor clearColor]];
+    [button setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
+    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    button.multipleTouchEnabled = NO;
+    button.exclusiveTouch = YES;
+    return [[UIBarButtonItem alloc] initWithCustomView:button];
+}
+
 + (UIButton *)createBarButton:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -186,10 +199,11 @@
     button.titleLabel.font = font;
     
     UIColor *normalColor = [Utils colorWithRGBHex:hexColor];
-    UIColor *highlightedColor = [Utils colorWithRGBHex:hexColor andAlpha:0.4];
+    UIColor *highlightedColor = [UIColor lightGrayColor];
     
     [button setTitleColor:normalColor forState:UIControlStateNormal];
     [button setTitleColor:highlightedColor forState:UIControlStateHighlighted];
+    [button setTitleColor:highlightedColor forState:UIControlStateSelected];
     [button setTitleColor:highlightedColor forState:UIControlStateDisabled];
     
     return button;

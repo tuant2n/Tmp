@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -16,6 +16,7 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YmE-Yw-bDy" userLabel="line">
                         <rect key="frame" x="5" y="0.0" width="310" height="1"/>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="FAO-sz-SOX"/>
@@ -26,6 +27,7 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v3d-rc-VSe" userLabel="lblIndex">
                                 <rect key="frame" x="0.0" y="0.0" width="20" height="46"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="vLG-Li-l7v"/>
                                 </constraints>
@@ -38,6 +40,7 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l1w-c1-yAg" userLabel="lblName">
                                         <rect key="frame" x="0.0" y="0.0" width="245" height="22"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="cKk-kG-9m6"/>
                                         </constraints>
@@ -47,11 +50,13 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogN-S8-zya" userLabel="lblDuration">
                                         <rect key="frame" x="0.0" y="22" width="245" height="10"/>
+                                        <animations/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="4iC-K0-ofm"/>
                                     <constraint firstItem="ogN-S8-zya" firstAttribute="leading" secondItem="hiy-k8-blk" secondAttribute="leading" id="BVl-Gb-gZk"/>
@@ -68,12 +73,14 @@
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ipod-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="c7t-cw-vjr" userLabel="imgvIcon">
                                         <rect key="frame" x="11" y="17" width="13" height="13"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="13" id="E8S-aq-sVA"/>
                                             <constraint firstAttribute="height" constant="13" id="TNK-E3-Uhg"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
+                                <animations/>
                                 <constraints>
                                     <constraint firstItem="c7t-cw-vjr" firstAttribute="centerX" secondItem="InF-Bj-Viu" secondAttribute="centerX" id="2fH-L6-Vz3"/>
                                     <constraint firstAttribute="width" constant="35" id="Xof-dA-Igf"/>
@@ -81,6 +88,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="v3d-rc-VSe" secondAttribute="bottom" id="A99-Fs-sGP"/>
@@ -95,6 +103,7 @@
                         </constraints>
                     </view>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="YmE-Yw-bDy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="01T-Pk-9ce"/>
                     <constraint firstItem="Bmc-uX-05W" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="2Ih-Ma-EsB"/>
@@ -105,6 +114,7 @@
                     <constraint firstItem="YmE-Yw-bDy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="xfd-fR-3E3"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="imgvIcon" destination="c7t-cw-vjr" id="C4X-av-h7m"/>
                 <outlet property="lblDuration" destination="ogN-S8-zya" id="xYe-0L-xd6"/>

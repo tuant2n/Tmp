@@ -72,4 +72,35 @@ static GlobalParameter *globalParameter = nil;
     [self startPlay];
 }
 
+#pragma mark - DropBoxInfo
+
+- (void)clearDropBoxInfo
+{
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"DROPBOX_NAME"];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"DROPBOX_ID"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setDropBoxName:(NSString *)sName
+{
+    [[NSUserDefaults standardUserDefaults] setObject:sName forKey:@"DROPBOX_NAME"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)getDropBoxName
+{
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"DROPBOX_NAME"];
+}
+
+- (void)setDropBoxId:(NSString *)sId
+{
+    [[NSUserDefaults standardUserDefaults] setObject:sId forKey:@"DROPBOX_ID"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)getDropBoxId
+{
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"DROPBOX_ID"];
+}
+
 @end

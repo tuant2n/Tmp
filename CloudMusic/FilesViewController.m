@@ -51,7 +51,7 @@
     [self.btnConnectDropbox setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.btnConnectDropbox setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
     [self.btnConnectDropbox setBackgroundImage:[Utils imageWithColor:0x017ee6] forState:UIControlStateNormal];
-    self.btnConnectDropbox.layer.cornerRadius = 3.0;
+    self.btnConnectDropbox.layer.cornerRadius = 5.0;
     self.btnConnectDropbox.clipsToBounds = YES;
     
     [self setupTableView];
@@ -156,6 +156,7 @@
 - (void)gotoDropbox
 {
     DropBoxManagementViewController *vc = [[DropBoxManagementViewController alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

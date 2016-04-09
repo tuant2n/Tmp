@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DropBoxManagementViewController">
             <connections>
+                <outlet property="emptyView" destination="aBe-L3-Y0i" id="fbv-qB-dPp"/>
+                <outlet property="loadingView" destination="fbN-nH-A3u" id="xoO-bV-Uby"/>
                 <outlet property="tblList" destination="zjG-Kb-ZbF" id="CNC-4C-yjq"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -20,19 +22,63 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="NuF-Uz-zwp"/>
+                        <outlet property="delegate" destination="-1" id="cS1-Zt-VkJ"/>
+                    </connections>
                 </tableView>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fbN-nH-A3u" userLabel="loadingView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </activityIndicatorView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aBe-L3-Y0i" userLabel="emptyView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gXy-8I-hrl">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="gXy-8I-hrl" secondAttribute="bottom" id="DuH-sY-Vyq"/>
+                        <constraint firstItem="gXy-8I-hrl" firstAttribute="leading" secondItem="aBe-L3-Y0i" secondAttribute="leading" id="Wgp-F9-rhY"/>
+                        <constraint firstItem="gXy-8I-hrl" firstAttribute="top" secondItem="aBe-L3-Y0i" secondAttribute="top" id="xY2-BK-LDy"/>
+                        <constraint firstAttribute="trailing" secondItem="gXy-8I-hrl" secondAttribute="trailing" id="yOs-8s-jCl"/>
+                    </constraints>
+                </view>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="fbN-nH-A3u" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="6Bf-Ux-u64"/>
+                <constraint firstAttribute="bottom" secondItem="zjG-Kb-ZbF" secondAttribute="bottom" id="6Wa-5y-8tc"/>
                 <constraint firstItem="zjG-Kb-ZbF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="71T-mY-zlO"/>
+                <constraint firstItem="aBe-L3-Y0i" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="CUd-id-6jD"/>
+                <constraint firstAttribute="trailing" secondItem="fbN-nH-A3u" secondAttribute="trailing" id="DcP-IW-EOs"/>
                 <constraint firstAttribute="bottom" secondItem="zjG-Kb-ZbF" secondAttribute="bottom" id="d2R-76-5JJ"/>
                 <constraint firstItem="zjG-Kb-ZbF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dnh-og-Tch"/>
                 <constraint firstAttribute="trailing" secondItem="zjG-Kb-ZbF" secondAttribute="trailing" id="gXm-nM-bHy"/>
+                <constraint firstItem="aBe-L3-Y0i" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="qF6-8y-dzK"/>
+                <constraint firstAttribute="bottom" secondItem="aBe-L3-Y0i" secondAttribute="bottom" id="qcJ-8r-lxM"/>
+                <constraint firstItem="fbN-nH-A3u" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="tPU-Xj-kOg"/>
+                <constraint firstAttribute="bottom" secondItem="fbN-nH-A3u" secondAttribute="bottom" id="vt5-oi-cUO"/>
+                <constraint firstAttribute="trailing" secondItem="aBe-L3-Y0i" secondAttribute="trailing" id="xde-WL-ySv"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <nil key="simulatedBottomBarMetrics"/>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="d2R-76-5JJ"/>
+                </mask>
+            </variation>
         </view>
     </objects>
 </document>
