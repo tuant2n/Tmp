@@ -4,6 +4,7 @@
         <attribute name="sBitRate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sFileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sFolderName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sHash" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sKind" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sSize" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="fileInfo" inverseEntity="Item" syncable="YES"/>
@@ -41,7 +42,7 @@
         <relationship name="fileInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FileInfo" inverseName="item" inverseEntity="FileInfo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="FileInfo" positionX="-27" positionY="171" width="128" height="135"/>
+        <element name="FileInfo" positionX="-27" positionY="171" width="128" height="150"/>
         <element name="Item" positionX="-27" positionY="18" width="128" height="495"/>
     </elements>
 </model>

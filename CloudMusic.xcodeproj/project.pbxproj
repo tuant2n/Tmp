@@ -16,6 +16,15 @@
 		3C09C6F81C8C68C2004A44E2 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C09C6F71C8C68C2004A44E2 /* MainTabBarController.m */; };
 		3C09C6FE1C8C6910004A44E2 /* AlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C09C6FD1C8C6910004A44E2 /* AlbumsViewController.m */; };
 		3C09C7041C8C6962004A44E2 /* PlaylistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C09C7031C8C6962004A44E2 /* PlaylistsViewController.m */; };
+		3C28FB241CBA866900762D2D /* DLAVAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C28FB191CBA866900762D2D /* DLAVAlertView.m */; };
+		3C28FB251CBA866900762D2D /* DLAVAlertViewButtonTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C28FB1B1CBA866900762D2D /* DLAVAlertViewButtonTheme.m */; };
+		3C28FB261CBA866900762D2D /* DLAVAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C28FB1D1CBA866900762D2D /* DLAVAlertViewController.m */; };
+		3C28FB271CBA866900762D2D /* DLAVAlertViewTextControlTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C28FB1F1CBA866900762D2D /* DLAVAlertViewTextControlTheme.m */; };
+		3C28FB281CBA866900762D2D /* DLAVAlertViewTextFieldTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C28FB211CBA866900762D2D /* DLAVAlertViewTextFieldTheme.m */; };
+		3C28FB291CBA866900762D2D /* DLAVAlertViewTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C28FB231CBA866900762D2D /* DLAVAlertViewTheme.m */; };
+		3C28FB331CBA8A5D00762D2D /* LDProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C28FB301CBA8A5D00762D2D /* LDProgressView.m */; };
+		3C28FB341CBA8A5D00762D2D /* UIColor+RGBValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C28FB321CBA8A5D00762D2D /* UIColor+RGBValues.m */; };
+		3C28FB381CBA9D1600762D2D /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C28FB371CBA9D1600762D2D /* MarqueeLabel.m */; };
 		3C4926AF1C93EBCC0065B1DD /* albums-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C49267F1C93EBCC0065B1DD /* albums-selected.png */; };
 		3C4926B01C93EBCC0065B1DD /* albums-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4926801C93EBCC0065B1DD /* albums-selected@2x.png */; };
 		3C4926B11C93EBCC0065B1DD /* albums-selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4926811C93EBCC0065B1DD /* albums-selected@3x.png */; };
@@ -292,6 +301,24 @@
 		3C09C6FD1C8C6910004A44E2 /* AlbumsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumsViewController.m; sourceTree = "<group>"; };
 		3C09C7021C8C6962004A44E2 /* PlaylistsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistsViewController.h; sourceTree = "<group>"; };
 		3C09C7031C8C6962004A44E2 /* PlaylistsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistsViewController.m; sourceTree = "<group>"; };
+		3C28FB181CBA866900762D2D /* DLAVAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLAVAlertView.h; sourceTree = "<group>"; };
+		3C28FB191CBA866900762D2D /* DLAVAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLAVAlertView.m; sourceTree = "<group>"; };
+		3C28FB1A1CBA866900762D2D /* DLAVAlertViewButtonTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLAVAlertViewButtonTheme.h; sourceTree = "<group>"; };
+		3C28FB1B1CBA866900762D2D /* DLAVAlertViewButtonTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLAVAlertViewButtonTheme.m; sourceTree = "<group>"; };
+		3C28FB1C1CBA866900762D2D /* DLAVAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLAVAlertViewController.h; sourceTree = "<group>"; };
+		3C28FB1D1CBA866900762D2D /* DLAVAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLAVAlertViewController.m; sourceTree = "<group>"; };
+		3C28FB1E1CBA866900762D2D /* DLAVAlertViewTextControlTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLAVAlertViewTextControlTheme.h; sourceTree = "<group>"; };
+		3C28FB1F1CBA866900762D2D /* DLAVAlertViewTextControlTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLAVAlertViewTextControlTheme.m; sourceTree = "<group>"; };
+		3C28FB201CBA866900762D2D /* DLAVAlertViewTextFieldTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLAVAlertViewTextFieldTheme.h; sourceTree = "<group>"; };
+		3C28FB211CBA866900762D2D /* DLAVAlertViewTextFieldTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLAVAlertViewTextFieldTheme.m; sourceTree = "<group>"; };
+		3C28FB221CBA866900762D2D /* DLAVAlertViewTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLAVAlertViewTheme.h; sourceTree = "<group>"; };
+		3C28FB231CBA866900762D2D /* DLAVAlertViewTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLAVAlertViewTheme.m; sourceTree = "<group>"; };
+		3C28FB2F1CBA8A5D00762D2D /* LDProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDProgressView.h; sourceTree = "<group>"; };
+		3C28FB301CBA8A5D00762D2D /* LDProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDProgressView.m; sourceTree = "<group>"; };
+		3C28FB311CBA8A5D00762D2D /* UIColor+RGBValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RGBValues.h"; sourceTree = "<group>"; };
+		3C28FB321CBA8A5D00762D2D /* UIColor+RGBValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RGBValues.m"; sourceTree = "<group>"; };
+		3C28FB361CBA9D1600762D2D /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
+		3C28FB371CBA9D1600762D2D /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
 		3C49267F1C93EBCC0065B1DD /* albums-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "albums-selected.png"; sourceTree = "<group>"; };
 		3C4926801C93EBCC0065B1DD /* albums-selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "albums-selected@2x.png"; sourceTree = "<group>"; };
 		3C4926811C93EBCC0065B1DD /* albums-selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "albums-selected@3x.png"; sourceTree = "<group>"; };
@@ -730,6 +757,45 @@
 				3C49267E1C93EBCC0065B1DD /* Tabbar */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		3C28FB171CBA866900762D2D /* DLAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				3C28FB181CBA866900762D2D /* DLAVAlertView.h */,
+				3C28FB191CBA866900762D2D /* DLAVAlertView.m */,
+				3C28FB1A1CBA866900762D2D /* DLAVAlertViewButtonTheme.h */,
+				3C28FB1B1CBA866900762D2D /* DLAVAlertViewButtonTheme.m */,
+				3C28FB1C1CBA866900762D2D /* DLAVAlertViewController.h */,
+				3C28FB1D1CBA866900762D2D /* DLAVAlertViewController.m */,
+				3C28FB1E1CBA866900762D2D /* DLAVAlertViewTextControlTheme.h */,
+				3C28FB1F1CBA866900762D2D /* DLAVAlertViewTextControlTheme.m */,
+				3C28FB201CBA866900762D2D /* DLAVAlertViewTextFieldTheme.h */,
+				3C28FB211CBA866900762D2D /* DLAVAlertViewTextFieldTheme.m */,
+				3C28FB221CBA866900762D2D /* DLAVAlertViewTheme.h */,
+				3C28FB231CBA866900762D2D /* DLAVAlertViewTheme.m */,
+			);
+			path = DLAlertView;
+			sourceTree = "<group>";
+		};
+		3C28FB2E1CBA8A5D00762D2D /* LDProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				3C28FB2F1CBA8A5D00762D2D /* LDProgressView.h */,
+				3C28FB301CBA8A5D00762D2D /* LDProgressView.m */,
+				3C28FB311CBA8A5D00762D2D /* UIColor+RGBValues.h */,
+				3C28FB321CBA8A5D00762D2D /* UIColor+RGBValues.m */,
+			);
+			path = LDProgressView;
+			sourceTree = "<group>";
+		};
+		3C28FB351CBA9D1600762D2D /* MarqueeLabel */ = {
+			isa = PBXGroup;
+			children = (
+				3C28FB361CBA9D1600762D2D /* MarqueeLabel.h */,
+				3C28FB371CBA9D1600762D2D /* MarqueeLabel.m */,
+			);
+			path = MarqueeLabel;
 			sourceTree = "<group>";
 		};
 		3C49267E1C93EBCC0065B1DD /* Tabbar */ = {
@@ -1300,6 +1366,9 @@
 		7BA4EE9B1C9000A600157284 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3C28FB351CBA9D1600762D2D /* MarqueeLabel */,
+				3C28FB2E1CBA8A5D00762D2D /* LDProgressView */,
+				3C28FB171CBA866900762D2D /* DLAlertView */,
 				3C94B8221CB4034400449B07 /* MBProgressHUD */,
 				3C94B81E1CB4029400449B07 /* UIImage+Additions */,
 				3C94B7F91CB400E900449B07 /* QBImagePicker */,
@@ -1734,14 +1803,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B066AD61CA53F4E0078FD53 /* SongsCell.m in Sources */,
+				3C28FB341CBA8A5D00762D2D /* UIColor+RGBValues.m in Sources */,
 				3C8D3D941CA56F8F008EB7A8 /* MGSwipeTableCell.m in Sources */,
 				3CA4E3141C9ECE9400168B48 /* Item.m in Sources */,
 				3C6C2CD51CB29F3300F3E901 /* FileInfo.m in Sources */,
 				3C6C2CAB1CB26AC600F3E901 /* IQUIWindow+Hierarchy.m in Sources */,
+				3C28FB281CBA866900762D2D /* DLAVAlertViewTextFieldTheme.m in Sources */,
 				7BF65F521CA3D782007B198D /* UIView+WebCacheOperation.m in Sources */,
 				3CEA50311CAEC44700123F3C /* EditViewController.m in Sources */,
+				3C28FB331CBA8A5D00762D2D /* LDProgressView.m in Sources */,
 				3C94B8251CB4034400449B07 /* MBProgressHUD.m in Sources */,
 				3C6DB1091CA6DACB00F68D3E /* AlbumObj.m in Sources */,
+				3C28FB261CBA866900762D2D /* DLAVAlertViewController.m in Sources */,
 				3C6C2CE31CB2A9CE00F3E901 /* TagLyricCell.m in Sources */,
 				3C9199931CA92A7E0099B451 /* GenreObj.m in Sources */,
 				7BD179461C9D5122004CD5AF /* HCDCoreDataStackController.m in Sources */,
@@ -1767,6 +1840,7 @@
 				7BF65F4B1CA3D782007B198D /* SDWebImagePrefetcher.m in Sources */,
 				7BF65F1B1CA3C665007B198D /* HeaderTitle.m in Sources */,
 				7B26B2471CAF780B00368CA8 /* TagObj.m in Sources */,
+				3C28FB291CBA866900762D2D /* DLAVAlertViewTheme.m in Sources */,
 				3C94B81D1CB400E900449B07 /* QBVideoIndicatorView.m in Sources */,
 				7BF5C8D91C915E3F00175C6F /* Utils.m in Sources */,
 				7BF65F601CA3FFAF007B198D /* NSAttributedString+CCLFormat.m in Sources */,
@@ -1774,6 +1848,7 @@
 				3C6C2C7E1CB267C100F3E901 /* TagButton.m in Sources */,
 				3C8D3D931CA56F8F008EB7A8 /* MGSwipeButton.m in Sources */,
 				3C6C2CD61CB29F3300F3E901 /* FileInfo+CoreDataProperties.m in Sources */,
+				3C28FB381CBA9D1600762D2D /* MarqueeLabel.m in Sources */,
 				7B1533621CAA863B0099DD9C /* AlbumListViewController.m in Sources */,
 				7B066A841CA4FCA50078FD53 /* HeaderUtilObj.m in Sources */,
 				3C09C6DE1C8C664E004A44E2 /* AppDelegate.m in Sources */,
@@ -1798,6 +1873,7 @@
 				3C9199AB1CA93D750099B451 /* SearchOperation.m in Sources */,
 				3C94B81B1CB400E900449B07 /* QBImagePickerController.m in Sources */,
 				7B066A651CA4D8620078FD53 /* TableFooterView.m in Sources */,
+				3C28FB241CBA866900762D2D /* DLAVAlertView.m in Sources */,
 				3C6C2CB31CB26AC600F3E901 /* IQUIView+IQKeyboardToolbar.m in Sources */,
 				7BF65F4E1CA3D782007B198D /* UIImage+MultiFormat.m in Sources */,
 				3CF2A3651CAC199500EE89FC /* MainCell.m in Sources */,
@@ -1806,6 +1882,7 @@
 				7B26B2421CAF76C000368CA8 /* ArtworkView.m in Sources */,
 				7B066A6C1CA4EC050078FD53 /* TableHeaderCell.m in Sources */,
 				3C94B8181CB400E900449B07 /* QBAssetsViewController.m in Sources */,
+				3C28FB251CBA866900762D2D /* DLAVAlertViewButtonTheme.m in Sources */,
 				3C6C2CB21CB26AC600F3E901 /* IQToolbar.m in Sources */,
 				3C6C2CAC1CB26AC600F3E901 /* IQKeyboardManager.m in Sources */,
 				3C94B8171CB400E900449B07 /* QBAssetCell.m in Sources */,
@@ -1829,6 +1906,7 @@
 				7BF65F431CA3D782007B198D /* MKAnnotationView+WebCache.m in Sources */,
 				3C09C6F21C8C6850004A44E2 /* FilesViewController.m in Sources */,
 				3C6C2CA71CB26AC600F3E901 /* IQUIScrollView+Additions.m in Sources */,
+				3C28FB271CBA866900762D2D /* DLAVAlertViewTextControlTheme.m in Sources */,
 				3C09C6DB1C8C664E004A44E2 /* main.m in Sources */,
 				7BF65F451CA3D782007B198D /* SDImageCache.m in Sources */,
 			);

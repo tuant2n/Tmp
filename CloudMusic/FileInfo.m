@@ -7,13 +7,15 @@
 //
 
 #import "FileInfo.h"
+
 #import "Item.h"
+#import "DropBoxObj.h"
 
 @implementation FileInfo
 
 // Insert code here to add functionality to your managed object subclass
 
-- (void)updateFileInfo:(NSString *)sFilePath
+- (void)updateFileInfo:(DropBoxObj *)item
 {
     
 }

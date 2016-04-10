@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *sKind;
 @property (nullable, nonatomic, retain) NSString *sSize;
 @property (nullable, nonatomic, retain) NSString *sBitRate;
+@property (nullable, nonatomic, retain) NSString *sHash;
+
 @property (nullable, nonatomic, retain) Item *item;
 
 @end

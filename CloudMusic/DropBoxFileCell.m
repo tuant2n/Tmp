@@ -15,16 +15,19 @@
 {
     UIImage *folder, *mp3, *m4a, *wma, *wav, *aac, *ogg;
     UIImage *select, *unselect;
+    
+    UIColor *bgColor, *highlightColor;
 }
 
 @property (nonatomic, weak) IBOutlet UIImageView *imgvIcon;
 @property (nonatomic, weak) IBOutlet UILabel *lblName, *lblDesc;
 @property (nonatomic, weak) IBOutlet UIButton *btnCheck;
-@property (nonatomic,weak ) IBOutlet UIImageView *imgvFolderIcon;
-@property (nonatomic,weak ) IBOutlet UIView *line;
+@property (nonatomic, weak) IBOutlet UIImageView *imgvFolderIcon;
+
+@property (nonatomic, weak) IBOutlet UIView *vBackground;
+@property (nonatomic, weak) IBOutlet UIView *line;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *lblNameHeight;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *imgvFolderIconWidth;
 
 @property (nonatomic, strong) DropBoxObj *currentItem;
 
@@ -45,8 +48,13 @@
     select = [UIImage imageNamed:@"select"];
     unselect = [UIImage imageNamed:@"unselect"];
     
+    bgColor = [UIColor whiteColor];
+    highlightColor = [Utils colorWithRGBHex:0xe4f2ff];
+    
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     self.lblDesc.textColor = [Utils colorWithRGBHex:0x6a6a6a];
+    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 - (void)configWithItem:(DropBoxObj *)item
@@ -54,6 +62,8 @@
     self.currentItem = item;
     
     self.lblName.text = self.currentItem.sFileName;
+    self.imgvIcon.image = [self getIconWithType:self.currentItem.iType];
+    
     if (self.currentItem.sDesc) {
         self.lblDesc.text = self.currentItem.sDesc;
         [self.lblNameHeight setConstant:20.0];
@@ -63,9 +73,14 @@
         [self.lblNameHeight setConstant:33.0];
     }
     
-    self.imgvFolderIcon.hidden = !self.currentItem.isDirectory;
-    [self.imgvFolderIconWidth setConstant:self.currentItem.isDirectory ? 25.0: 0.0];
-    self.imgvIcon.image = [self getIconWithType:self.currentItem.iType];
+    if (self.currentItem.isDirectory) {
+        self.imgvFolderIcon.hidden = NO;
+        self.btnCheck.hidden = YES;
+    }
+    else {
+        self.imgvFolderIcon.hidden = YES;
+        self.btnCheck.hidden = NO;
+    }
     
     [self setIsSelected:self.currentItem.isSelected];
     [self addObserver];
@@ -91,11 +106,19 @@
 
 - (void)addObserver
 {
+    if (!self.currentItem) {
+        return;
+    }
+    
     [self.currentItem addObserver:self forKeyPath:@"isSelected" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
 }
 
 - (void)removeObserver
 {
+    if (!self.currentItem) {
+        return;
+    }
+    
     [self.currentItem removeObserver:self forKeyPath:@"isSelected"];
 }
 
@@ -106,6 +129,11 @@
     }
     
     [self setIsSelected:self.currentItem.isSelected];
+}
+
+- (void)dealloc
+{
+    [self removeObserver];
 }
 
 #pragma mark - Utils
@@ -157,9 +185,17 @@
     [super setSelected:selected animated:animated];
 }
 
-- (void)dealloc
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-    [self removeObserver];
+    [super setHighlighted:highlighted animated:animated];
+    
+    if (highlighted)
+    {
+        self.vBackground.backgroundColor = highlightColor;
+    }
+    else {
+        self.vBackground.backgroundColor = bgColor;
+    }
 }
 
 @end

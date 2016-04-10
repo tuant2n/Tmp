@@ -22,13 +22,16 @@ typedef enum {
 
 @interface DropBoxObj : NSObject
 
-@property (nonatomic, strong) DBMetadata *currentItem;
+@property (nonatomic, strong) DBMetadata *metaData;
 
 @property (nonatomic, strong) NSString *sFileName, *sDesc;
+@property (nonatomic, strong) NSString *sDownloadPath;
+
 @property (nonatomic, assign) kFileType iType;
 @property (nonatomic, assign) BOOL isDirectory;
 
-@property (nonatomic, assign) BOOL isSelected;
+@property (nonatomic, assign) BOOL isSelected, isDownloadSuccess;
+@property (nonatomic, assign) float fProgress;
 
 - (id)initWithMetadata:(DBMetadata *)metadata;
 

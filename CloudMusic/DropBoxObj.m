@@ -19,16 +19,16 @@
     
     if (self)
     {
-        _currentItem = metadata;
+        _metaData = metadata;
 
-        _sFileName = _currentItem.filename;
-        _isDirectory = _currentItem.isDirectory;
+        _sFileName = _metaData.filename;
+        _isDirectory = _metaData.isDirectory;
         
         if (!_isDirectory)
         {
-            _sDesc = [NSString stringWithFormat:@"%@ %@",_currentItem.humanReadableSize,[Utils getDateStringFromDate:_currentItem.lastModifiedDate dateFormat:@"dd/MM/yyyy"]];
+            _sDesc = [NSString stringWithFormat:@"%@ - %@",_metaData.humanReadableSize,[Utils getDateStringFromDate:_metaData.lastModifiedDate dateFormat:@"dd/MM/yyyy"]];
             
-            _isDirectory = _currentItem.isDirectory;
+            _isDirectory = _metaData.isDirectory;
             
             NSString *sExtension = [[_sFileName pathExtension] lowercaseString];
             if ([sExtension isEqualToString:@"mp3"]) {
@@ -52,12 +52,19 @@
             else {
                 return nil;
             }
+            
+            _sDownloadPath = [[Utils dropboxPath] stringByAppendingPathComponent:_sFileName];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:_sDownloadPath]) {
+                [[NSFileManager defaultManager] removeItemAtPath:_sDownloadPath error:nil];
+            }
         }
         else {
             _iType = kFileTypeFolder;
         }
         
         _isSelected = NO;
+        _isDownloadSuccess = NO;
+        _fProgress = 0.0;
     }
     
     return self;

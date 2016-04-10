@@ -15,25 +15,36 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
+#import "LDProgressView.h"
+#import "DLAVAlertView.h"
+#import "MarqueeLabel.h"
+
 #define extesions @[@"mp3", @"m4a", @"wma", @"wav", @"aac", @"ogg"]
 
 @interface DropBoxManagementViewController () <DBRestClientDelegate,DropBoxFileCellDelegate>
 {
     BOOL isSelectAll;
+    
+    int iCurrentDownload;
+    DLAVAlertView *downloadView;
+    DropBoxObj *currentItem;
 }
-
-@property (nonatomic, strong) UIButton *btnLogout;
-@property (nonatomic, strong) UIButton *btnSelect, *btnDownload;
-
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingView;
 @property (nonatomic, weak) IBOutlet UIView *emptyView;
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 
+@property (nonatomic, strong) UIButton *btnLogout;
+@property (nonatomic, strong) UIButton *btnSelect, *btnDownload;
+
 @property (nonatomic, strong) NSMutableArray *arrListData;
+@property (nonatomic, strong) NSMutableArray *arrSelected;
+
 @property (nonatomic, strong) DBRestClient *restClient;
 
-@property (nonatomic, strong) NSMutableArray *arrSelected;
+@property (nonatomic, strong) LDProgressView *progressBar;
+@property (nonatomic, strong) MarqueeLabel *lblCurrentDownload;
+@property (nonatomic, strong) UILabel *lblProgress;
 
 @end
 
@@ -115,9 +126,9 @@
     
     for (DBMetadata *item in items)
     {
-        DropBoxObj *obj = [[DropBoxObj alloc] initWithMetadata:item];
-        if (obj) {
-            [self.arrListData addObject:obj];
+        DropBoxObj *dropboxObj = [[DropBoxObj alloc] initWithMetadata:item];
+        if (dropboxObj) {
+            [self.arrListData addObject:dropboxObj];
         }
     }
     
@@ -159,8 +170,8 @@
     if ([cell isKindOfClass:[DropBoxFileCell class]]) {
         DropBoxFileCell *dropBoxCell = (DropBoxFileCell *)cell;
         
-        DropBoxObj *item = self.arrListData[indexPath.row];
-        [dropBoxCell configWithItem:item];
+        DropBoxObj *dropboxObj = self.arrListData[indexPath.row];
+        [dropBoxCell configWithItem:dropboxObj];
     }
 }
 
@@ -176,34 +187,34 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    DropBoxObj *item = self.arrListData[indexPath.row];
-    if (item.iType == kFileTypeFolder) {
+    DropBoxObj *dropboxObj = self.arrListData[indexPath.row];
+    if (dropboxObj.iType == kFileTypeFolder) {
         DropBoxManagementViewController *vc = [[DropBoxManagementViewController alloc] init];
-        vc.item = item.currentItem;
+        vc.item = dropboxObj.metaData;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else {
-        item.isSelected = !item.isSelected;
+        dropboxObj.isSelected = !dropboxObj.isSelected;
         
-        if (item.isSelected) {
-            [self.arrSelected addObject:item];
+        if (dropboxObj.isSelected) {
+            [self.arrSelected addObject:dropboxObj];
         }
         else {
-            [self.arrSelected removeObject:item];
+            [self.arrSelected removeObject:dropboxObj];
         }
         [self.btnDownload setEnabled:(self.arrSelected.count > 0)];
     }
 }
 
-- (void)didSelectItem:(DropBoxObj *)item
+- (void)didSelectItem:(DropBoxObj *)dropboxObj
 {
-    item.isSelected = !item.isSelected;
+    dropboxObj.isSelected = !dropboxObj.isSelected;
     
-    if (item.isSelected) {
-        [self.arrSelected addObject:item];
+    if (dropboxObj.isSelected) {
+        [self.arrSelected addObject:dropboxObj];
     }
     else {
-        [self.arrSelected removeObject:item];
+        [self.arrSelected removeObject:dropboxObj];
     }
     [self.btnDownload setEnabled:(self.arrSelected.count > 0)];
 }
@@ -227,26 +238,137 @@
 
 - (void)download
 {
-    for (DBMetadata *item in self.arrSelected) {
-        
+    if (self.arrSelected.count <= 0) {
+        return;
     }
+    
+    iCurrentDownload = 0;
+    [self downloadItemAtIndex:iCurrentDownload];
+    
+    downloadView = [[DLAVAlertView alloc] initWithTitle:@"" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Cancel",nil];
+    [downloadView setContentView:self.downloadContentView];
+    [downloadView showWithCompletion:^(DLAVAlertView *alertView, NSInteger buttonIndex)
+     {
+         if (buttonIndex == 0)
+         {
+             [self.restClient cancelAllRequests];
+             [self closeDownloadView];
+         }
+     }];
+}
+
+- (void)closeDownloadView
+{
+    if (currentItem) {
+        [currentItem removeObserver:self forKeyPath:@"fProgress"];
+        currentItem = nil;
+    }
+}
+
+- (void)downloadItemAtIndex:(int)iIndex
+{
+    if (currentItem) {
+        [currentItem removeObserver:self forKeyPath:@"fProgress"];
+    }
+    
+    currentItem = self.arrSelected[iIndex];
+    
+    currentItem.fProgress = 0.0;
+    currentItem.isDownloadSuccess = NO;
+    
+    [currentItem addObserver:self forKeyPath:@"fProgress" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    
+    self.lblCurrentDownload.text = currentItem.sFileName;
+    self.lblProgress.text = [NSString stringWithFormat:@"%d/%d",iIndex + 1,(int)self.arrSelected.count];
+    self.progressBar.progress = 0.0;
+    
+    [self.restClient loadFile:currentItem.metaData.path intoPath:currentItem.sDownloadPath];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (![object isKindOfClass:[DropBoxObj class]] && [keyPath isEqualToString:@"isSelected"]) {
+        return;
+    }
+    
+    if (![object isEqual:currentItem]) {
+        return;
+    }
+    
+    self.progressBar.progress = currentItem.fProgress;
+    NSLog(@"%f",currentItem.fProgress);
+}
+
+- (void)finishSingleDownload
+{
+    iCurrentDownload++;
+    
+    if (iCurrentDownload <= self.arrSelected.count - 1) {
+        [self downloadItemAtIndex:iCurrentDownload];
+    }
+    else {
+        [self finishAllDownload];
+    }
+}
+
+- (void)finishAllDownload
+{
+    if (downloadView) {
+        [downloadView dismissWithClickedButtonIndex:1 animated:YES];
+    }
+    
+    [self closeDownloadView];
+    
+    NSLog(@"FINISH ALL TASK!!!");
+    
+    NSPredicate *filterDownloadSuccess = [NSPredicate predicateWithFormat:@"isDownloadSuccess == YES"];
+    NSArray *listDownloadSuccess = [self.arrSelected filteredArrayUsingPredicate:filterDownloadSuccess];
+    
+    for (DropBoxObj *item in listDownloadSuccess) {
+        NSLog(@"%@",item.sDownloadPath);
+    }
+    
+    /*
+     
+     http://stackoverflow.com/questions/14030746/ios-avfoundation-how-do-i-fetch-artwork-from-an-mp3-file
+     
+     if (item.isCloud) {
+     FileInfo *fileInfo = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([FileInfo class]) inManagedObjectContext:backgroundContext];
+     item.fileInfo = fileInfo;
+     [fileInfo updateFileInfo:item.sAssetUrl];
+     
+     // Test
+     fileInfo.sFolderName = @"Tuan 123";
+     fileInfo.sKind = @"MP3";
+     fileInfo.sSize = @"11.93 MB";
+     fileInfo.sBitRate = @"320 KBps";
+     
+     item.sLyrics = @"Đêm lại về, đêm tối tăm đêm lạnh câm \nNhìn mưa hắt lên ô cửa sổ, cuốn theo bao nhiêu tiếng lòng \nAnh lại về, giăng kín bao nhiêu niền tin \nNgày anh mang theo tất cả ngọt ngào đến ai \nRồi từng chiều con tim yếu đuối bước qua những nỗi buồn \nTập quen đi qua lối cũ hằng ngày, tập quen khi không có anh nữa \nEm không trông, thật lòng không mong cho dù thấp thoáng thấy dáng ai \nMùi hương thân quen khi xưa hu hù hu hú hu";
+     }
+     */
 }
 
 #pragma mark - DBRestClientDelegate Methods for DownloadFile
 
 - (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath contentType:(NSString *)contentType metadata:(DBMetadata *)metadata
 {
-    
+    currentItem.isDownloadSuccess = YES;
+    [self finishSingleDownload];
 }
 
 - (void)restClient:(DBRestClient *)client loadFileFailedWithError:(NSError *)error
 {
-    
+    currentItem.isDownloadSuccess = NO;
+    [self finishSingleDownload];
 }
 
 - (void)restClient:(DBRestClient *)client loadProgress:(CGFloat)progress forFile:(NSString *)destPath
 {
+    if (!currentItem) {
+        return;
+    }
     
+    currentItem.fProgress = progress;
 }
 
 #pragma mark - Log In/Out
@@ -264,6 +386,7 @@
         [[DBSession sharedSession] unlinkAll];
     }
     
+    [self.restClient cancelAllRequests];
     [[GlobalParameter sharedInstance] clearDropBoxInfo];
     
     [self.navigationController setToolbarHidden:YES animated:NO];
@@ -348,6 +471,72 @@
     [[GlobalParameter sharedInstance] setDropBoxId:[info userId]];
     
     self.title = [info displayName];
+}
+
+#pragma mark - Download View
+
+- (MarqueeLabel *)lblCurrentDownload
+{
+    if (!_lblCurrentDownload) {
+        _lblCurrentDownload = [[MarqueeLabel alloc] init];
+        _lblCurrentDownload.backgroundColor = [UIColor clearColor];
+        _lblCurrentDownload.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:15.0];
+        _lblCurrentDownload.textAlignment = NSTextAlignmentCenter;
+        _lblCurrentDownload.marqueeType = MLContinuous;
+        _lblCurrentDownload.scrollDuration = 10.0f;
+        _lblCurrentDownload.rate = 20.0f;
+        _lblCurrentDownload.fadeLength = 3.0f;
+        _lblCurrentDownload.trailingBuffer = 50.0f;
+        _lblCurrentDownload.animationDelay = 1.0f;
+    }
+    return _lblCurrentDownload;
+}
+
+- (UILabel *)lblProgress
+{
+    if (!_lblProgress) {
+        _lblProgress = [[UILabel alloc] init];
+        _lblProgress.backgroundColor = [UIColor clearColor];
+        _lblProgress.font = [UIFont fontWithName:@"HelveticaNeue" size:15.0];
+        _lblProgress.textAlignment = NSTextAlignmentCenter;
+        _lblProgress.lineBreakMode = NSLineBreakByTruncatingTail;
+    }
+    return _lblProgress;
+}
+
+- (LDProgressView *)progressBar
+{
+    if (!_progressBar) {
+        _progressBar = [[LDProgressView alloc] init];
+        _progressBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _progressBar.progress = 0.0;
+        _progressBar.showText = @NO;
+        _progressBar.animate = @YES;
+        _progressBar.color = [Utils colorWithRGBHex:0x017ee6];
+        _progressBar.background = [UIColor lightGrayColor];
+        _progressBar.flat = @YES;
+        _progressBar.borderRadius = @1;
+        _progressBar.showBackgroundInnerShadow = @NO;
+        _progressBar.animateDirection = LDAnimateDirectionForward;
+    }
+    return _progressBar;
+}
+
+- (UIView *)downloadContentView
+{
+    UIView *downloadContentView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 250.0, 80.0)];
+    downloadContentView.backgroundColor = [UIColor clearColor];
+    
+    [self.lblCurrentDownload setFrame:CGRectMake(0.0, 10.0, 250.0, 30.0)];
+    [downloadContentView addSubview:self.lblCurrentDownload];
+    
+    [self.progressBar setFrame:CGRectMake(0.0, self.lblCurrentDownload.frame.origin.y + self.lblCurrentDownload.frame.size.height + 5.0, 250.0, 3.0)];
+    [downloadContentView addSubview:self.progressBar];
+    
+    [self.lblProgress setFrame:CGRectMake(0.0, self.progressBar.frame.origin.y + self.progressBar.frame.size.height + 5.0, 250.0, 30.0)];
+    [downloadContentView addSubview:self.lblProgress];
+    
+    return downloadContentView;
 }
 
 #pragma mark - Utils

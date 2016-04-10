@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class Item;
+@class DropBoxObj;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Insert code here to declare functionality of your managed object subclass
 
-- (void)updateFileInfo:(NSString *)sFilePath;
+- (void)updateFileInfo:(DropBoxObj *)item;
 
 @end
 

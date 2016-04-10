@@ -15,6 +15,7 @@
 
 @dynamic sFolderName;
 @dynamic sFileName;
+@dynamic sHash;
 
 @dynamic sKind;
 @dynamic sSize;
