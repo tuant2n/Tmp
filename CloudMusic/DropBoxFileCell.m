@@ -26,6 +26,8 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *lblNameHeight;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *imgvFolderIconWidth;
 
+@property (nonatomic, strong) DropBoxObj *currentItem;
+
 @end
 
 @implementation DropBoxFileCell
@@ -76,7 +78,13 @@
 
 - (IBAction)touchSelect:(id)sender
 {
-    self.currentItem.isSelected = !self.currentItem.isSelected;
+    if (!self.currentItem) {
+        return;
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(didSelectItem:)]) {
+        [self.delegate didSelectItem:self.currentItem];
+    }
 }
 
 #pragma mark - KVO

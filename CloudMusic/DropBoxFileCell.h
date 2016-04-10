@@ -10,9 +10,13 @@
 
 @class DropBoxObj;
 
+@protocol DropBoxFileCellDelegate <NSObject>
+- (void)didSelectItem:(DropBoxObj *)item;
+@end
+
 @interface DropBoxFileCell : UITableViewCell
 
-@property (nonatomic, strong) DropBoxObj *currentItem;
+@property (nonatomic, assign) id<DropBoxFileCellDelegate> delegate;
 
 - (void)configWithItem:(DropBoxObj *)item;
 - (void)setIsSelected:(BOOL)isCheck;

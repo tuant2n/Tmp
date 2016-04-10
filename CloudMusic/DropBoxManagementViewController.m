@@ -17,7 +17,7 @@
 
 #define extesions @[@"mp3", @"m4a", @"wma", @"wav", @"aac", @"ogg"]
 
-@interface DropBoxManagementViewController () <DBRestClientDelegate>
+@interface DropBoxManagementViewController () <DBRestClientDelegate,DropBoxFileCellDelegate>
 {
     BOOL isSelectAll;
 }
@@ -33,6 +33,8 @@
 @property (nonatomic, strong) NSMutableArray *arrListData;
 @property (nonatomic, strong) DBRestClient *restClient;
 
+@property (nonatomic, strong) NSMutableArray *arrSelected;
+
 @end
 
 @implementation DropBoxManagementViewController
@@ -43,6 +45,14 @@
         _arrListData = [[NSMutableArray alloc] init];
     }
     return  _arrListData;
+}
+
+- (NSMutableArray *)arrSelected
+{
+    if (!_arrSelected) {
+        _arrSelected = [[NSMutableArray alloc] init];
+    }
+    return  _arrSelected;
 }
 
 - (void)viewDidLoad
@@ -140,22 +150,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DropBoxFileCell *cell = (DropBoxFileCell *)[tableView dequeueReusableCellWithIdentifier:@"DropBoxFileCellId" forIndexPath:indexPath];
+    cell.delegate = self;
     return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    DropBoxObj *item = self.arrListData[indexPath.row];
-    if (item.iType == kFileTypeFolder) {
-        DropBoxManagementViewController *vc = [[DropBoxManagementViewController alloc] init];
-        vc.item = item.currentItem;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else {
-        item.isSelected = !item.isSelected;
-    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -176,15 +172,64 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    DropBoxObj *item = self.arrListData[indexPath.row];
+    if (item.iType == kFileTypeFolder) {
+        DropBoxManagementViewController *vc = [[DropBoxManagementViewController alloc] init];
+        vc.item = item.currentItem;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else {
+        item.isSelected = !item.isSelected;
+        
+        if (item.isSelected) {
+            [self.arrSelected addObject:item];
+        }
+        else {
+            [self.arrSelected removeObject:item];
+        }
+        [self.btnDownload setEnabled:(self.arrSelected.count > 0)];
+    }
+}
+
+- (void)didSelectItem:(DropBoxObj *)item
+{
+    item.isSelected = !item.isSelected;
+    
+    if (item.isSelected) {
+        [self.arrSelected addObject:item];
+    }
+    else {
+        [self.arrSelected removeObject:item];
+    }
+    [self.btnDownload setEnabled:(self.arrSelected.count > 0)];
+}
+
 #pragma mark - Method
 
 - (void)selectAll
 {
+    isSelectAll = !isSelectAll;
+    [self.btnSelect setTitle:(isSelectAll ? @"Deselect All" : @"Selec All") forState:UIControlStateNormal];
+    
+    for (DropBoxObj *item in self.arrListData) {
+        item.isSelected = isSelectAll;
+    }
+    
+    [self.arrSelected removeAllObjects];
+    if (isSelectAll) {
+        [self.arrSelected addObjectsFromArray:self.arrListData];
+    }
 }
 
 - (void)download
 {
-    
+    for (DBMetadata *item in self.arrSelected) {
+        
+    }
 }
 
 #pragma mark - DBRestClientDelegate Methods for DownloadFile
