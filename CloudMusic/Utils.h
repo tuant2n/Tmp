@@ -71,6 +71,7 @@
 
 #pragma mark - Time
 
++ (NSString *)getDateStringFromDate:(NSDate *)date dateFormat:(NSString *)dateFormat;
 + (NSString *)timeFormattedForSong:(int)totalSeconds;
 + (NSString *)timeFormattedForList:(int)totalSeconds;
 + (NSString *)getTimestamp;

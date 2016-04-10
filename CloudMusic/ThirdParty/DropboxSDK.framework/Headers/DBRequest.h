@@ -9,6 +9,8 @@
 
 @protocol DBNetworkRequestDelegate;
 
+#import <UIKit/UIKit.h>
+
 /* DBRestRequest will download a URL either into a file that you provied the name to or it will
    create an NSData object with the result. When it has completed downloading the URL, it will
    notify the target with a selector that takes the DBRestRequest as the only parameter. */

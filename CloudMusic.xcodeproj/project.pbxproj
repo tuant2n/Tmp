@@ -186,6 +186,16 @@
 		3CB3FF2C1CB9578100A95DD2 /* wma.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF1A1CB9578100A95DD2 /* wma.png */; };
 		3CB3FF2D1CB9578100A95DD2 /* wma@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF1B1CB9578100A95DD2 /* wma@2x.png */; };
 		3CB3FF2E1CB9578100A95DD2 /* wma@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF1C1CB9578100A95DD2 /* wma@3x.png */; };
+		3CB3FF321CB958EB00A95DD2 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF2F1CB958EB00A95DD2 /* folder.png */; };
+		3CB3FF331CB958EB00A95DD2 /* folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF301CB958EB00A95DD2 /* folder@2x.png */; };
+		3CB3FF341CB958EB00A95DD2 /* folder@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF311CB958EB00A95DD2 /* folder@3x.png */; };
+		3CB3FF431CB95E0200A95DD2 /* DropBoxObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB3FF421CB95E0200A95DD2 /* DropBoxObj.m */; };
+		3CB3FF4D1CB969BF00A95DD2 /* select.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF471CB969BF00A95DD2 /* select.png */; };
+		3CB3FF4E1CB969BF00A95DD2 /* select@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF481CB969BF00A95DD2 /* select@2x.png */; };
+		3CB3FF4F1CB969BF00A95DD2 /* select@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF491CB969BF00A95DD2 /* select@3x.png */; };
+		3CB3FF501CB969BF00A95DD2 /* unselect.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF4A1CB969BF00A95DD2 /* unselect.png */; };
+		3CB3FF511CB969BF00A95DD2 /* unselect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF4B1CB969BF00A95DD2 /* unselect@2x.png */; };
+		3CB3FF521CB969BF00A95DD2 /* unselect@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF4C1CB969BF00A95DD2 /* unselect@3x.png */; };
 		3CE4B8C81C983E65004447CD /* MoreTableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE4B8C71C983E65004447CD /* MoreTableViewDelegate.m */; };
 		3CEA50311CAEC44700123F3C /* EditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA502F1CAEC44700123F3C /* EditViewController.m */; };
 		3CEA50321CAEC44700123F3C /* EditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CEA50301CAEC44700123F3C /* EditViewController.xib */; };
@@ -509,6 +519,17 @@
 		3CB3FF1A1CB9578100A95DD2 /* wma.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wma.png; sourceTree = "<group>"; };
 		3CB3FF1B1CB9578100A95DD2 /* wma@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wma@2x.png"; sourceTree = "<group>"; };
 		3CB3FF1C1CB9578100A95DD2 /* wma@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wma@3x.png"; sourceTree = "<group>"; };
+		3CB3FF2F1CB958EB00A95DD2 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
+		3CB3FF301CB958EB00A95DD2 /* folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "folder@2x.png"; sourceTree = "<group>"; };
+		3CB3FF311CB958EB00A95DD2 /* folder@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "folder@3x.png"; sourceTree = "<group>"; };
+		3CB3FF411CB95E0200A95DD2 /* DropBoxObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxObj.h; sourceTree = "<group>"; };
+		3CB3FF421CB95E0200A95DD2 /* DropBoxObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBoxObj.m; sourceTree = "<group>"; };
+		3CB3FF471CB969BF00A95DD2 /* select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select.png; sourceTree = "<group>"; };
+		3CB3FF481CB969BF00A95DD2 /* select@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "select@2x.png"; sourceTree = "<group>"; };
+		3CB3FF491CB969BF00A95DD2 /* select@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "select@3x.png"; sourceTree = "<group>"; };
+		3CB3FF4A1CB969BF00A95DD2 /* unselect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unselect.png; sourceTree = "<group>"; };
+		3CB3FF4B1CB969BF00A95DD2 /* unselect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unselect@2x.png"; sourceTree = "<group>"; };
+		3CB3FF4C1CB969BF00A95DD2 /* unselect@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unselect@3x.png"; sourceTree = "<group>"; };
 		3CE4B8C61C983E65004447CD /* MoreTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreTableViewDelegate.h; sourceTree = "<group>"; };
 		3CE4B8C71C983E65004447CD /* MoreTableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreTableViewDelegate.m; sourceTree = "<group>"; };
 		3CEA502E1CAEC44700123F3C /* EditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditViewController.h; sourceTree = "<group>"; };
@@ -938,6 +959,8 @@
 				7B26B2461CAF780B00368CA8 /* TagObj.m */,
 				3C9199AC1CA93ED00099B451 /* DataObj.h */,
 				3C9199AD1CA93ED00099B451 /* DataObj.m */,
+				3CB3FF411CB95E0200A95DD2 /* DropBoxObj.h */,
+				3CB3FF421CB95E0200A95DD2 /* DropBoxObj.m */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -1091,6 +1114,15 @@
 		3CB3FF0A1CB9578100A95DD2 /* FileTypes */ = {
 			isa = PBXGroup;
 			children = (
+				3CB3FF471CB969BF00A95DD2 /* select.png */,
+				3CB3FF481CB969BF00A95DD2 /* select@2x.png */,
+				3CB3FF491CB969BF00A95DD2 /* select@3x.png */,
+				3CB3FF4A1CB969BF00A95DD2 /* unselect.png */,
+				3CB3FF4B1CB969BF00A95DD2 /* unselect@2x.png */,
+				3CB3FF4C1CB969BF00A95DD2 /* unselect@3x.png */,
+				3CB3FF2F1CB958EB00A95DD2 /* folder.png */,
+				3CB3FF301CB958EB00A95DD2 /* folder@2x.png */,
+				3CB3FF311CB958EB00A95DD2 /* folder@3x.png */,
 				3CB3FF0B1CB9578100A95DD2 /* aac.png */,
 				3CB3FF0C1CB9578100A95DD2 /* aac@2x.png */,
 				3CB3FF0D1CB9578100A95DD2 /* aac@3x.png */,
@@ -1535,6 +1567,7 @@
 				3C4926D01C93EBCC0065B1DD /* playlists.png in Resources */,
 				3C53414F1CB7EA62000BA5DD /* dropboxIcon.png in Resources */,
 				3CB3FF241CB9578100A95DD2 /* mp3@2x.png in Resources */,
+				3CB3FF4D1CB969BF00A95DD2 /* select.png in Resources */,
 				7BF65F171CA3C285007B198D /* SongsCell.xib in Resources */,
 				3C53415A1CB7FEAC000BA5DD /* dropboxIcon_large.png in Resources */,
 				7B4CD8921CAD09D50041BE4E /* ListSongCell.xib in Resources */,
@@ -1546,6 +1579,7 @@
 				3C8D3D9F1CA57B5F008EB7A8 /* btnDelete@2x.png in Resources */,
 				3C94B8141CB400E900449B07 /* Info.plist in Resources */,
 				3CB3FF211CB9578100A95DD2 /* m4a@2x.png in Resources */,
+				3CB3FF521CB969BF00A95DD2 /* unselect@3x.png in Resources */,
 				3C4926D91C93EBCC0065B1DD /* songs-selected.png in Resources */,
 				3C4926E31C93EE1B0065B1DD /* icn-add-music-normal.png in Resources */,
 				3C4926C51C93EBCC0065B1DD /* genres@2x.png in Resources */,
@@ -1557,9 +1591,11 @@
 				7BF65F5F1CA3FFAF007B198D /* Info.plist in Resources */,
 				3CB105331CA419DB0087D20A /* filetype_audio@2x.png in Resources */,
 				7B1533631CAA863B0099DD9C /* AlbumListViewController.xib in Resources */,
+				3CB3FF511CB969BF00A95DD2 /* unselect@2x.png in Resources */,
 				7B066A5C1CA4CE790078FD53 /* PlaylistsViewController.xib in Resources */,
 				3C4926CD1C93EBCC0065B1DD /* playlists-selected.png in Resources */,
 				3CB3FF291CB9578100A95DD2 /* wav.png in Resources */,
+				3CB3FF4E1CB969BF00A95DD2 /* select@2x.png in Resources */,
 				3C8D3D991CA5774E008EB7A8 /* btnEditSong@2x.png in Resources */,
 				7B066A601CA4CFFF0078FD53 /* GenresViewController.xib in Resources */,
 				3C4926B01C93EBCC0065B1DD /* albums-selected@2x.png in Resources */,
@@ -1608,6 +1644,7 @@
 				3CB3FEED1CB9137900A95DD2 /* FilesCell.xib in Resources */,
 				3C4926C81C93EBCC0065B1DD /* more-selected@2x.png in Resources */,
 				7B066A7A1CA4F9770078FD53 /* shuffle-icon@2x.png in Resources */,
+				3CB3FF341CB958EB00A95DD2 /* folder@3x.png in Resources */,
 				3CB3FF281CB9578100A95DD2 /* ogg@3x.png in Resources */,
 				3C4926B91C93EBCC0065B1DD /* artists@2x.png in Resources */,
 				3C4926DA1C93EBCC0065B1DD /* songs-selected@2x.png in Resources */,
@@ -1621,6 +1658,7 @@
 				7B066A891CA50BF00078FD53 /* textField-background@2x.png in Resources */,
 				3CB105341CA419DB0087D20A /* filetype_audio@3x.png in Resources */,
 				3C5341501CB7EA62000BA5DD /* dropboxIcon@2x.png in Resources */,
+				3CB3FF4F1CB969BF00A95DD2 /* select@3x.png in Resources */,
 				3C6C2CBF1CB2829900F3E901 /* uncheck.png in Resources */,
 				3CB3FF221CB9578100A95DD2 /* m4a@3x.png in Resources */,
 				7B066A811CA4FAA20078FD53 /* edit-icon@3x.png in Resources */,
@@ -1630,6 +1668,7 @@
 				3C6C2CC01CB2829900F3E901 /* uncheck@2x.png in Resources */,
 				7B066A671CA4D8720078FD53 /* TableFooterView.xib in Resources */,
 				3C4926CE1C93EBCC0065B1DD /* playlists-selected@2x.png in Resources */,
+				3CB3FF331CB958EB00A95DD2 /* folder@2x.png in Resources */,
 				3C6DB1051CA6D0CE00F68D3E /* list-item-icon@3x.png in Resources */,
 				7B066A5E1CA4CF490078FD53 /* ArtistsViewController.xib in Resources */,
 				3CB3FF2E1CB9578100A95DD2 /* wma@3x.png in Resources */,
@@ -1662,6 +1701,7 @@
 				3C4926DD1C93EBCC0065B1DD /* songs@2x.png in Resources */,
 				3CB3FF1F1CB9578100A95DD2 /* aac@3x.png in Resources */,
 				3C4926B41C93EBCC0065B1DD /* albums@3x.png in Resources */,
+				3CB3FF501CB969BF00A95DD2 /* unselect.png in Resources */,
 				3C4926B21C93EBCC0065B1DD /* albums.png in Resources */,
 				3C4926BE1C93EBCC0065B1DD /* files.png in Resources */,
 				7B066A8A1CA50BF00078FD53 /* textField-background@3x.png in Resources */,
@@ -1676,6 +1716,7 @@
 				3C4926BF1C93EBCC0065B1DD /* files@2x.png in Resources */,
 				3C6DB0D71CA667D200F68D3E /* textField-search@2x.png in Resources */,
 				7B066A8F1CA5152C0078FD53 /* cloud-item-icon@2x.png in Resources */,
+				3CB3FF321CB958EB00A95DD2 /* folder.png in Resources */,
 				3C9199901CA92A500099B451 /* GenresCell.xib in Resources */,
 				3C4926B51C93EBCC0065B1DD /* artists-selected.png in Resources */,
 				3C4926B11C93EBCC0065B1DD /* albums-selected@3x.png in Resources */,
@@ -1743,6 +1784,7 @@
 				3C94B8161CB400E900449B07 /* QBAlbumsViewController.m in Sources */,
 				3C94B7F81CB3F94500449B07 /* UIActionSheet+Blocks.m in Sources */,
 				7BF65F4A1CA3D782007B198D /* SDWebImageManager.m in Sources */,
+				3CB3FF431CB95E0200A95DD2 /* DropBoxObj.m in Sources */,
 				3CB3FEF11CB9140000A95DD2 /* DropBoxFileCell.m in Sources */,
 				3C6C2CAF1CB26AC600F3E901 /* IQBarButtonItem.m in Sources */,
 				3C94B8151CB400E900449B07 /* QBAlbumCell.m in Sources */,

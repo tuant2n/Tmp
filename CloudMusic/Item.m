@@ -138,6 +138,7 @@
 
 - (void)setAlbumArtistName:(NSString *)sAlbumArtistName
 {
+    sSongDesc = nil;
     self.sAlbumArtistName = sAlbumArtistName;
     self.sAlbumArtistNameIndex = [[Utils standardLocaleString:self.sAlbumArtistName] lowercaseString];
 }

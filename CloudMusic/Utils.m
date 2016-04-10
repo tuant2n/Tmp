@@ -376,6 +376,13 @@
 
 #pragma mark - Time
 
++ (NSString *)getDateStringFromDate:(NSDate *)date dateFormat:(NSString *)dateFormat
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = dateFormat;
+    return [formatter stringFromDate:date];
+}
+
 + (NSString *)timeFormattedForSong:(int)totalSeconds
 {
     int seconds = totalSeconds % 60;

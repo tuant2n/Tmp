@@ -9,6 +9,8 @@
 
 #import "DBSession.h"
 
+#import <UIKit/UIKit.h>
+
 @protocol DBRestClientDelegate;
 @class DBAccountInfo;
 @class DBMetadata;

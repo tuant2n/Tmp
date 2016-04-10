@@ -8,6 +8,7 @@
 
 #import "DropBoxManagementViewController.h"
 
+#import "DropBoxObj.h"
 #import "DropBoxFileCell.h"
 
 #import "Utils.h"
@@ -54,6 +55,12 @@
     [self getData];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.restClient cancelAllRequests];
+}
+
 - (void)setupTitle
 {
     NSString *sTitle = nil;
@@ -98,14 +105,9 @@
     
     for (DBMetadata *item in items)
     {
-        if (!item.isDirectory) {
-            NSString *sExtesion = [item.filename pathExtension];
-            if ([extesions containsObject:sExtesion]) {
-                [self.arrListData addObject:item];
-            }
-        }
-        else {
-            [self.arrListData addObject:item];
+        DropBoxObj *obj = [[DropBoxObj alloc] initWithMetadata:item];
+        if (obj) {
+            [self.arrListData addObject:obj];
         }
     }
     
@@ -138,10 +140,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DropBoxFileCell *cell = (DropBoxFileCell *)[tableView dequeueReusableCellWithIdentifier:@"DropBoxFileCellId" forIndexPath:indexPath];
-    
-    DBMetadata *item = self.arrListData[indexPath.row];
-    cell.textLabel.text = item.filename;
-    
     return cell;
 }
 
@@ -149,14 +147,32 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    DBMetadata *item = self.arrListData[indexPath.row];
-    if (item.isDirectory) {
+    DropBoxObj *item = self.arrListData[indexPath.row];
+    if (item.iType == kFileTypeFolder) {
         DropBoxManagementViewController *vc = [[DropBoxManagementViewController alloc] init];
-        vc.item = item;
+        vc.item = item.currentItem;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else {
+        item.isSelected = !item.isSelected;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[DropBoxFileCell class]]) {
+        DropBoxFileCell *dropBoxCell = (DropBoxFileCell *)cell;
         
+        DropBoxObj *item = self.arrListData[indexPath.row];
+        [dropBoxCell configWithItem:item];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    if ([cell isKindOfClass:[DropBoxFileCell class]]) {
+        DropBoxFileCell *dropBoxCell = (DropBoxFileCell *)cell;
+        [dropBoxCell removeObserver];
     }
 }
 
@@ -164,7 +180,6 @@
 
 - (void)selectAll
 {
-    
 }
 
 - (void)download
@@ -205,6 +220,8 @@
     }
     
     [[GlobalParameter sharedInstance] clearDropBoxInfo];
+    
+    [self.navigationController setToolbarHidden:YES animated:NO];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
