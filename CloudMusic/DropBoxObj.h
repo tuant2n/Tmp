@@ -33,6 +33,10 @@ typedef enum {
 @property (nonatomic, assign) BOOL isSelected, isDownloadSuccess;
 @property (nonatomic, assign) float fProgress;
 
+@property (nonatomic, strong) NSString *sExportPart;
+@property (nonatomic, strong) NSArray *songMetaData;
+
 - (id)initWithMetadata:(DBMetadata *)metadata;
+- (void)prepareMetadata;
 
 @end

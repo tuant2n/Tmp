@@ -126,13 +126,6 @@
     album.isEditable = YES;
     [arrSection1 addObject:album];
     
-    TagObj *track = [[TagObj alloc] init];
-    track.iTagType = kTagTypeElement;
-    track.iElementType = kElementTypeTrack;
-    track.value = [song.iTrack stringValue];
-    track.isEditable = YES;
-    [arrSection1 addObject:track];
-    
     TagObj *year = [[TagObj alloc] init];
     year.iTagType = kTagTypeElement;
     year.iElementType = kElementTypeYear;
@@ -193,16 +186,9 @@
     time.isEditable = NO;
     [arrSection4 addObject:time];
     
-    TagObj *kind = [[TagObj alloc] init];
-    kind.iTagType = kTagTypeElement;
-    kind.iElementType = kElementTypeKind;
-    kind.value = song.fileInfo.sKind;
-    kind.isEditable = NO;
-    [arrSection4 addObject:kind];
-    
     TagObj *size = [[TagObj alloc] init];
     size.iTagType = kTagTypeElement;
-    size.iElementType = kElementTypeKind;
+    size.iElementType = kElementTypeSize;
     size.value = song.fileInfo.sSize;
     size.isEditable = NO;
     [arrSection4 addObject:size];
@@ -282,12 +268,6 @@
                     case kElementTypeGenre:
                     {
                         [self.song changeGenreName:tag.value];
-                    }
-                        break;
-                        
-                    case kElementTypeTrack:
-                    {
-                        self.song.iTrack = @([tag.value intValue]);
                     }
                         break;
                         

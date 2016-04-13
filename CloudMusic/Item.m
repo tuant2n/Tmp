@@ -60,10 +60,6 @@
     self.iPlayCount = item.itemPlayCount;
     
     [self setSongDuration:item.playbackDuration];
-    
-    if ([item.itemTitle hasPrefix:@"Mùa"]) {
-        self.iCloud = @1;
-    }
 }
 
 - (void)setArtwork:(UIImage *)artwork

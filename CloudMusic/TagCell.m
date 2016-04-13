@@ -74,12 +74,7 @@
             self.lblTagName.text = @"Album";
             self.tfTagContent.placeholder = @"Album";
             break;
-            
-        case kElementTypeTrack:
-            self.lblTagName.text = @"Track";
-            self.tfTagContent.placeholder = @"Track";
-            break;
-            
+             
         case kElementTypeYear:
             self.lblTagName.text = @"Year";
             self.tfTagContent.placeholder = @"Year";
@@ -105,11 +100,6 @@
             self.tfTagContent.placeholder = @"Time";
             break;
         
-        case kElementTypeKind:
-            self.lblTagName.text = @"Kind";
-            self.tfTagContent.placeholder = @"Kind";
-            break;
-            
         case kElementTypeSize:
             self.lblTagName.text = @"Size";
             self.tfTagContent.placeholder = @"Size";

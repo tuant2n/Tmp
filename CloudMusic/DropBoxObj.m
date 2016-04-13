@@ -8,7 +8,10 @@
 
 #import "DropBoxObj.h"
 
+#import <AVFoundation/AVFoundation.h>
+#import <CoreMedia/CoreMedia.h>
 #import <DropboxSDK/DropboxSDK.h>
+
 #import "Utils.h"
 
 @implementation DropBoxObj
@@ -54,9 +57,6 @@
             }
             
             _sDownloadPath = [[Utils dropboxPath] stringByAppendingPathComponent:_sFileName];
-            if ([[NSFileManager defaultManager] fileExistsAtPath:_sDownloadPath]) {
-                [[NSFileManager defaultManager] removeItemAtPath:_sDownloadPath error:nil];
-            }
         }
         else {
             _iType = kFileTypeFolder;
@@ -68,6 +68,160 @@
     }
     
     return self;
+}
+
+- (void)prepareMetadata
+{
+    NSString *sTitle = nil;
+    NSString *sAlbumName = nil;
+    NSString *sArtistName = nil;
+    NSString *sGenre = nil;
+    NSString *sYear = nil;
+    NSString *sLyrics = nil;
+    UIImage *artwork = nil;
+    
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:self.sDownloadPath] options:nil];
+    
+    for (AVMetadataItem *item in [asset commonMetadata])
+    {
+        NSString *sCommon = [item commonKey];
+        
+        if ([sCommon isEqualToString:AVMetadataCommonKeyTitle]) {
+            sTitle = [item.value copyWithZone:nil];
+        }
+        else if ([sCommon isEqualToString:AVMetadataCommonKeyCreationDate]) {
+            sYear = [item.value copyWithZone:nil];
+        }
+        else if ([sCommon isEqualToString:AVMetadataCommonKeyType]) {
+            sGenre = [item stringValue];
+        }
+        else if ([sCommon isEqualToString:AVMetadataCommonKeyAlbumName]) {
+            sAlbumName = [item.value copyWithZone:nil];
+        }
+        else if ([sCommon isEqualToString:AVMetadataCommonKeyArtist]) {
+            sArtistName = [item.value copyWithZone:nil];
+        }
+        else if ([sCommon isEqualToString:AVMetadataCommonKeyArtwork]) {
+            artwork = [UIImage imageWithData:[item.value copyWithZone:nil]];
+        }
+    }
+    
+    NSArray *tmpAray = nil;
+    AVMetadataItem *item = nil;
+    NSArray *listItem = nil;
+    
+    for (NSString *format in [asset availableMetadataFormats])
+    {
+        listItem = [asset metadataForFormat:format];
+        
+        if ([format isEqualToString:AVMetadataFormatID3Metadata])
+        {
+            tmpAray = [AVMetadataItem metadataItemsFromArray:listItem withKey:AVMetadataID3MetadataKeyContentType keySpace:AVMetadataKeySpaceID3];
+            if (tmpAray.count > 0) {
+                item = [tmpAray firstObject];
+                sGenre = [item.value copyWithZone:nil];
+            }
+            
+            tmpAray = [AVMetadataItem metadataItemsFromArray:listItem withKey:AVMetadataID3MetadataKeyYear keySpace:AVMetadataKeySpaceID3];
+            if (tmpAray.count > 0) {
+                item = [tmpAray firstObject];
+                sYear = [item.value copyWithZone:nil];
+            }
+            
+            tmpAray = [AVMetadataItem metadataItemsFromArray:listItem withKey:AVMetadataID3MetadataKeyUnsynchronizedLyric keySpace:AVMetadataKeySpaceID3];
+            if (tmpAray.count > 0) {
+                item = [tmpAray firstObject];
+                sLyrics = [item.value copyWithZone:nil];
+            }
+        }
+        else if ([format isEqualToString:AVMetadataFormatiTunesMetadata])
+        {
+            tmpAray = [AVMetadataItem metadataItemsFromArray:listItem withKey:AVMetadataiTunesMetadataKeyUserGenre keySpace:AVMetadataKeySpaceiTunes];
+            if (tmpAray.count > 0) {
+                item = [tmpAray firstObject];
+                sGenre = [item.value copyWithZone:nil];
+            }
+            
+            tmpAray = [AVMetadataItem metadataItemsFromArray:listItem withKey:AVMetadataiTunesMetadataKeyReleaseDate keySpace:AVMetadataKeySpaceiTunes];
+            if (tmpAray.count > 0) {
+                item = [tmpAray firstObject];
+                sYear = [item.value copyWithZone:nil];
+            }
+            
+            tmpAray = [AVMetadataItem metadataItemsFromArray:listItem withKey:AVMetadataiTunesMetadataKeyLyrics keySpace:AVMetadataKeySpaceiTunes];
+            if (tmpAray.count > 0) {
+                item = [tmpAray firstObject];
+                sLyrics = [item.value copyWithZone:nil];
+            }
+        }
+    }
+
+    NSMutableArray *metadata = [[NSMutableArray alloc] init];
+    
+    if (sTitle)
+    {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyTitle;
+        item.value = sTitle;
+        [metadata addObject:item];
+    }
+    
+    if (sAlbumName) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyAlbumName;
+        item.value = sAlbumName;
+        [metadata addObject:item];
+    }
+    
+    if (sArtistName) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyArtist;
+        item.value = sArtistName;
+        [metadata addObject:item];
+    }
+    
+    if (sGenre) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyType;
+        item.value = sGenre;
+        [metadata addObject:item];
+    }
+    
+    if (sYear) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyCreationDate;
+        item.value = sYear;
+        [metadata addObject:item];
+    }
+    
+    if (sLyrics) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceiTunes;
+        item.key = AVMetadataiTunesMetadataKeyLyrics;
+        item.value = sLyrics;
+        [metadata addObject:item];
+    }
+    
+    if (artwork) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyArtwork;
+        item.dataType = (__bridge NSString * _Nullable)(kCMMetadataBaseDataType_PNG);
+        item.value = UIImagePNGRepresentation(artwork);
+        [metadata addObject:item];
+    }
 }
 
 @end

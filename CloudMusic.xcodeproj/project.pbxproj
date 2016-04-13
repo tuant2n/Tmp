@@ -129,6 +129,14 @@
 		3C6DB1041CA6D0CE00F68D3E /* list-item-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C6DB1011CA6D0CE00F68D3E /* list-item-icon@2x.png */; };
 		3C6DB1051CA6D0CE00F68D3E /* list-item-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C6DB1021CA6D0CE00F68D3E /* list-item-icon@3x.png */; };
 		3C6DB1091CA6DACB00F68D3E /* AlbumObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6DB1081CA6DACB00F68D3E /* AlbumObj.m */; };
+		3C72215B1CBE97450008356E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C72215A1CBE97450008356E /* CoreMedia.framework */; };
+		3C72216C1CBEA2A40008356E /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C72215E1CBEA2A40008356E /* AFHTTPRequestOperation.m */; };
+		3C72216D1CBEA2A40008356E /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7221601CBEA2A40008356E /* AFHTTPRequestOperationManager.m */; };
+		3C72216E1CBEA2A40008356E /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7221631CBEA2A40008356E /* AFNetworkReachabilityManager.m */; };
+		3C72216F1CBEA2A40008356E /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7221651CBEA2A40008356E /* AFSecurityPolicy.m */; };
+		3C7221701CBEA2A40008356E /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7221671CBEA2A40008356E /* AFURLConnectionOperation.m */; };
+		3C7221711CBEA2A40008356E /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7221691CBEA2A40008356E /* AFURLRequestSerialization.m */; };
+		3C7221721CBEA2A40008356E /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C72216B1CBEA2A40008356E /* AFURLResponseSerialization.m */; };
 		3C8D3D931CA56F8F008EB7A8 /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8D3D901CA56F8F008EB7A8 /* MGSwipeButton.m */; };
 		3C8D3D941CA56F8F008EB7A8 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8D3D921CA56F8F008EB7A8 /* MGSwipeTableCell.m */; };
 		3C8D3D981CA5774E008EB7A8 /* btnEditSong.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C8D3D951CA5774E008EB7A8 /* btnEditSong.png */; };
@@ -210,6 +218,7 @@
 		3CEA50321CAEC44700123F3C /* EditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CEA50301CAEC44700123F3C /* EditViewController.xib */; };
 		3CF2A3651CAC199500EE89FC /* MainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF2A3641CAC199500EE89FC /* MainCell.m */; };
 		7B007E2D1C924FE90083AA31 /* PCSEQVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B007E2C1C924FE90083AA31 /* PCSEQVisualizer.m */; };
+		7B0285361CBBAB83008E6F7B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0285351CBBAB83008E6F7B /* AVFoundation.framework */; };
 		7B066A4D1CA4C9610078FD53 /* SongsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B066A4C1CA4C9610078FD53 /* SongsViewController.xib */; };
 		7B066A581CA4CD730078FD53 /* AlbumsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B066A571CA4CD730078FD53 /* AlbumsViewController.xib */; };
 		7B066A5A1CA4CDD50078FD53 /* FilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B066A591CA4CDD50078FD53 /* FilesViewController.xib */; };
@@ -452,6 +461,22 @@
 		3C6DB1021CA6D0CE00F68D3E /* list-item-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list-item-icon@3x.png"; sourceTree = "<group>"; };
 		3C6DB1071CA6DACB00F68D3E /* AlbumObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumObj.h; sourceTree = "<group>"; };
 		3C6DB1081CA6DACB00F68D3E /* AlbumObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumObj.m; sourceTree = "<group>"; };
+		3C72215A1CBE97450008356E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		3C72215D1CBEA2A40008356E /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		3C72215E1CBEA2A40008356E /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		3C72215F1CBEA2A40008356E /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
+		3C7221601CBEA2A40008356E /* AFHTTPRequestOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperationManager.m; sourceTree = "<group>"; };
+		3C7221611CBEA2A40008356E /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworking.h; sourceTree = "<group>"; };
+		3C7221621CBEA2A40008356E /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
+		3C7221631CBEA2A40008356E /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
+		3C7221641CBEA2A40008356E /* AFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSecurityPolicy.h; sourceTree = "<group>"; };
+		3C7221651CBEA2A40008356E /* AFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFSecurityPolicy.m; sourceTree = "<group>"; };
+		3C7221661CBEA2A40008356E /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		3C7221671CBEA2A40008356E /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		3C7221681CBEA2A40008356E /* AFURLRequestSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLRequestSerialization.h; sourceTree = "<group>"; };
+		3C7221691CBEA2A40008356E /* AFURLRequestSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLRequestSerialization.m; sourceTree = "<group>"; };
+		3C72216A1CBEA2A40008356E /* AFURLResponseSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLResponseSerialization.h; sourceTree = "<group>"; };
+		3C72216B1CBEA2A40008356E /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		3C8D3D8F1CA56F8F008EB7A8 /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
 		3C8D3D901CA56F8F008EB7A8 /* MGSwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeButton.m; sourceTree = "<group>"; };
 		3C8D3D911CA56F8F008EB7A8 /* MGSwipeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeTableCell.h; sourceTree = "<group>"; };
@@ -566,6 +591,7 @@
 		3CF2A3641CAC199500EE89FC /* MainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainCell.m; sourceTree = "<group>"; };
 		7B007E2B1C924FE90083AA31 /* PCSEQVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCSEQVisualizer.h; sourceTree = "<group>"; };
 		7B007E2C1C924FE90083AA31 /* PCSEQVisualizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCSEQVisualizer.m; sourceTree = "<group>"; };
+		7B0285351CBBAB83008E6F7B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7B066A4C1CA4C9610078FD53 /* SongsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SongsViewController.xib; sourceTree = "<group>"; };
 		7B066A571CA4CD730078FD53 /* AlbumsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumsViewController.xib; sourceTree = "<group>"; };
 		7B066A591CA4CDD50078FD53 /* FilesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilesViewController.xib; sourceTree = "<group>"; };
@@ -683,6 +709,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C72215B1CBE97450008356E /* CoreMedia.framework in Frameworks */,
+				7B0285361CBBAB83008E6F7B /* AVFoundation.framework in Frameworks */,
 				3C5927DF1CB6982F00320D55 /* DropboxSDK.framework in Frameworks */,
 				3C5927DD1CB6980900320D55 /* Security.framework in Frameworks */,
 				3C4926F01C94511C0065B1DD /* MediaPlayer.framework in Frameworks */,
@@ -909,7 +937,7 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
-		3C5927E91CB6A4A700320D55 /* DropBoxLoginView */ = {
+		3C5927E91CB6A4A700320D55 /* DropBoxManagementViewController */ = {
 			isa = PBXGroup;
 			children = (
 				3C5927EA1CB6A4DF00320D55 /* DropBoxManagementViewController.h */,
@@ -917,7 +945,7 @@
 				3C5927EC1CB6A4DF00320D55 /* DropBoxManagementViewController.xib */,
 				3CB3FEE81CB9134800A95DD2 /* DropBoxCell */,
 			);
-			name = DropBoxLoginView;
+			name = DropBoxManagementViewController;
 			sourceTree = "<group>";
 		};
 		3C6C2C801CB26AC600F3E901 /* IQKeyboardManager */ = {
@@ -1029,6 +1057,28 @@
 				3CB3FF421CB95E0200A95DD2 /* DropBoxObj.m */,
 			);
 			name = Object;
+			sourceTree = "<group>";
+		};
+		3C72215C1CBEA2A40008356E /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				3C72215D1CBEA2A40008356E /* AFHTTPRequestOperation.h */,
+				3C72215E1CBEA2A40008356E /* AFHTTPRequestOperation.m */,
+				3C72215F1CBEA2A40008356E /* AFHTTPRequestOperationManager.h */,
+				3C7221601CBEA2A40008356E /* AFHTTPRequestOperationManager.m */,
+				3C7221611CBEA2A40008356E /* AFNetworking.h */,
+				3C7221621CBEA2A40008356E /* AFNetworkReachabilityManager.h */,
+				3C7221631CBEA2A40008356E /* AFNetworkReachabilityManager.m */,
+				3C7221641CBEA2A40008356E /* AFSecurityPolicy.h */,
+				3C7221651CBEA2A40008356E /* AFSecurityPolicy.m */,
+				3C7221661CBEA2A40008356E /* AFURLConnectionOperation.h */,
+				3C7221671CBEA2A40008356E /* AFURLConnectionOperation.m */,
+				3C7221681CBEA2A40008356E /* AFURLRequestSerialization.h */,
+				3C7221691CBEA2A40008356E /* AFURLRequestSerialization.m */,
+				3C72216A1CBEA2A40008356E /* AFURLResponseSerialization.h */,
+				3C72216B1CBEA2A40008356E /* AFURLResponseSerialization.m */,
+			);
+			path = AFNetworking;
 			sourceTree = "<group>";
 		};
 		3C8D3D8E1CA56F8F008EB7A8 /* MGSwipeTableCell */ = {
@@ -1366,6 +1416,7 @@
 		7BA4EE9B1C9000A600157284 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3C72215C1CBEA2A40008356E /* AFNetworking */,
 				3C28FB351CBA9D1600762D2D /* MarqueeLabel */,
 				3C28FB2E1CBA8A5D00762D2D /* LDProgressView */,
 				3C28FB171CBA866900762D2D /* DLAlertView */,
@@ -1426,7 +1477,7 @@
 				3CB3FEE91CB9136D00A95DD2 /* FilesCell.h */,
 				3CB3FEEA1CB9136D00A95DD2 /* FilesCell.m */,
 				3CB3FEEC1CB9137900A95DD2 /* FilesCell.xib */,
-				3C5927E91CB6A4A700320D55 /* DropBoxLoginView */,
+				3C5927E91CB6A4A700320D55 /* DropBoxManagementViewController */,
 			);
 			name = Files;
 			sourceTree = "<group>";
@@ -1499,6 +1550,8 @@
 		7BF5C8DC1C91606100175C6F /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				3C72215A1CBE97450008356E /* CoreMedia.framework */,
+				7B0285351CBBAB83008E6F7B /* AVFoundation.framework */,
 				3C5927DE1CB6982F00320D55 /* DropboxSDK.framework */,
 				3C5927DC1CB6980900320D55 /* Security.framework */,
 				3C4926EF1C94511C0065B1DD /* MediaPlayer.framework */,
@@ -1802,6 +1855,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C7221701CBEA2A40008356E /* AFURLConnectionOperation.m in Sources */,
+				3C72216C1CBEA2A40008356E /* AFHTTPRequestOperation.m in Sources */,
 				7B066AD61CA53F4E0078FD53 /* SongsCell.m in Sources */,
 				3C28FB341CBA8A5D00762D2D /* UIColor+RGBValues.m in Sources */,
 				3C8D3D941CA56F8F008EB7A8 /* MGSwipeTableCell.m in Sources */,
@@ -1828,6 +1883,7 @@
 				3C6C2CDF1CB29F7C00F3E901 /* Item+CoreDataProperties.m in Sources */,
 				7B4CD88A1CACDFE00041BE4E /* MakePlaylistViewController.m in Sources */,
 				3C5927ED1CB6A4DF00320D55 /* DropBoxManagementViewController.m in Sources */,
+				3C7221721CBEA2A40008356E /* AFURLResponseSerialization.m in Sources */,
 				7B4CD8911CAD09D50041BE4E /* ListSongCell.m in Sources */,
 				7B0896131CA8C30000264CD1 /* ArtistsCell.m in Sources */,
 				3C6C2CAA1CB26AC600F3E901 /* IQUIViewController+Additions.m in Sources */,
@@ -1843,6 +1899,7 @@
 				3C28FB291CBA866900762D2D /* DLAVAlertViewTheme.m in Sources */,
 				3C94B81D1CB400E900449B07 /* QBVideoIndicatorView.m in Sources */,
 				7BF5C8D91C915E3F00175C6F /* Utils.m in Sources */,
+				3C72216E1CBEA2A40008356E /* AFNetworkReachabilityManager.m in Sources */,
 				7BF65F601CA3FFAF007B198D /* NSAttributedString+CCLFormat.m in Sources */,
 				3C6C2CA61CB26AC600F3E901 /* IQNSArray+Sort.m in Sources */,
 				3C6C2C7E1CB267C100F3E901 /* TagButton.m in Sources */,
@@ -1850,6 +1907,7 @@
 				3C6C2CD61CB29F3300F3E901 /* FileInfo+CoreDataProperties.m in Sources */,
 				3C28FB381CBA9D1600762D2D /* MarqueeLabel.m in Sources */,
 				7B1533621CAA863B0099DD9C /* AlbumListViewController.m in Sources */,
+				3C7221711CBEA2A40008356E /* AFURLRequestSerialization.m in Sources */,
 				7B066A841CA4FCA50078FD53 /* HeaderUtilObj.m in Sources */,
 				3C09C6DE1C8C664E004A44E2 /* AppDelegate.m in Sources */,
 				7BF65F501CA3D782007B198D /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -1857,6 +1915,7 @@
 				3C09C6F81C8C68C2004A44E2 /* MainTabBarController.m in Sources */,
 				3C6C2CA91CB26AC600F3E901 /* IQUIView+Hierarchy.m in Sources */,
 				3C94B8161CB400E900449B07 /* QBAlbumsViewController.m in Sources */,
+				3C72216D1CBEA2A40008356E /* AFHTTPRequestOperationManager.m in Sources */,
 				3C94B7F81CB3F94500449B07 /* UIActionSheet+Blocks.m in Sources */,
 				7BF65F4A1CA3D782007B198D /* SDWebImageManager.m in Sources */,
 				3CB3FF431CB95E0200A95DD2 /* DropBoxObj.m in Sources */,
@@ -1881,6 +1940,7 @@
 				7BF65F491CA3D782007B198D /* SDWebImageDownloaderOperation.m in Sources */,
 				7B26B2421CAF76C000368CA8 /* ArtworkView.m in Sources */,
 				7B066A6C1CA4EC050078FD53 /* TableHeaderCell.m in Sources */,
+				3C72216F1CBEA2A40008356E /* AFSecurityPolicy.m in Sources */,
 				3C94B8181CB400E900449B07 /* QBAssetsViewController.m in Sources */,
 				3C28FB251CBA866900762D2D /* DLAVAlertViewButtonTheme.m in Sources */,
 				3C6C2CB21CB26AC600F3E901 /* IQToolbar.m in Sources */,
@@ -2034,7 +2094,7 @@
 				INFOPLIST_FILE = CloudMusic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = tuantn.CloudMusic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.CloudMusic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -2055,7 +2115,7 @@
 				INFOPLIST_FILE = CloudMusic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = tuantn.CloudMusic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.CloudMusic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
