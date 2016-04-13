@@ -74,6 +74,7 @@
 {
     /*
      https://github.com/BeamApp/MusicPlayerViewController
+     NVDSPExample
      */
     
     NSString *sTitle = nil;
