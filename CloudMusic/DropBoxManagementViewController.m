@@ -691,8 +691,7 @@
     /*
      Print to the standard output the metadata from the source URL
      */
-    printMetadata(asset, YES);
-    
+
     NSString *metadataFormat = [[asset availableMetadataFormats] firstObject];
     NSArray *sourceMetadata = nil;
     if (nil != metadataFormat) {

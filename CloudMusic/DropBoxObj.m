@@ -72,6 +72,10 @@
 
 - (void)prepareMetadata
 {
+    /*
+     https://github.com/BeamApp/MusicPlayerViewController
+     */
+    
     NSString *sTitle = nil;
     NSString *sAlbumName = nil;
     NSString *sArtistName = nil;
