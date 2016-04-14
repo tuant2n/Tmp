@@ -75,7 +75,7 @@ static DataManagement *_sharedInstance = nil;
 - (void)removeAllData
 {
     NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"iCloud",@0];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"iCloudItem",@0];
     [fetchSongRequest setPredicate:predicate];
     
     NSError *error = nil;
@@ -160,7 +160,7 @@ static DataManagement *_sharedInstance = nil;
 
 - (NSArray *)getListSongCloudFilterByName:(NSString *)sName
 {
-    NSPredicate *filterCloudItem = [NSPredicate predicateWithFormat:@"iCloud == %@",@1];
+    NSPredicate *filterCloudItem = [NSPredicate predicateWithFormat:@"iCloudItem == %@",@1];
     return [[self getListSongFilterByName:sName] filteredArrayUsingPredicate:filterCloudItem];
 }
 
@@ -176,35 +176,35 @@ static DataManagement *_sharedInstance = nil;
     NSExpression *listSongId = [NSExpression expressionForKeyPath:@"iSongId"];
     NSExpression *countExpression = [NSExpression expressionForFunction:@"count:" arguments:@[listSongId]];
     NSExpressionDescription *numberOfSong = [[NSExpressionDescription alloc] init];
-    [numberOfSong setName: @"numberOfSong"];
+    [numberOfSong setName:@"numberOfSong"];
     [numberOfSong setExpression:countExpression];
     [numberOfSong setExpressionResultType:NSInteger32AttributeType];
     
     NSExpression *listDuration = [NSExpression expressionForKeyPath:@"fDuration"];
     NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:@[listDuration]];
     NSExpressionDescription *duration = [[NSExpressionDescription alloc] init];
-    [duration setName: @"fDuration"];
+    [duration setName:@"fDuration"];
     [duration setExpression:sumExpression];
     [duration setExpressionResultType:NSInteger32AttributeType];
     
-    NSExpression *listCloud = [NSExpression expressionForKeyPath:@"iCloud"];
+    NSExpression *listCloud = [NSExpression expressionForKeyPath:@"iCloudItem"];
     NSExpression *cloudExpression = [NSExpression expressionForFunction:@"min:" arguments:@[listCloud]];
     NSExpressionDescription *cloud = [[NSExpressionDescription alloc] init];
-    [cloud setName: @"iCloud"];
+    [cloud setName:@"iCloud"];
     [cloud setExpression:cloudExpression];
     [cloud setExpressionResultType:NSInteger32AttributeType];
     
     NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArtworkName"];
     NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
     NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
-    [artwork setName: @"sArtworkName"];
+    [artwork setName:@"sArtworkName"];
     [artwork setExpression:maxExpression];
     [artwork setExpressionResultType:NSStringAttributeType];
     
     NSExpression *listArtist = [NSExpression expressionForKeyPath:@"sArtistName"];
     NSExpression *minExpression = [NSExpression expressionForFunction:@"min:" arguments:@[listArtist]];
     NSExpressionDescription *artistName = [[NSExpressionDescription alloc] init];
-    [artistName setName: @"sArtistName"];
+    [artistName setName:@"sArtistName"];
     [artistName setExpression:minExpression];
     [artistName setExpressionResultType:NSStringAttributeType];
 
@@ -259,7 +259,7 @@ static DataManagement *_sharedInstance = nil;
     NSExpression *listSongId = [NSExpression expressionForKeyPath:@"iSongId"];
     NSExpression *countSongExpression = [NSExpression expressionForFunction:@"count:" arguments:@[listSongId]];
     NSExpressionDescription *numberOfSong = [[NSExpressionDescription alloc] init];
-    [numberOfSong setName: @"numberOfSong"];
+    [numberOfSong setName:@"numberOfSong"];
     [numberOfSong setExpression:countSongExpression];
     [numberOfSong setExpressionResultType:NSInteger32AttributeType];
     
@@ -267,28 +267,28 @@ static DataManagement *_sharedInstance = nil;
     NSExpression *distinct = [NSExpression expressionForFunction:@"distinct:" arguments:@[listAlbumId]];
     NSExpression *countAlbumExpression = [NSExpression expressionForFunction:@"count:" arguments:@[distinct]];
     NSExpressionDescription *numberOfAlbum = [[NSExpressionDescription alloc] init];
-    [numberOfAlbum setName: @"numberOfAlbum"];
+    [numberOfAlbum setName:@"numberOfAlbum"];
     [numberOfAlbum setExpression:countAlbumExpression];
     [numberOfAlbum setExpressionResultType:NSInteger32AttributeType];
     
     NSExpression *listDuration = [NSExpression expressionForKeyPath:@"fDuration"];
     NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:@[listDuration]];
     NSExpressionDescription *duration = [[NSExpressionDescription alloc] init];
-    [duration setName: @"duration"];
+    [duration setName:@"duration"];
     [duration setExpression:sumExpression];
     [duration setExpressionResultType:NSInteger32AttributeType];
     
-    NSExpression *listCloud = [NSExpression expressionForKeyPath:@"iCloud"];
+    NSExpression *listCloud = [NSExpression expressionForKeyPath:@"iCloudItem"];
     NSExpression *cloudExpression = [NSExpression expressionForFunction:@"min:" arguments:@[listCloud]];
     NSExpressionDescription *cloud = [[NSExpressionDescription alloc] init];
-    [cloud setName: @"iCloud"];
+    [cloud setName:@"iCloud"];
     [cloud setExpression:cloudExpression];
     [cloud setExpressionResultType:NSInteger32AttributeType];
     
     NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArtworkName"];
     NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
     NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
-    [artwork setName: @"sArtworkName"];
+    [artwork setName:@"sArtworkName"];
     [artwork setExpression:maxExpression];
     [artwork setExpressionResultType:NSStringAttributeType];
     
@@ -332,7 +332,7 @@ static DataManagement *_sharedInstance = nil;
     NSExpression *listSongId = [NSExpression expressionForKeyPath:@"iSongId"];
     NSExpression *countSongExpression = [NSExpression expressionForFunction:@"count:" arguments:@[listSongId]];
     NSExpressionDescription *numberOfSong = [[NSExpressionDescription alloc] init];
-    [numberOfSong setName: @"numberOfSong"];
+    [numberOfSong setName:@"numberOfSong"];
     [numberOfSong setExpression:countSongExpression];
     [numberOfSong setExpressionResultType:NSInteger32AttributeType];
     
@@ -340,21 +340,21 @@ static DataManagement *_sharedInstance = nil;
     NSExpression *distinct = [NSExpression expressionForFunction:@"distinct:" arguments:@[listAlbumId]];
     NSExpression *countAlbumExpression = [NSExpression expressionForFunction:@"count:" arguments:@[distinct]];
     NSExpressionDescription *numberOfAlbum = [[NSExpressionDescription alloc] init];
-    [numberOfAlbum setName: @"numberOfAlbum"];
+    [numberOfAlbum setName:@"numberOfAlbum"];
     [numberOfAlbum setExpression:countAlbumExpression];
     [numberOfAlbum setExpressionResultType:NSInteger32AttributeType];
     
     NSExpression *listDuration = [NSExpression expressionForKeyPath:@"fDuration"];
     NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:@[listDuration]];
     NSExpressionDescription *duration = [[NSExpressionDescription alloc] init];
-    [duration setName: @"fDuration"];
+    [duration setName:@"fDuration"];
     [duration setExpression:sumExpression];
     [duration setExpressionResultType:NSInteger32AttributeType];
     
     NSExpression *listArtwork = [NSExpression expressionForKeyPath:@"sArtworkName"];
     NSExpression *maxExpression = [NSExpression expressionForFunction:@"max:" arguments:@[listArtwork]];
     NSExpressionDescription *artwork = [[NSExpressionDescription alloc] init];
-    [artwork setName: @"sArtworkName"];
+    [artwork setName:@"sArtworkName"];
     [artwork setExpression:maxExpression];
     [artwork setExpressionResultType:NSStringAttributeType];
     

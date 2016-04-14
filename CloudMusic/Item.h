@@ -7,10 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <AVFoundation/AVFoundation.h>
+#import <CoreData/CoreData.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+@class DropBoxObj;
 
 @interface Item : NSManagedObject
 
@@ -22,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL isPlaying;
 
 - (void)updateWithMediaItem:(MPMediaItem *)item;
+- (void)updateWithDropBoxItem:(DropBoxObj *)item;
 
 - (void)setSongName:(NSString *)sSongName;
 - (void)setArtwork:(UIImage *)artwork;

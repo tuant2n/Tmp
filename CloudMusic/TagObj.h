@@ -27,7 +27,6 @@ typedef enum {
     kElementTypeFilename,
     kElementTypeTime,
     kElementTypeSize,
-    kElementTypeBitRate,
     kElementTypePlayed,
 } kElementType;
 

@@ -91,8 +91,8 @@
             break;
             
         case kElementTypeFilename:
-            self.lblTagName.text = @"Filename";
-            self.tfTagContent.placeholder = @"Filename";
+            self.lblTagName.text = @"File Name";
+            self.tfTagContent.placeholder = @"File Name";
             break;
             
         case kElementTypeTime:
@@ -103,11 +103,6 @@
         case kElementTypeSize:
             self.lblTagName.text = @"Size";
             self.tfTagContent.placeholder = @"Size";
-            break;
-            
-        case kElementTypeBitRate:
-            self.lblTagName.text = @"Bit Rate";
-            self.tfTagContent.placeholder = @"Bit Rate";
             break;
             
         case kElementTypePlayed:

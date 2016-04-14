@@ -272,6 +272,11 @@
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
++ (NSString *)cachePath
+{
+    return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+}
+
 + (NSString *)artworkPath
 {
     NSString *artworkPath = [[self documentPath] stringByAppendingPathComponent:@"Artwork"];

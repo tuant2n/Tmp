@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+#import <CoreMedia/CoreMedia.h>
+#import <DropboxSDK/DropboxSDK.h>
 
 @class DBMetadata;
 
@@ -30,13 +33,14 @@ typedef enum {
 @property (nonatomic, assign) kFileType iType;
 @property (nonatomic, assign) BOOL isDirectory;
 
-@property (nonatomic, assign) BOOL isSelected, isDownloadSuccess;
+@property (nonatomic, assign) BOOL isSelected, isDownloadSuccess, isExportSuccess;
 @property (nonatomic, assign) float fProgress;
 
-@property (nonatomic, strong) NSString *sExportPart;
+@property (nonatomic, strong) NSString *sExportPath;
+
 @property (nonatomic, strong) NSArray *songMetaData;
+@property (nonatomic, strong) NSDictionary *songInfo;
 
 - (id)initWithMetadata:(DBMetadata *)metadata;
-- (void)prepareMetadata;
 
 @end

@@ -193,13 +193,6 @@
     size.isEditable = NO;
     [arrSection4 addObject:size];
     
-    TagObj *biteRate = [[TagObj alloc] init];
-    biteRate.iTagType = kTagTypeElement;
-    biteRate.iElementType = kElementTypeBitRate;
-    biteRate.value = song.fileInfo.sBitRate;
-    biteRate.isEditable = NO;
-    [arrSection4 addObject:biteRate];
-    
     TagObj *played = [[TagObj alloc] init];
     played.iTagType = kTagTypeElement;
     played.iElementType = kElementTypePlayed;

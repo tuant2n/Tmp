@@ -60,6 +60,7 @@
 #pragma mark - Files
 
 + (NSString *)documentPath;
++ (NSString *)cachePath;
 + (NSString *)artworkPath;
 + (NSString *)dropboxPath;
 

@@ -16,8 +16,9 @@
 #import "DataManagement.h"
 
 #import "LDProgressView.h"
-#import "DLAVAlertView.h"
+#import "KGModal.h"
 #import "MarqueeLabel.h"
+#import "MBProgressHUD.h"
 
 #define extesions @[@"mp3", @"m4a", @"wma", @"wav", @"aac", @"ogg"]
 
@@ -25,8 +26,7 @@
 {
     BOOL isSelectAll;
     
-    int iCurrentDownload;
-    DLAVAlertView *downloadView;
+    int iCurrentIndex;
     DropBoxObj *currentItem;
 }
 
@@ -38,10 +38,11 @@
 @property (nonatomic, strong) UIButton *btnSelect, *btnDownload;
 
 @property (nonatomic, strong) NSMutableArray *arrListData;
-@property (nonatomic, strong) NSMutableArray *arrSelected;
+@property (nonatomic, strong) NSMutableArray *arrSelected, *arrDownloadSuccess;;
 
 @property (nonatomic, strong) DBRestClient *restClient;
 
+@property (nonatomic, strong) UIView *downloadView;
 @property (nonatomic, strong) LDProgressView *progressBar;
 @property (nonatomic, strong) MarqueeLabel *lblCurrentDownload;
 @property (nonatomic, strong) UILabel *lblProgress;
@@ -66,11 +67,20 @@
     return  _arrSelected;
 }
 
+- (NSMutableArray *)arrDownloadSuccess
+{
+    if (!_arrDownloadSuccess) {
+        _arrDownloadSuccess = [[NSMutableArray alloc] init];
+    }
+    return  _arrDownloadSuccess;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self setupUI];
+    
     [self setupTitle];
     [self getData];
 }
@@ -133,7 +143,10 @@
     
     [self setShowLoading:NO];
     [self setShowEmptyView:(self.arrListData.count <= 0)];
-    [self.btnSelect setEnabled:(self.arrListData.count > 0)];
+    
+    NSPredicate *filterFile = [NSPredicate predicateWithFormat:@"isDirectory == NO"];
+    NSArray *listFile = [self.arrListData filteredArrayUsingPredicate:filterFile];
+    [self.btnSelect setEnabled:(listFile.count > 0)];
     
     [self.tblList reloadData];
 }
@@ -235,33 +248,19 @@
     }
 }
 
+#pragma mark - DownloadFile
+
 - (void)download
 {
-    if (self.arrSelected.count <= 0) {
-        return;
-    }
+    [[KGModal sharedInstance] setCloseButtonType:KGModalCloseButtonTypeNone];
+    [[KGModal sharedInstance] setModalBackgroundColor:[UIColor whiteColor]];
+    [[KGModal sharedInstance] setShouldRotate:YES];
+    [[KGModal sharedInstance] setTapOutsideToDismiss:NO];
     
-    iCurrentDownload = 0;
-    [self downloadItemAtIndex:iCurrentDownload];
+    [[KGModal sharedInstance] showWithContentView:self.downloadView andAnimated:NO];
     
-    downloadView = [[DLAVAlertView alloc] initWithTitle:@"" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Cancel",nil];
-    [downloadView setContentView:self.downloadContentView];
-    [downloadView showWithCompletion:^(DLAVAlertView *alertView, NSInteger buttonIndex)
-     {
-         if (buttonIndex == 0)
-         {
-             [self.restClient cancelAllRequests];
-             [self closeDownloadView];
-         }
-     }];
-}
-
-- (void)closeDownloadView
-{
-    if (currentItem) {
-        [currentItem removeObserver:self forKeyPath:@"fProgress"];
-        currentItem = nil;
-    }
+    iCurrentIndex = 0;
+    [self downloadItemAtIndex:iCurrentIndex];
 }
 
 - (void)downloadItemAtIndex:(int)iIndex
@@ -284,26 +283,13 @@
     [self.restClient loadFile:currentItem.metaData.path intoPath:currentItem.sDownloadPath];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (![object isKindOfClass:[DropBoxObj class]] && [keyPath isEqualToString:@"isSelected"]) {
-        return;
-    }
-    
-    if (![object isEqual:currentItem]) {
-        return;
-    }
-    
-    self.progressBar.progress = currentItem.fProgress;
-    NSLog(@"%f",currentItem.fProgress);
-}
-
 - (void)finishSingleDownload
 {
-    iCurrentDownload++;
+    iCurrentIndex++;
     
-    if (iCurrentDownload <= self.arrSelected.count - 1) {
-        [self downloadItemAtIndex:iCurrentDownload];
+    if (iCurrentIndex <= self.arrSelected.count - 1)
+    {
+        [self downloadItemAtIndex:iCurrentIndex];
     }
     else {
         [self finishAllDownload];
@@ -312,134 +298,75 @@
 
 - (void)finishAllDownload
 {
-    if (downloadView) {
-        [downloadView dismissWithClickedButtonIndex:1 animated:YES];
-    }
-    
     [self closeDownloadView];
     
-    NSLog(@"FINISH ALL TASK!!!");
+    currentItem = nil;
+    iCurrentIndex = 0;
     
     NSPredicate *filterDownloadSuccess = [NSPredicate predicateWithFormat:@"isDownloadSuccess == YES"];
-    NSArray *listDownloadSuccess = [self.arrSelected filteredArrayUsingPredicate:filterDownloadSuccess];
     
-    for (DropBoxObj *item in listDownloadSuccess)
-    {
-        /*
-        NSLog(@"%@",item.sDownloadPath);
-        
-        AVURLAsset *asset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:item.sDownloadPath] options:nil];
-
-        NSArray *types = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata withKey:AVMetadataCommonKeyType keySpace:AVMetadataKeySpaceCommon];
-        AVMetadataItem *type = [types objectAtIndex:0];
-        NSLog(@"%@",[type.value copyWithZone:nil]);
-        
-//        NSArray *formats = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata withKey:AVMetadataCommonKeyFormat keySpace:AVMetadataKeySpaceCommon];
-//        AVMetadataItem *format = [formats objectAtIndex:0];
-//        NSLog(@"%@",[format.value copyWithZone:nil]);
-        
-        NSArray *artworks = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata withKey:AVMetadataCommonKeyArtwork keySpace:AVMetadataKeySpaceCommon];
-        AVMetadataItem *artwork = [artworks objectAtIndex:0];
-        NSLog(@"%@",artwork);
-        
-        NSArray *titles = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata withKey:AVMetadataCommonKeyTitle keySpace:AVMetadataKeySpaceCommon];
-        AVMetadataItem *title = [titles objectAtIndex:0];
-        NSLog(@"%@",[title.value copyWithZone:nil]);
-        
-        //
-        NSArray *artists = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata withKey:AVMetadataiTunesMetadataKeyArtist keySpace:AVMetadataKeySpaceiTunes];
-        AVMetadataItem *artist = [artists objectAtIndex:0];
-        NSLog(@"%@",[artist.value copyWithZone:nil]);
-        
-        NSArray *artistIds = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata withKey:AVMetadataiTunesMetadataKeyArtistID keySpace:AVMetadataKeySpaceiTunes];
-        AVMetadataItem *artistId = [artistIds objectAtIndex:0];
-        NSLog(@"%@",[artistId.value copyWithZone:nil]);
-        
-        //
-        NSArray *albumArtists = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata withKey:AVMetadataiTunesMetadataKeyAlbumArtist keySpace:AVMetadataKeySpaceCommon];
-        AVMetadataItem *albumArtist = [albumArtists objectAtIndex:0];
-        NSLog(@"%@",[albumArtist.value copyWithZone:nil]);
-        
-        //
-        NSArray *albumNames = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata withKey:AVMetadataCommonKeyAlbumName keySpace:AVMetadataKeySpaceCommon];
-        AVMetadataItem *albumName = [albumNames objectAtIndex:0];
-        NSLog(@"%@",[albumName.value copyWithZone:nil]);
-        
-        //
-        NSArray *lyrics = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata withKey:AVMetadataiTunesMetadataKeyLyrics keySpace:AVMetadataKeySpaceiTunes];
-        AVMetadataItem *lyric = [lyrics objectAtIndex:0];
-        NSLog(@"%@",[lyric.value copyWithZone:nil]);
-         
-         */
-        
-        /*
-         AVF_EXPORT NSString *const AVMetadataCommonKeyCreationDate                               NS_AVAILABLE(10_7, 4_0);
-         AVF_EXPORT NSString *const AVMetadataCommonKeyLastModifiedDate
-         
-         AVMetadataiTunesMetadataKeyAlbum                              NS_AVAILABLE(10_7, 4_0);
-         AVMetadataiTunesMetadataKeyArtist
-         AVMetadataiTunesMetadataKeyUserGenre
-         AVMetadataiTunesMetadataKeySongName
-         AVMetadataiTunesMetadataKeyAlbumArtist
-         AVMetadataiTunesMetadataKeyArtistID
-         AVMetadataiTunesMetadataKeySongID
-         AVMetadataiTunesMetadataKeyGenreID
-         AVMetadataiTunesMetadataKeyLyrics
-         
-         */
-        
-        /*
-         AVAsset *assest;
-         
-         // filePath looks something like this: /var/mobile/Applications/741647B1-1341-4203-8CFA-9D0C555D670A/Library/Caches/All Summer Long.m4a
-         
-         NSURL *fileURL = [NSURL fileURLWithPath:musicItem.filePath];
-         NSLog(@"%@", fileURL);
-         assest = [AVURLAsset URLAssetWithURL:fileURL    options:nil];
-         NSLog(@"%@", assest);
-         
-         for (NSString *format in [assest availableMetadataFormats]) {
-         for (AVMetadataItem *item in [assest metadataForFormat:format]) {
-         if ([[item commonKey] isEqualToString:@"title"]) {
-         musicItem.strSongTitle = (NSString *)[item value];
-         }
-         if ([[item commonKey] isEqualToString:@"artist"]) {
-         musicItem.strArtistName = (NSString *)[item value];
-         }
-         if ([[item commonKey] isEqualToString:@"albumName"]) {
-         musicItem.strAlbumName = (NSString *)[item value];
-         }
-         if ([[item commonKey] isEqualToString:@"artwork"]) {
-         UIImage *img = nil;
-         if ([item.keySpace isEqualToString:AVMetadataKeySpaceiTunes]) {
-         img = [UIImage imageWithData:[item.value copyWithZone:nil]];
-         }
-         else { // if ([item.keySpace isEqualToString:AVMetadataKeySpaceID3]) {
-         NSData *data = [(NSDictionary *)[item value] objectForKey:@"data"];
-         img = [UIImage imageWithData:data]  ;
-         }
-         musicItem.imgArtwork = img;
-         }
-         }
-         }
-         */
-        
-//        NSArray *keys = [NSArray arrayWithObjects:@"commonMetadata", nil];
-//        [asset loadValuesAsynchronouslyForKeys:keys completionHandler:^{
-//            NSArray *artworks = [AVMetadataItem metadataItemsFromArray:asset.commonMetadata
-//                                                               withKey:AVMetadataCommonKeyArtwork
-//                                                              keySpace:AVMetadataKeySpaceCommon];
-//            
-//            for (AVMetadataItem *item in artworks) {
-//                if ([item.keySpace isEqualToString:AVMetadataKeySpaceID3]) {
-//                    NSDictionary *d = [item.value copyWithZone:nil];
-//                    self.currentSongArtwork = [UIImage imageWithData:[d objectForKey:@"data"]];
-//                } else if ([item.keySpace isEqualToString:AVMetadataKeySpaceiTunes]) {
-//                    self.currentSongArtwork = [UIImage imageWithData:[item.value copyWithZone:nil]];
-//                }
-//            }
-//        }];
+    [self.arrDownloadSuccess removeAllObjects];
+    [self.arrDownloadSuccess addObjectsFromArray:[self.arrSelected filteredArrayUsingPredicate:filterDownloadSuccess]];
+    
+    if (self.arrDownloadSuccess.count <= 0) {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Download failed, please try again later!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
+    else {
+        [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        [self exportItemAtIndex:iCurrentIndex];
+    }
+}
+
+#pragma mark - ExportToFile
+
+- (void)exportItemAtIndex:(int)iIndex
+{
+    currentItem = self.arrDownloadSuccess[iIndex];
+    
+    currentItem.fProgress = 0.0;
+    currentItem.isExportSuccess = NO;
+
+    [self exportItem:currentItem withBlock:^(bool isSuccess)
+    {
+        currentItem.isExportSuccess = isSuccess;
+        [self finishSingleExport];
+    }];
+}
+
+- (void)finishSingleExport
+{
+    iCurrentIndex++;
+    
+    if (iCurrentIndex <= self.arrDownloadSuccess.count - 1) {
+        [self exportItemAtIndex:iCurrentIndex];
+    }
+    else {
+        [self finishAllExport];
+    }
+}
+
+- (void)finishAllExport
+{
+    NSPredicate *filterSuccess = [NSPredicate predicateWithFormat:@"isDownloadSuccess == YES && isExportSuccess == YES"];
+    NSArray *arrSuccess = [self.arrSelected filteredArrayUsingPredicate:filterSuccess];
+    
+    if (arrSuccess.count <= 0) {
+        [MBProgressHUD hideAllHUDsForView:self.navigationController.view animated:YES];
+        return;
+    }
+    
+    for (DropBoxObj *dropboxItem in arrSuccess)
+    {
+        Item *item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Item class]) inManagedObjectContext:[DataManagement sharedInstance].managedObjectContext];
+        [item updateWithDropBoxItem:dropboxItem];
+        
+        FileInfo *fileInfo = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([FileInfo class]) inManagedObjectContext:[DataManagement sharedInstance].managedObjectContext];
+        [fileInfo updateFileInfo:dropboxItem];
+        item.fileInfo = fileInfo;
+    }
+    
+    [[DataManagement sharedInstance] saveData];
+    [MBProgressHUD hideAllHUDsForView:self.navigationController.view animated:YES];
 }
 
 #pragma mark - DBRestClientDelegate Methods for DownloadFile
@@ -461,7 +388,6 @@
     if (!currentItem) {
         return;
     }
-    
     currentItem.fProgress = progress;
 }
 
@@ -567,70 +493,136 @@
     self.title = [info displayName];
 }
 
+#pragma mark - Export
+
+- (void)exportItem:(DropBoxObj *)item withBlock:(void (^)(bool isSuccess))block
+{
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:item.sDownloadPath] options:nil];
+    AVAssetExportSession *export = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetAppleM4A];
+    export.outputURL = [NSURL fileURLWithPath:item.sExportPath];
+    export.outputFileType = AVFileTypeAppleM4A;
+    export.metadata = item.songMetaData;
+    
+    [export exportAsynchronouslyWithCompletionHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (export.status == AVAssetExportSessionStatusCompleted)
+            {
+                if (block) {
+                    block(YES);
+                }
+            }
+            else {
+                if (block) {
+                    block(NO);
+                }
+            }
+        });
+    }];
+}
+
 #pragma mark - Download View
 
-- (MarqueeLabel *)lblCurrentDownload
+- (UIView *)downloadView
 {
-    if (!_lblCurrentDownload) {
-        _lblCurrentDownload = [[MarqueeLabel alloc] init];
-        _lblCurrentDownload.backgroundColor = [UIColor clearColor];
-        _lblCurrentDownload.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:15.0];
-        _lblCurrentDownload.textAlignment = NSTextAlignmentCenter;
-        _lblCurrentDownload.marqueeType = MLContinuous;
-        _lblCurrentDownload.scrollDuration = 10.0f;
-        _lblCurrentDownload.rate = 20.0f;
-        _lblCurrentDownload.fadeLength = 3.0f;
-        _lblCurrentDownload.trailingBuffer = 50.0f;
-        _lblCurrentDownload.animationDelay = 1.0f;
+    if (!_downloadView) {
+        _downloadView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 250.0, 130.0)];
+        _downloadView.backgroundColor = [UIColor clearColor];
+        
+        self.progressBar = [[LDProgressView alloc] initWithFrame:CGRectMake(5.0, 15.0, 240.0, 5.0)];
+        self.progressBar.progress = 0.0;
+        self.progressBar.showText = @NO;
+        self.progressBar.animate = @NO;
+        self.progressBar.color = [Utils colorWithRGBHex:0x017ee6];
+        self.progressBar.background = [UIColor lightGrayColor];
+        self.progressBar.flat = @YES;
+        self.progressBar.borderRadius = @1;
+        self.progressBar.showBackgroundInnerShadow = @NO;
+        self.progressBar.animateDirection = LDAnimateDirectionForward;
+        [_downloadView addSubview:self.progressBar];
+        
+        self.lblCurrentDownload = [[MarqueeLabel alloc] initWithFrame:CGRectMake(5.0, self.progressBar.frame.origin.y + self.progressBar.frame.size.height, 240.0, 45.0)];
+        self.lblCurrentDownload.backgroundColor = [UIColor clearColor];
+        self.lblCurrentDownload.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:15.0];
+        self.lblCurrentDownload.textAlignment = NSTextAlignmentCenter;
+        self.lblCurrentDownload.marqueeType = MLContinuous;
+        self.lblCurrentDownload.scrollDuration = 10.0f;
+        self.lblCurrentDownload.rate = 20.0f;
+        self.lblCurrentDownload.fadeLength = 3.0f;
+        self.lblCurrentDownload.trailingBuffer = 50.0f;
+        self.lblCurrentDownload.animationDelay = 1.0f;
+        [_downloadView addSubview:self.lblCurrentDownload];
+        
+        self.lblProgress = [[UILabel alloc] initWithFrame:CGRectMake(0.0, self.lblCurrentDownload.frame.origin.y + self.lblCurrentDownload.frame.size.height, 250.0, 25.0)];
+        self.lblProgress.backgroundColor = [UIColor clearColor];
+        self.lblProgress.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
+        self.lblProgress.textAlignment = NSTextAlignmentCenter;
+        self.lblProgress.lineBreakMode = NSLineBreakByTruncatingTail;
+        [_downloadView addSubview:self.lblProgress];
+        
+        UIButton *btnCancelDownload = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnCancelDownload addTarget:self action:@selector(cancelDownload) forControlEvents:UIControlEventTouchUpInside];
+        [btnCancelDownload setFrame:CGRectMake(0.0, self.lblProgress.frame.origin.y + self.lblProgress.frame.size.height, 250.0, 40.0)];
+        [btnCancelDownload setBackgroundColor:[UIColor clearColor]];
+        
+        [btnCancelDownload.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:16.0]];
+        [btnCancelDownload setTitle:@"Cancel" forState:UIControlStateNormal];
+        
+        [btnCancelDownload setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+        [btnCancelDownload setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+        [btnCancelDownload setTitleColor:[Utils colorWithRGBHex:0x017ee6] forState:UIControlStateNormal];
+        
+        [_downloadView addSubview:btnCancelDownload];
     }
-    return _lblCurrentDownload;
+    return _downloadView;
 }
 
-- (UILabel *)lblProgress
+- (void)cancelDownload
 {
-    if (!_lblProgress) {
-        _lblProgress = [[UILabel alloc] init];
-        _lblProgress.backgroundColor = [UIColor clearColor];
-        _lblProgress.font = [UIFont fontWithName:@"HelveticaNeue" size:15.0];
-        _lblProgress.textAlignment = NSTextAlignmentCenter;
-        _lblProgress.lineBreakMode = NSLineBreakByTruncatingTail;
-    }
-    return _lblProgress;
+    [self.restClient cancelAllRequests];
+    [self closeDownloadView];
 }
 
-- (LDProgressView *)progressBar
+- (void)closeDownloadView
 {
-    if (!_progressBar) {
-        _progressBar = [[LDProgressView alloc] init];
-        _progressBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _progressBar.progress = 0.0;
-        _progressBar.showText = @NO;
-        _progressBar.animate = @YES;
-        _progressBar.color = [Utils colorWithRGBHex:0x017ee6];
-        _progressBar.background = [UIColor lightGrayColor];
-        _progressBar.flat = @YES;
-        _progressBar.borderRadius = @1;
-        _progressBar.showBackgroundInnerShadow = @NO;
-        _progressBar.animateDirection = LDAnimateDirectionForward;
+    if (currentItem) {
+        [currentItem removeObserver:self forKeyPath:@"fProgress"];
     }
-    return _progressBar;
+    currentItem = nil;
+    
+    self.progressBar.progress = 0.0;
+    self.progressBar.animate = @NO;
+    
+    self.lblCurrentDownload.text = nil;
+    self.lblProgress.text = nil;
+    
+    [[KGModal sharedInstance] hideAnimated:NO];
 }
 
-- (UIView *)downloadContentView
+- (void)setContentDownloadView:(DropBoxObj *)dropboxObj atIndex:(int)iIndex
 {
-    UIView *downloadContentView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 250.0, 80.0)];
-    downloadContentView.backgroundColor = [UIColor clearColor];
+    if (!_downloadView) {
+        [self downloadView];
+    }
     
-    [self.lblCurrentDownload setFrame:CGRectMake(0.0, 10.0, 250.0, 30.0)];
-    [downloadContentView addSubview:self.lblCurrentDownload];
+    self.lblCurrentDownload.text = dropboxObj.sFileName;
+    self.lblProgress.text = [NSString stringWithFormat:@"%d/%d",iIndex + 1,(int)self.arrSelected.count];
     
-    [self.progressBar setFrame:CGRectMake(0.0, self.lblCurrentDownload.frame.origin.y + self.lblCurrentDownload.frame.size.height + 5.0, 250.0, 3.0)];
-    [downloadContentView addSubview:self.progressBar];
+    self.progressBar.progress = 0.0;
+    self.progressBar.animate = @YES;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (![object isKindOfClass:[DropBoxObj class]] && [keyPath isEqualToString:@"isSelected"]) {
+        return;
+    }
     
-    [self.lblProgress setFrame:CGRectMake(0.0, self.progressBar.frame.origin.y + self.progressBar.frame.size.height + 5.0, 250.0, 30.0)];
-    [downloadContentView addSubview:self.lblProgress];
+    if (![object isEqual:currentItem]) {
+        return;
+    }
     
-    return downloadContentView;
+    self.progressBar.progress = currentItem.fProgress;
+    NSLog(@"%f",currentItem.fProgress);
 }
 
 #pragma mark - Utils
@@ -665,141 +657,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-- (IBAction)demoTouched:(id)sender {
-    NSLog(@"Demo begin.");
-    
-    // TagDemo *demo = [[TagDemo alloc] init];
-    //[demo demo];
-    
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"1" ofType:@"mp3"];
-    
-    NSArray *docPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docPath = [[docPaths objectAtIndex:0] stringByAppendingPathComponent:@"1.mp3"];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:docPath]) {
-        [[NSFileManager defaultManager] copyItemAtPath:path toPath:docPath error:nil];
-    }
-    
-    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:docPath] options:nil];
-
-    if (!asset) {
-        printf("\nInvalid source, asset creation failure");
-        return;
-    }
-    /*
-     Print to the standard output the metadata from the source URL
-     */
-
-    NSString *metadataFormat = [[asset availableMetadataFormats] firstObject];
-    NSArray *sourceMetadata = nil;
-    if (nil != metadataFormat) {
-        sourceMetadata = [asset metadataForFormat:metadataFormat];
-    }
-    else {
-        sourceMetadata = [asset commonMetadata];
-    }
-    /*
-     Save to a plist the metadata from the source URL
-     */
-    //    printMetadataItemsToURL(sourceMetadata, metadataFormat, [NSURL fileURLWithPath:plistPath]);
-    
-    if (![asset isExportable])
-    {
-        return;
-    }
-    
-    /*
-     Create an export session to export the new metadata
-     */
-    
-    NSURL *destURL = [NSURL fileURLWithPath:[[docPaths objectAtIndex:0] stringByAppendingPathComponent:@"2.m4a"]];
-    AVAssetExportSession *session = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetAppleM4A];
-    session.outputURL = destURL;
-    session.outputFileType = AVFileTypeAppleM4A;
-    
-    //    NSDictionary *writeMetadata = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-    //    [session setMetadata:metadataFromAssetDictionary(sourceMetadata, writeMetadata, YES, metadataFormat)];
-    
-    //    if (writeMetadata) {
-    //
-    //    }
-    //    else {
-    //        [session setMetadata:metadataFromAssetDictionary(sourceMetadata, appendMetadata, YES, metadataFormat)];
-    //    }
-    
-    NSArray *MyMetadata;
-    AVMutableMetadataItem *common1;
-    AVMutableMetadataItem *common2;
-    AVMutableMetadataItem *common3;
-    AVMutableMetadataItem *common4;
-    
-    common1 = [[AVMutableMetadataItem alloc] init];    // Title
-    common1.keySpace = AVMetadataKeySpaceCommon;
-    common1.key = AVMetadataCommonKeyTitle;
-    common1.value = @"Title Test Value";
-    
-    common2 = [[AVMutableMetadataItem alloc] init];    // Description
-    common2.keySpace = AVMetadataKeySpaceCommon;
-    common2.key = AVMetadataCommonKeyDescription;
-    common2.value = @"Description Test Value";
-    
-    common3 = [[AVMutableMetadataItem alloc] init];   // Creation Date
-    common3.keySpace = AVMetadataKeySpaceCommon;
-    common3.key = AVMetadataCommonKeyCreationDate;
-    common3.value = @"Creation Date Test Value";
-    
-    common4 = [[AVMutableMetadataItem alloc] init];    // Software
-    common4.keySpace = AVMetadataKeySpaceCommon;
-    common4.key = AVMetadataCommonKeySoftware;
-    common4.value = @"My File Trimmer";
-    
-    MyMetadata = [[NSArray alloc] initWithObjects:common1, common2, common3, common4, nil];
-    session.metadata = MyMetadata;
-    
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    
-    __block NSError *error = nil;
-    __block BOOL succeeded = NO;
-    [session exportAsynchronouslyWithCompletionHandler:^{
-        
-        if (AVAssetExportSessionStatusCompleted == session.status) {
-            succeeded = YES;
-        }
-        else {
-            succeeded = NO;
-            if (session.error)
-                error = session.error;
-        }
-        dispatch_semaphore_signal(semaphore);
-    }];
-    
-    printf("\n0--------------------100%%\n");
-    float progress = 0.;
-    long resSemaphore = 0;
-    /*
-     Monitor the progress
-     */
-    do {
-        resSemaphore = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC));
-        float curProgress = session.progress;
-        while (curProgress > progress) {
-            fprintf(stderr, "*"); // Force to be flush without end of line
-            progress += 0.05;
-        }
-    } while( resSemaphore );
-    
-    if (succeeded) {
-        printf("\nSuccess\n");
-    }
-    else {
-        printf("\nError: %s", [[error localizedDescription] UTF8String]);
-        printf("\nFailure\n");
-    }
-    
-    
-    NSLog(@"Demo end.");
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "Item.h"
 
 #import "FileInfo.h"
+#import "DropBoxObj.h"
 
 #import "DataManagement.h"
 #import "Utils.h"
@@ -56,10 +57,91 @@
     self.sLyrics = item.itemLyrics;
     self.iYear = item.year;
     self.iRate = item.itemRating;
-    self.iTrack = item.itemAlbumTrackNumber;
     self.iPlayCount = item.itemPlayCount;
     
     [self setSongDuration:item.playbackDuration];
+}
+
+- (void)updateWithDropBoxItem:(DropBoxObj *)item
+{
+    NSDictionary *songInfo = item.songInfo;
+    
+    self.sAssetUrl = item.sExportPath;
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:self.sAssetUrl] options:nil];
+    [self setSongDuration:CMTimeGetSeconds([asset duration])];
+    
+    self.iSongId = [Utils getTimestamp];
+    self.iCloudItem = @1;
+    
+    NSString *sTitle = [songInfo objectForKey:@"title"];
+    if (sTitle) {
+        [self setSongName:sTitle];
+    }
+    
+    NSString *sAlbumName = [songInfo objectForKey:@"album"];
+    if (sAlbumName)
+    {
+        NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName];
+        if (iAlbumId) {
+            self.iAlbumId = iAlbumId;
+        }
+        else {
+            self.iAlbumId = [NSString stringWithFormat:@"%@-%@",sAlbumName,[Utils getTimestamp]];
+        }
+        
+        [self setAlbumName:sAlbumName];
+    }
+    
+    NSString *sArtistName = [songInfo objectForKey:@"artist"];
+    if (sArtistName)
+    {
+        NSString *iArtistId = [[DataManagement sharedInstance] getArtistIdFromName:sArtistName];
+        if (iArtistId) {
+            self.iArtistId = iArtistId;
+        }
+        else {
+            self.iArtistId = [NSString stringWithFormat:@"%@-%@",sArtistName,[Utils getTimestamp]];
+        }
+        
+        [self setArtistName:sArtistName];
+        
+        
+        NSString *iAlbumArtistId = [[DataManagement sharedInstance] getAlbumArtistIdFromName:sArtistName];
+        if (iAlbumArtistId) {
+            self.iAlbumArtistId = iAlbumArtistId;
+        }
+        else {
+            self.iAlbumArtistId = [NSString stringWithFormat:@"%@-%@",sArtistName,[Utils getTimestamp]];
+        }
+        
+        [self setAlbumArtistName:sArtistName];
+    }
+    
+    NSString *sGenreName = [songInfo objectForKey:@"genre"];
+    if (sGenreName) {
+        NSString *iGenreId = [[DataManagement sharedInstance] getGenreIdFromName:sGenreName];
+        if (iGenreId) {
+            self.iGenreId = iGenreId;
+        }
+        else {
+            self.iGenreId = [NSString stringWithFormat:@"%@-%@",sGenreName,[Utils getTimestamp]];
+        }
+    }
+    
+    NSString *sYear = [songInfo objectForKey:@"year"];
+    if (sYear) {
+        self.iYear = @([sYear integerValue]);
+    }
+    
+    NSString *sLyrics = [songInfo objectForKey:@"lyrics"];
+    if (sLyrics) {
+        self.sLyrics = sLyrics;
+    }
+    
+    UIImage *artwork = [songInfo objectForKey:@"artwork"];
+    if (artwork && [artwork isKindOfClass:[UIImage class]]) {
+        [self setArtwork:artwork];
+    }
 }
 
 - (void)setArtwork:(UIImage *)artwork
@@ -239,7 +321,7 @@
 
 - (BOOL)isCloud
 {
-    return [self.iCloud intValue] == 1;
+    return [self.iCloudItem intValue] == 1;
 }
 
 @end

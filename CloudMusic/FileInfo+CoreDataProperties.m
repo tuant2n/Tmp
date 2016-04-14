@@ -15,11 +15,9 @@
 
 @dynamic sFolderName;
 @dynamic sFileName;
-@dynamic sHash;
-
-@dynamic sKind;
 @dynamic sSize;
-@dynamic sBitRate;
+@dynamic lTimestamp;
+
 @dynamic item;
 
 @end

@@ -66,7 +66,8 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index
 {
-    if (index != alertView.cancelButtonIndex) {
+    if (index != alertView.cancelButtonIndex)
+    {
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
         UINavigationController *controller = (UINavigationController*)[mainStoryboard instantiateViewControllerWithIdentifier:@"NavigationController"];
         [[DBSession sharedSession] linkFromController:[controller visibleViewController]];

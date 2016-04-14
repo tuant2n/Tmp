@@ -8,16 +8,20 @@
 
 #import "FileInfo.h"
 
+#import <DropboxSDK/DropboxSDK.h>
+
 #import "Item.h"
 #import "DropBoxObj.h"
 
 @implementation FileInfo
 
-// Insert code here to add functionality to your managed object subclass
-
 - (void)updateFileInfo:(DropBoxObj *)item
 {
+    self.sFolderName = @"/";
+    self.sFileName = [[item.sExportPath lastPathComponent] stringByDeletingPathExtension];
     
+    self.sSize = item.metaData.humanReadableSize;
+    self.lTimestamp = @(time(nil));
 }
 
 @end

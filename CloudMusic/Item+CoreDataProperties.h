@@ -21,13 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *iAlbumArtistId;
 @property (nullable, nonatomic, retain) NSString *iAlbumId;
 @property (nullable, nonatomic, retain) NSString *iArtistId;
-@property (nullable, nonatomic, retain) NSNumber *iCloud;
+@property (nullable, nonatomic, retain) NSNumber *iCloudItem;
 @property (nullable, nonatomic, retain) NSString *iGenreId;
 @property (nullable, nonatomic, retain) NSNumber *iPlayCount;
 @property (nullable, nonatomic, retain) NSString *iPlaylistId;
 @property (nullable, nonatomic, retain) NSNumber *iRate;
 @property (nullable, nonatomic, retain) NSString *iSongId;
-@property (nullable, nonatomic, retain) NSNumber *iTrack;
 @property (nullable, nonatomic, retain) NSNumber *iYear;
 @property (nullable, nonatomic, retain) NSNumber *lTimeDownloaded;
 @property (nullable, nonatomic, retain) NSString *sAlbumArtistName;
