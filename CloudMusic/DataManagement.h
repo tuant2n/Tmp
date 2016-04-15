@@ -16,20 +16,17 @@
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
 #import "DataObj.h"
-
-#import "MainCell.h"
-#import "SongsCell.h"
-#import "AlbumsCell.h"
-#import "ArtistsCell.h"
-#import "GenresCell.h"
-#import "HeaderTitle.h"
-#import "ListSongCell.h"
+#import "FileObj.h"
 
 #import "SongsViewController.h"
 #import "AlbumsViewController.h"
 #import "AlbumListViewController.h"
 #import "ArtistsViewController.h"
 #import "GenresViewController.h"
+
+#import "EditViewController.h"
+#import "AddToPlaylistViewController.h"
+#import "MakePlaylistViewController.h"
 
 #import "SearchOperation.h"
 
@@ -64,6 +61,8 @@
 
 - (void)deleteSong:(Item *)item;
 - (void)deleteAlbum:(AlbumObj *)album;
+- (void)deleteArtist:(AlbumArtistObj *)artist;
+- (void)deleteGenre:(GenreObj *)genre;
 
 #pragma mark - Search
 
@@ -73,6 +72,8 @@
 #pragma mark - DoAction
 
 - (void)doActionWithItem:(id)item fromNavigation:(UINavigationController *)navController;
+- (BOOL)doSwipeActionWithItem:(id)item atIndex:(NSInteger)index fromNavigation:(UINavigationController *)navController;
+- (void)doUtility:(int)iType withData:(NSArray *)arrData fromNavigation:(UINavigationController *)navController;
 
 #pragma mark - iTunes Sync
 

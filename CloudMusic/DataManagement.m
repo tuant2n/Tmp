@@ -100,7 +100,7 @@ static DataManagement *_sharedInstance = nil;
         [songList addObjectsFromArray:[collection items]];
     }
     
-    NSManagedObjectContext *backgroundContext = [[DataManagement sharedInstance].coreDataController createChildContextWithType:NSPrivateQueueConcurrencyType];
+    NSManagedObjectContext *backgroundContext = [self.coreDataController createChildContextWithType:NSPrivateQueueConcurrencyType];
     [backgroundContext performBlock:^{
         
         for (MPMediaItem *song in songList) {
@@ -323,7 +323,7 @@ static DataManagement *_sharedInstance = nil;
 
 - (NSArray *)getListGenreFilterByName:(NSString *)sName
 {
-    NSEntityDescription *itemEntity = [[DataManagement sharedInstance] itemEntity];
+    NSEntityDescription *itemEntity = [self itemEntity];
     
     NSAttributeDescription *iGenreId = [itemEntity.attributesByName objectForKey:@"iGenreId"];
     NSAttributeDescription *sGenreName = [itemEntity.attributesByName objectForKey:@"sGenreName"];
@@ -459,8 +459,32 @@ static DataManagement *_sharedInstance = nil;
 
 - (void)deleteAlbum:(AlbumObj *)album
 {
-    NSFetchRequest *request = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:album.iAlbumId artistId:nil genreId:nil];
-    NSArray *listSongs = [[[DataManagement sharedInstance] managedObjectContext] executeFetchRequest:request error:nil];
+    NSFetchRequest *request = [self getListSongFilterByName:nil albumId:album.iAlbumId artistId:nil genreId:nil];
+    NSArray *listSongs = [[self managedObjectContext] executeFetchRequest:request error:nil];
+    
+    for (Item *song in listSongs) {
+        [[self managedObjectContext] deleteObject:song];
+    }
+    
+    [self saveData];
+}
+
+- (void)deleteArtist:(AlbumArtistObj *)artist
+{
+    NSFetchRequest *request = [self getListSongFilterByName:nil albumId:nil artistId:artist.iAlbumArtistId genreId:nil];
+    NSArray *listSongs = [[self managedObjectContext] executeFetchRequest:request error:nil];
+    
+    for (Item *song in listSongs) {
+        [[self managedObjectContext] deleteObject:song];
+    }
+    
+    [self saveData];
+}
+
+- (void)deleteGenre:(GenreObj *)genre
+{
+    NSFetchRequest *request = [self getListSongFilterByName:nil albumId:nil artistId:nil genreId:genre.iGenreId];
+    NSArray *listSongs = [[self managedObjectContext] executeFetchRequest:request error:nil];
     
     for (Item *song in listSongs) {
         [[self managedObjectContext] deleteObject:song];
@@ -524,6 +548,88 @@ static DataManagement *_sharedInstance = nil;
         AlbumsViewController *vc = [[AlbumsViewController alloc] init];
         vc.sTitle = genre.sGenreName;
         vc.iGenreId = genre.iGenreId;
+        [navController pushViewController:vc animated:YES];
+    }
+}
+
+- (BOOL)doSwipeActionWithItem:(id)itemObj atIndex:(NSInteger)index fromNavigation:(UINavigationController *)navController
+{
+    if ([itemObj isKindOfClass:[Item class]]) {
+        Item *item = (Item *)itemObj;
+        
+        if (index == 0) {
+            [self deleteSong:item];
+            return NO;
+        }
+        else if (index == 1) {
+            // Add To Playlist
+        }
+        else if (index == 2) {
+            EditViewController *vc = [[EditViewController alloc] init];
+            vc.song = item;
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            [navController presentViewController:nav animated:YES completion:nil];
+        }
+    }
+    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
+        AlbumObj *album = (AlbumObj *)itemObj;
+        
+        if (index == 0) {
+            [self deleteAlbum:album];
+            return NO;
+        }
+        else if (index == 1) {
+            // Add To Playlist
+        }
+        else if (index == 2) {
+            EditViewController *vc = [[EditViewController alloc] init];
+            vc.album = album;
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            [navController presentViewController:nav animated:YES completion:nil];
+        }
+    }
+    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
+        AlbumArtistObj *artist = (AlbumArtistObj *)itemObj;
+        
+        if (index == 0) {
+            [self deleteArtist:artist];
+            return NO;
+        }
+        else if (index == 1) {
+            // Add To Playlist
+        }
+    }
+    else if ([itemObj isKindOfClass:[GenreObj class]]) {
+        GenreObj *genre = (GenreObj *)itemObj;
+        
+        if (index == 0) {
+            [self deleteGenre:genre];
+            return NO;
+        }
+        else if (index == 1) {
+            // Add To Playlist
+        }
+    }
+    
+    return YES;
+}
+
+- (void)doUtility:(int)iType withData:(NSArray *)arrData fromNavigation:(UINavigationController *)navController
+{
+    if (iType == kHeaderUtilTypeShuffle) {
+        // Play
+    }
+    else if (iType == kHeaderUtilTypeCreatePlaylist) {
+        MakePlaylistViewController *vc = [[MakePlaylistViewController alloc] init];
+        vc.arrListItem = arrData;
+        [navController pushViewController:vc animated:YES];
+    }
+    else if (iType == kHeaderUtilTypeGoAllAlbums) {
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        [navController pushViewController:vc animated:YES];
+    }
+    else if (iType == kHeaderUtilTypeGoAllSongs) {
+        SongsViewController *vc = [[SongsViewController alloc] init];
         [navController pushViewController:vc animated:YES];
     }
 }

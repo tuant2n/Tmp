@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MainCell.h"
 
-@class Item;
-
 @interface SongsCell : MainCell
 
 @end

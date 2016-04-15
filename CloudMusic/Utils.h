@@ -10,6 +10,15 @@
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "MainCell.h"
+#import "SongsCell.h"
+#import "AlbumsCell.h"
+#import "ArtistsCell.h"
+#import "GenresCell.h"
+#import "HeaderTitle.h"
+#import "ListSongCell.h"
+#import "FilesCell.h"
+
 #import "TableFooterView.h"
 #import "TableHeaderView.h"
 
@@ -53,9 +62,12 @@
 + (UIButton *)createBarButtonWithTitle:(NSString *)sTitle font:(UIFont *)font textColor:(UInt32)hexColor position:(UIControlContentHorizontalAlignment)position target:(id)target action:(SEL)selector;
 + (UIButton *)buttonMusicEqualizeqHolderWith:(PCSEQVisualizer *)musicEq target:(id)target action:(SEL)selector;
 
-+ (void)registerNibForTableView:(UITableView *)tblView;
-
 + (BOOL)isLandscapeDevice;
+
+#pragma mark - UITableView
+
++ (void)registerNibForTableView:(UITableView *)tblView;
++ (MainCell *)getCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 
 #pragma mark - Files
 
@@ -63,6 +75,8 @@
 + (NSString *)cachePath;
 + (NSString *)artworkPath;
 + (NSString *)dropboxPath;
++ (NSString *)getNameForFile:(NSString *)sFileName inFolder:(NSString *)sFolderPath extension:(NSString *)sExtension;
++ (NSString *)getFileSize:(NSString *)sFilePath;
 
 #pragma mark - NSString
 

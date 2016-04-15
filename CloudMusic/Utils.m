@@ -8,6 +8,12 @@
 
 #import "Utils.h"
 
+#import "Item.h"
+#import "AlbumObj.h"
+#import "AlbumArtistObj.h"
+#import "GenreObj.h"
+#import "FileObj.h"
+
 @implementation Utils
 
 #pragma mark - UIColor
@@ -212,7 +218,7 @@
 + (UIButton *)buttonMusicEqualizeqHolderWith:(PCSEQVisualizer *)musicEq target:(id)target action:(SEL)selector
 {
     UIButton *btnEqHolder = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btnEqHolder setFrame:CGRectMake(0.0, 0.0, 35.0, 35.0)];
+    [btnEqHolder setFrame:CGRectMake(0.0, 0.0, 30.0, 35.0)];
     btnEqHolder.backgroundColor = [UIColor clearColor];
     [btnEqHolder addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     btnEqHolder.multipleTouchEnabled = NO;
@@ -225,22 +231,6 @@
     [btnEqHolder addSubview:musicEq];
     
     return btnEqHolder;
-}
-
-+ (void)registerNibForTableView:(UITableView *)tblView
-{
-    [tblView registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
-    [tblView registerNib:[UINib nibWithNibName:@"AlbumsCell" bundle:nil] forCellReuseIdentifier:@"AlbumsCellId"];
-    [tblView registerNib:[UINib nibWithNibName:@"ArtistsCell" bundle:nil] forCellReuseIdentifier:@"ArtistsCellId"];
-    [tblView registerNib:[UINib nibWithNibName:@"GenresCell" bundle:nil] forCellReuseIdentifier:@"GenresCellId"];
-    [tblView registerNib:[UINib nibWithNibName:@"HeaderTitle" bundle:nil] forCellReuseIdentifier:@"HeaderTitleId"];
-    
-    [tblView registerNib:[UINib nibWithNibName:@"TableHeaderCell" bundle:nil] forCellReuseIdentifier:@"TableHeaderCellId"];
-    
-    [tblView registerNib:[UINib nibWithNibName:@"ListSongCell" bundle:nil] forCellReuseIdentifier:@"ListSongCellId"];
-    
-    tblView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    tblView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 + (BOOL)isLandscapeDevice
@@ -263,6 +253,47 @@
     }
     
     return landscape;
+}
+
+#pragma mark - UITableView
+
++ (void)registerNibForTableView:(UITableView *)tblView
+{
+    [tblView registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
+    [tblView registerNib:[UINib nibWithNibName:@"AlbumsCell" bundle:nil] forCellReuseIdentifier:@"AlbumsCellId"];
+    [tblView registerNib:[UINib nibWithNibName:@"ArtistsCell" bundle:nil] forCellReuseIdentifier:@"ArtistsCellId"];
+    [tblView registerNib:[UINib nibWithNibName:@"GenresCell" bundle:nil] forCellReuseIdentifier:@"GenresCellId"];
+    [tblView registerNib:[UINib nibWithNibName:@"ListSongCell" bundle:nil] forCellReuseIdentifier:@"ListSongCellId"];
+    [tblView registerNib:[UINib nibWithNibName:@"FilesCell" bundle:nil] forCellReuseIdentifier:@"FilesCellId"];
+    
+    [tblView registerNib:[UINib nibWithNibName:@"HeaderTitle" bundle:nil] forCellReuseIdentifier:@"HeaderTitleId"];
+    [tblView registerNib:[UINib nibWithNibName:@"TableHeaderCell" bundle:nil] forCellReuseIdentifier:@"TableHeaderCellId"];
+    
+    tblView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    tblView.separatorStyle = UITableViewCellSeparatorStyleNone;
+}
+
++ (MainCell *)getCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    MainCell *cell = nil;
+    
+    if ([itemObj isKindOfClass:[Item class]]) {
+        cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
+    }
+    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
+        cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
+    }
+    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
+        cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
+    }
+    else if ([itemObj isKindOfClass:[GenreObj class]]) {
+        cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
+    }
+    else if ([itemObj isKindOfClass:[FileObj class]]) {
+        cell = (FilesCell *)[tableView dequeueReusableCellWithIdentifier:@"FilesCellId" forIndexPath:indexPath];
+    }
+    
+    return cell;
 }
 
 #pragma mark - Files
@@ -295,6 +326,36 @@
         [[NSFileManager defaultManager] createDirectoryAtPath:dropboxPath withIntermediateDirectories:NO attributes:nil error:nil];
     }
     return dropboxPath;
+}
+
++ (NSString *)getNameForFile:(NSString *)sFileName inFolder:(NSString *)sFolderPath extension:(NSString *)sExtension
+{
+    NSString *sFilePath = nil;
+    
+    int count = 0;
+    do {
+        NSString *numberString = count > 0 ? [NSString stringWithFormat:@"(%d)",count]:@"";
+        sFileName = [NSString stringWithFormat:@"%@%@",sFileName,numberString];
+        sFilePath = [[Utils dropboxPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",sFileName,sExtension]];
+        count++;
+    } while ([[NSFileManager defaultManager] fileExistsAtPath:sFilePath]);
+    
+    return sFileName;
+}
+
++ (NSString *)getFileSize:(NSString *)sFilePath
+{
+    double size = ([[[NSFileManager defaultManager] attributesOfItemAtPath:sFilePath error:nil] fileSize]);
+    int multiplyFactor = 0;
+    
+    NSArray *tokens = [NSArray arrayWithObjects:@"bytes",@"KB",@"MB",@"GB",@"TB",nil];
+    
+    while (size > 1024) {
+        size /= 1024;
+        multiplyFactor++;
+    }
+    
+    return [NSString stringWithFormat:@"%4.2f %@",size,[tokens objectAtIndex:multiplyFactor]];
 }
 
 #pragma mark - NSString

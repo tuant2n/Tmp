@@ -9,11 +9,10 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    kHeaderUtilTypeEdit = 0,
-    kHeaderUtilTypeShuffle = 1,
-    kHeaderUtilTypeGoAllAlbums = 2,
-    kHeaderUtilTypeGoAllSongs = 3,
-    kHeaderUtilTypeCreatePlaylist = 4,
+    kHeaderUtilTypeShuffle,
+    kHeaderUtilTypeGoAllAlbums,
+    kHeaderUtilTypeGoAllSongs,
+    kHeaderUtilTypeCreatePlaylist,
 } kHeaderUtilType;
 
 @class AlbumObj;
@@ -29,6 +28,7 @@ typedef enum {
 @property (nonatomic, assign) id<TableHeaderViewDelegate> delegate;
 @property (nonatomic, strong) UISearchBar *searchBar;
 
+- (id)initForFilesVC;
 - (id)initForSongsVC;
 - (id)initForAlbumsVC;
 - (id)initForArtistsVC;

@@ -15,7 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FileInfo (CoreDataProperties)
 
-@property (nullable, nonatomic, retain) NSString *sFolderName;
 @property (nullable, nonatomic, retain) NSString *sFileName;
 @property (nullable, nonatomic, retain) NSString *sSize;
 @property (nullable, nonatomic, retain) NSNumber *lTimestamp;

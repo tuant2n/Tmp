@@ -85,11 +85,6 @@
             self.tfTagContent.placeholder = @"Genre";
             break;
             
-        case kElementTypeFolderName:
-            self.lblTagName.text = @"Folder";
-            self.tfTagContent.placeholder = @"Folder";
-            break;
-            
         case kElementTypeFilename:
             self.lblTagName.text = @"File Name";
             self.tfTagContent.placeholder = @"File Name";

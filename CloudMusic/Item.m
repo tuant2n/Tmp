@@ -66,12 +66,12 @@
 {
     NSDictionary *songInfo = item.songInfo;
     
-    self.sAssetUrl = item.sExportPath;
-    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:self.sAssetUrl] options:nil];
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:item.sExportPath] options:nil];
     [self setSongDuration:CMTimeGetSeconds([asset duration])];
     
     self.iSongId = [Utils getTimestamp];
     self.iCloudItem = @1;
+    self.sAssetUrl = [item.sExportPath lastPathComponent];
     
     NSString *sTitle = [songInfo objectForKey:@"title"];
     if (sTitle) {
@@ -113,7 +113,6 @@
         else {
             self.iAlbumArtistId = [NSString stringWithFormat:@"%@-%@",sArtistName,[Utils getTimestamp]];
         }
-        
         [self setAlbumArtistName:sArtistName];
     }
     
@@ -126,6 +125,7 @@
         else {
             self.iGenreId = [NSString stringWithFormat:@"%@-%@",sGenreName,[Utils getTimestamp]];
         }
+        [self setGenreName:sGenreName];
     }
     
     NSString *sYear = [songInfo objectForKey:@"year"];
@@ -314,7 +314,6 @@
                 sSongDesc = [NSAttributedString attributedStringWithFormat:@""];
             }
         }
-        
     }
     return sSongDesc;
 }

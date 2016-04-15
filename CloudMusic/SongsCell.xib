@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aUc-uV-sAR" userLabel="content">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7ws-ob-i67" userLabel="imgvArtwork">
                                 <rect key="frame" x="5" y="5" width="50" height="50"/>
@@ -25,19 +25,19 @@
                                 </constraints>
                             </imageView>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PJ4-kq-QMH" userLabel="vInfo">
-                                <rect key="frame" x="60" y="5" width="225" height="50"/>
+                                <rect key="frame" x="60" y="8" width="225" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afz-yA-158" userLabel="lblSongName">
-                                        <rect key="frame" x="0.0" y="0.0" width="225" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="225" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="7HR-SC-gaT"/>
+                                            <constraint firstAttribute="height" constant="25" id="7HR-SC-gaT"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jhu-oh-kTj" userLabel="lblSongDesc">
-                                        <rect key="frame" x="0.0" y="30" width="225" height="20"/>
+                                        <rect key="frame" x="0.0" y="25" width="225" height="20"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -48,17 +48,17 @@
                                     <constraint firstAttribute="trailing" secondItem="Jhu-oh-kTj" secondAttribute="trailing" id="7y0-qa-LW5"/>
                                     <constraint firstAttribute="bottom" secondItem="Jhu-oh-kTj" secondAttribute="bottom" id="8Y8-bM-Vq4"/>
                                     <constraint firstItem="Jhu-oh-kTj" firstAttribute="top" secondItem="afz-yA-158" secondAttribute="bottom" id="9LZ-j5-3FC"/>
-                                    <constraint firstAttribute="height" constant="50" id="Gpb-Hn-41j"/>
+                                    <constraint firstAttribute="height" constant="45" id="Gpb-Hn-41j"/>
                                     <constraint firstItem="afz-yA-158" firstAttribute="leading" secondItem="PJ4-kq-QMH" secondAttribute="leading" id="IfL-ma-0rg"/>
                                     <constraint firstItem="afz-yA-158" firstAttribute="top" secondItem="PJ4-kq-QMH" secondAttribute="top" id="nMG-IN-RAM"/>
                                     <constraint firstAttribute="trailing" secondItem="afz-yA-158" secondAttribute="trailing" id="xL2-4X-y0c"/>
                                 </constraints>
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QaO-CN-gH3" userLabel="vExternal">
-                                <rect key="frame" x="290" y="0.0" width="30" height="60"/>
+                                <rect key="frame" x="290" y="0.0" width="30" height="61"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f4e-26-QPm" userLabel="lblDuration">
-                                        <rect key="frame" x="0.0" y="20" width="30" height="20"/>
+                                        <rect key="frame" x="0.0" y="21" width="30" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="sCA-WY-RTu"/>
                                         </constraints>
@@ -67,10 +67,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ipod-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="wrc-ch-64t" userLabel="imgvIcon">
-                                        <rect key="frame" x="0.0" y="40" width="30" height="20"/>
+                                        <rect key="frame" x="0.0" y="41" width="30" height="20"/>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSd-Hh-rKl" userLabel="vMusicEq">
-                                        <rect key="frame" x="11" y="6" width="8" height="14"/>
+                                        <rect key="frame" x="11" y="7" width="8" height="14"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="ZCb-Vt-GNy"/>
                                             <constraint firstAttribute="width" constant="8" id="tfh-vX-ydT"/>
@@ -116,9 +116,15 @@
                     <constraint firstAttribute="bottom" secondItem="qae-L9-N7p" secondAttribute="bottom" id="KDE-ix-40a"/>
                     <constraint firstAttribute="trailing" secondItem="qae-L9-N7p" secondAttribute="trailing" id="Kjj-0v-Mgo"/>
                     <constraint firstItem="qae-L9-N7p" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="QPQ-q0-mxN"/>
+                    <constraint firstAttribute="bottom" secondItem="aUc-uV-sAR" secondAttribute="bottom" id="S6z-9l-oPo"/>
                     <constraint firstAttribute="trailing" secondItem="aUc-uV-sAR" secondAttribute="trailing" id="gdV-Tq-Lkw"/>
                     <constraint firstItem="aUc-uV-sAR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="hjl-P5-m6C"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="9sP-k7-Qvh"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="imgvArtwork" destination="7ws-ob-i67" id="iba-2O-Tx4"/>

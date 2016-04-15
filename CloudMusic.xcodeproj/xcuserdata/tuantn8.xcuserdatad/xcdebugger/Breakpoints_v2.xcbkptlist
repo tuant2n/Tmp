@@ -10,12 +10,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CloudMusic/DropBoxManagementViewController.m"
-            timestampString = "482322519.058581"
+            timestampString = "482380073.596204"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "409"
-            endingLineNumber = "409"
-            landmarkName = "-finishAllDownload"
+            startingLineNumber = "419"
+            endingLineNumber = "419"
+            landmarkName = "-logout"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CloudMusic/AppDelegate.m"
+            timestampString = "482401174.34076"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "-sessionDidReceiveAuthorizationFailure:userId:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -308,58 +308,50 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MainCell *cell = nil;
     id cellItem = nil;
-    BOOL isHiddenSeperator = NO;
-    
+ 
     if (tableView == self.tblSearchResult) {
         DataObj *resultOj = self.arrResults[indexPath.section];
         cellItem = resultOj.listData[indexPath.row];
-        isHiddenSeperator = (indexPath.row == [resultOj.listData count] - 1);
     }
     else {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
         cellItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
     }
     
-    cell = [self configCellWithItem:cellItem atIndex:indexPath tableView:tableView];
-    
-    if (cell && cellItem)
-    {
-        cell.delegate = self;
-        cell.allowsMultipleSwipe = NO;
-        
-        [cell config:cellItem];
-        [cell setLineHidden:isHiddenSeperator];
-    }
+    return [Utils getCellWithItem:cellItem atIndex:indexPath tableView:tableView];
+}
 
-    return cell;
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[MainCell class]])
+    {
+        id cellItem = nil;
+        BOOL isHiddenSeperator = NO;
+        
+        if (tableView == self.tblSearchResult) {
+            DataObj *resultOj = self.arrResults[indexPath.section];
+            cellItem = resultOj.listData[indexPath.row];
+            isHiddenSeperator = (indexPath.row == [resultOj.listData count] - 1);
+        }
+        else {
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
+            cellItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
+        }
+        
+        MainCell *mainCell = (MainCell *)cell;
+        mainCell.delegate = self;
+        mainCell.allowsMultipleSwipe = NO;
+        
+        [mainCell config:cellItem];
+        [mainCell setLineHidden:isHiddenSeperator];
+    }
 }
 
 - (void)configureCell:(MainCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell config:item];
-}
-
-- (MainCell *)configCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
-{
-    MainCell *cell = nil;
-    
-    if ([itemObj isKindOfClass:[Item class]]) {
-        cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
-    }
-    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
-        cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
-    }
-    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
-        cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
-    }
-    else if ([itemObj isKindOfClass:[GenreObj class]]) {
-        cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
-    }
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -384,33 +376,25 @@
 
 - (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
 {
-    NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
-    if (!indexPath) {
+    id itemObj = nil;
+    
+    if (isActiveSearch) {
+        NSIndexPath *indexPath = [self.tblSearchResult indexPathForCell:cell];
+        DataObj *resultOj = self.arrResults[indexPath.section];
+        itemObj = resultOj.listData[indexPath.row];
+    }
+    else {
+        NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
+        itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    }
+    
+    if (!itemObj) {
         return YES;
     }
     
     if (direction == MGSwipeDirectionLeftToRight)
     {
-        Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        
-        if (item.isCloud) {
-            if (index == 0) {
-                [[DataManagement sharedInstance] deleteSong:item];
-                return NO;
-            }
-            else if (index == 1) {
-                // Add To Playlít
-            }
-            else if (index == 2) {
-                EditViewController *vc = [[EditViewController alloc] init];
-                vc.song = item;
-                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
-            }
-        }
-        else {
-            
-        }
+        return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index fromNavigation:self.navigationController];
     }
     
     return YES;
@@ -519,12 +503,7 @@
 
 - (void)selectUtility:(kHeaderUtilType)iType
 {
-    if (iType == kHeaderUtilTypeCreatePlaylist) {
-        
-    }
-    else if (iType == kHeaderUtilTypeShuffle) {
-        
-    }
+    [[DataManagement sharedInstance] doUtility:iType withData:[self.fetchedResultsController fetchedObjects] fromNavigation:self.navigationController];
 }
 
 #pragma mark - MusicEq

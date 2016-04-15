@@ -236,14 +236,19 @@
 - (void)selectAll
 {
     isSelectAll = !isSelectAll;
-    [self.btnSelect setTitle:(isSelectAll ? @"Deselect All" : @"Selec All") forState:UIControlStateNormal];
+    [self changeSelect:isSelectAll];
+}
+
+- (void)changeSelect:(BOOL)isSelect
+{
+    [self.btnSelect setTitle:(isSelect ? @"Deselect All" : @"Selec All") forState:UIControlStateNormal];
     
     for (DropBoxObj *item in self.arrListData) {
-        item.isSelected = isSelectAll;
+        item.isSelected = isSelect;
     }
     
     [self.arrSelected removeAllObjects];
-    if (isSelectAll) {
+    if (isSelect) {
         [self.arrSelected addObjectsFromArray:self.arrListData];
     }
 }
@@ -351,6 +356,8 @@
     NSArray *arrSuccess = [self.arrSelected filteredArrayUsingPredicate:filterSuccess];
     
     if (arrSuccess.count <= 0) {
+        isSelectAll = NO;
+        [self changeSelect:isSelectAll];
         [MBProgressHUD hideAllHUDsForView:self.navigationController.view animated:YES];
         return;
     }
@@ -366,6 +373,9 @@
     }
     
     [[DataManagement sharedInstance] saveData];
+    
+    isSelectAll = NO;
+    [self changeSelect:isSelectAll];
     [MBProgressHUD hideAllHUDsForView:self.navigationController.view animated:YES];
 }
 

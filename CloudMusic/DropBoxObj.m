@@ -57,16 +57,8 @@
                 [[NSFileManager defaultManager] removeItemAtPath:_sDownloadPath error:nil];
             }
             
-            NSString *sName = [_sFileName stringByDeletingPathExtension];
-            NSString *sFileName = nil;
-
-            int count = 0;
-            do {
-                NSString *numberString = count > 0 ? [NSString stringWithFormat:@"-%d",count] : @"";
-                sFileName = [NSString stringWithFormat:@"%@%@.m4a",sName,numberString];
-                _sExportPath = [[Utils dropboxPath] stringByAppendingPathComponent:sFileName];
-                count++;
-            } while ([[NSFileManager defaultManager] fileExistsAtPath:_sExportPath]);
+            NSString *sFileName = [Utils getNameForFile:[_sFileName stringByDeletingPathExtension] inFolder:[Utils dropboxPath] extension:@"m4a"];
+            _sExportPath = [[Utils dropboxPath] stringByAppendingPathComponent:[sFileName stringByAppendingPathExtension:@"m4a"]];
         }
         else {
             _iType = kFileTypeFolder;
@@ -184,7 +176,7 @@
         }
         
         if (sGenre) {
-            [info setObject:sArtistName forKey:@"genre"];
+            [info setObject:sGenre forKey:@"genre"];
         }
         
         if (sYear) {
@@ -294,8 +286,6 @@
      https://github.com/BeamApp/MusicPlayerViewController
      NVDSPExample
      */
-    
-    
 }
 
 @end

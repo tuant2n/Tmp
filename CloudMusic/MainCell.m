@@ -62,12 +62,12 @@
 
 + (CGFloat)normalCellHeight
 {
-    return 62.0;
+    return 61.0;
 }
 
 + (CGFloat)largeCellHeight
 {
-    return 82.0;
+    return 81.0;
 }
 
 - (void)setItemType:(BOOL)isCloud

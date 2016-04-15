@@ -39,6 +39,18 @@
     return _arrListUtils;
 }
 
+- (id)initForFilesVC
+{
+    self = [super init];
+    
+    if (self) {
+        [self setupForFilesVC];
+        [self initUI];
+    }
+    
+    return self;
+}
+
 - (id)initForSongsVC
 {
     self = [super init];
@@ -97,6 +109,19 @@
     }
     
     return self;
+}
+
+- (void)setupForFilesVC
+{
+    [self.arrListUtils removeAllObjects];
+    
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist]];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Shuffle" icon:@"shuffle-icon" type:kHeaderUtilTypeShuffle]];
+    
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xf7f7f7];
+    hasIndexTitles = NO;
+    
+    [self setupDefault];
 }
 
 - (void)setupForSongsVC

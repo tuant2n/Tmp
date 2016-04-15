@@ -23,7 +23,7 @@
 @property (nonatomic, strong) PCSEQVisualizer *musicEq;
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
 
-@property (nonatomic, strong) NSMutableArray *genreArray;
+@property (nonatomic, strong) NSMutableArray *arrData;
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 @property (nonatomic, weak) IBOutlet UITableView *tblSearchResult;
@@ -46,12 +46,12 @@
     return _arrResults;
 }
 
-- (NSMutableArray *)genreArray
+- (NSMutableArray *)arrData
 {
-    if (!_genreArray) {
-        _genreArray = [[NSMutableArray alloc] init];
+    if (!_arrData) {
+        _arrData = [[NSMutableArray alloc] init];
     }
-    return _genreArray;
+    return _arrData;
 }
 
 - (void)viewDidLoad
@@ -65,8 +65,8 @@
 
 - (void)getData
 {
-    [self.genreArray removeAllObjects];
-    [self.genreArray addObjectsFromArray:[[DataManagement sharedInstance] getListGenreFilterByName:nil]];
+    [self.arrData removeAllObjects];
+    [self.arrData addObjectsFromArray:[[DataManagement sharedInstance] getListGenreFilterByName:nil]];
     [self.tblList reloadData];
     [self setupFooterView];
 }
@@ -278,7 +278,7 @@
         return resultOj.listData.count;
     }
     else {
-        return self.genreArray.count;
+        return self.arrData.count;
     }
 }
 
@@ -289,51 +289,43 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MainCell *cell = nil;
     id cellItem = nil;
-    BOOL isHiddenSeperator = NO;
     
     if (tableView == self.tblSearchResult) {
         DataObj *resultObj = self.arrResults[indexPath.section];
         cellItem = resultObj.listData[indexPath.row];
-        isHiddenSeperator = (indexPath.row == [resultObj.listData count] - 1);
     }
     else {
-        cellItem = self.genreArray[indexPath.row];
-        isHiddenSeperator = (indexPath.row == [self.genreArray count] - 1);
+        cellItem = self.arrData[indexPath.row];
     }
     
-    cell = [self configCellWithItem:cellItem atIndex:indexPath tableView:tableView];
-    
-    if (cell && cellItem)
-    {
-        cell.delegate = self;
-        cell.allowsMultipleSwipe = NO;
-        
-        [cell config:cellItem];
-        [cell setLineHidden:isHiddenSeperator];
-    }
-    
-    return cell;
+    return [Utils getCellWithItem:cellItem atIndex:indexPath tableView:tableView];
 }
 
-- (MainCell *)configCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MainCell *cell = nil;
-    
-    if ([itemObj isKindOfClass:[Item class]]) {
-        cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
+    if ([cell isKindOfClass:[MainCell class]])
+    {
+        id cellItem = nil;
+        BOOL isHiddenSeperator = NO;
+        
+        if (tableView == self.tblSearchResult) {
+            DataObj *resultObj = self.arrResults[indexPath.section];
+            cellItem = resultObj.listData[indexPath.row];
+            isHiddenSeperator = (indexPath.row == [resultObj.listData count] - 1);
+        }
+        else {
+            cellItem = self.arrData[indexPath.row];
+            isHiddenSeperator = (indexPath.row == [self.arrData count] - 1);
+        }
+        
+        MainCell *mainCell = (MainCell *)cell;
+        mainCell.delegate = self;
+        mainCell.allowsMultipleSwipe = NO;
+        
+        [mainCell config:cellItem];
+        [mainCell setLineHidden:isHiddenSeperator];
     }
-    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
-        cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
-    }
-    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
-        cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
-    }
-    else if ([itemObj isKindOfClass:[GenreObj class]]) {
-        cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
-    }
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -347,7 +339,7 @@
         itemObj = resultOj.listData[indexPath.row];
     }
     else {
-        itemObj = [self.genreArray objectAtIndex:indexPath.row];
+        itemObj = [self.arrData objectAtIndex:indexPath.row];
     }
     
     if (itemObj) {
@@ -358,18 +350,25 @@
 
 - (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
 {
-    NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
-    if (!indexPath) {
+    id itemObj = nil;
+    
+    if (isActiveSearch) {
+        NSIndexPath *indexPath = [self.tblSearchResult indexPathForCell:cell];
+        DataObj *resultOj = self.arrResults[indexPath.section];
+        itemObj = resultOj.listData[indexPath.row];
+    }
+    else {
+        NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
+        itemObj = self.arrData[indexPath.row];
+    }
+    
+    if (!itemObj) {
         return YES;
     }
     
     if (direction == MGSwipeDirectionLeftToRight)
     {
-        GenreObj *item = self.genreArray[indexPath.row];
-        
-        if (item.isCloud && index == 0) {
-            return NO;
-        }
+        return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index fromNavigation:self.navigationController];
     }
     
     return YES;
@@ -391,7 +390,7 @@
 - (void)setupFooterView
 {
     NSString *sContent = nil;
-    int itemCount = (int)self.genreArray.count;
+    int itemCount = (int)self.arrData.count;
     
     if (itemCount <= 1) {
         sContent = [NSString stringWithFormat:@"%d Genre",itemCount];
@@ -414,10 +413,9 @@
 
 - (void)selectUtility:(kHeaderUtilType)iType
 {
-    if (iType == kHeaderUtilTypeCreatePlaylist) {
-        
-    }
+    [[DataManagement sharedInstance] doUtility:iType withData:nil fromNavigation:self.navigationController];
 }
+
 
 #pragma mark - MusicEq
 

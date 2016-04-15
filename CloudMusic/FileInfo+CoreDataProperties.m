@@ -13,7 +13,6 @@
 
 @implementation FileInfo (CoreDataProperties)
 
-@dynamic sFolderName;
 @dynamic sFileName;
 @dynamic sSize;
 @dynamic lTimestamp;

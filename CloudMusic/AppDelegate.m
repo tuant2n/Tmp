@@ -10,11 +10,13 @@
 #import <DropboxSDK/DropboxSDK.h>
 
 #import "MainTabBarController.h"
+
 #import "Utils.h"
+#import "GlobalParameter.h"
 
 @interface AppDelegate () <DBSessionDelegate,DBNetworkRequestDelegate>
 {
-    NSString *relinkUserId;
+    UIBackgroundTaskIdentifier bgTask;
 }
 
 @end
@@ -23,7 +25,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
     self.window.rootViewController = [[MainTabBarController alloc] init];
@@ -32,7 +33,7 @@
     NSString *dropBoxAppSecret = @"dge3dlml97z3e34";
     NSString *root = kDBRootDropbox;
     
-    DBSession* session = [[DBSession alloc] initWithAppKey:dropBoxAppKey appSecret:dropBoxAppSecret root:root];
+    DBSession *session = [[DBSession alloc] initWithAppKey:dropBoxAppKey appSecret:dropBoxAppSecret root:root];
     session.delegate = self;
     [DBSession setSharedSession:session];
     [DBRequest setNetworkRequestDelegate:self];
@@ -53,26 +54,11 @@
     return NO;
 }
 
-#pragma mark - DBSessionDelegate methods
+#pragma mark - DBSessionDelegateMethods
 
 - (void)sessionDidReceiveAuthorizationFailure:(DBSession *)session userId:(NSString *)userId
 {
-    relinkUserId = userId;
-    [[[UIAlertView alloc] initWithTitle:@"Dropbox Session Ended" message:@"Do you want to relink?" delegate:self
-                      cancelButtonTitle:@"Cancel" otherButtonTitles:@"Relink", nil] show];
-}
-
-#pragma mark UIAlertViewDelegate methods
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index
-{
-    if (index != alertView.cancelButtonIndex)
-    {
-        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        UINavigationController *controller = (UINavigationController*)[mainStoryboard instantiateViewControllerWithIdentifier:@"NavigationController"];
-        [[DBSession sharedSession] linkFromController:[controller visibleViewController]];
-    }
-    relinkUserId = nil;
+    [[GlobalParameter sharedInstance] clearDropBoxInfo];
 }
 
 #pragma mark - DBNetworkRequestDelegate methods
@@ -100,9 +86,17 @@ static int outstandingRequests;
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    bgTask = [application beginBackgroundTaskWithName:@"BackgroundTask" expirationHandler:^{
+        [application endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [application endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    });
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

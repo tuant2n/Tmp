@@ -240,6 +240,7 @@
 		7B26B2421CAF76C000368CA8 /* ArtworkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B2411CAF76C000368CA8 /* ArtworkView.m */; };
 		7B26B2441CAF76D300368CA8 /* ArtworkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B26B2431CAF76D300368CA8 /* ArtworkView.xib */; };
 		7B26B2471CAF780B00368CA8 /* TagObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B2461CAF780B00368CA8 /* TagObj.m */; };
+		7B3068141CC0C9F50048A593 /* FileObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B3068131CC0C9F50048A593 /* FileObj.m */; };
 		7B4CD88A1CACDFE00041BE4E /* MakePlaylistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4CD8881CACDFE00041BE4E /* MakePlaylistViewController.m */; };
 		7B4CD88B1CACDFE00041BE4E /* MakePlaylistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B4CD8891CACDFE00041BE4E /* MakePlaylistViewController.xib */; };
 		7B4CD8911CAD09D50041BE4E /* ListSongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4CD88F1CAD09D50041BE4E /* ListSongCell.m */; };
@@ -252,6 +253,11 @@
 		7BD22EED1CBF7357005DF164 /* KGModal.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22EEA1CBF7357005DF164 /* KGModal.m */; };
 		7BD22F151CBFB1F9005DF164 /* LDProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22F121CBFB1F9005DF164 /* LDProgressView.m */; };
 		7BD22F161CBFB1F9005DF164 /* UIColor+RGBValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22F141CBFB1F9005DF164 /* UIColor+RGBValues.m */; };
+		7BEA9BC11CC0F3330071EEB5 /* btnRename.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA9BBE1CC0F3330071EEB5 /* btnRename.png */; };
+		7BEA9BC21CC0F3330071EEB5 /* btnRename@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA9BBF1CC0F3330071EEB5 /* btnRename@2x.png */; };
+		7BEA9BC31CC0F3330071EEB5 /* btnRename@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA9BC01CC0F3330071EEB5 /* btnRename@3x.png */; };
+		7BEA9BC81CC0F9AB0071EEB5 /* AddToPlaylistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA9BC61CC0F9AB0071EEB5 /* AddToPlaylistViewController.m */; };
+		7BEA9BC91CC0F9AB0071EEB5 /* AddToPlaylistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA9BC71CC0F9AB0071EEB5 /* AddToPlaylistViewController.xib */; };
 		7BF5C8D31C915D2100175C6F /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BF5C8D21C915D2100175C6F /* PlayerViewController.m */; };
 		7BF5C8D91C915E3F00175C6F /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BF5C8D81C915E3F00175C6F /* Utils.m */; };
 		7BF5C8DB1C91605800175C6F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BF5C8DA1C91605800175C6F /* Foundation.framework */; };
@@ -597,6 +603,8 @@
 		7B26B2431CAF76D300368CA8 /* ArtworkView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtworkView.xib; sourceTree = "<group>"; };
 		7B26B2451CAF780B00368CA8 /* TagObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagObj.h; sourceTree = "<group>"; };
 		7B26B2461CAF780B00368CA8 /* TagObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagObj.m; sourceTree = "<group>"; };
+		7B3068121CC0C9F50048A593 /* FileObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileObj.h; sourceTree = "<group>"; };
+		7B3068131CC0C9F50048A593 /* FileObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileObj.m; sourceTree = "<group>"; };
 		7B4CD8871CACDFE00041BE4E /* MakePlaylistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakePlaylistViewController.h; sourceTree = "<group>"; };
 		7B4CD8881CACDFE00041BE4E /* MakePlaylistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakePlaylistViewController.m; sourceTree = "<group>"; };
 		7B4CD8891CACDFE00041BE4E /* MakePlaylistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MakePlaylistViewController.xib; sourceTree = "<group>"; };
@@ -618,6 +626,12 @@
 		7BD22F121CBFB1F9005DF164 /* LDProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDProgressView.m; sourceTree = "<group>"; };
 		7BD22F131CBFB1F9005DF164 /* UIColor+RGBValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RGBValues.h"; sourceTree = "<group>"; };
 		7BD22F141CBFB1F9005DF164 /* UIColor+RGBValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RGBValues.m"; sourceTree = "<group>"; };
+		7BEA9BBE1CC0F3330071EEB5 /* btnRename.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnRename.png; sourceTree = "<group>"; };
+		7BEA9BBF1CC0F3330071EEB5 /* btnRename@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnRename@2x.png"; sourceTree = "<group>"; };
+		7BEA9BC01CC0F3330071EEB5 /* btnRename@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnRename@3x.png"; sourceTree = "<group>"; };
+		7BEA9BC51CC0F9AB0071EEB5 /* AddToPlaylistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddToPlaylistViewController.h; sourceTree = "<group>"; };
+		7BEA9BC61CC0F9AB0071EEB5 /* AddToPlaylistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddToPlaylistViewController.m; sourceTree = "<group>"; };
+		7BEA9BC71CC0F9AB0071EEB5 /* AddToPlaylistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddToPlaylistViewController.xib; sourceTree = "<group>"; };
 		7BF5C8D11C915D2100175C6F /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		7BF5C8D21C915D2100175C6F /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
 		7BF5C8D71C915E3F00175C6F /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
@@ -880,7 +894,9 @@
 				3C5927EA1CB6A4DF00320D55 /* DropBoxManagementViewController.h */,
 				3C5927EB1CB6A4DF00320D55 /* DropBoxManagementViewController.m */,
 				3C5927EC1CB6A4DF00320D55 /* DropBoxManagementViewController.xib */,
-				3CB3FEE81CB9134800A95DD2 /* DropBoxCell */,
+				3CB3FEEE1CB9140000A95DD2 /* DropBoxFileCell.h */,
+				3CB3FEEF1CB9140000A95DD2 /* DropBoxFileCell.m */,
+				3CB3FEF01CB9140000A95DD2 /* DropBoxFileCell.xib */,
 			);
 			name = DropBoxManagementViewController;
 			sourceTree = "<group>";
@@ -992,6 +1008,8 @@
 				3C9199AD1CA93ED00099B451 /* DataObj.m */,
 				3CB3FF411CB95E0200A95DD2 /* DropBoxObj.h */,
 				3CB3FF421CB95E0200A95DD2 /* DropBoxObj.m */,
+				7B3068121CC0C9F50048A593 /* FileObj.h */,
+				7B3068131CC0C9F50048A593 /* FileObj.m */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -1107,6 +1125,9 @@
 		3CB1052B1CA419DB0087D20A /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				7BEA9BBE1CC0F3330071EEB5 /* btnRename.png */,
+				7BEA9BBF1CC0F3330071EEB5 /* btnRename@2x.png */,
+				7BEA9BC01CC0F3330071EEB5 /* btnRename@3x.png */,
 				3C6DB1001CA6D0CE00F68D3E /* list-item-icon.png */,
 				3C6DB1011CA6D0CE00F68D3E /* list-item-icon@2x.png */,
 				3C6DB1021CA6D0CE00F68D3E /* list-item-icon@3x.png */,
@@ -1130,16 +1151,6 @@
 				3CB105311CA419DB0087D20A /* ipod-item-icon@3x.png */,
 			);
 			path = Media;
-			sourceTree = "<group>";
-		};
-		3CB3FEE81CB9134800A95DD2 /* DropBoxCell */ = {
-			isa = PBXGroup;
-			children = (
-				3CB3FEEE1CB9140000A95DD2 /* DropBoxFileCell.h */,
-				3CB3FEEF1CB9140000A95DD2 /* DropBoxFileCell.m */,
-				3CB3FEF01CB9140000A95DD2 /* DropBoxFileCell.xib */,
-			);
-			name = DropBoxCell;
 			sourceTree = "<group>";
 		};
 		3CB3FF0A1CB9578100A95DD2 /* FileTypes */ = {
@@ -1232,7 +1243,7 @@
 			path = HeaderView;
 			sourceTree = "<group>";
 		};
-		7B15335D1CAA834C0099DD9C /* ListAlbumViewController */ = {
+		7B15335D1CAA834C0099DD9C /* AlbumsViewController */ = {
 			isa = PBXGroup;
 			children = (
 				3C09C6FC1C8C6910004A44E2 /* AlbumsViewController.h */,
@@ -1242,7 +1253,7 @@
 				3C6DB0FC1CA6CC1A00F68D3E /* AlbumsCell.m */,
 				3C6DB0FD1CA6CC1A00F68D3E /* AlbumsCell.xib */,
 			);
-			name = ListAlbumViewController;
+			name = AlbumsViewController;
 			sourceTree = "<group>";
 		};
 		7B15335E1CAA83590099DD9C /* AlbumListViewController */ = {
@@ -1404,6 +1415,16 @@
 			path = LDProgressView;
 			sourceTree = "<group>";
 		};
+		7BEA9BC41CC0F9920071EEB5 /* AddToPlaylistViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7BEA9BC51CC0F9AB0071EEB5 /* AddToPlaylistViewController.h */,
+				7BEA9BC61CC0F9AB0071EEB5 /* AddToPlaylistViewController.m */,
+				7BEA9BC71CC0F9AB0071EEB5 /* AddToPlaylistViewController.xib */,
+			);
+			name = AddToPlaylistViewController;
+			sourceTree = "<group>";
+		};
 		7BF5C8C31C9153EA00175C6F /* Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -1434,7 +1455,7 @@
 		7BF5C8C51C9153FA00175C6F /* Albums */ = {
 			isa = PBXGroup;
 			children = (
-				7B15335D1CAA834C0099DD9C /* ListAlbumViewController */,
+				7B15335D1CAA834C0099DD9C /* AlbumsViewController */,
 				7B15335E1CAA83590099DD9C /* AlbumListViewController */,
 			);
 			name = Albums;
@@ -1443,6 +1464,7 @@
 		7BF5C8C61C91540400175C6F /* Playlists */ = {
 			isa = PBXGroup;
 			children = (
+				7BEA9BC41CC0F9920071EEB5 /* AddToPlaylistViewController */,
 				7B4CD8861CACDFC40041BE4E /* MakePlaylistViewController */,
 				7B4CD8851CACDFA00041BE4E /* PlaylistsViewController */,
 			);
@@ -1591,6 +1613,11 @@
 					3C09C6D51C8C664E004A44E2 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = KX7BQBX473;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1650,6 +1677,7 @@
 				7BF65F5F1CA3FFAF007B198D /* Info.plist in Resources */,
 				3CB105331CA419DB0087D20A /* filetype_audio@2x.png in Resources */,
 				7B1533631CAA863B0099DD9C /* AlbumListViewController.xib in Resources */,
+				7BEA9BC31CC0F3330071EEB5 /* btnRename@3x.png in Resources */,
 				3CB3FF511CB969BF00A95DD2 /* unselect@2x.png in Resources */,
 				7B066A5C1CA4CE790078FD53 /* PlaylistsViewController.xib in Resources */,
 				3C4926CD1C93EBCC0065B1DD /* playlists-selected.png in Resources */,
@@ -1742,6 +1770,7 @@
 				3C4926CF1C93EBCC0065B1DD /* playlists-selected@3x.png in Resources */,
 				3C4926BD1C93EBCC0065B1DD /* files-selected@3x.png in Resources */,
 				3CEA50321CAEC44700123F3C /* EditViewController.xib in Resources */,
+				7BEA9BC11CC0F3330071EEB5 /* btnRename.png in Resources */,
 				3C6C2CB41CB26AC600F3E901 /* IQKeyboardManager.bundle in Resources */,
 				3C4926DE1C93EBCC0065B1DD /* songs@3x.png in Resources */,
 				3C4926B61C93EBCC0065B1DD /* artists-selected@2x.png in Resources */,
@@ -1754,6 +1783,7 @@
 				3C53415C1CB7FEAC000BA5DD /* dropboxIcon_large@3x.png in Resources */,
 				3C4926C11C93EBCC0065B1DD /* genres-selected.png in Resources */,
 				3C4926C31C93EBCC0065B1DD /* genres-selected@3x.png in Resources */,
+				7BEA9BC91CC0F9AB0071EEB5 /* AddToPlaylistViewController.xib in Resources */,
 				3C4926CB1C93EBCC0065B1DD /* more@2x.png in Resources */,
 				7B066A5A1CA4CDD50078FD53 /* FilesViewController.xib in Resources */,
 				3C4926C01C93EBCC0065B1DD /* files@3x.png in Resources */,
@@ -1765,6 +1795,7 @@
 				3C4926B21C93EBCC0065B1DD /* albums.png in Resources */,
 				3C4926BE1C93EBCC0065B1DD /* files.png in Resources */,
 				7B066A8A1CA50BF00078FD53 /* textField-background@3x.png in Resources */,
+				7BEA9BC21CC0F3330071EEB5 /* btnRename@2x.png in Resources */,
 				3C8D3D9E1CA57B5F008EB7A8 /* btnDelete.png in Resources */,
 				7B26B2441CAF76D300368CA8 /* ArtworkView.xib in Resources */,
 				3C4926C71C93EBCC0065B1DD /* more-selected.png in Resources */,
@@ -1804,6 +1835,7 @@
 				3C6DB1091CA6DACB00F68D3E /* AlbumObj.m in Sources */,
 				3C6C2CE31CB2A9CE00F3E901 /* TagLyricCell.m in Sources */,
 				3C9199931CA92A7E0099B451 /* GenreObj.m in Sources */,
+				7B3068141CC0C9F50048A593 /* FileObj.m in Sources */,
 				7BD22F161CBFB1F9005DF164 /* UIColor+RGBValues.m in Sources */,
 				7BD179461C9D5122004CD5AF /* HCDCoreDataStackController.m in Sources */,
 				7BF65F511CA3D782007B198D /* UIImageView+WebCache.m in Sources */,
@@ -1821,6 +1853,7 @@
 				3C6C2CAA1CB26AC600F3E901 /* IQUIViewController+Additions.m in Sources */,
 				3C6C2CA81CB26AC600F3E901 /* IQUITextFieldView+Additions.m in Sources */,
 				7BD22EED1CBF7357005DF164 /* KGModal.m in Sources */,
+				7BEA9BC81CC0F9AB0071EEB5 /* AddToPlaylistViewController.m in Sources */,
 				3C94B81C1CB400E900449B07 /* QBVideoIconView.m in Sources */,
 				7B08960F1CA8C26E00264CD1 /* AlbumArtistObj.m in Sources */,
 				3C4926FC1C952AC40065B1DD /* SettingsViewController.m in Sources */,

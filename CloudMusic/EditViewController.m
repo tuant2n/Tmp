@@ -155,13 +155,6 @@
     //
     NSMutableArray *arrSection3 = [NSMutableArray new];
     
-    TagObj *folder = [[TagObj alloc] init];
-    folder.iTagType = kTagTypeElement;
-    folder.iElementType = kElementTypeFolderName;
-    folder.value = song.fileInfo.sFolderName;
-    folder.isEditable = NO;
-    [arrSection3 addObject:folder];
-    
     TagObj *file = [[TagObj alloc] init];
     file.iTagType = kTagTypeElement;
     file.iElementType = kElementTypeFilename;
@@ -272,9 +265,29 @@
                         
                     case kElementTypeFilename:
                     {
+                        NSString *sOldName = self.song.fileInfo.sFileName;
+                        NSString *sNewName = tag.value;
                         
-                    }
+                        if (![sOldName isEqualToString:sNewName])
+                        {
+                            NSString *sExtension = @"m4a";
+                            NSString *sNewFileName = [Utils getNameForFile:sNewName inFolder:[Utils dropboxPath] extension:sExtension];
+                            
+                            NSString *sNewFilePath = [[Utils dropboxPath] stringByAppendingPathComponent:[sNewFileName stringByAppendingPathExtension:sExtension]];
+                            NSString *sOldFilePath = [[Utils dropboxPath] stringByAppendingPathComponent:self.song.sAssetUrl];
+           
+                            NSError *error = nil;
+                            if ([[NSFileManager defaultManager] moveItemAtPath:sOldFilePath toPath:sNewFilePath error:&error]) {
+                                self.song.fileInfo.sFileName = sNewFileName;
+                                self.song.sAssetUrl = [sNewFileName stringByAppendingPathExtension:sExtension];
+                            }
+                            else {
+                                NSLog(@"%@",error.description);
+                            }
+                        }
+                        
                         break;
+                    }
                         
                     default:
                         break;
@@ -520,38 +533,31 @@
     NSArray *data = self.arrListTag[indexPath.section];
     TagObj *tag = data[indexPath.row];
     
+    UITableViewCell *cell = nil;
+    
     switch (tag.iTagType)
     {
         case kTagTypeElement:
         {
-            TagCell *cell = (TagCell *)[tableView dequeueReusableCellWithIdentifier:@"TagCellId" forIndexPath:indexPath];
-            [cell configWithTag:tag];
-            [cell setHiddenLine:(indexPath.row == data.count - 1)];
-            return cell;
+            cell = (TagCell *)[tableView dequeueReusableCellWithIdentifier:@"TagCellId" forIndexPath:indexPath];
         }
             break;
             
         case kTagTypeAction:
         {
-            TagButton *cell = (TagButton *)[tableView dequeueReusableCellWithIdentifier:@"TagButtonId" forIndexPath:indexPath];
-            [cell configWithActionType:tag.iTagActionType];
-            return cell;
+            cell = (TagButton *)[tableView dequeueReusableCellWithIdentifier:@"TagButtonId" forIndexPath:indexPath];
         }
             break;
             
         case kTagTypeWriteTag:
         {
-            TagRadioButton *cell = (TagRadioButton *)[tableView dequeueReusableCellWithIdentifier:@"TagRadioButtonId" forIndexPath:indexPath];
-            [cell configWithValue:[tag.value boolValue]];
-            return cell;
+            cell = (TagRadioButton *)[tableView dequeueReusableCellWithIdentifier:@"TagRadioButtonId" forIndexPath:indexPath];
         }
             break;
             
         case kTagTypeLyrics:
         {
-            TagLyricCell *cell = (TagLyricCell *)[tableView dequeueReusableCellWithIdentifier:@"TagLyricCellId" forIndexPath:indexPath];
-            [cell configWithTag:tag];
-            return cell;
+            cell = (TagLyricCell *)[tableView dequeueReusableCellWithIdentifier:@"TagLyricCellId" forIndexPath:indexPath];
         }
             break;
             
@@ -559,7 +565,31 @@
             break;
     }
     
-    return nil;
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *data = self.arrListTag[indexPath.section];
+    TagObj *tag = data[indexPath.row];
+    
+    if ([cell isKindOfClass:[TagCell class]]) {
+        TagCell *tagCell = (TagCell *)cell;
+        [tagCell configWithTag:tag];
+        [tagCell setHiddenLine:(indexPath.row == data.count - 1)];
+    }
+    else if ([cell isKindOfClass:[TagButton class]]) {
+        TagButton *tagButton = (TagButton *)cell;
+        [tagButton configWithActionType:tag.iTagActionType];
+    }
+    else if ([cell isKindOfClass:[TagRadioButton class]]) {
+        TagRadioButton *tagRadioButton = (TagRadioButton *)cell;
+        [tagRadioButton configWithValue:[tag.value boolValue]];
+    }
+    else if ([cell isKindOfClass:[TagLyricCell class]]) {
+        TagLyricCell *tagLyricCell = (TagLyricCell *)cell;
+        [tagLyricCell configWithTag:tag];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -661,7 +691,10 @@
         hasArtwork = YES;
     }
     
-    BOOL hasImageOnClipboard = [UIPasteboard generalPasteboard].image;
+    BOOL hasImageOnClipboard = NO;
+    if ([UIPasteboard generalPasteboard].image) {
+        hasImageOnClipboard = YES;
+    }
     
     NSMutableArray *arrayAction = [NSMutableArray new];
     [arrayAction addObject:@"Choose from Camera Roll"];

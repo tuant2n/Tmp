@@ -10,4 +10,6 @@
 
 @interface MakePlaylistViewController : UIViewController
 
+@property (nonatomic, strong) NSArray *arrListItem;
+
 @end

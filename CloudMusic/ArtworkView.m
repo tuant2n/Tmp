@@ -79,6 +79,7 @@
 - (void)awakeFromNib
 {
     self.backgroundColor = [Utils colorWithRGBHex:0xf0f0f0];
+    self.imgvArtwork.clipsToBounds = YES;
     
     isChange = NO;
     artwork = nil;

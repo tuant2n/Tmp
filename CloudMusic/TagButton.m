@@ -33,7 +33,7 @@
 - (void)configWithActionType:(kTagActionType)iActionType
 {
     if (iActionType == kTagActionTypeCopyTitle) {
-        self.lblButtonTitle.text = @"Copy Title to Filename";
+        self.lblButtonTitle.text = @"Copy Title to File Name";
         self.lblButtonTitle.textColor = [UIColor blackColor];
     }
     else if (iActionType == kTagActionTypeDelete) {

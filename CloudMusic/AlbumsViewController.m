@@ -26,11 +26,10 @@
 @property (nonatomic, strong) PCSEQVisualizer *musicEq;
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
 
-@property (nonatomic, strong) NSMutableArray *albumsArray;
+@property (nonatomic, strong) NSMutableArray *arrData;
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 @property (nonatomic, weak) IBOutlet UITableView *tblSearchResult;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *keyboardLayout;
 @property (nonatomic, weak) IBOutlet UIView *disableView;
 
 @property (nonatomic, strong) NSMutableArray *arrResults;
@@ -49,17 +48,18 @@
     return _arrResults;
 }
 
-- (NSMutableArray *)albumsArray
+- (NSMutableArray *)arrData
 {
-    if (!_albumsArray) {
-        _albumsArray = [[NSMutableArray alloc] init];
+    if (!_arrData) {
+        _arrData = [[NSMutableArray alloc] init];
     }
-    return _albumsArray;
+    return _arrData;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self setupUI];
     [self getData];
     
@@ -68,9 +68,9 @@
 
 - (void)getData
 {
-    [self.albumsArray removeAllObjects];
-    [self.albumsArray addObjectsFromArray:[[DataManagement sharedInstance] getListAlbumFilterByName:nil albumArtistId:self.iAlbumArtistId genreId:self.iGenreId]];
-    [self mergeData:self.albumsArray];
+    [self.arrData removeAllObjects];
+    [self.arrData addObjectsFromArray:[[DataManagement sharedInstance] getListAlbumFilterByName:nil albumArtistId:self.iAlbumArtistId genreId:self.iGenreId]];
+    [self mergeData:self.arrData];
     [self.tblList reloadData];
     [self setupFooterView];
 }
@@ -125,7 +125,6 @@
     self.headerView.searchBar.delegate = self;
     [self.tblList setTableHeaderView:self.headerView];
     
-    self.keyboardLayout.priority = 750;
     self.tblSearchResult.tableFooterView = nil;
 }
 
@@ -295,7 +294,7 @@
         return resultOj.listData.count;
     }
     else {
-        return self.albumsArray.count;
+        return self.arrData.count;
     }
 }
 
@@ -311,51 +310,43 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MainCell *cell = nil;
     id cellItem = nil;
-    BOOL isHiddenSeperator = NO;
-    
+
     if (tableView == self.tblSearchResult) {
         DataObj *resultObj = self.arrResults[indexPath.section];
         cellItem = resultObj.listData[indexPath.row];
-        isHiddenSeperator = (indexPath.row == [resultObj.listData count] - 1);
     }
     else {
-        cellItem = self.albumsArray[indexPath.row];
-        isHiddenSeperator = (indexPath.row == [self.albumsArray count] - 1);
+        cellItem = self.arrData[indexPath.row];
     }
     
-    cell = [self configCellWithItem:cellItem atIndex:indexPath tableView:tableView];
-    
-    if (cell && cellItem)
-    {
-        cell.delegate = self;
-        cell.allowsMultipleSwipe = NO;
-        
-        [cell config:cellItem];
-        [cell setLineHidden:isHiddenSeperator];
-    }
-    
-    return cell;
+    return [Utils getCellWithItem:cellItem atIndex:indexPath tableView:tableView];
 }
 
-- (MainCell *)configCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MainCell *cell = nil;
-    
-    if ([itemObj isKindOfClass:[Item class]]) {
-        cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
+    if ([cell isKindOfClass:[MainCell class]])
+    {
+        id cellItem = nil;
+        BOOL isHiddenSeperator = NO;
+        
+        if (tableView == self.tblSearchResult) {
+            DataObj *resultObj = self.arrResults[indexPath.section];
+            cellItem = resultObj.listData[indexPath.row];
+            isHiddenSeperator = (indexPath.row == [resultObj.listData count] - 1);
+        }
+        else {
+            cellItem = self.arrData[indexPath.row];
+            isHiddenSeperator = (indexPath.row == [self.arrData count] - 1);
+        }
+        
+        MainCell *mainCell = (MainCell *)cell;
+        mainCell.delegate = self;
+        mainCell.allowsMultipleSwipe = NO;
+        
+        [mainCell config:cellItem];
+        [mainCell setLineHidden:isHiddenSeperator];
     }
-    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
-        cell = (AlbumsCell *)[tableView dequeueReusableCellWithIdentifier:@"AlbumsCellId" forIndexPath:indexPath];
-    }
-    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
-        cell = (ArtistsCell *)[tableView dequeueReusableCellWithIdentifier:@"ArtistsCellId" forIndexPath:indexPath];
-    }
-    else if ([itemObj isKindOfClass:[GenreObj class]]) {
-        cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
-    }
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -369,7 +360,7 @@
         itemObj = resultOj.listData[indexPath.row];
     }
     else {
-        itemObj = [self.albumsArray objectAtIndex:indexPath.row];
+        itemObj = [self.arrData objectAtIndex:indexPath.row];
     }
     
     if (itemObj) {
@@ -380,33 +371,25 @@
 
 - (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
 {
-    NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
-    if (!indexPath) {
+    id itemObj = nil;
+    
+    if (isActiveSearch) {
+        NSIndexPath *indexPath = [self.tblSearchResult indexPathForCell:cell];
+        DataObj *resultOj = self.arrResults[indexPath.section];
+        itemObj = resultOj.listData[indexPath.row];
+    }
+    else {
+        NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
+        itemObj = self.arrData[indexPath.row];
+    }
+    
+    if (!itemObj) {
         return YES;
     }
     
     if (direction == MGSwipeDirectionLeftToRight)
     {
-        AlbumObj *item = self.albumsArray[indexPath.row];
-        
-        if (item.isCloud) {
-            if (index == 0) {
-                [[DataManagement sharedInstance] deleteAlbum:item];
-                return NO;
-            }
-            else if (index == 1) {
-                // Add To Playlist
-            }
-            else if (index == 2) {
-                EditViewController *vc = [[EditViewController alloc] init];
-                vc.album = item;
-                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
-            }
-        }
-        else {
-            
-        }
+        return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index fromNavigation:self.navigationController];
     }
     
     return YES;
@@ -428,7 +411,7 @@
 - (void)setupFooterView
 {
     NSString *sContent = nil;
-    int itemCount = (int)self.albumsArray.count;
+    int itemCount = (int)self.arrData.count;
     
     if (itemCount <= 1) {
         sContent = [NSString stringWithFormat:@"%d Album",itemCount];
@@ -451,14 +434,7 @@
 
 - (void)selectUtility:(kHeaderUtilType)iType
 {
-    if (iType == kHeaderUtilTypeCreatePlaylist) {
-        
-    }
-    else if (iType == kHeaderUtilTypeGoAllSongs)
-    {
-        SongsViewController *vc = [[SongsViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+    [[DataManagement sharedInstance] doUtility:iType withData:self.arrData fromNavigation:self.navigationController];
 }
 
 #pragma mark - MusicEq

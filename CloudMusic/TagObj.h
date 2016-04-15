@@ -23,7 +23,6 @@ typedef enum {
     kElementTypeAlbum,
     kElementTypeYear,
     kElementTypeGenre,
-    kElementTypeFolderName,
     kElementTypeFilename,
     kElementTypeTime,
     kElementTypeSize,
