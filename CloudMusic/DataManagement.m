@@ -685,16 +685,12 @@ static DataManagement *_sharedInstance = nil;
     }
     
     NSMutableArray *listSong = [[NSMutableArray alloc] initWithArray:[playlist getPlaylist]];
-    int fDuration = 0;
+    int fDuration = [playlist.fDuration intValue];
     
-    if (iPlaylistType == kPlaylistTypeMyTopRated) {
-        
-    }
-    else if (iPlaylistType == kPlaylistTypeRecentlyAdded) {
-        [listSong addObject:newSong.iSongId];
-        fDuration = [playlist.fDuration intValue] + [newSong.fDuration intValue];
-    }
-    else if (iPlaylistType == kPlaylistTypeRecentlyPlayed) {
+    if (iPlaylistType == kPlaylistTypeMyTopRated ||
+        iPlaylistType == kPlaylistTypeRecentlyPlayed ||
+        iPlaylistType == kPlaylistTypeRecentlyAdded)
+    {
         if ([listSong containsObject:newSong.iSongId]) {
             [listSong removeObject:newSong.iSongId];
             [listSong addObject:newSong.iSongId];
@@ -730,9 +726,11 @@ static DataManagement *_sharedInstance = nil;
     if (fDuration > 0) {
         playlist.fDuration = @(fDuration);
     }
+    else {
+        playlist.fDuration = @(0);
+    }
 
     [playlist setPlaylist:listSong];
-    
     [self saveData:NO];
 }
 
