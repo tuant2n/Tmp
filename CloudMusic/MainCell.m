@@ -37,7 +37,13 @@
     bgColor = [UIColor whiteColor];
     highlightColor = [Utils colorWithRGBHex:0xe4f2ff];
     
-    placeHolder = [UIImage imageNamed:@"filetype_audio"];
+    if ([self isKindOfClass:[PlaylistsCell class]]) {
+        placeHolder = [UIImage imageNamed:@"playlist_icon"];
+    }
+    else {
+        placeHolder = [UIImage imageNamed:@"filetype_audio"];
+    }
+    
     iTunesIcon = [UIImage imageNamed:@"ipod-item-icon"];
     cloudIcon = [UIImage imageNamed:@"cloud-item-icon"];
     

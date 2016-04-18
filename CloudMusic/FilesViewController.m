@@ -74,10 +74,11 @@
     
     NSArray *listFile = [[DataManagement sharedInstance] getListSongCloudFilterByName:nil];
     for (Item *item in listFile) {
-        FileObj *file = [[FileObj alloc] initWithItem:item];
-        if (file) {
-            [self.arrData addObject:file];
-        }
+//        FileObj *file = [[FileObj alloc] initWithItem:item];
+//        if (file) {
+//            [self.arrData addObject:file];
+//        }
+        [self.arrData addObject:item];
     }
     
     [self setShowNotFoundView:(self.arrData.count <= 0)];
@@ -237,7 +238,7 @@
         } completion:nil];
     }
     else {
-        [[DataManagement sharedInstance] search:sCurrentSearch searchType:kSearchTypeAlbum block:^(NSArray *results)
+        [[DataManagement sharedInstance] search:sCurrentSearch searchType:kSearchTypeFile block:^(NSArray *results)
          {
              dispatch_async(dispatch_get_main_queue(), ^{
                  if (results) {
@@ -462,12 +463,7 @@
 
 - (void)selectUtility:(kHeaderUtilType)iType
 {
-    if (iType == kHeaderUtilTypeCreatePlaylist) {
-        
-    }
-    else if (iType == kHeaderUtilTypeShuffle) {
-        
-    }
+     [[DataManagement sharedInstance] doUtility:iType withData:self.arrData fromNavigation:self.navigationController];
 }
 
 #pragma mark - Utils

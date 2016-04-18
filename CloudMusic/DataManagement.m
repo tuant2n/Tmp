@@ -105,9 +105,8 @@ static DataManagement *_sharedInstance = nil;
         NSArray *listSong = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:nil];
         for (Item *item in listSong) {
             if ([sListSongId rangeOfString:item.iSongId].location == NSNotFound) {
+                [self removeItemFromPlaylist:item];
                 [self.managedObjectContext deleteObject:item];
-                
-                // Remove From Playlist
             }
         }
         
@@ -122,11 +121,8 @@ static DataManagement *_sharedInstance = nil;
             [item updateWithMediaItem:song];
         }
         
-        Playlist *playlist = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
-        playlist.sPlaylistName = @"123456";
-        playlist.iPlaylistId = @"123123123123123";
-        [playlist setPlaylist:[NSArray arrayWithObjects:@"1",@"2",nil]];
-
+        [self createDefaultPlaylist];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self saveData];
             [self setLastTimeAppSync:[[[MPMediaLibrary defaultMediaLibrary] lastModifiedDate] timeIntervalSince1970]];
@@ -165,6 +161,8 @@ static DataManagement *_sharedInstance = nil;
     fileInfo.lTimestamp = @(time(nil));
     fileInfo.sSize = [Utils getFileSize:songUrl.path];
     item.fileInfo = fileInfo;
+    
+    [self addItem:item toSpecialList:kPlaylistTypeRecentlyAdded];
 }
 
 - (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId
@@ -556,6 +554,188 @@ static DataManagement *_sharedInstance = nil;
     [self saveData];
 }
 
+#pragma mark - Playlist
+
+- (void)createDefaultPlaylist
+{
+    if (![self getPlaylistWithType:kPlaylistTypeMyTopRated andName:nil]) {
+        Playlist *playlistMyTopRated = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
+        playlistMyTopRated.iPlaylistId = [NSString stringWithFormat:@"%@ - %d",[Utils getTimestamp],kPlaylistTypeMyTopRated];
+        playlistMyTopRated.iPlaylistType = @(kPlaylistTypeMyTopRated);
+        playlistMyTopRated.sPlaylistName = @"My Top Rated";
+        playlistMyTopRated.isSmartPlaylist = @YES;
+    }
+    
+    if (![self getPlaylistWithType:kPlaylistTypeRecentlyAdded andName:nil]) {
+        Playlist *playlistRecentlyAdded = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
+        playlistRecentlyAdded.iPlaylistId = [NSString stringWithFormat:@"%@ - %d",[Utils getTimestamp],kPlaylistTypeRecentlyAdded];
+        playlistRecentlyAdded.iPlaylistType = @(kPlaylistTypeRecentlyAdded);
+        playlistRecentlyAdded.sPlaylistName = @"Recently Added";
+        playlistRecentlyAdded.isSmartPlaylist = @YES;
+    }
+    
+    if (![self getPlaylistWithType:kPlaylistTypeRecentlyPlayed andName:nil]) {
+        Playlist *playlistRecentlyPlayed = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
+        playlistRecentlyPlayed.iPlaylistId = [NSString stringWithFormat:@"%@ - %d",[Utils getTimestamp],kPlaylistTypeRecentlyPlayed];
+        playlistRecentlyPlayed.iPlaylistType = @(kPlaylistTypeRecentlyPlayed);
+        playlistRecentlyPlayed.sPlaylistName = @"Recently Played";
+        playlistRecentlyPlayed.isSmartPlaylist = @YES;
+    }
+    
+    if (![self getPlaylistWithType:kPlaylistTypeTopMostPlayed andName:nil]) {
+        Playlist *playlistTopMostPlayed = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
+        playlistTopMostPlayed.iPlaylistId = [NSString stringWithFormat:@"%@ - %d",[Utils getTimestamp],kPlaylistTypeTopMostPlayed];
+        playlistTopMostPlayed.iPlaylistType = @(kPlaylistTypeTopMostPlayed);
+        playlistTopMostPlayed.sPlaylistName = @"Top 25 Most Played";
+        playlistTopMostPlayed.isSmartPlaylist = @YES;
+    }
+}
+
+- (Playlist *)getPlaylistWithType:(kPlaylistType)iPlaylistType andName:(NSString *)sName
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Playlist class])];
+    
+    NSMutableArray *predicates = [NSMutableArray new];
+    [predicates addObject:[NSPredicate predicateWithFormat:@"iPlaylistType == %d",iPlaylistType]];
+    if (sName) {
+        [predicates addObject:[NSPredicate predicateWithFormat:@"sPlaylistName ==[c] %@",sName]];
+    }
+    [fetchSongRequest setPredicate:[NSCompoundPredicate orPredicateWithSubpredicates:predicates]];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        return [listData lastObject];
+    }
+    return nil;
+}
+
+- (NSFetchRequest *)getListPlaylistIsGetNormalOnly:(BOOL)isNormalOnly
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[self playlistEntity]];
+    
+    NSSortDescriptor *sortByType = [[NSSortDescriptor alloc] initWithKey:@"iPlaylistType" ascending:YES];
+    NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"sPlaylistName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+    [request setSortDescriptors:@[sortByType,sortByName]];
+    
+    if (isNormalOnly) {
+        [request setPredicate:[NSPredicate predicateWithFormat:@"isSmartPlaylist == NO"]];
+    }
+    
+    return request;
+}
+
+- (void)removeItemFromPlaylist:(Item *)item
+{
+    NSFetchRequest *getPlaylist = [self getListPlaylistIsGetNormalOnly:NO];
+    
+    NSError *error = nil;
+    NSArray *playlists = [[self managedObjectContext] executeFetchRequest:getPlaylist error:&error];
+    for (Playlist *playlist in playlists)
+    {
+        int fDuration = [playlist.fDuration intValue];
+        
+        NSMutableArray *listSong = [[NSMutableArray alloc] initWithArray:[playlist getPlaylist]];
+        for (NSString *sSongId in listSong)
+        {
+            if ([sSongId isEqualToString:item.iSongId]) {
+                fDuration -= [item.fDuration intValue];
+            }
+        }
+        
+        if (fDuration < 0) {
+            fDuration = 0;
+        }
+        playlist.fDuration = @(fDuration);
+        
+        [listSong removeObject:item.iSongId];
+        [playlist setPlaylist:[listSong copy]];
+        
+        if (listSong.count <= 0) {
+            [playlist setArtwork:nil];
+        }
+    }
+}
+
+- (void)addItem:(Item *)newSong toSpecialList:(kPlaylistType)iPlaylistType
+{
+    Playlist *playlist = [self getPlaylistWithType:iPlaylistType andName:nil];
+    if (!playlist)
+    {
+        playlist = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
+        playlist.iPlaylistId = [NSString stringWithFormat:@"%@ - %d",[Utils getTimestamp],iPlaylistType];
+        playlist.iPlaylistType = @(iPlaylistType);
+        
+        if (iPlaylistType == kPlaylistTypeMyTopRated) {
+            playlist.sPlaylistName = @"My Top Rated";
+        }
+        else if (iPlaylistType == kPlaylistTypeRecentlyAdded) {
+            playlist.sPlaylistName = @"Recently Added";
+        }
+        else if (iPlaylistType == kPlaylistTypeRecentlyPlayed) {
+            playlist.sPlaylistName = @"Recently Played";
+        }
+        else if (iPlaylistType == kPlaylistTypeTopMostPlayed) {
+            playlist.sPlaylistName = @"Top 25 Most Played";
+        }
+        
+        playlist.isSmartPlaylist = @YES;
+    }
+    
+    NSMutableArray *listSong = [[NSMutableArray alloc] initWithArray:[playlist getPlaylist]];
+    int fDuration = 0;
+    
+    if (iPlaylistType == kPlaylistTypeMyTopRated) {
+        
+    }
+    else if (iPlaylistType == kPlaylistTypeRecentlyAdded) {
+        [listSong addObject:newSong.iSongId];
+        fDuration = [playlist.fDuration intValue] + [newSong.fDuration intValue];
+    }
+    else if (iPlaylistType == kPlaylistTypeRecentlyPlayed) {
+        if ([listSong containsObject:newSong.iSongId]) {
+            [listSong removeObject:newSong.iSongId];
+            [listSong addObject:newSong.iSongId];
+        }
+        else {
+            [listSong addObject:newSong.iSongId];
+            fDuration += [newSong.fDuration intValue];
+        }
+    }
+    else if (iPlaylistType == kPlaylistTypeTopMostPlayed) {
+        if ([listSong containsObject:newSong.iSongId]) {
+            [listSong removeObject:newSong.iSongId];
+            [listSong addObject:newSong.iSongId];
+        }
+        else {
+            if (listSong.count == 25) {
+                NSString *sLastSongId = [listSong lastObject];
+                Item *song = [self getItemBySongId:sLastSongId];
+                if (song) {
+                    fDuration -= [song.fDuration intValue];
+                }
+                [listSong removeObject:sLastSongId];
+            }
+            [listSong addObject:newSong.iSongId];
+            fDuration += [newSong.fDuration intValue];
+        }
+    }
+    
+    if (newSong.sArtworkName) {
+        [playlist setArtwork:newSong.sArtworkName];
+    }
+    
+    if (fDuration > 0) {
+        playlist.fDuration = @(fDuration);
+    }
+
+    [playlist setPlaylist:listSong];
+    
+    [self saveData:NO];
+}
+
 #pragma mark - Search
 
 - (void)search:(NSString *)sSearch searchType:(kSearchType)iSearchType block:(void (^)(NSArray *results))block
@@ -590,7 +770,7 @@ static DataManagement *_sharedInstance = nil;
 - (void)doActionWithItem:(id)item fromNavigation:(UINavigationController *)navController
 {
     if ([item isKindOfClass:[Item class]]) {
-        [[GlobalParameter sharedInstance] setCurrentItemPlay:(Item *)item];
+        [[GlobalParameter sharedInstance] setCurrentPlaying:(Item *)item];
     }
     else if ([item isKindOfClass:[AlbumObj class]]) {
         AlbumListViewController *vc = [[AlbumListViewController alloc] init];

@@ -17,7 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, retain) NSString *iPlaylistId;
 @property (nullable, nonatomic, retain) NSString *sPlaylistName;
+@property (nullable, nonatomic, retain) NSString *sArtworkName;
 @property (nullable, nonatomic, retain) id listSong;
+@property (nullable, nonatomic, retain) NSNumber *iPlaylistType;
+@property (nullable, nonatomic, retain) NSNumber *fDuration;
+@property (nullable, nonatomic, retain) NSNumber *isSmartPlaylist;
 
 @end
 

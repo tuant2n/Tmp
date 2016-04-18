@@ -217,7 +217,7 @@
         } completion:nil];
     }
     else {
-        [[DataManagement sharedInstance] search:sCurrentSearch searchType:kSearchTypeSong block:^(NSArray *results)
+        [[DataManagement sharedInstance] search:sCurrentSearch searchType:kSearchTypeArtist block:^(NSArray *results)
          {
              dispatch_async(dispatch_get_main_queue(), ^{
                  if (results) {

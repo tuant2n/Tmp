@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="PlaylistsCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mhw-b7-1zJ" userLabel="content">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="playlist_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Xep-lS-Ba1" userLabel="imgvArtwork">
+                                <rect key="frame" x="5" y="6" width="50" height="50"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="UVX-QT-coO"/>
+                                    <constraint firstAttribute="height" constant="50" id="hYw-8K-LhJ"/>
+                                </constraints>
+                            </imageView>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KOM-ip-EFF" userLabel="vInfo">
+                                <rect key="frame" x="60" y="8" width="245" height="45"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F5k-CY-qs9" userLabel="lblPlaylistName">
+                                        <rect key="frame" x="0.0" y="0.0" width="245" height="25"/>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="LTB-Le-rZG"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZ0-TK-kCN" userLabel="lblPlaylistDesc">
+                                        <rect key="frame" x="0.0" y="25" width="245" height="20"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Fkm-nc-ZwU"/>
+                                    <constraint firstItem="F5k-CY-qs9" firstAttribute="leading" secondItem="KOM-ip-EFF" secondAttribute="leading" id="LHE-Z8-Odt"/>
+                                    <constraint firstAttribute="trailing" secondItem="F5k-CY-qs9" secondAttribute="trailing" id="Mle-5G-wNt"/>
+                                    <constraint firstItem="F5k-CY-qs9" firstAttribute="top" secondItem="KOM-ip-EFF" secondAttribute="top" id="Moj-UJ-MFj"/>
+                                    <constraint firstItem="IZ0-TK-kCN" firstAttribute="top" secondItem="F5k-CY-qs9" secondAttribute="bottom" id="VQp-r7-wdu"/>
+                                    <constraint firstAttribute="bottom" secondItem="IZ0-TK-kCN" secondAttribute="bottom" id="a44-uh-HTa"/>
+                                    <constraint firstItem="IZ0-TK-kCN" firstAttribute="leading" secondItem="KOM-ip-EFF" secondAttribute="leading" id="ilW-pX-aqC"/>
+                                    <constraint firstAttribute="trailing" secondItem="IZ0-TK-kCN" secondAttribute="trailing" id="nBb-Ar-YTf"/>
+                                </constraints>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="AP5-5N-x8O" userLabel="imgvListIcon">
+                                <rect key="frame" x="305" y="0.0" width="10" height="61"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="10" id="YhA-HT-pMi"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <animations/>
+                        <constraints>
+                            <constraint firstItem="Xep-lS-Ba1" firstAttribute="centerY" secondItem="Mhw-b7-1zJ" secondAttribute="centerY" id="47h-j0-jTJ"/>
+                            <constraint firstAttribute="bottom" secondItem="AP5-5N-x8O" secondAttribute="bottom" id="LQR-UO-lgi"/>
+                            <constraint firstItem="AP5-5N-x8O" firstAttribute="top" secondItem="Mhw-b7-1zJ" secondAttribute="top" id="Sff-Fb-PRc"/>
+                            <constraint firstItem="Xep-lS-Ba1" firstAttribute="leading" secondItem="Mhw-b7-1zJ" secondAttribute="leading" constant="5" id="W1h-n6-IOl"/>
+                            <constraint firstItem="KOM-ip-EFF" firstAttribute="leading" secondItem="Xep-lS-Ba1" secondAttribute="trailing" constant="5" id="dFq-3U-0zo"/>
+                            <constraint firstItem="AP5-5N-x8O" firstAttribute="leading" secondItem="KOM-ip-EFF" secondAttribute="trailing" id="f3J-Zn-SjE"/>
+                            <constraint firstItem="KOM-ip-EFF" firstAttribute="centerY" secondItem="Mhw-b7-1zJ" secondAttribute="centerY" id="f4F-2o-JEk"/>
+                            <constraint firstAttribute="trailing" secondItem="AP5-5N-x8O" secondAttribute="trailing" constant="5" id="tdv-X9-WI9"/>
+                        </constraints>
+                    </view>
+                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cKN-sa-S79" userLabel="line">
+                        <rect key="frame" x="5" y="60" width="315" height="1"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="kBk-Ml-uIk"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <animations/>
+                <constraints>
+                    <constraint firstItem="Mhw-b7-1zJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="3UL-Nl-Xm7"/>
+                    <constraint firstAttribute="bottom" secondItem="Mhw-b7-1zJ" secondAttribute="bottom" id="6kH-we-o6q"/>
+                    <constraint firstAttribute="trailing" secondItem="cKN-sa-S79" secondAttribute="trailing" id="95e-De-DNF"/>
+                    <constraint firstAttribute="bottom" secondItem="cKN-sa-S79" secondAttribute="bottom" id="DW2-r1-LIj"/>
+                    <constraint firstAttribute="trailing" secondItem="Mhw-b7-1zJ" secondAttribute="trailing" id="DoB-o7-qmM"/>
+                    <constraint firstItem="Mhw-b7-1zJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="EzC-Fw-O7U"/>
+                    <constraint firstItem="cKN-sa-S79" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="RD1-dd-Nzt"/>
+                </constraints>
+            </tableViewCellContentView>
+            <animations/>
+            <connections>
+                <outlet property="imgvArtwork" destination="Xep-lS-Ba1" id="nnn-4j-srm"/>
+                <outlet property="lblPlaylistDesc" destination="IZ0-TK-kCN" id="A5g-Vj-aq1"/>
+                <outlet property="lblPlaylistName" destination="F5k-CY-qs9" id="oec-Iz-Ddw"/>
+                <outlet property="line" destination="cKN-sa-S79" id="Eis-RD-2oV"/>
+                <outlet property="vContent" destination="Mhw-b7-1zJ" id="sfS-lT-ezL"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="list-item-icon.png" width="10" height="10"/>
+        <image name="playlist_icon.png" width="50" height="50"/>
+    </resources>
+</document>

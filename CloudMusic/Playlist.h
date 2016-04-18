@@ -9,12 +9,27 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class Item;
+
+typedef enum {
+    kPlaylistTypeNormal,
+    kPlaylistTypeMyTopRated,
+    kPlaylistTypeRecentlyAdded,
+    kPlaylistTypeRecentlyPlayed,
+    kPlaylistTypeTopMostPlayed,
+} kPlaylistType;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Playlist : NSManagedObject
 
+@property (nonatomic, strong) NSURL *sLocalArtworkUrl;
+@property (nonatomic, strong) NSString *sPlaylistDesc;
+
 - (void)setPlaylist:(NSArray *)listSong;
 - (NSArray *)getPlaylist;
+
+- (void)setArtwork:(nullable NSString *)sArtworkName;
 
 @end
 

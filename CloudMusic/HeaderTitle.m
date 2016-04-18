@@ -33,11 +33,7 @@
 
 + (CGFloat)height
 {
-    return 20.0;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+    return 23.0;
 }
 
 @end

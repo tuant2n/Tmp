@@ -53,11 +53,14 @@ static GlobalParameter *globalParameter = nil;
     return isPlayingMusic;
 }
 
-- (void)setCurrentPlayingItem:(Item *)itemObj
+- (void)setCurrentPlaying:(Item *)itemObj
 {
     if ([self.currentItemPlay isEqual:itemObj]) {
         return;
     }
+    
+    itemObj.iPlayCount = @([itemObj.iPlayCount intValue] + 1);
+    [[DataManagement sharedInstance] addItem:itemObj toSpecialList:kPlaylistTypeRecentlyPlayed];
     
     NSMutableDictionary *musicInfo = [[NSMutableDictionary alloc] init];
     

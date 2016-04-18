@@ -15,6 +15,10 @@
 
 @dynamic iPlaylistId;
 @dynamic sPlaylistName;
+@dynamic sArtworkName;
 @dynamic listSong;
+@dynamic iPlaylistType;
+@dynamic fDuration;
+@dynamic isSmartPlaylist;
 
 @end

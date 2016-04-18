@@ -13,6 +13,7 @@
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
 #import "FileObj.h"
+#import "Playlist.h"
 
 @implementation Utils
 
@@ -265,6 +266,7 @@
     [tblView registerNib:[UINib nibWithNibName:@"GenresCell" bundle:nil] forCellReuseIdentifier:@"GenresCellId"];
     [tblView registerNib:[UINib nibWithNibName:@"ListSongCell" bundle:nil] forCellReuseIdentifier:@"ListSongCellId"];
     [tblView registerNib:[UINib nibWithNibName:@"FilesCell" bundle:nil] forCellReuseIdentifier:@"FilesCellId"];
+    [tblView registerNib:[UINib nibWithNibName:@"PlaylistsCell" bundle:nil] forCellReuseIdentifier:@"PlaylistsCellId"];
     
     [tblView registerNib:[UINib nibWithNibName:@"HeaderTitle" bundle:nil] forCellReuseIdentifier:@"HeaderTitleId"];
     [tblView registerNib:[UINib nibWithNibName:@"TableHeaderCell" bundle:nil] forCellReuseIdentifier:@"TableHeaderCellId"];
@@ -291,6 +293,9 @@
     }
     else if ([itemObj isKindOfClass:[FileObj class]]) {
         cell = (FilesCell *)[tableView dequeueReusableCellWithIdentifier:@"FilesCellId" forIndexPath:indexPath];
+    }
+    else if ([itemObj isKindOfClass:[Playlist class]]) {
+        cell = (PlaylistsCell *)[tableView dequeueReusableCellWithIdentifier:@"PlaylistsCellId" forIndexPath:indexPath];
     }
     
     return cell;

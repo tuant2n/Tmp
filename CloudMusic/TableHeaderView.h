@@ -13,6 +13,7 @@ typedef enum {
     kHeaderUtilTypeGoAllAlbums,
     kHeaderUtilTypeGoAllSongs,
     kHeaderUtilTypeCreatePlaylist,
+    kHeaderUtilTypeCreateNewPlaylist,
 } kHeaderUtilType;
 
 @class AlbumObj;
@@ -33,6 +34,8 @@ typedef enum {
 - (id)initForAlbumsVC;
 - (id)initForArtistsVC;
 - (id)initForGenresVC;
+- (id)initForPlaylistsVC;
+
 - (id)initForAlbumListVC:(AlbumObj *)album;
 
 - (void)resignKeyboard;

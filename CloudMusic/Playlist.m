@@ -8,18 +8,62 @@
 
 #import "Playlist.h"
 
+#import "Item.h"
+
+#import "Utils.h"
+
 @implementation Playlist
 
-// Insert code here to add functionality to your managed object subclass
+@synthesize sLocalArtworkUrl;
+@synthesize sPlaylistDesc;
 
 - (void)setPlaylist:(NSArray *)listSong
 {
+    sPlaylistDesc = nil;
     self.listSong = [NSKeyedArchiver archivedDataWithRootObject:listSong];
 }
 
 - (NSArray *)getPlaylist
 {
-    return [NSKeyedUnarchiver unarchiveObjectWithData:self.listSong];
+    if (self.listSong) {
+        return [NSKeyedUnarchiver unarchiveObjectWithData:self.listSong];
+    }
+    return nil;
+}
+
+- (NSString *)sPlaylistDesc
+{
+    if (!sPlaylistDesc)
+    {
+        NSArray *songList = [self getPlaylist];
+        int numberOfSong = (int)songList.count;
+        
+        NSString *sSongs = nil;
+        
+        if (numberOfSong <= 1) {
+            sSongs = @"Song";[NSString stringWithFormat:@"%d Song",numberOfSong];
+        }
+        else {
+            sSongs = @"Songs";[NSString stringWithFormat:@"%d Songs",numberOfSong];
+        }
+
+        sPlaylistDesc = [NSString stringWithFormat:@"%d %@, %@",numberOfSong,sSongs,[Utils timeFormattedForList:[self.fDuration intValue]]];
+    }
+    return sPlaylistDesc;
+}
+
+- (void)setArtwork:(NSString *)sArtworkName
+{
+    self.sArtworkName = sArtworkName;
+    sLocalArtworkUrl = nil;
+}
+
+- (NSURL *)sLocalArtworkUrl
+{
+    if (!sLocalArtworkUrl && self.sArtworkName) {
+        sLocalArtworkUrl = [NSURL fileURLWithPath:[[Utils artworkPath] stringByAppendingPathComponent:self.sArtworkName]];
+    }
+    return sLocalArtworkUrl;
 }
 
 @end

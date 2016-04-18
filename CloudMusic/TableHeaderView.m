@@ -99,6 +99,18 @@
     return self;
 }
 
+- (id)initForPlaylistsVC
+{
+    self = [super init];
+    
+    if (self) {
+        [self setupForPlaylistsVC];
+        [self initUI];
+    }
+    
+    return self;
+}
+
 - (id)initForAlbumListVC:(AlbumObj *)album
 {
     self = [super init];
@@ -175,6 +187,18 @@
     [self setupDefault];
 }
 
+- (void)setupForPlaylistsVC
+{
+    [self.arrListUtils removeAllObjects];
+    
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"New Playlists" icon:@"add-icon" type:kHeaderUtilTypeCreateNewPlaylist]];
+    
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
+    hasIndexTitles = NO;
+    
+    [self setupDefault];
+}
+
 - (void)setupForAlbumListVC:(AlbumObj *)album
 {
     [self.arrListUtils removeAllObjects];
@@ -187,7 +211,6 @@
     
     [self setupDefault];
 }
-
 
 - (void)setupDefault
 {

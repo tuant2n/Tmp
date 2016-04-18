@@ -18,6 +18,7 @@
 #import "HeaderTitle.h"
 #import "ListSongCell.h"
 #import "FilesCell.h"
+#import "PlaylistsCell.h"
 
 #import "TableFooterView.h"
 #import "TableHeaderView.h"

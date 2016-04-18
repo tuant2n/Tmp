@@ -71,6 +71,13 @@
 - (void)deleteArtist:(AlbumArtistObj *)artist;
 - (void)deleteGenre:(GenreObj *)genre;
 
+#pragma mark - Playlist
+
+- (Playlist *)getPlaylistWithType:(kPlaylistType)iPlaylistType andName:(NSString *)sName;
+- (NSFetchRequest *)getListPlaylistIsGetNormalOnly:(BOOL)isNormalOnly;
+- (void)removeItemFromPlaylist:(Item *)item;
+- (void)addItem:(Item *)item toSpecialList:(kPlaylistType)iPlaylistType;
+
 #pragma mark - Search
 
 - (void)search:(NSString *)sSearch searchType:(kSearchType)iSearchType block:(void (^)(NSArray *results))block;

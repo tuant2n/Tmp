@@ -297,6 +297,7 @@
                 if (exportSession.status == AVAssetExportSessionStatusCompleted)
                 {
                     [[DataManagement sharedInstance] insertSong:currentItem];
+                    [[DataManagement sharedInstance] saveData];
                 }
                 
                 [self downloadNextItem];

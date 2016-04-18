@@ -22,7 +22,7 @@
 - (void)startPlay;
 - (void)pausePlay;
 - (BOOL)isPlay;
-- (void)setCurrentPlayingItem:(Item *)itemObj;
+- (void)setCurrentPlaying:(Item *)itemObj;
 
 #pragma mark - DropBoxInfo
 

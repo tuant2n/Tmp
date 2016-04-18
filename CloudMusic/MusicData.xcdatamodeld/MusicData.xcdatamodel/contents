@@ -38,13 +38,17 @@
         <relationship name="fileInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FileInfo" inverseName="item" inverseEntity="FileInfo" syncable="YES"/>
     </entity>
     <entity name="Playlist" representedClassName="Playlist" syncable="YES">
+        <attribute name="fDuration" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="iPlaylistId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iPlaylistType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="isSmartPlaylist" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="listSong" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="sArtworkName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sPlaylistName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="FileInfo" positionX="-27" positionY="171" width="128" height="105"/>
         <element name="Item" positionX="-27" positionY="18" width="128" height="480"/>
-        <element name="Playlist" positionX="-18" positionY="171" width="128" height="90"/>
+        <element name="Playlist" positionX="-18" positionY="171" width="128" height="150"/>
     </elements>
 </model>
