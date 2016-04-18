@@ -58,7 +58,7 @@
             }
             
             NSString *sFileName = [Utils getNameForFile:[_sFileName stringByDeletingPathExtension] inFolder:[Utils dropboxPath] extension:@"m4a"];
-            _sExportPath = [[Utils dropboxPath] stringByAppendingPathComponent:[sFileName stringByAppendingPathExtension:@"m4a"]];
+            _sExportPath = [[Utils dropboxPath] stringByAppendingPathComponent:sFileName];
         }
         else {
             _iType = kFileTypeFolder;
@@ -280,12 +280,16 @@
     return _songMetaData;
 }
 
-- (void)prepareMetadata
+- (id)initWithItem:(DropBoxObj *)dropBoxItem
 {
-    /*
-     https://github.com/BeamApp/MusicPlayerViewController
-     NVDSPExample
-     */
+    self = [self init];
+    
+    if (self)
+    {
+        
+    }
+    
+    return self;
 }
 
 @end

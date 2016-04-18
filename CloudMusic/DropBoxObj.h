@@ -33,7 +33,8 @@ typedef enum {
 @property (nonatomic, assign) kFileType iType;
 @property (nonatomic, assign) BOOL isDirectory;
 
-@property (nonatomic, assign) BOOL isSelected, isDownloadSuccess, isExportSuccess;
+@property (nonatomic, assign) BOOL isSelected, isDownloadSuccess;
+@property (nonatomic, assign) BOOL isRetryOnce;
 @property (nonatomic, assign) float fProgress;
 
 @property (nonatomic, strong) NSString *sExportPath;
@@ -42,5 +43,6 @@ typedef enum {
 @property (nonatomic, strong) NSDictionary *songInfo;
 
 - (id)initWithMetadata:(DBMetadata *)metadata;
+- (id)initWithItem:(DropBoxObj *)dropBoxItem;
 
 @end

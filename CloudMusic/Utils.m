@@ -331,16 +331,17 @@
 + (NSString *)getNameForFile:(NSString *)sFileName inFolder:(NSString *)sFolderPath extension:(NSString *)sExtension
 {
     NSString *sFilePath = nil;
+    NSString *sName = sFileName;
     
     int count = 0;
     do {
         NSString *numberString = count > 0 ? [NSString stringWithFormat:@"(%d)",count]:@"";
-        sFileName = [NSString stringWithFormat:@"%@%@",sFileName,numberString];
-        sFilePath = [[Utils dropboxPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",sFileName,sExtension]];
+        sName = [NSString stringWithFormat:@"%@%@",sFileName,numberString];
+        sFilePath = [[Utils dropboxPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",sName,sExtension]];
         count++;
     } while ([[NSFileManager defaultManager] fileExistsAtPath:sFilePath]);
     
-    return sFileName;
+    return [sName stringByAppendingPathExtension:sExtension];
 }
 
 + (NSString *)getFileSize:(NSString *)sFilePath

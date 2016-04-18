@@ -19,11 +19,13 @@
 
 @implementation Item
 
-@synthesize isPlaying;
-
 @synthesize isCloud;
 @synthesize sLocalArtworkUrl;
 @synthesize sSongDesc;
+@synthesize sPlayableUrl;
+
+@synthesize isPlaying;
+@synthesize numberOfSelect;
 
 /*
  @property (nullable, nonatomic, retain) NSNumber *iPlaylistId;
@@ -38,16 +40,16 @@
     [self setSongName:item.itemTitle];
     
     self.iAlbumId = [NSString stringWithFormat:@"%@ - %@",[item.itemAlbumPID stringValue],[item.year stringValue]];
-    [self setAlbumName:item.itemAlbumTitle];
+    [self changeAlbumName:item.itemAlbumTitle];
     
     self.iArtistId = [item.itemArtistPID stringValue];
-    [self setArtistName:item.itemArtist];
+    [self changeArtistName:item.itemArtist];
     
     self.iAlbumArtistId = [item.itemAlbumArtistPID stringValue];
-    [self setAlbumArtistName:item.itemAlbumArtist];
+    [self changeAlbumArtistName:item.itemAlbumArtist];
     
     self.iGenreId = [item.itemGenrePID stringValue];
-    [self setGenreName:item.itemGenre];
+    [self changeGenreName:item.itemGenre];
     
     UIImage *artwork = [item.itemArtwork imageWithSize:item.itemArtwork.bounds.size];
     if (artwork) {
@@ -62,16 +64,14 @@
     [self setSongDuration:item.playbackDuration];
 }
 
-- (void)updateWithDropBoxItem:(DropBoxObj *)item
+- (void)updateWithSongUrl:(NSURL *)songUrl songInfo:(NSDictionary *)songInfo
 {
-    NSDictionary *songInfo = item.songInfo;
-    
-    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:item.sExportPath] options:nil];
-    [self setSongDuration:CMTimeGetSeconds([asset duration])];
-    
     self.iSongId = [Utils getTimestamp];
     self.iCloudItem = @1;
-    self.sAssetUrl = [item.sExportPath lastPathComponent];
+    self.sAssetUrl = [songUrl.path lastPathComponent];
+    
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:songUrl options:nil];
+    [self setSongDuration:CMTimeGetSeconds([asset duration])];
     
     NSString *sTitle = [songInfo objectForKey:@"title"];
     if (sTitle) {
@@ -86,7 +86,7 @@
             self.iAlbumId = iAlbumId;
         }
         else {
-            self.iAlbumId = [NSString stringWithFormat:@"%@-%@",sAlbumName,[Utils getTimestamp]];
+            self.iAlbumId = [NSString stringWithFormat:@"%@-%@",sAlbumName,self.iSongId];
         }
         
         [self setAlbumName:sAlbumName];
@@ -100,7 +100,7 @@
             self.iArtistId = iArtistId;
         }
         else {
-            self.iArtistId = [NSString stringWithFormat:@"%@-%@",sArtistName,[Utils getTimestamp]];
+            self.iArtistId = [NSString stringWithFormat:@"%@-%@",sArtistName,self.iSongId];
         }
         
         [self setArtistName:sArtistName];
@@ -111,7 +111,7 @@
             self.iAlbumArtistId = iAlbumArtistId;
         }
         else {
-            self.iAlbumArtistId = [NSString stringWithFormat:@"%@-%@",sArtistName,[Utils getTimestamp]];
+            self.iAlbumArtistId = [NSString stringWithFormat:@"%@-%@",sArtistName,self.iSongId];
         }
         [self setAlbumArtistName:sArtistName];
     }
@@ -123,7 +123,7 @@
             self.iGenreId = iGenreId;
         }
         else {
-            self.iGenreId = [NSString stringWithFormat:@"%@-%@",sGenreName,[Utils getTimestamp]];
+            self.iGenreId = [NSString stringWithFormat:@"%@-%@",sGenreName,self.iSongId];
         }
         [self setGenreName:sGenreName];
     }
@@ -156,6 +156,10 @@
 
 - (void)setSongName:(NSString *)sSongName
 {
+    if (sSongName.length <= 0) {
+        return;
+    }
+    
     self.sSongName = sSongName;
     self.sSongNameIndex = [[Utils standardLocaleString:self.sSongName] lowercaseString];
     
@@ -174,6 +178,10 @@
 
 - (void)changeAlbumName:(NSString *)sAlbumName
 {
+    if (sAlbumName.length <= 0) {
+        return;
+    }
+    
     if ([self.sAlbumName isEqualToString:sAlbumName]) {
         return;
     }
@@ -192,12 +200,20 @@
 
 - (void)setArtistName:(NSString *)sArtistName
 {
+    if (sArtistName.length <= 0) {
+        return;
+    }
+    
     self.sArtistName = sArtistName;
     self.sArtistNameIndex = [[Utils standardLocaleString:self.sArtistName] lowercaseString];
 }
 
 - (void)changeArtistName:(NSString *)sArtistName
 {
+    if (sArtistName.length <= 0) {
+        return;
+    }
+    
     if ([self.sArtistName isEqualToString:sArtistName]) {
         return;
     }
@@ -216,6 +232,10 @@
 
 - (void)setAlbumArtistName:(NSString *)sAlbumArtistName
 {
+    if (sAlbumArtistName.length <= 0) {
+        return;
+    }
+    
     sSongDesc = nil;
     self.sAlbumArtistName = sAlbumArtistName;
     self.sAlbumArtistNameIndex = [[Utils standardLocaleString:self.sAlbumArtistName] lowercaseString];
@@ -223,6 +243,10 @@
 
 - (void)changeAlbumArtistName:(NSString *)sAlbumArtistName
 {
+    if (sAlbumArtistName.length <= 0) {
+        return;
+    }
+    
     if ([self.sAlbumArtistName isEqualToString:sAlbumArtistName]) {
         return;
     }
@@ -240,12 +264,20 @@
 
 - (void)setGenreName:(NSString *)sGenreName
 {
+    if (sGenreName.length <= 0) {
+        return;
+    }
+    
     self.sGenreName = sGenreName;
     self.sGenreNameIndex = [[Utils standardLocaleString:self.sGenreName] lowercaseString];
 }
 
 - (void)changeGenreName:(NSString *)sGenreName
 {
+    if (sGenreName.length <= 0) {
+        return;
+    }
+    
     if ([self.sGenreName isEqualToString:sGenreName]) {
         return;
     }
@@ -275,27 +307,32 @@
     return sLocalArtworkUrl;
 }
 
+- (NSURL *)sPlayableUrl
+{
+    if (!sPlayableUrl) {
+        if (self.isCloud) {
+            sPlayableUrl = [NSURL fileURLWithPath:[[Utils dropboxPath] stringByAppendingPathComponent:self.sAssetUrl]];
+        }
+        else {
+            sPlayableUrl = [NSURL URLWithString:self.sAssetUrl];
+        }
+    }
+    return sPlayableUrl;
+}
+
 - (NSAttributedString *)sSongDesc
 {
     if (!sSongDesc)
     {
         NSAttributedString *sArtist = nil;
         if (self.sArtistName) {
-            sArtist = [[NSAttributedString alloc] initWithString:self.sArtistName
-                                                      attributes:@{
-                                      NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Medium" size:14.0],
-                                      NSForegroundColorAttributeName:[UIColor blackColor],
-                                      }];
+            sArtist = [[NSAttributedString alloc] initWithString:self.sArtistName attributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Medium" size:14.0],NSForegroundColorAttributeName:[UIColor blackColor]}];
         }
         
         NSAttributedString *sAlbumName = nil;
         if (self.sAlbumName)
         {
-            sAlbumName = [[NSAttributedString alloc] initWithString:self.sAlbumName
-                                                         attributes:@{
-                         NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue" size:14.0],
-                         NSForegroundColorAttributeName:[Utils colorWithRGBHex:0x6a6a6a],
-                         }];
+            sAlbumName = [[NSAttributedString alloc] initWithString:self.sAlbumName attributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue" size:14.0],NSForegroundColorAttributeName:[Utils colorWithRGBHex:0x6a6a6a],}];
         }
         
         if (sArtist) {

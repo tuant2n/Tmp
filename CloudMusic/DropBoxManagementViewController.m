@@ -288,10 +288,30 @@
     [self.restClient loadFile:currentItem.metaData.path intoPath:currentItem.sDownloadPath];
 }
 
-- (void)finishSingleDownload
+- (void)downloadSuccess
+{
+    AVAssetExportSession *exportSession = [self exportItem:currentItem];
+    if (exportSession) {
+        [exportSession exportAsynchronouslyWithCompletionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (exportSession.status == AVAssetExportSessionStatusCompleted)
+                {
+                    [[DataManagement sharedInstance] insertSong:currentItem];
+                }
+                
+                [self downloadNextItem];
+            });
+        }];
+        [self getExportSessionProgress:exportSession];
+    }
+    else {
+        [self downloadNextItem];
+    }
+}
+
+- (void)downloadNextItem
 {
     iCurrentIndex++;
-    
     if (iCurrentIndex <= self.arrSelected.count - 1)
     {
         [self downloadItemAtIndex:iCurrentIndex];
@@ -303,80 +323,8 @@
 
 - (void)finishAllDownload
 {
-    [self closeDownloadView];
-    
-    currentItem = nil;
-    iCurrentIndex = 0;
-    
-    NSPredicate *filterDownloadSuccess = [NSPredicate predicateWithFormat:@"isDownloadSuccess == YES"];
-    
-    [self.arrDownloadSuccess removeAllObjects];
-    [self.arrDownloadSuccess addObjectsFromArray:[self.arrSelected filteredArrayUsingPredicate:filterDownloadSuccess]];
-    
-    if (self.arrDownloadSuccess.count <= 0) {
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Download failed, please try again later!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
-    }
-    else {
-        [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        [self exportItemAtIndex:iCurrentIndex];
-    }
-}
-
-#pragma mark - ExportToFile
-
-- (void)exportItemAtIndex:(int)iIndex
-{
-    currentItem = self.arrDownloadSuccess[iIndex];
-    
-    currentItem.fProgress = 0.0;
-    currentItem.isExportSuccess = NO;
-
-    [self exportItem:currentItem withBlock:^(bool isSuccess)
-    {
-        currentItem.isExportSuccess = isSuccess;
-        [self finishSingleExport];
-    }];
-}
-
-- (void)finishSingleExport
-{
-    iCurrentIndex++;
-    
-    if (iCurrentIndex <= self.arrDownloadSuccess.count - 1) {
-        [self exportItemAtIndex:iCurrentIndex];
-    }
-    else {
-        [self finishAllExport];
-    }
-}
-
-- (void)finishAllExport
-{
-    NSPredicate *filterSuccess = [NSPredicate predicateWithFormat:@"isDownloadSuccess == YES && isExportSuccess == YES"];
-    NSArray *arrSuccess = [self.arrSelected filteredArrayUsingPredicate:filterSuccess];
-    
-    if (arrSuccess.count <= 0) {
-        isSelectAll = NO;
-        [self changeSelect:isSelectAll];
-        [MBProgressHUD hideAllHUDsForView:self.navigationController.view animated:YES];
-        return;
-    }
-    
-    for (DropBoxObj *dropboxItem in arrSuccess)
-    {
-        Item *item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Item class]) inManagedObjectContext:[DataManagement sharedInstance].managedObjectContext];
-        [item updateWithDropBoxItem:dropboxItem];
-        
-        FileInfo *fileInfo = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([FileInfo class]) inManagedObjectContext:[DataManagement sharedInstance].managedObjectContext];
-        [fileInfo updateFileInfo:dropboxItem];
-        item.fileInfo = fileInfo;
-    }
-    
     [[DataManagement sharedInstance] saveData];
-    
-    isSelectAll = NO;
-    [self changeSelect:isSelectAll];
-    [MBProgressHUD hideAllHUDsForView:self.navigationController.view animated:YES];
+    [self closeDownloadView];
 }
 
 #pragma mark - DBRestClientDelegate Methods for DownloadFile
@@ -384,13 +332,23 @@
 - (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath contentType:(NSString *)contentType metadata:(DBMetadata *)metadata
 {
     currentItem.isDownloadSuccess = YES;
-    [self finishSingleDownload];
+    [self downloadSuccess];
 }
 
 - (void)restClient:(DBRestClient *)client loadFileFailedWithError:(NSError *)error
 {
-    currentItem.isDownloadSuccess = NO;
-    [self finishSingleDownload];
+    if (error) {
+        if (currentItem.isRetryOnce) {
+            [self downloadNextItem];
+        }
+        else {
+            currentItem.isRetryOnce = YES;
+            [self downloadItemAtIndex:iCurrentIndex];
+        }
+    }
+    else {
+        [self downloadNextItem];
+    }
 }
 
 - (void)restClient:(DBRestClient *)client loadProgress:(CGFloat)progress forFile:(NSString *)destPath
@@ -505,29 +463,16 @@
 
 #pragma mark - Export
 
-- (void)exportItem:(DropBoxObj *)item withBlock:(void (^)(bool isSuccess))block
+- (AVAssetExportSession *)exportItem:(DropBoxObj *)item
 {
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:item.sDownloadPath] options:nil];
-    AVAssetExportSession *export = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetAppleM4A];
-    export.outputURL = [NSURL fileURLWithPath:item.sExportPath];
-    export.outputFileType = AVFileTypeAppleM4A;
-    export.metadata = item.songMetaData;
     
-    [export exportAsynchronouslyWithCompletionHandler:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (export.status == AVAssetExportSessionStatusCompleted)
-            {
-                if (block) {
-                    block(YES);
-                }
-            }
-            else {
-                if (block) {
-                    block(NO);
-                }
-            }
-        });
-    }];
+    AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetAppleM4A];
+    exportSession.outputURL = [NSURL fileURLWithPath:item.sExportPath];
+    exportSession.outputFileType = AVFileTypeAppleM4A;
+    exportSession.metadata = item.songMetaData;
+    
+    return exportSession;
 }
 
 #pragma mark - Download View
@@ -597,6 +542,8 @@
     if (currentItem) {
         [currentItem removeObserver:self forKeyPath:@"fProgress"];
     }
+    
+    iCurrentIndex = 0;
     currentItem = nil;
     
     self.progressBar.progress = 0.0;
@@ -604,6 +551,9 @@
     
     self.lblCurrentDownload.text = nil;
     self.lblProgress.text = nil;
+    
+    isSelectAll = NO;
+    [self changeSelect:isSelectAll];
     
     [[KGModal sharedInstance] hideAnimated:NO];
 }
@@ -632,7 +582,21 @@
     }
     
     self.progressBar.progress = currentItem.fProgress;
-    NSLog(@"%f",currentItem.fProgress);
+    NSLog(@"PROGRESS DOWNLOAD: %f",currentItem.fProgress);
+}
+
+- (void)getExportSessionProgress:(AVAssetExportSession *)session
+{
+    NSArray *modes = [[NSArray alloc] initWithObjects:NSDefaultRunLoopMode, UITrackingRunLoopMode, nil];
+    [self performSelector:@selector(updateProgress:) withObject:session afterDelay:0.5 inModes:modes];
+}
+
+- (void)updateProgress:(AVAssetExportSession *)session
+{
+    if (session.status == AVAssetExportSessionStatusExporting) {
+        NSLog(@"PROGRESS EXPORT: %f",session.progress);
+        [self getExportSessionProgress:session];
+    }
 }
 
 #pragma mark - Utils

@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CloudMusic/EditViewController.m"
-            timestampString = "482340547.504792"
+            filePath = "CloudMusic/DropBoxManagementViewController.m"
+            timestampString = "482596955.880086"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "415"
-            endingLineNumber = "415"
-            landmarkName = "-saveDataToAlbum"
+            startingLineNumber = "340"
+            endingLineNumber = "340"
+            landmarkName = "-restClient:loadFileFailedWithError:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

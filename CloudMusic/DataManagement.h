@@ -11,12 +11,15 @@
 
 #import "Item.h"
 #import "FileInfo.h"
+#import "Playlist.h"
 
 #import "AlbumObj.h"
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
 #import "DataObj.h"
+
 #import "FileObj.h"
+#import "DropBoxObj.h"
 
 #import "SongsViewController.h"
 #import "AlbumsViewController.h"
@@ -39,21 +42,25 @@
 - (NSManagedObjectContext *)managedObjectContext;
 - (NSEntityDescription *)itemEntity;
 - (NSEntityDescription *)fileInfoEntity;
+- (NSEntityDescription *)playlistEntity;
 
 #pragma mark - Data Method
 
-- (void)removeAllData;
-- (void)syncData;
+- (void)syncDataWithBlock:(void (^)(bool isSuccess))block;
+
 - (void)saveData;
+- (void)saveData:(BOOL)isNotify;
+
+- (void)insertSong:(DropBoxObj *)DropBoxObj;
 
 - (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId;
-
 - (NSArray *)getListSongFilterByName:(NSString *)sName;
 - (NSArray *)getListSongCloudFilterByName:(NSString *)sName;
 - (NSArray *)getListAlbumFilterByName:(NSString *)sName albumArtistId:(NSString *)iAlbumArtistId genreId:(NSString *)iGenreId;
 - (NSArray *)getListAlbumArtistFilterByName:(NSString *)sName;
 - (NSArray *)getListGenreFilterByName:(NSString *)sName;
 
+- (Item *)getItemBySongId:(NSString *)iSongId;
 - (NSString *)getAlbumIdFromName:(NSString *)sAlbumName;
 - (NSString *)getAlbumArtistIdFromName:(NSString *)sAlbumArtistName;
 - (NSString *)getArtistIdFromName:(NSString *)sArtistName;

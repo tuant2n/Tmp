@@ -9,13 +9,9 @@
 #import "TagLyricCell.h"
 
 #import "TagObj.h"
-
 #import "Utils.h"
 
 @interface TagLyricCell() <UITextViewDelegate>
-{
-    
-}
 
 @property (nonatomic, weak) IBOutlet UITextView *tvLyric;
 @property (nonatomic, weak) IBOutlet UIView *line;
@@ -29,7 +25,6 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
-    
     self.tvLyric.delegate = self;
     self.tvLyric.contentInset = UIEdgeInsetsMake(-8.0, 0.0, 0.0, 0.0);
 }

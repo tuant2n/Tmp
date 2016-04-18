@@ -6,12 +6,12 @@
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
-#import "TagCell.h"
+#import "TagElementCell.h"
 
 #import "TagObj.h"
 #import "Utils.h"
 
-@interface TagCell() <UITextFieldDelegate>
+@interface TagElementCell() <UITextFieldDelegate>
 {
     
 }
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation TagCell
+@implementation TagElementCell
 
 - (void)awakeFromNib
 {
@@ -51,6 +51,29 @@
     }
 }
 
+- (void)setHiddenLine:(BOOL)isHidden
+{
+    self.line.hidden = isHidden;
+}
+
++ (CGFloat)height
+{
+    return 44.0;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    NSString *sTmp = textField.text;
+    if (sTmp.length > 0) {
+        self.tagObj.value = sTmp;
+    }
+    else {
+        textField.text = self.tagObj.value;
+    }
+}
+
+#pragma mark - Utils
+
 - (void)setTagName
 {
     switch (self.tagObj.iElementType)
@@ -74,7 +97,7 @@
             self.lblTagName.text = @"Album";
             self.tfTagContent.placeholder = @"Album";
             break;
-             
+            
         case kElementTypeYear:
             self.lblTagName.text = @"Year";
             self.tfTagContent.placeholder = @"Year";
@@ -85,16 +108,11 @@
             self.tfTagContent.placeholder = @"Genre";
             break;
             
-        case kElementTypeFilename:
-            self.lblTagName.text = @"File Name";
-            self.tfTagContent.placeholder = @"File Name";
-            break;
-            
         case kElementTypeTime:
             self.lblTagName.text = @"Time";
             self.tfTagContent.placeholder = @"Time";
             break;
-        
+            
         case kElementTypeSize:
             self.lblTagName.text = @"Size";
             self.tfTagContent.placeholder = @"Size";
@@ -107,23 +125,6 @@
             
         default:
             break;
-    }
-}
-
-- (void)setHiddenLine:(BOOL)isHidden
-{
-    self.line.hidden = isHidden;
-}
-
-+ (CGFloat)height
-{
-    return 44.0;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    if (self.tagObj.iTagType == kTagTypeElement) {
-        self.tagObj.value = textField.text;
     }
 }
 

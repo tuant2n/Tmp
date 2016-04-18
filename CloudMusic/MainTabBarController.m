@@ -22,8 +22,8 @@
 #import "GenresViewController.h"
 #import "SettingsViewController.h"
 
-#import "HCDCoreDataStackController.h"
 #import "IQKeyboardManager.h"
+#import "MBProgressHUD.h"
 
 typedef enum {
     kTabTypeFiles,
@@ -43,9 +43,21 @@ typedef enum {
 @property (nonatomic, strong) UINavigationController *navFilesVC, *navSongsVC, *navAlbumsVC, *navPlaylistsVC, *navArtistsVC, *navGenresVC, *navSettingsVC;
 @property (nonatomic, strong) MoreTableViewDelegate *tabBarMoreViewDelegate;
 
+@property (nonatomic, strong) MBProgressHUD *syncDataProgress;
+
 @end
 
 @implementation MainTabBarController
+
+- (MBProgressHUD *)syncDataProgress
+{
+    if (!_syncDataProgress) {
+        _syncDataProgress = [[MBProgressHUD alloc] initWithView:self.view];
+        _syncDataProgress.mode = MBProgressHUDModeIndeterminate;
+        _syncDataProgress.labelText = @"Sync Data...";
+    }
+    return _syncDataProgress;
+}
 
 - (id)init
 {
@@ -67,14 +79,6 @@ typedef enum {
 - (void)initData
 {
 #if !(TARGET_OS_SIMULATOR)
-    long lastTimeAppSync = [[DataManagement sharedInstance] getLastTimeAppSync];
-    long lastTimeDeviceSync = [[[MPMediaLibrary defaultMediaLibrary] lastModifiedDate] timeIntervalSince1970];
-    
-    if (lastTimeAppSync != lastTimeDeviceSync)
-    {
-        [self syncData:lastTimeDeviceSync];
-    }
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification_iPodLibraryDidChange:) name: MPMediaLibraryDidChangeNotification object:nil];
     [[MPMediaLibrary defaultMediaLibrary] beginGeneratingLibraryChangeNotifications];
 #else
@@ -84,14 +88,11 @@ typedef enum {
 
 - (void)notification_iPodLibraryDidChange:(NSNotification *)notify
 {
-    long lastTimeDeviceSync = [[[MPMediaLibrary defaultMediaLibrary] lastModifiedDate] timeIntervalSince1970];
-    [self syncData:lastTimeDeviceSync];
-}
-
-- (void)syncData:(long)timestamp
-{
-    [[DataManagement sharedInstance] syncData];
-    [[DataManagement sharedInstance] setLastTimeAppSync:timestamp];
+    [self.syncDataProgress show:YES];
+    
+    [[DataManagement sharedInstance] syncDataWithBlock:^(bool isSuccess) {
+        [self.syncDataProgress hide:YES];
+    }];
 }
 
 - (void)createTabViews

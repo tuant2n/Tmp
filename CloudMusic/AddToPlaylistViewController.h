@@ -10,4 +10,6 @@
 
 @interface AddToPlaylistViewController : UIViewController
 
+@property (nonatomic, strong) id value;
+
 @end

@@ -10,7 +10,7 @@
 
 @class TagObj;
 
-@interface TagCell : UITableViewCell
+@interface TagElementCell : UITableViewCell
 
 @property (nonatomic, strong) TagObj *tagObj;
 

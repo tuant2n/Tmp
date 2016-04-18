@@ -15,7 +15,6 @@
 @property (nonatomic, strong) TagObj *tagObj;
 
 - (void)configWithTag:(TagObj *)tagObj;
-
 + (CGFloat)height;
 
 @end

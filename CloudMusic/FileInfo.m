@@ -33,7 +33,6 @@
         NSDate *date = [NSDate dateWithTimeIntervalSince1970:[self.lTimestamp longValue]];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"MM/dd/yyyy, hh:mm a"];
-        
         sTimeStamp = [dateFormatter stringFromDate:date];
     }
     return sTimeStamp;

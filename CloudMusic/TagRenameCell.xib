@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="154" id="H5E-Ph-rJX" customClass="TagRenameCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="H5E-Ph-rJX" id="mpQ-UP-cll">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="83"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7hj-BO-Vzp" userLabel="vContent">
+                        <rect key="frame" x="10" y="0.0" width="310" height="38"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="File Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Unp-gE-FHh" userLabel="lblTagName">
+                                <rect key="frame" x="0.0" y="0.0" width="100" height="38"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="C5C-Xl-UKG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="oQO-GC-qhM" userLabel="tfFileName">
+                                <rect key="frame" x="110" y="0.0" width="200" height="38"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                            </textField>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="oQO-GC-qhM" firstAttribute="top" secondItem="7hj-BO-Vzp" secondAttribute="top" id="1bU-mX-o9m"/>
+                            <constraint firstItem="Unp-gE-FHh" firstAttribute="top" secondItem="7hj-BO-Vzp" secondAttribute="top" id="I4T-Ry-T6b"/>
+                            <constraint firstAttribute="bottom" secondItem="Unp-gE-FHh" secondAttribute="bottom" id="Q6s-dD-rUa"/>
+                            <constraint firstAttribute="trailing" secondItem="oQO-GC-qhM" secondAttribute="trailing" id="Xgt-hc-t16"/>
+                            <constraint firstItem="oQO-GC-qhM" firstAttribute="leading" secondItem="Unp-gE-FHh" secondAttribute="trailing" constant="10" id="YcR-Pu-Oh7"/>
+                            <constraint firstItem="Unp-gE-FHh" firstAttribute="leading" secondItem="7hj-BO-Vzp" secondAttribute="leading" id="i7T-ot-5Sw"/>
+                            <constraint firstAttribute="bottom" secondItem="oQO-GC-qhM" secondAttribute="bottom" id="mkT-7d-X3J"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l8m-2T-MTe" userLabel="line">
+                        <rect key="frame" x="10" y="38" width="310" height="1"/>
+                        <animations/>
+                        <color key="backgroundColor" red="1" green="0.080225848229999994" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="1rP-qx-uhB"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vb7-T7-Bdw" userLabel="btnCopyName">
+                        <rect key="frame" x="0.0" y="39" width="320" height="44"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="height" priority="750" constant="44" id="JF7-eb-8nl"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="Zr1-to-csa"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                        <state key="normal" title="Copy Title to File Name">
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="highlighted">
+                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="touchCopyTitle:" destination="H5E-Ph-rJX" eventType="touchUpInside" id="eEv-pw-gJI"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <animations/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="l8m-2T-MTe" secondAttribute="trailing" id="1DO-0w-kHe"/>
+                    <constraint firstAttribute="trailing" secondItem="Vb7-T7-Bdw" secondAttribute="trailing" id="52Z-mW-3uE"/>
+                    <constraint firstItem="l8m-2T-MTe" firstAttribute="top" secondItem="7hj-BO-Vzp" secondAttribute="bottom" id="68M-1H-kw2"/>
+                    <constraint firstItem="l8m-2T-MTe" firstAttribute="leading" secondItem="mpQ-UP-cll" secondAttribute="leading" constant="10" id="7Su-pd-lfv"/>
+                    <constraint firstAttribute="bottom" secondItem="Vb7-T7-Bdw" secondAttribute="bottom" id="F92-fd-opC"/>
+                    <constraint firstItem="Vb7-T7-Bdw" firstAttribute="top" secondItem="l8m-2T-MTe" secondAttribute="bottom" id="Jqq-CA-qCY"/>
+                    <constraint firstItem="7hj-BO-Vzp" firstAttribute="top" secondItem="mpQ-UP-cll" secondAttribute="top" id="LR4-uE-F1J"/>
+                    <constraint firstItem="Vb7-T7-Bdw" firstAttribute="leading" secondItem="mpQ-UP-cll" secondAttribute="leading" id="MBc-pp-3Bn"/>
+                    <constraint firstAttribute="trailing" secondItem="7hj-BO-Vzp" secondAttribute="trailing" id="Yj6-Iy-NiJ"/>
+                    <constraint firstItem="7hj-BO-Vzp" firstAttribute="leading" secondItem="mpQ-UP-cll" secondAttribute="leading" constant="10" id="btm-Sj-xhg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <animations/>
+            <connections>
+                <outlet property="lblTagName" destination="Unp-gE-FHh" id="EnW-O6-Yzz"/>
+                <outlet property="line" destination="l8m-2T-MTe" id="GP0-2f-N1C"/>
+                <outlet property="tfFileName" destination="oQO-GC-qhM" id="dil-U6-vcu"/>
+            </connections>
+            <point key="canvasLocation" x="289" y="312"/>
+        </tableViewCell>
+    </objects>
+</document>

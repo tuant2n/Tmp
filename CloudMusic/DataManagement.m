@@ -12,6 +12,8 @@
 #import "Utils.h"
 #import "GlobalParameter.h"
 
+#import "MPMediaItem+Accessors.h"
+
 static DataManagement *_sharedInstance = nil;
 
 @interface DataManagement()
@@ -70,53 +72,99 @@ static DataManagement *_sharedInstance = nil;
     return [NSEntityDescription entityForName:NSStringFromClass([FileInfo class]) inManagedObjectContext:self.managedObjectContext];
 }
 
-#pragma mark - Data Method
-
-- (void)removeAllData
+- (NSEntityDescription *)playlistEntity
 {
-    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"iCloudItem",@0];
-    [fetchSongRequest setPredicate:predicate];
-    
-    NSError *error = nil;
-    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
-    
-    if (!error) {
-        for (Item *item in listData) {
-            [[self managedObjectContext] deleteObject:item];
-        }
-    }
+    return [NSEntityDescription entityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
 }
 
-- (void)syncData
+#pragma mark - Data Method
+
+- (void)syncDataWithBlock:(void (^)(bool isSuccess))block
 {
-    [self removeAllData];
+    NSOperationQueue *addGifQueu = [[NSOperationQueue alloc] init];
+    addGifQueu.name = @"queue.sync.data";
     
-    NSMutableArray *songList = [[NSMutableArray alloc] init];
-    MPMediaQuery *allSongsQuery = [MPMediaQuery songsQuery];
-    [allSongsQuery addFilterPredicate:[MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusic] forProperty:MPMediaItemPropertyMediaType comparisonType:MPMediaPredicateComparisonContains]];
-    for (MPMediaItemCollection *collection in [allSongsQuery collections])
-    {
-        [songList addObjectsFromArray:[collection items]];
-    }
-    
-    NSManagedObjectContext *backgroundContext = [self.coreDataController createChildContextWithType:NSPrivateQueueConcurrencyType];
-    [backgroundContext performBlock:^{
+    [addGifQueu addOperationWithBlock:^{
+        NSMutableArray *songList = [[NSMutableArray alloc] init];
+        MPMediaQuery *allSongsQuery = [MPMediaQuery songsQuery];
+        [allSongsQuery addFilterPredicate:[MPMediaPropertyPredicate predicateWithValue:[NSNumber numberWithInteger:MPMediaTypeMusic] forProperty:MPMediaItemPropertyMediaType comparisonType:MPMediaPredicateComparisonContains]];
+        for (MPMediaItemCollection *collection in [allSongsQuery collections])
+        {
+            [songList addObjectsFromArray:[collection items]];
+        }
+        NSMutableArray *listSongId = [[NSMutableArray alloc] init];
+        for (MPMediaItem *song in songList)
+        {
+            [listSongId addObject:[song.itemPersistentID stringValue]];
+        }
+        NSString *sListSongId = [[listSongId valueForKey:@"description"] componentsJoinedByString:@","];
         
-        for (MPMediaItem *song in songList) {
-            Item *item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Item class]) inManagedObjectContext:backgroundContext];
+        NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"iCloudItem",@0];
+        [fetchSongRequest setPredicate:predicate];
+        NSArray *listSong = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:nil];
+        for (Item *item in listSong) {
+            if ([sListSongId rangeOfString:item.iSongId].location == NSNotFound) {
+                [self.managedObjectContext deleteObject:item];
+                
+                // Remove From Playlist
+            }
+        }
+        
+        for (MPMediaItem *song in songList)
+        {
+            NSString *iSongId = [song.itemPersistentID stringValue];
+            
+            Item *item = [self getItemBySongId:iSongId];
+            if (!item) {
+                item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Item class]) inManagedObjectContext:self.managedObjectContext];
+            }
             [item updateWithMediaItem:song];
         }
         
-        [backgroundContext save:nil];
-        [self saveData];
+        Playlist *playlist = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
+        playlist.sPlaylistName = @"123456";
+        playlist.iPlaylistId = @"123123123123123";
+        [playlist setPlaylist:[NSArray arrayWithObjects:@"1",@"2",nil]];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self saveData];
+            [self setLastTimeAppSync:[[[MPMediaLibrary defaultMediaLibrary] lastModifiedDate] timeIntervalSince1970]];
+            
+            if (block) {
+                block(YES);
+            }
+        });
     }];
 }
 
 - (void)saveData
 {
+    [self saveData:YES];
+}
+
+- (void)saveData:(BOOL)isNotify
+{
     [self.coreDataController save];
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_RELOAD_DATA object:nil];
+    
+    if (isNotify) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_RELOAD_DATA object:nil];
+    }
+}
+
+- (void)insertSong:(DropBoxObj *)dropboxItem
+{
+    NSDictionary *songInfo = [[NSDictionary alloc] initWithDictionary:dropboxItem.songInfo];
+    NSURL *songUrl = [NSURL fileURLWithPath:dropboxItem.sExportPath];
+    
+    Item *item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Item class]) inManagedObjectContext:self.managedObjectContext];
+    [item updateWithSongUrl:songUrl songInfo:songInfo];
+    
+    FileInfo *fileInfo = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([FileInfo class]) inManagedObjectContext:self.managedObjectContext];
+    fileInfo.sFileName = [songUrl.path lastPathComponent];
+    fileInfo.lTimestamp = @(time(nil));
+    fileInfo.sSize = [Utils getFileSize:songUrl.path];
+    item.fileInfo = fileInfo;
 }
 
 - (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId
@@ -387,6 +435,21 @@ static DataManagement *_sharedInstance = nil;
     return genresArray;
 }
 
+- (Item *)getItemBySongId:(NSString *)iSongId
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"iSongId",iSongId];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        return [listData lastObject];
+    }
+    return nil;
+}
+
 - (NSString *)getAlbumIdFromName:(NSString *)sAlbumName
 {
     NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
@@ -554,60 +617,120 @@ static DataManagement *_sharedInstance = nil;
 
 - (BOOL)doSwipeActionWithItem:(id)itemObj atIndex:(NSInteger)index fromNavigation:(UINavigationController *)navController
 {
-    if ([itemObj isKindOfClass:[Item class]]) {
-        Item *item = (Item *)itemObj;
+    if ([itemObj isKindOfClass:[Item class]] || [itemObj isKindOfClass:[FileObj class]])
+    {
+        Item *item = nil;
         
-        if (index == 0) {
-            [self deleteSong:item];
-            return NO;
+        if ([itemObj isKindOfClass:[Item class]]) {
+            item = (Item *)itemObj;
         }
-        else if (index == 1) {
-            // Add To Playlist
+        else if ([itemObj isKindOfClass:[FileObj class]]) {
+            FileObj *file = (FileObj *)itemObj;
+            item = file.item;
         }
-        else if (index == 2) {
-            EditViewController *vc = [[EditViewController alloc] init];
-            vc.song = item;
+        
+        if (!item) {
+            return YES;
+        }
+        
+        if (item.isCloud) {
+            if (index == 0) {
+                [self deleteSong:item];
+                return NO;
+            }
+            else if (index == 1) {
+                AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+                vc.value = item;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                [navController presentViewController:nav animated:YES completion:nil];
+            }
+            else if (index == 2) {
+                EditViewController *vc = [[EditViewController alloc] init];
+                vc.song = item;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                [navController presentViewController:nav animated:YES completion:nil];
+            }
+        }
+        else {
+            AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+            vc.value = item;
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             [navController presentViewController:nav animated:YES completion:nil];
         }
     }
-    else if ([itemObj isKindOfClass:[AlbumObj class]]) {
+    else if ([itemObj isKindOfClass:[AlbumObj class]])
+    {
         AlbumObj *album = (AlbumObj *)itemObj;
         
-        if (index == 0) {
-            [self deleteAlbum:album];
-            return NO;
+        if (album.isCloud) {
+            if (index == 0) {
+                [self deleteAlbum:album];
+                return NO;
+            }
+            else if (index == 1) {
+                AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+                vc.value = album;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                [navController presentViewController:nav animated:YES completion:nil];
+            }
+            else if (index == 2) {
+                EditViewController *vc = [[EditViewController alloc] init];
+                vc.album = album;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                [navController presentViewController:nav animated:YES completion:nil];
+            }
         }
-        else if (index == 1) {
-            // Add To Playlist
-        }
-        else if (index == 2) {
-            EditViewController *vc = [[EditViewController alloc] init];
-            vc.album = album;
+        else {
+            AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+            vc.value = album;
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             [navController presentViewController:nav animated:YES completion:nil];
         }
     }
-    else if ([itemObj isKindOfClass:[AlbumArtistObj class]]) {
+    else if ([itemObj isKindOfClass:[AlbumArtistObj class]])
+    {
         AlbumArtistObj *artist = (AlbumArtistObj *)itemObj;
         
-        if (index == 0) {
-            [self deleteArtist:artist];
-            return NO;
+        if (artist.isCloud) {
+            if (index == 0) {
+                [self deleteArtist:artist];
+                return NO;
+            }
+            else if (index == 1) {
+                AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+                vc.value = artist;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                [navController presentViewController:nav animated:YES completion:nil];
+            }
         }
-        else if (index == 1) {
-            // Add To Playlist
+        else {
+            AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+            vc.value = artist;
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            [navController presentViewController:nav animated:YES completion:nil];
         }
     }
-    else if ([itemObj isKindOfClass:[GenreObj class]]) {
+    else if ([itemObj isKindOfClass:[GenreObj class]])
+    {
         GenreObj *genre = (GenreObj *)itemObj;
         
-        if (index == 0) {
-            [self deleteGenre:genre];
-            return NO;
+        if (genre.isCloud) {
+            if (index == 0) {
+                [self deleteGenre:genre];
+                return NO;
+            }
+            else if (index == 1) {
+                AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+                vc.value = genre;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                [navController presentViewController:nav animated:YES completion:nil];
+            }
         }
-        else if (index == 1) {
-            // Add To Playlist
+        else {
+            AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+            vc.value = genre;
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            [navController presentViewController:nav animated:YES completion:nil];
         }
     }
     

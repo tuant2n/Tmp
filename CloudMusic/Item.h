@@ -22,10 +22,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSURL *sLocalArtworkUrl;
 @property (nonatomic, strong) NSAttributedString *sSongDesc;
 
+@property (nonatomic, strong) NSURL *sPlayableUrl;
+
 @property (nonatomic, assign) BOOL isPlaying;
+@property (nonatomic, assign) int numberOfSelect;
 
 - (void)updateWithMediaItem:(MPMediaItem *)item;
-- (void)updateWithDropBoxItem:(DropBoxObj *)item;
+- (void)updateWithSongUrl:(NSURL *)songUrl songInfo:(NSDictionary *)songInfo;
 
 - (void)setSongName:(NSString *)sSongName;
 - (void)setArtwork:(UIImage *)artwork;

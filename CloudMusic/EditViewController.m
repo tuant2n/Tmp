@@ -9,10 +9,13 @@
 #import "EditViewController.h"
 
 #import "ArtworkView.h"
-#import "TagCell.h"
+
+#import "TagElementCell.h"
+#import "TagRenameCell.h"
 #import "TagLyricCell.h"
-#import "TagRadioButton.h"
-#import "TagButton.h"
+
+#import "DeleteItemCell.h"
+#import "WriteTagCell.h"
 
 #import "TagObj.h"
 
@@ -24,7 +27,10 @@
 #import "QBImagePickerController.h"
 #import "UIImage+ProportionalFill.h"
 
-@interface EditViewController () <ArtworkViewDelegate,QBImagePickerControllerDelegate>
+@interface EditViewController () <ArtworkViewDelegate,QBImagePickerControllerDelegate,DeleteItemCellDelegate,TagRenameCellDelegate,WriteTagCellDelegate>
+{
+    BOOL isWriteTagsToFile;
+}
 
 @property (nonatomic, strong) NSMutableArray *arrListTag;
 
@@ -63,10 +69,13 @@
     self.tblList.backgroundColor = [Utils colorWithRGBHex:0xf0f0f0];
     self.tblList.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    [self.tblList registerNib:[UINib nibWithNibName:@"TagCell" bundle:nil] forCellReuseIdentifier:@"TagCellId"];
+    [self.tblList registerNib:[UINib nibWithNibName:@"TagElementCell" bundle:nil] forCellReuseIdentifier:@"TagElementCellId"];
+    
+    [self.tblList registerNib:[UINib nibWithNibName:@"TagRenameCell" bundle:nil] forCellReuseIdentifier:@"TagRenameCellId"];
     [self.tblList registerNib:[UINib nibWithNibName:@"TagLyricCell" bundle:nil] forCellReuseIdentifier:@"TagLyricCellId"];
-    [self.tblList registerNib:[UINib nibWithNibName:@"TagRadioButton" bundle:nil] forCellReuseIdentifier:@"TagRadioButtonId"];
-    [self.tblList registerNib:[UINib nibWithNibName:@"TagButton" bundle:nil] forCellReuseIdentifier:@"TagButtonId"];
+    
+    [self.tblList registerNib:[UINib nibWithNibName:@"DeleteItemCell" bundle:nil] forCellReuseIdentifier:@"DeleteItemCellId"];
+    [self.tblList registerNib:[UINib nibWithNibName:@"WriteTagCell" bundle:nil] forCellReuseIdentifier:@"WriteTagCellId"];
     
     [self.tblList setTableHeaderView:self.artworkView];
     [self.tblList setTableFooterView:[UIView new]];
@@ -77,6 +86,7 @@
 - (void)setupData
 {
     [self.arrListTag removeAllObjects];
+    isWriteTagsToFile = YES;
     
     if (self.song) {
         [self.artworkView setArtwotk:self.song.sLocalArtworkUrl];
@@ -146,8 +156,8 @@
     NSMutableArray *arrSection2 = [NSMutableArray new];
     
     TagObj *writeTag = [[TagObj alloc] init];
-    writeTag.iTagType = kTagTypeWriteTag;
-    writeTag.value = @YES;
+    writeTag.iTagType = kTagTypeWriteTags;
+    writeTag.value = [NSNumber numberWithBool:isWriteTagsToFile];
     [arrSection2 addObject:writeTag];
     
     [self.arrListTag addObject:arrSection2];
@@ -156,16 +166,10 @@
     NSMutableArray *arrSection3 = [NSMutableArray new];
     
     TagObj *file = [[TagObj alloc] init];
-    file.iTagType = kTagTypeElement;
-    file.iElementType = kElementTypeFilename;
-    file.value = song.fileInfo.sFileName;
-    file.isEditable = NO;
+    file.iTagType = kTagTypeRename;
+    file.value = [song.fileInfo.sFileName stringByDeletingPathExtension];
+    file.isEditable = YES;
     [arrSection3 addObject:file];
-    
-    TagObj *copyTitle = [[TagObj alloc] init];
-    copyTitle.iTagType = kTagTypeAction;
-    copyTitle.iTagActionType = kTagActionTypeCopyTitle;
-    [arrSection3 addObject:copyTitle];
     
     [self.arrListTag addObject:arrSection3];
     
@@ -210,12 +214,318 @@
     NSMutableArray *arrSection6 = [NSMutableArray new];
     
     TagObj *delete = [[TagObj alloc] init];
-    delete.iTagType = kTagTypeAction;
-    delete.iTagActionType = kTagActionTypeDelete;
+    delete.iTagType = kTagTypeDelete;
     [arrSection6 addObject:delete];
     
     [self.arrListTag addObject:arrSection6];
 }
+
+- (void)getTagListFromAlbum:(AlbumObj *)albumObj
+{
+    //
+    NSMutableArray *arrSection1 = [NSMutableArray new];
+    
+    TagObj *album = [[TagObj alloc] init];
+    album.iTagType = kTagTypeElement;
+    album.iElementType = kElementTypeAlbum;
+    album.value = albumObj.sAlbumName;
+    album.isEditable = YES;
+    [arrSection1 addObject:album];
+    
+    TagObj *artist = [[TagObj alloc] init];
+    artist.iTagType = kTagTypeElement;
+    artist.iElementType = kElementTypeArtist;
+    artist.value = albumObj.sArtistName;
+    artist.isEditable = YES;
+    [arrSection1 addObject:artist];
+    
+    TagObj *albumArtist = [[TagObj alloc] init];
+    albumArtist.iTagType = kTagTypeElement;
+    albumArtist.iElementType = kElementTypeAlbumArtist;
+    albumArtist.value = albumObj.sAlbumArtistName;
+    albumArtist.isEditable = YES;
+    [arrSection1 addObject:albumArtist];
+    
+    TagObj *year = [[TagObj alloc] init];
+    year.iTagType = kTagTypeElement;
+    year.iElementType = kElementTypeYear;
+    year.value = [albumObj.iYear stringValue];
+    year.isEditable = YES;
+    [arrSection1 addObject:year];
+
+    [self.arrListTag addObject:arrSection1];
+    
+    //
+    NSMutableArray *arrSection2 = [NSMutableArray new];
+    
+    TagObj *writeTag = [[TagObj alloc] init];
+    writeTag.iTagType = kTagTypeWriteTags;
+    writeTag.value = [NSNumber numberWithBool:isWriteTagsToFile];
+    [arrSection2 addObject:writeTag];
+    
+    [self.arrListTag addObject:arrSection2];
+    
+    //
+    NSMutableArray *arrSection3 = [NSMutableArray new];
+    
+    TagObj *delete = [[TagObj alloc] init];
+    delete.iTagType = kTagTypeDelete;
+    [arrSection3 addObject:delete];
+    
+    [self.arrListTag addObject:arrSection3];
+}
+
+- (void)touchCancel
+{
+    [[IQKeyboardManager sharedManager] resignFirstResponder];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)touchDone
+{
+    [[IQKeyboardManager sharedManager] resignFirstResponder];
+    
+    if (self.song) {
+        [self saveDataToSong];
+    }
+    else if (self.album) {
+        [self saveDataToAlbum];
+    }
+}
+
+#pragma mark - UITableViewDataSource
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section != 0) {
+        return 10.0;
+    }
+    return 0.0;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.arrListTag.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.arrListTag[section] count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *data = self.arrListTag[indexPath.section];
+    TagObj *tag = data[indexPath.row];
+    
+    if (tag.iTagType == kTagTypeLyrics) {
+        return [TagLyricCell height];
+    }
+    else if (tag.iTagType == kTagTypeRename) {
+        return [TagRenameCell height];
+    }
+    return [TagElementCell height];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *data = self.arrListTag[indexPath.section];
+    TagObj *tag = data[indexPath.row];
+    
+    UITableViewCell *cell = nil;
+    
+    switch (tag.iTagType)
+    {
+        case kTagTypeElement:
+        {
+            cell = (TagElementCell *)[tableView dequeueReusableCellWithIdentifier:@"TagElementCellId" forIndexPath:indexPath];
+        }
+            break;
+            
+        case kTagTypeWriteTags:
+        {
+            cell = (WriteTagCell *)[tableView dequeueReusableCellWithIdentifier:@"WriteTagCellId" forIndexPath:indexPath];
+        }
+            break;
+            
+        case kTagTypeRename:
+        {
+            cell = (TagRenameCell *)[tableView dequeueReusableCellWithIdentifier:@"TagRenameCellId" forIndexPath:indexPath];
+        }
+            break;
+            
+        case kTagTypeLyrics:
+        {
+            cell = (TagLyricCell *)[tableView dequeueReusableCellWithIdentifier:@"TagLyricCellId" forIndexPath:indexPath];
+        }
+            break;
+            
+        case kTagTypeDelete:
+        {
+            cell = (DeleteItemCell *)[tableView dequeueReusableCellWithIdentifier:@"DeleteItemCellId" forIndexPath:indexPath];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *data = self.arrListTag[indexPath.section];
+    TagObj *tag = data[indexPath.row];
+    
+    if ([cell isKindOfClass:[TagElementCell class]]) {
+        TagElementCell *tagCell = (TagElementCell *)cell;
+        [tagCell configWithTag:tag];
+        [tagCell setHiddenLine:(indexPath.row == data.count - 1)];
+    }
+    else if ([cell isKindOfClass:[TagRenameCell class]]) {
+        TagRenameCell *tagLyricCell = (TagRenameCell *)cell;
+        [tagLyricCell configWithTag:tag];
+        tagLyricCell.delegate = self;
+    }
+    else if ([cell isKindOfClass:[TagLyricCell class]]) {
+        TagLyricCell *tagLyricCell = (TagLyricCell *)cell;
+        [tagLyricCell configWithTag:tag];
+    }
+    else if ([cell isKindOfClass:[DeleteItemCell class]]) {
+        DeleteItemCell *deleteSongCell = (DeleteItemCell *)cell;
+        deleteSongCell.delegate = self;
+    }
+    else if ([cell isKindOfClass:[WriteTagCell class]]) {
+        WriteTagCell *writeTagCell = (WriteTagCell *)cell;
+        [writeTagCell configWithValue:isWriteTagsToFile];
+        writeTagCell.delegate = self;
+    }
+}
+
+#pragma mark - CellDelegate
+
+- (void)copyTitleToFileName:(TagRenameCell *)cell;
+{
+    TagObj *tagObj = cell.tagObj;
+    
+    if (!tagObj) {
+        return;
+    }
+    
+    NSString *sSongName = nil;
+    NSString *sArtistName = nil;
+    
+    NSIndexPath *indexPath = nil;
+    
+    indexPath = [self getTagWithType:kTagTypeElement elementType:kElementTypeTitle];
+    if (indexPath) {
+        NSArray *data = self.arrListTag[indexPath.section];
+        TagObj *tag = data[indexPath.row];
+        
+        sSongName = tag.value;
+    }
+    
+    indexPath = [self getTagWithType:kTagTypeElement elementType:kElementTypeArtist];
+    if (indexPath) {
+        NSArray *data = self.arrListTag[indexPath.section];
+        TagObj *tag = data[indexPath.row];
+        
+        sArtistName = tag.value;
+    }
+    
+    NSString *sTitle = nil;
+    if (sArtistName && sSongName) {
+        sTitle = [NSString stringWithFormat:@"%@ - %@",sArtistName,sSongName];
+    }
+    else {
+        sTitle = sSongName;
+    }
+    
+    tagObj.value = sTitle;
+    [cell configWithTag:tagObj];
+}
+
+- (void)changeActionWriteTags:(WriteTagCell *)cell;
+{
+    isWriteTagsToFile = !isWriteTagsToFile;
+    [cell configWithValue:isWriteTagsToFile];
+}
+
+- (void)deleteItem
+{
+    if (self.song) {
+        [[DataManagement sharedInstance] deleteSong:self.song];
+    }
+    else if (self.album) {
+        [[DataManagement sharedInstance] deleteAlbum:self.album];
+    }
+    
+    [self save];
+}
+
+#pragma mark - Artwotk
+
+- (ArtworkView *)artworkView
+{
+    if (!_artworkView) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"ArtworkView" owner:self options:nil];
+        if ([nib count] > 0) {
+            _artworkView = [nib objectAtIndex:0];
+            _artworkView.delegate = self;
+        }
+    }
+    return _artworkView;
+}
+
+- (void)changeArtwork
+{
+    BOOL hasArtwork = NO;
+    if ([self.artworkView artwork]) {
+        hasArtwork = YES;
+    }
+    
+    BOOL hasImageOnClipboard = NO;
+    if ([UIPasteboard generalPasteboard].image) {
+        hasImageOnClipboard = YES;
+    }
+    
+    NSMutableArray *arrayAction = [NSMutableArray new];
+    [arrayAction addObject:@"Choose from Camera Roll"];
+    
+    if (hasArtwork) {
+        [arrayAction addObject:@"Copy"];
+    }
+    
+    if (hasImageOnClipboard) {
+        [arrayAction addObject:@"Paste"];
+    }
+    
+    [UIActionSheet showInView:self.view
+                    withTitle:nil
+            cancelButtonTitle:@"Cancel"
+       destructiveButtonTitle:(hasArtwork ? @"Delete Artwork":nil)
+            otherButtonTitles:arrayAction
+                     tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex)
+     {
+         NSString *sTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+         
+         if ([sTitle isEqualToString:@"Delete Artwork"]) {
+             [self.artworkView setArtwotk:nil];
+         }
+         else if ([sTitle isEqualToString:@"Choose from Camera Roll"]) {
+             [self presentViewController:self.imagePickerController animated:YES completion:NULL];
+         }
+         else if ([sTitle isEqualToString:@"Copy"]) {
+             [[UIPasteboard generalPasteboard] setImage:[self.artworkView artwork]];
+         }
+         else if ([sTitle isEqualToString:@"Paste"]) {
+             [self.artworkView setArtworkImage:[UIPasteboard generalPasteboard].image];
+         }
+     }];
+}
+
+#pragma mark - SaveData
 
 - (void)saveDataToSong
 {
@@ -263,34 +573,31 @@
                     }
                         break;
                         
-                    case kElementTypeFilename:
-                    {
-                        NSString *sOldName = self.song.fileInfo.sFileName;
-                        NSString *sNewName = tag.value;
-                        
-                        if (![sOldName isEqualToString:sNewName])
-                        {
-                            NSString *sExtension = @"m4a";
-                            NSString *sNewFileName = [Utils getNameForFile:sNewName inFolder:[Utils dropboxPath] extension:sExtension];
-                            
-                            NSString *sNewFilePath = [[Utils dropboxPath] stringByAppendingPathComponent:[sNewFileName stringByAppendingPathExtension:sExtension]];
-                            NSString *sOldFilePath = [[Utils dropboxPath] stringByAppendingPathComponent:self.song.sAssetUrl];
-           
-                            NSError *error = nil;
-                            if ([[NSFileManager defaultManager] moveItemAtPath:sOldFilePath toPath:sNewFilePath error:&error]) {
-                                self.song.fileInfo.sFileName = sNewFileName;
-                                self.song.sAssetUrl = [sNewFileName stringByAppendingPathExtension:sExtension];
-                            }
-                            else {
-                                NSLog(@"%@",error.description);
-                            }
-                        }
-                        
-                        break;
-                    }
-                        
                     default:
                         break;
+                }
+            }
+            else if (tag.iTagType == kTagTypeRename)
+            {
+                NSString *sOldName = [self.song.fileInfo.sFileName stringByDeletingPathExtension];
+                NSString *sNewName = tag.value;
+                
+                if (![sOldName isEqualToString:sNewName])
+                {
+                    NSString *sExtension = @"m4a";
+                    NSString *sNewFileName = [Utils getNameForFile:sNewName inFolder:[Utils dropboxPath] extension:sExtension];
+                    
+                    NSString *sNewFilePath = [[Utils dropboxPath] stringByAppendingPathComponent:sNewFileName];
+                    NSString *sOldFilePath = [[Utils dropboxPath] stringByAppendingPathComponent:self.song.sAssetUrl];
+                    
+                    NSError *error = nil;
+                    if ([[NSFileManager defaultManager] moveItemAtPath:sOldFilePath toPath:sNewFilePath error:&error]) {
+                        self.song.fileInfo.sFileName = sNewFileName;
+                        self.song.sAssetUrl = sNewFileName;
+                    }
+                    else {
+                        NSLog(@"%@",error.description);
+                    }
                 }
             }
             else if (tag.iTagType == kTagTypeLyrics)
@@ -305,62 +612,6 @@
     }
     
     [self save];
-}
-
-- (void)getTagListFromAlbum:(AlbumObj *)albumObj
-{
-    //
-    NSMutableArray *arrSection1 = [NSMutableArray new];
-    
-    TagObj *album = [[TagObj alloc] init];
-    album.iTagType = kTagTypeElement;
-    album.iElementType = kElementTypeAlbum;
-    album.value = albumObj.sAlbumName;
-    album.isEditable = YES;
-    [arrSection1 addObject:album];
-    
-    TagObj *artist = [[TagObj alloc] init];
-    artist.iTagType = kTagTypeElement;
-    artist.iElementType = kElementTypeArtist;
-    artist.value = albumObj.sArtistName;
-    artist.isEditable = YES;
-    [arrSection1 addObject:artist];
-    
-    TagObj *albumArtist = [[TagObj alloc] init];
-    albumArtist.iTagType = kTagTypeElement;
-    albumArtist.iElementType = kElementTypeAlbumArtist;
-    albumArtist.value = albumObj.sAlbumArtistName;
-    albumArtist.isEditable = YES;
-    [arrSection1 addObject:albumArtist];
-    
-    TagObj *year = [[TagObj alloc] init];
-    year.iTagType = kTagTypeElement;
-    year.iElementType = kElementTypeYear;
-    year.value = [albumObj.iYear stringValue];
-    year.isEditable = YES;
-    [arrSection1 addObject:year];
-
-    [self.arrListTag addObject:arrSection1];
-    
-    //
-    NSMutableArray *arrSection2 = [NSMutableArray new];
-    
-    TagObj *writeTag = [[TagObj alloc] init];
-    writeTag.iTagType = kTagTypeWriteTag;
-    writeTag.value = @YES;
-    [arrSection2 addObject:writeTag];
-    
-    [self.arrListTag addObject:arrSection2];
-    
-    //
-    NSMutableArray *arrSection3 = [NSMutableArray new];
-    
-    TagObj *delete = [[TagObj alloc] init];
-    delete.iTagType = kTagTypeAction;
-    delete.iTagActionType = kTagActionTypeDelete;
-    [arrSection3 addObject:delete];
-    
-    [self.arrListTag addObject:arrSection3];
 }
 
 - (void)saveDataToAlbum
@@ -479,172 +730,7 @@
     [self touchCancel];
 }
 
-- (void)touchCancel
-{
-    [[IQKeyboardManager sharedManager] resignFirstResponder];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)touchDone
-{
-    [[IQKeyboardManager sharedManager] resignFirstResponder];
-    
-    if (self.song) {
-        [self saveDataToSong];
-    }
-    else if (self.album) {
-        [self saveDataToAlbum];
-    }
-}
-
-#pragma mark - UITableViewDataSource
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section != 0) {
-        return 10.0;
-    }
-    return 0.0;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return self.arrListTag.count;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [self.arrListTag[section] count];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSArray *data = self.arrListTag[indexPath.section];
-    TagObj *tag = data[indexPath.row];
-    
-    if (tag.iTagType == kTagTypeLyrics) {
-        return [TagLyricCell height];
-    }
-    return [TagCell height];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSArray *data = self.arrListTag[indexPath.section];
-    TagObj *tag = data[indexPath.row];
-    
-    UITableViewCell *cell = nil;
-    
-    switch (tag.iTagType)
-    {
-        case kTagTypeElement:
-        {
-            cell = (TagCell *)[tableView dequeueReusableCellWithIdentifier:@"TagCellId" forIndexPath:indexPath];
-        }
-            break;
-            
-        case kTagTypeAction:
-        {
-            cell = (TagButton *)[tableView dequeueReusableCellWithIdentifier:@"TagButtonId" forIndexPath:indexPath];
-        }
-            break;
-            
-        case kTagTypeWriteTag:
-        {
-            cell = (TagRadioButton *)[tableView dequeueReusableCellWithIdentifier:@"TagRadioButtonId" forIndexPath:indexPath];
-        }
-            break;
-            
-        case kTagTypeLyrics:
-        {
-            cell = (TagLyricCell *)[tableView dequeueReusableCellWithIdentifier:@"TagLyricCellId" forIndexPath:indexPath];
-        }
-            break;
-            
-        default:
-            break;
-    }
-    
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSArray *data = self.arrListTag[indexPath.section];
-    TagObj *tag = data[indexPath.row];
-    
-    if ([cell isKindOfClass:[TagCell class]]) {
-        TagCell *tagCell = (TagCell *)cell;
-        [tagCell configWithTag:tag];
-        [tagCell setHiddenLine:(indexPath.row == data.count - 1)];
-    }
-    else if ([cell isKindOfClass:[TagButton class]]) {
-        TagButton *tagButton = (TagButton *)cell;
-        [tagButton configWithActionType:tag.iTagActionType];
-    }
-    else if ([cell isKindOfClass:[TagRadioButton class]]) {
-        TagRadioButton *tagRadioButton = (TagRadioButton *)cell;
-        [tagRadioButton configWithValue:[tag.value boolValue]];
-    }
-    else if ([cell isKindOfClass:[TagLyricCell class]]) {
-        TagLyricCell *tagLyricCell = (TagLyricCell *)cell;
-        [tagLyricCell configWithTag:tag];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSArray *data = self.arrListTag[indexPath.section];
-    TagObj *tag = data[indexPath.row];
-    
-    switch (tag.iTagType)
-    {
-        case kTagTypeAction:
-        {
-            if (tag.iTagActionType == kTagActionTypeCopyTitle)
-            {
-                NSIndexPath *tagIndexPath = [self getTagWithType:kTagTypeElement elementType:kElementTypeFilename];
-                if (tagIndexPath)
-                {
-                    TagObj *tagObj = self.arrListTag[tagIndexPath.section][tagIndexPath.row];
-                    tagObj.value = self.song.sSongName;
-                    
-                    TagCell *cell = (TagCell *)[self.tblList cellForRowAtIndexPath:tagIndexPath];
-                    if (cell) {
-                        [cell configWithTag:tagObj];
-                    }
-                }
-            }
-            else if (tag.iTagActionType == kTagActionTypeDelete)
-            {
-                if (self.song) {
-                    [[DataManagement sharedInstance] deleteSong:self.song];
-                }
-                else if (self.album) {
-                    [[DataManagement sharedInstance] deleteAlbum:self.album];
-                }
-                
-                [self save];
-            }
-        }
-            break;
-            
-        case kTagTypeWriteTag:
-        {
-            BOOL isWrite = ![tag.value boolValue];
-            tag.value = [NSNumber numberWithBool:isWrite];
-            
-            TagRadioButton *cell = (TagRadioButton *)[self.tblList cellForRowAtIndexPath:indexPath];
-            if (cell) {
-                [cell configWithValue:[tag.value boolValue]];
-            }
-        }
-            break;
-            
-        default:
-            break;
-    }
-}
+#pragma mark - Utils
 
 - (NSIndexPath *)getTagWithType:(kTagType)iTagType elementType:(kElementType)iElementType
 {
@@ -654,7 +740,7 @@
     for (int i = 0; !dobreak && i < self.arrListTag.count; i++)
     {
         NSArray *data = self.arrListTag[i];
-
+        
         for (int j = 0; j < data.count; j++)
         {
             TagObj *tag = data[j];
@@ -668,67 +754,6 @@
     }
     
     return indexPath;
-}
-
-#pragma mark - Artwotk
-
-- (ArtworkView *)artworkView
-{
-    if (!_artworkView) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"ArtworkView" owner:self options:nil];
-        if ([nib count] > 0) {
-            _artworkView = [nib objectAtIndex:0];
-            _artworkView.delegate = self;
-        }
-    }
-    return _artworkView;
-}
-
-- (void)changeArtwork
-{
-    BOOL hasArtwork = NO;
-    if ([self.artworkView artwork]) {
-        hasArtwork = YES;
-    }
-    
-    BOOL hasImageOnClipboard = NO;
-    if ([UIPasteboard generalPasteboard].image) {
-        hasImageOnClipboard = YES;
-    }
-    
-    NSMutableArray *arrayAction = [NSMutableArray new];
-    [arrayAction addObject:@"Choose from Camera Roll"];
-    
-    if (hasArtwork) {
-        [arrayAction addObject:@"Copy"];
-    }
-    
-    if (hasImageOnClipboard) {
-        [arrayAction addObject:@"Paste"];
-    }
-    
-    [UIActionSheet showInView:self.view
-                    withTitle:nil
-            cancelButtonTitle:@"Cancel"
-       destructiveButtonTitle:(hasArtwork ? @"Delete Artwork":nil)
-            otherButtonTitles:arrayAction
-                     tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex)
-     {
-         NSString *sTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-         
-         if ([sTitle isEqualToString:@"Delete Artwork"]) {
-             [self.artworkView setArtwotk:nil];
-         }
-         else if ([sTitle isEqualToString:@"Choose from Camera Roll"]) {
-             [self presentViewController:self.imagePickerController animated:YES completion:NULL];
-         }
-         else if ([sTitle isEqualToString:@"Copy"]) {
-             [[UIPasteboard generalPasteboard] setImage:[self.artworkView artwork]];
-         }
-         else if ([sTitle isEqualToString:@"Paste"]) {
-             [self.artworkView setArtworkImage:[UIPasteboard generalPasteboard].image];
-         }
-     }];
 }
 
 #pragma mark - ImagePicker

@@ -10,9 +10,10 @@
 
 typedef enum {
     kTagTypeElement,
-    kTagTypeAction,
-    kTagTypeWriteTag,
+    kTagTypeWriteTags,
+    kTagTypeRename,
     kTagTypeLyrics,
+    kTagTypeDelete,
 } kTagType;
 
 typedef enum {
@@ -23,23 +24,15 @@ typedef enum {
     kElementTypeAlbum,
     kElementTypeYear,
     kElementTypeGenre,
-    kElementTypeFilename,
     kElementTypeTime,
     kElementTypeSize,
     kElementTypePlayed,
 } kElementType;
 
-typedef enum {
-    kTagActionTypeNone,
-    kTagActionTypeDelete,
-    kTagActionTypeCopyTitle,
-} kTagActionType;
-
 @interface TagObj : NSObject
 
 @property (nonatomic, assign) kTagType iTagType;
 @property (nonatomic, assign) kElementType iElementType;
-@property (nonatomic, assign) kTagActionType iTagActionType;
 
 @property (nonatomic, assign) BOOL isEditable;
 @property (nonatomic, strong) id value;

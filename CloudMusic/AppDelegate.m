@@ -10,6 +10,7 @@
 #import <DropboxSDK/DropboxSDK.h>
 
 #import "MainTabBarController.h"
+#import "SyncDataViewController.h"
 
 #import "Utils.h"
 #import "GlobalParameter.h"
@@ -27,7 +28,17 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
-    self.window.rootViewController = [[MainTabBarController alloc] init];
+    
+    long lastTimeAppSync = [[DataManagement sharedInstance] getLastTimeAppSync];
+    long lastTimeDeviceSync = [[[MPMediaLibrary defaultMediaLibrary] lastModifiedDate] timeIntervalSince1970];
+    
+    if (lastTimeAppSync != lastTimeDeviceSync)
+    {
+        [self openSyncDataViewController];
+    }
+    else {
+        [self openMainView];
+    }
     
     NSString *dropBoxAppKey = @"7g8osl380bj7x9j";
     NSString *dropBoxAppSecret = @"dge3dlml97z3e34";
@@ -40,7 +51,6 @@
     
     return YES;
 }
-
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
@@ -109,6 +119,18 @@ static int outstandingRequests;
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - OpenView
+
+- (void)openMainView
+{
+    self.window.rootViewController = [[MainTabBarController alloc] init];
+}
+
+- (void)openSyncDataViewController
+{
+    self.window.rootViewController = [[SyncDataViewController alloc] init];
 }
 
 @end
