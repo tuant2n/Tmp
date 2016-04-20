@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MainCell.h"
 
-@interface PlaylistCell : UITableViewCell
+@class Playlist;
+
+@interface PlaylistCell : MainCell
+
+- (void)configWithPlaylist:(Playlist *)playlist;
+
++ (CGFloat)heigth;
 
 @end

@@ -10,9 +10,10 @@
 
 #import "DataManagement.h"
 #import "GlobalParameter.h"
+#import "Utils.h"
 
 #import "PlaylistNameView.h"
-#import "Utils.h"
+#import "PlaylistCell.h"
 
 #import "IQKeyboardManager.h"
 
@@ -39,7 +40,7 @@
 - (NSMutableArray *)arrPlaylists
 {
     if (!_arrPlaylists) {
-        _arrPlaylists = [[NSMutableArray alloc] init]
+        _arrPlaylists = [[NSMutableArray alloc] init];
     }
     return _arrPlaylists;
 }
@@ -48,6 +49,7 @@
 {
     [super viewDidLoad];
     [self setupUI];
+    [self getData];
 }
 
 - (void)getData
@@ -57,6 +59,15 @@
     NSFetchRequest *request = [[DataManagement sharedInstance] getListPlaylistIsGetNormalOnly:YES];
     [self.arrPlaylists addObjectsFromArray:[[DataManagement sharedInstance].managedObjectContext executeFetchRequest:request error:nil]];
     [self.tblList reloadData];
+    
+    if (self.arrPlaylists.count <= 0) {
+        [self.nameView configWhenEmpty:YES];
+        [self.tblList setTableFooterView:[UIView new]];
+    }
+    else {
+        [self.nameView configWhenEmpty:NO];
+        [self.tblList setTableFooterView:[Utils bottomLine]];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -83,7 +94,9 @@
     self.tblList.backgroundView = nil;
     self.tblList.backgroundColor = [Utils colorWithRGBHex:0xf0f0f0];
 
-    [self.nameView configWhenEmpty:YES];
+    [self.tblList registerNib:[UINib nibWithNibName:@"PlaylistCell" bundle:nil] forCellReuseIdentifier:@"PlaylistCellId"];
+    self.tblList.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    self.tblList.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.tblList setTableHeaderView:self.nameView];
     [self.tblList setTableFooterView:[UIView new]];
@@ -105,47 +118,41 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView == self.tblSearchResult) {
-        return [MainCell normalCellHeight];
-    }
-    else {
-        return [ListSongCell height];
-    }
+    return [PlaylistCell heigth];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    id cellItem = nil;
-//    
-//    if (tableView == self.tblSearchResult) {
-//        DataObj *resultObj = self.arrResults[indexPath.section];
-//        cellItem = resultObj.listData[indexPath.row];
-//        
-//        return [Utils getCellWithItem:cellItem atIndex:indexPath tableView:tableView];
-//    }
-//    else {
-//        return (ListSongCell *)[tableView dequeueReusableCellWithIdentifier:@"ListSongCellId" forIndexPath:indexPath];
-//    }
+    return (PlaylistCell *)[tableView dequeueReusableCellWithIdentifier:@"PlaylistCellId" forIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (![cell isKindOfClass:[PlaylistCell class]]) {
+        return;
+    }
     
+    PlaylistCell *playlistCell = (PlaylistCell *)cell;
+    
+    Playlist *playlist = self.arrPlaylists[indexPath.row];
+    [playlistCell configWithPlaylist:playlist];
+    [playlistCell setLineHidden:(indexPath.row == self.arrPlaylists.count - 1)];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    Playlist *playlist = self.arrPlaylists[indexPath.row];
+    [self addToPlayList:playlist];
 }
 
 #pragma mark - CreateNewPlaylist
 
-- (void)createNewPlaylist
+- (NSArray *)getAddList
 {
-    NSString *sPlaylistName = [self.nameView getPlaylistName];
-    
-    if (!sPlaylistName || sPlaylistName.length <= 0) {
-        [self dismissView];
-        return;
-    }
-    
     NSMutableArray *arrListSong = [NSMutableArray new];
-
+    
     if (self.value) {
         if ([self.value isKindOfClass:[Item class]]) {
             [arrListSong addObject:self.value];
@@ -174,6 +181,19 @@
         [arrListSong addObjectsFromArray:self.listSong];
     }
     
+    return [arrListSong copy];
+}
+
+- (void)createNewPlaylist
+{
+    NSString *sPlaylistName = [self.nameView getPlaylistName];
+    
+    if (!sPlaylistName || sPlaylistName.length <= 0) {
+        [self dismissView];
+        return;
+    }
+    
+    NSMutableArray *arrListSong = [[NSMutableArray alloc] initWithArray:[self getAddList]];
     if (arrListSong.count <= 0) {
         [self dismissView];
         return;
@@ -181,7 +201,19 @@
     
     Playlist *playlist = [[DataManagement sharedInstance] createPlaylistWithName:sPlaylistName type:kPlaylistTypeNormal];
     [playlist addSongs:arrListSong];
+    [[DataManagement sharedInstance] saveData:NO];
+    [self dismissView];
+}
+
+- (void)addToPlayList:(Playlist *)playlist
+{
+    NSMutableArray *arrListSong = [[NSMutableArray alloc] initWithArray:[self getAddList]];
+    if (arrListSong.count <= 0) {
+        [self dismissView];
+        return;
+    }
     
+    [playlist addSongs:arrListSong];
     [[DataManagement sharedInstance] saveData:NO];
     [self dismissView];
 }

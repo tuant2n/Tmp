@@ -8,16 +8,29 @@
 
 #import "PlaylistCell.h"
 
+#import "Playlist.h"
+
+@interface PlaylistCell()
+
+@property (nonatomic, weak) IBOutlet UILabel *lblPlaylistName;
+
+@end
+
 @implementation PlaylistCell
 
-- (void)awakeFromNib {
-    // Initialization code
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+- (void)configWithPlaylist:(Playlist *)playlist
+{
+    self.lblPlaylistName.text = playlist.sPlaylistName;
+}
 
-    // Configure the view for the selected state
++ (CGFloat)heigth
+{
+    return 40.0;
 }
 
 @end
