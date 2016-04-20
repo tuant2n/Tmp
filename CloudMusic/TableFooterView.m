@@ -32,7 +32,13 @@
 
 - (void)setContent:(NSString *)sContent
 {
-    self.lblContent.text = sContent;
+    if (sContent) {
+        self.lblContent.hidden = NO;
+        self.lblContent.text = sContent;
+    }
+    else {
+        self.lblContent.hidden = YES;
+    }
 }
 
 @end

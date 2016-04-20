@@ -10,9 +10,10 @@
 
 typedef enum {
     kHeaderUtilTypeShuffle,
+    kHeaderUtilTypeShuffleFromSong,
     kHeaderUtilTypeGoAllAlbums,
     kHeaderUtilTypeGoAllSongs,
-    kHeaderUtilTypeCreatePlaylist,
+    kHeaderUtilTypeCreatePlaylistWithData,
     kHeaderUtilTypeCreateNewPlaylist,
 } kHeaderUtilType;
 
@@ -35,6 +36,7 @@ typedef enum {
 - (id)initForArtistsVC;
 - (id)initForGenresVC;
 - (id)initForPlaylistsVC;
+- (id)initForPlaylistsListSongVC;
 
 - (id)initForAlbumListVC:(AlbumObj *)album;
 

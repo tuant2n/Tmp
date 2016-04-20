@@ -6,7 +6,7 @@
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
-#import "FileInfo.h"
+#import "File.h"
 
 #import <DropboxSDK/DropboxSDK.h>
 
@@ -15,7 +15,7 @@
 
 #import "Utils.h"
 
-@implementation FileInfo
+@implementation File
 
 @synthesize sTimeStamp;
 

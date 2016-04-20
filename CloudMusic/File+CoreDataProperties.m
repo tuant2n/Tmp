@@ -9,9 +9,9 @@
 //  to delete and recreate this implementation file for your updated model.
 //
 
-#import "FileInfo+CoreDataProperties.h"
+#import "File+CoreDataProperties.h"
 
-@implementation FileInfo (CoreDataProperties)
+@implementation File (CoreDataProperties)
 
 @dynamic sFileName;
 @dynamic sSize;

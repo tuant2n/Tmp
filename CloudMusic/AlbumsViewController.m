@@ -86,7 +86,8 @@
 
 - (void)mergeData:(NSArray *)array
 {
-    for (AlbumObj *album in array) {
+    for (AlbumObj *album in array)
+    {
         album.iGenreId = self.iGenreId;
         album.iArtistId = self.iAlbumArtistId;
     }
@@ -109,12 +110,8 @@
     self.disableView.hidden = YES;
     [self.disableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSearch)]];
     
-    self.tblList.sectionIndexColor = [Utils colorWithRGBHex:0x006bd5];
-    self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
-    self.tblList.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
-    
-    [Utils registerNibForTableView:self.tblList];
-    [Utils registerNibForTableView:self.tblSearchResult];
+    [Utils configTableView:self.tblList isSearch:NO];
+    [Utils configTableView:self.tblSearchResult isSearch:YES];
     
     [self setupHeaderBar];
     [self.tblList setTableFooterView:self.footerView];
@@ -124,8 +121,6 @@
 {
     self.headerView.searchBar.delegate = self;
     [self.tblList setTableHeaderView:self.headerView];
-    
-    self.tblSearchResult.tableFooterView = nil;
 }
 
 - (void)closeSearch
@@ -365,7 +360,7 @@
     
     if (itemObj) {
         [self.headerView resignKeyboard];
-        [[DataManagement sharedInstance] doActionWithItem:itemObj fromNavigation:self.navigationController];
+        [[DataManagement sharedInstance] doActionWithItem:itemObj withData:nil fromSearch:isActiveSearch fromNavigation:self.navigationController];
     }
 }
 

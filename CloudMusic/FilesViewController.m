@@ -14,7 +14,7 @@
 
 #import "DropBoxManagementViewController.h"
 
-@interface FilesViewController () <MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
+@interface FilesViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     BOOL isActiveSearch;
     NSString *sCurrentSearch;
@@ -24,10 +24,10 @@
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
 @property (nonatomic, strong) UIBarButtonItem *barBtnAddFile;
 
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+
 @property (nonatomic, weak) IBOutlet UIView *vNotFound;
 @property (nonatomic, weak) IBOutlet UIButton *btnConnectDropbox;
-
-@property (nonatomic, strong) NSMutableArray *arrData;
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
 @property (nonatomic, weak) IBOutlet UITableView *tblSearchResult;
@@ -49,12 +49,16 @@
     return _arrResults;
 }
 
-- (NSMutableArray *)arrData
+- (NSFetchedResultsController *)fetchedResultsController
 {
-    if (!_arrData) {
-        _arrData = [[NSMutableArray alloc] init];
+    if (!_fetchedResultsController)
+    {
+        NSFetchRequest *request = [[DataManagement sharedInstance] getFileFilterByName:nil];
+        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+        _fetchedResultsController.delegate = self;
+        
     }
-    return _arrData;
+    return _fetchedResultsController;
 }
 
 - (void)viewDidLoad
@@ -62,29 +66,22 @@
     [super viewDidLoad];
     
     [self setupUI];
-    [self getData];
+    [self performFetch];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess:) name:NOTIFICATION_LOGIN_DROPBOX object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:NOTIFICATION_RELOAD_DATA object:nil];
 }
 
-- (void)getData
+- (void)performFetch
 {
-    [self.arrData removeAllObjects];
-    
-    NSArray *listFile = [[DataManagement sharedInstance] getListSongCloudFilterByName:nil];
-    for (Item *item in listFile) {
-//        FileObj *file = [[FileObj alloc] initWithItem:item];
-//        if (file) {
-//            [self.arrData addObject:file];
-//        }
-        [self.arrData addObject:item];
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        NSLog(@"Fetch error: %@", error);
     }
-    
-    [self setShowNotFoundView:(self.arrData.count <= 0)];
-    [self setupFooterView];
-    
-    [self.tblList reloadData];
+    else {
+        [self.tblList reloadData];
+        [self setupFooterView];
+    }
 }
 
 - (void)reloadData:(NSNotification *)notification
@@ -92,8 +89,6 @@
     if (isActiveSearch) {
         [self searchBar:self.headerView.searchBar activate:NO];
     }
-    
-    [self getData];
 }
 
 - (void)setupUI
@@ -108,12 +103,8 @@
     self.disableView.hidden = YES;
     [self.disableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSearch)]];
     
-    self.tblList.sectionIndexColor = [Utils colorWithRGBHex:0x006bd5];
-    self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
-    self.tblList.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
-    
-    [Utils registerNibForTableView:self.tblList];
-    [Utils registerNibForTableView:self.tblSearchResult];
+    [Utils configTableView:self.tblList isSearch:NO];
+    [Utils configTableView:self.tblSearchResult isSearch:YES];
     
     [self.btnConnectDropbox setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.btnConnectDropbox setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
@@ -129,8 +120,6 @@
 {
     self.headerView.searchBar.delegate = self;
     [self.tblList setTableHeaderView:self.headerView];
-    
-    self.tblSearchResult.tableFooterView = nil;
 }
 
 - (void)closeSearch
@@ -264,7 +253,7 @@
         return self.arrResults.count;
     }
     else {
-        return 1;
+        return [[self.fetchedResultsController sections] count];
     }
 }
 
@@ -299,7 +288,10 @@
         return resultOj.listData.count;
     }
     else {
-        return self.arrData.count;
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+        [self setShowNotFoundView:[sectionInfo numberOfObjects] <= 0];
+        
+        return [sectionInfo numberOfObjects];
     }
 }
 
@@ -317,7 +309,7 @@
         cellItem = resultObj.listData[indexPath.row];
     }
     else {
-        cellItem = self.arrData[indexPath.row];
+        cellItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
     }
     
     return [Utils getCellWithItem:cellItem atIndex:indexPath tableView:tableView];
@@ -336,8 +328,9 @@
             isHiddenSeperator = (indexPath.row == [resultObj.listData count] - 1);
         }
         else {
-            cellItem = self.arrData[indexPath.row];
-            isHiddenSeperator = (indexPath.row == [self.arrData count] - 1);
+            cellItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
+            isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
         }
         
         MainCell *mainCell = (MainCell *)cell;
@@ -360,12 +353,12 @@
         itemObj = resultOj.listData[indexPath.row];
     }
     else {
-        itemObj = [self.arrData objectAtIndex:indexPath.row];
+        itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
     }
     
     if (itemObj) {
         [self.headerView resignKeyboard];
-        [[DataManagement sharedInstance] doActionWithItem:itemObj fromNavigation:self.navigationController];
+        [[DataManagement sharedInstance] doActionWithItem:itemObj withData:nil fromSearch:isActiveSearch fromNavigation:self.navigationController];
     }
 }
 
@@ -380,7 +373,7 @@
     }
     else {
         NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
-        itemObj = self.arrData[indexPath.row];
+        itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
     }
     
     if (!itemObj) {
@@ -393,6 +386,76 @@
     }
     
     return YES;
+}
+
+#pragma mark - Fetched Results Controller Delegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    if (isActiveSearch) {
+        [self searchBar:self.headerView.searchBar activate:NO];
+    }
+    
+    [self.tblList beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert: {
+            [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            
+            break;
+            
+        case NSFetchedResultsChangeDelete: {
+            [self.tblList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            
+            break;
+            
+        case NSFetchedResultsChangeUpdate: {
+            [self configureCell:(FilesCell *)[self.tblList cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+        }
+            break;
+            
+        case NSFetchedResultsChangeMove: {
+            [self.tblList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert: {
+            [self.tblList insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+            
+        case NSFetchedResultsChangeDelete: {
+            [self.tblList deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tblList endUpdates];
+    [self setupFooterView];
+}
+
+- (void)configureCell:(MainCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [cell config:item];
 }
 
 #pragma mark - DropBox Connect
@@ -440,7 +503,7 @@
 - (void)setupFooterView
 {
     NSString *sContent = nil;
-    int itemCount = (int)self.arrData.count;
+    int itemCount = (int)[self.fetchedResultsController.fetchedObjects count];
     
     if (itemCount == 1) {
         sContent = [NSString stringWithFormat:@"%d File",itemCount];
@@ -456,14 +519,8 @@
 {
     if (!_headerView) {
         _headerView = [[TableHeaderView alloc] initForFilesVC];
-        _headerView.delegate = self;
     }
     return _headerView;
-}
-
-- (void)selectUtility:(kHeaderUtilType)iType
-{
-     [[DataManagement sharedInstance] doUtility:iType withData:self.arrData fromNavigation:self.navigationController];
 }
 
 #pragma mark - Utils

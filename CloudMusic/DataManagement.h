@@ -10,15 +10,13 @@
 #import "HCDCoreDataStackController.h"
 
 #import "Item.h"
-#import "FileInfo.h"
+#import "File.h"
 #import "Playlist.h"
 
 #import "AlbumObj.h"
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
 #import "DataObj.h"
-
-#import "FileObj.h"
 #import "DropBoxObj.h"
 
 #import "SongsViewController.h"
@@ -28,8 +26,10 @@
 #import "GenresViewController.h"
 
 #import "EditViewController.h"
-#import "AddToPlaylistViewController.h"
+
+#import "CreatePlaylistViewController.h"
 #import "MakePlaylistViewController.h"
+#import "PlaylistsListSongViewController.h"
 
 #import "SearchOperation.h"
 
@@ -41,7 +41,7 @@
 
 - (NSManagedObjectContext *)managedObjectContext;
 - (NSEntityDescription *)itemEntity;
-- (NSEntityDescription *)fileInfoEntity;
+- (NSEntityDescription *)fileEntity;
 - (NSEntityDescription *)playlistEntity;
 
 #pragma mark - Data Method
@@ -51,20 +51,38 @@
 - (void)saveData;
 - (void)saveData:(BOOL)isNotify;
 
+#pragma mark - Item
+
 - (void)insertSong:(DropBoxObj *)DropBoxObj;
-
-- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId;
-- (NSArray *)getListSongFilterByName:(NSString *)sName;
-- (NSArray *)getListSongCloudFilterByName:(NSString *)sName;
-- (NSArray *)getListAlbumFilterByName:(NSString *)sName albumArtistId:(NSString *)iAlbumArtistId genreId:(NSString *)iGenreId;
-- (NSArray *)getListAlbumArtistFilterByName:(NSString *)sName;
-- (NSArray *)getListGenreFilterByName:(NSString *)sName;
-
+- (NSFetchRequest *)getSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId;
+- (NSArray *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId;
 - (Item *)getItemBySongId:(NSString *)iSongId;
-- (NSString *)getAlbumIdFromName:(NSString *)sAlbumName;
+
+#pragma mark - File
+
+- (NSFetchRequest *)getFileFilterByName:(NSString *)sName;
+- (NSArray *)getListFileFilterByName:(NSString *)sName;
+
+#pragma mark - Album
+
+- (NSArray *)getListAlbumFilterByName:(NSString *)sName albumArtistId:(NSString *)iAlbumArtistId genreId:(NSString *)iGenreId;
+- (NSString *)getAlbumIdFromName:(NSString *)sAlbumName year:(int)iYear;
+
+#pragma mark - AlbumArtist
+
+- (NSArray *)getListAlbumArtistFilterByName:(NSString *)sName;
 - (NSString *)getAlbumArtistIdFromName:(NSString *)sAlbumArtistName;
-- (NSString *)getArtistIdFromName:(NSString *)sArtistName;
+
+#pragma mark - Genre
+
+- (NSArray *)getListGenreFilterByName:(NSString *)sName;
 - (NSString *)getGenreIdFromName:(NSString *)sGenreName;
+
+#pragma mark - Artist
+
+- (NSString *)getArtistIdFromName:(NSString *)sArtistName;
+
+#pragma mark - Delete
 
 - (void)deleteSong:(Item *)item;
 - (void)deleteAlbum:(AlbumObj *)album;
@@ -74,9 +92,12 @@
 #pragma mark - Playlist
 
 - (Playlist *)getPlaylistWithType:(kPlaylistType)iPlaylistType andName:(NSString *)sName;
+- (Playlist *)createPlaylistWithName:(NSString *)sPlaylistName type:(kPlaylistType)iType;
+
 - (NSFetchRequest *)getListPlaylistIsGetNormalOnly:(BOOL)isNormalOnly;
-- (void)removeItemFromPlaylist:(Item *)item;
+
 - (void)addItem:(Item *)item toSpecialList:(kPlaylistType)iPlaylistType;
+- (void)removeSongFromPlaylist:(Item *)item;
 
 #pragma mark - Search
 
@@ -85,9 +106,9 @@
 
 #pragma mark - DoAction
 
-- (void)doActionWithItem:(id)item fromNavigation:(UINavigationController *)navController;
-- (BOOL)doSwipeActionWithItem:(id)item atIndex:(NSInteger)index fromNavigation:(UINavigationController *)navController;
+- (void)doActionWithItem:(id)item withData:(NSArray *)data fromSearch:(BOOL)isSearchActive fromNavigation:(UINavigationController *)navController;
 - (void)doUtility:(int)iType withData:(NSArray *)arrData fromNavigation:(UINavigationController *)navController;
+- (BOOL)doSwipeActionWithItem:(id)item atIndex:(NSInteger)index fromNavigation:(UINavigationController *)navController;
 
 #pragma mark - iTunes Sync
 

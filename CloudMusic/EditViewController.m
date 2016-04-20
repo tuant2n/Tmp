@@ -24,6 +24,7 @@
 
 #import "IQKeyboardManager.h"
 #import "UIActionSheet+Blocks.h"
+#import "UIAlertView+Blocks.h"
 #import "QBImagePickerController.h"
 #import "UIImage+ProportionalFill.h"
 
@@ -32,11 +33,12 @@
     BOOL isWriteTagsToFile;
 }
 
-@property (nonatomic, strong) NSMutableArray *arrListTag;
-
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
-@property (nonatomic, strong) ArtworkView *artworkView;
 
+@property (nonatomic, strong) NSMutableArray *arrListTag;
+@property (nonatomic, strong) NSMutableArray *arrListSongWriteTag;
+
+@property (nonatomic, strong) ArtworkView *artworkView;
 @property (nonatomic, strong) QBImagePickerController *imagePickerController;
 
 @end
@@ -49,6 +51,14 @@
         _arrListTag = [[NSMutableArray alloc] init];
     }
     return _arrListTag;
+}
+
+- (NSMutableArray *)arrListSongWriteTag
+{
+    if (!_arrListSongWriteTag) {
+        _arrListSongWriteTag = [[NSMutableArray alloc] init];
+    }
+    return _arrListSongWriteTag;
 }
 
 - (void)viewDidLoad
@@ -454,14 +464,39 @@
 
 - (void)deleteItem
 {
+    NSString *sConfirm = nil;
+    
     if (self.song) {
-        [[DataManagement sharedInstance] deleteSong:self.song];
+        sConfirm = @"Are you sure you want to delete this song?";
     }
     else if (self.album) {
-        [[DataManagement sharedInstance] deleteAlbum:self.album];
+        sConfirm = @"Are you sure you want to delete this album?";
     }
     
-    [self save];
+    if (!sConfirm) {
+        return;
+    }
+    
+    [UIAlertView showWithTitle:@""
+                       message:sConfirm
+             cancelButtonTitle:@"Cancel"
+             otherButtonTitles:@[@"Ok"]
+                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex)
+     {
+         if (buttonIndex != [alertView firstOtherButtonIndex]) {
+             return;
+         }
+         
+         if (self.song) {
+             [[DataManagement sharedInstance] deleteSong:self.song];
+         }
+         else if (self.album) {
+             [[DataManagement sharedInstance] deleteAlbum:self.album];
+         }
+         
+         [[DataManagement sharedInstance] saveData];
+         [self touchCancel];
+     }];
 }
 
 #pragma mark - Artwotk
@@ -529,55 +564,46 @@
 
 - (void)saveDataToSong
 {
+    [self.arrListSongWriteTag removeAllObjects];
+    
+    NSString *sTitle = nil;
+    NSString *sArtistName = nil;
+    NSString *sAlbumArtistName = nil;
+    NSString *sAlbumName = nil;
+    NSString *sGenreName = nil;
+    NSString *sYear = nil;
+    NSString *sLyrics = nil;
+    
     for (NSArray *data in self.arrListTag)
     {
         for (TagObj *tag in data)
         {
-            if (tag.iTagType == kTagTypeElement)
+            kTagType iTagType = tag.iTagType;
+            
+            if (iTagType == kTagTypeElement)
             {
-                switch (tag.iElementType)
-                {
-                    case kElementTypeTitle:
-                    {
-                        [self.song setSongName:tag.value];
-                    }
-                        break;
-                        
-                    case kElementTypeArtist:
-                    {
-                        [self.song changeArtistName:tag.value];
-                    }
-                        break;
-                        
-                    case kElementTypeAlbumArtist:
-                    {
-                        [self.song changeAlbumArtistName:tag.value];
-                    }
-                        break;
-                        
-                    case kElementTypeAlbum:
-                    {
-                        [self.song changeAlbumName:tag.value];
-                    }
-                        break;
-                        
-                    case kElementTypeGenre:
-                    {
-                        [self.song changeGenreName:tag.value];
-                    }
-                        break;
-                        
-                    case kElementTypeYear:
-                    {
-                        self.song.iYear = @([tag.value intValue]);
-                    }
-                        break;
-                        
-                    default:
-                        break;
+                kElementType iElementType = tag.iElementType;
+                
+                if (iElementType == kElementTypeTitle) {
+                    sTitle = tag.value;
+                }
+                else if (iElementType == kElementTypeArtist) {
+                    sArtistName = tag.value;
+                }
+                else if (iElementType == kElementTypeAlbumArtist) {
+                    sAlbumArtistName = tag.value;
+                }
+                else if (iElementType == kElementTypeAlbum) {
+                    sAlbumName = tag.value;
+                }
+                else if (iElementType == kElementTypeGenre) {
+                    sGenreName = tag.value;
+                }
+                else if (iElementType == kElementTypeYear) {
+                    sYear = tag.value;
                 }
             }
-            else if (tag.iTagType == kTagTypeRename)
+            else if (iTagType == kTagTypeRename)
             {
                 NSString *sOldName = [self.song.fileInfo.sFileName stringByDeletingPathExtension];
                 NSString *sNewName = tag.value;
@@ -595,34 +621,75 @@
                         self.song.fileInfo.sFileName = sNewFileName;
                         self.song.sAssetUrl = sNewFileName;
                     }
-                    else {
-                        NSLog(@"%@",error.description);
-                    }
                 }
             }
-            else if (tag.iTagType == kTagTypeLyrics)
+            else if (iTagType == kTagTypeLyrics)
             {
-                self.song.sLyrics = tag.value;
+                sLyrics = tag.value;
             }
         }
     }
     
-    if ([self.artworkView isChangeArtwork]) {
-        [self.song setArtwork:[self.artworkView artwork]];
+    BOOL isChangeInfo = NO;
+    
+    if (![self.song.sSongName isEqualToString:sTitle]) {
+        [self.song setSongName:sTitle];
+        isChangeInfo = YES;
     }
     
-    [self save];
+    if (![self.song.sArtistName isEqualToString:sArtistName]) {
+        [self.song changeArtistName:sArtistName];
+        isChangeInfo = YES;
+    }
+    
+    if (![self.song.sAlbumArtistName isEqualToString:sAlbumArtistName]) {
+        [self.song changeAlbumArtistName:sAlbumArtistName];
+        isChangeInfo = YES;
+    }
+    
+    if (![self.song.sAlbumName isEqualToString:sAlbumName]) {
+        [self.song changeAlbumName:sAlbumName];
+        isChangeInfo = YES;
+    }
+    
+    if (![self.song.sGenreName isEqualToString:sGenreName]) {
+        [self.song changeGenreName:sGenreName];
+        isChangeInfo = YES;
+    }
+    
+    if (![self.song.iYear isEqual:@([sYear intValue])]) {
+        self.song.iYear = @([sYear intValue]);
+        isChangeInfo = YES;
+    }
+    
+    if (![self.song.sLyrics isEqualToString:sLyrics]) {
+        self.song.sLyrics = sLyrics;
+        isChangeInfo = YES;
+    }
+    
+    if ([self.artworkView isChangeArtwork]) {
+        [self.song setArtwork:[self.artworkView artwork]];
+        isChangeInfo = YES;
+    }
+    
+    if (isChangeInfo) {
+        [self.arrListSongWriteTag addObject:self.song];
+    }
+    
+    [self finishSave];
 }
 
 - (void)saveDataToAlbum
 {
-    NSFetchRequest *request = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:self.album.iAlbumId artistId:nil genreId:nil];
+    NSFetchRequest *request = [[DataManagement sharedInstance] getSongFilterByName:nil albumId:self.album.iAlbumId artistId:nil genreId:nil];
     NSArray *listSongs = [[[DataManagement sharedInstance] managedObjectContext] executeFetchRequest:request error:nil];
     
     if (listSongs.count <= 0) {
         [self touchCancel];
         return;
     }
+    
+    [self.arrListSongWriteTag removeAllObjects];
     
     NSString *sAlbumName = nil;
     NSString *sArtistName = nil;
@@ -633,51 +700,41 @@
     {
         for (TagObj *tag in data)
         {
-            if (tag.iTagType == kTagTypeElement)
+            kTagType iTagType = tag.iTagType;
+            
+            if (iTagType == kTagTypeElement)
             {
-                switch (tag.iElementType)
-                {
-                    case kElementTypeArtist:
-                    {
-                        sArtistName = tag.value;
-                    }
-                        break;
-                        
-                    case kElementTypeAlbumArtist:
-                    {
-                        sAlbumArtistName = tag.value;
-                    }
-                        break;
-                        
-                    case kElementTypeAlbum:
-                    {
-                        sAlbumName = tag.value;
-                    }
-                        break;
-                        
-                    case kElementTypeYear:
-                    {
-                        sYear = tag.value;
-                    }
-                        break;
-                        
-                    default:
-                        break;
+                kElementType iElementType = tag.iElementType;
+                
+                if (iElementType == kElementTypeArtist) {
+                    sArtistName = tag.value;
+                }
+                else if (iElementType == kElementTypeAlbumArtist) {
+                    sAlbumArtistName = tag.value;
+                }
+                else if (iElementType == kElementTypeAlbum) {
+                    sAlbumName = tag.value;
+                }
+                else if (iElementType == kElementTypeYear) {
+                    sYear = tag.value;
                 }
             }
         }
     }
+    
+    BOOL isChangeInfo = NO;
     
     // Update Year
     if ([self.album.iYear compare:@([sYear intValue])] != NSOrderedSame) {
         for (Item *song in listSongs) {
             song.iYear = @([sYear intValue]);
         }
+        isChangeInfo = YES;
     }
     
     if (![self.album.sAlbumName isEqualToString:sAlbumName])
     {
-        NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName];
+        NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName year:[self.album.iYear intValue]];
         if (!iAlbumId) {
             iAlbumId = [Utils getTimestamp];
         }
@@ -686,6 +743,7 @@
             [song setAlbumName:sAlbumName];
             song.iAlbumId = iAlbumId;
         }
+        isChangeInfo = YES;
     }
     
     if (![self.album.sArtistName isEqualToString:sArtistName])
@@ -699,6 +757,7 @@
             [song setArtistName:sArtistName];
             song.iArtistId = iArtistId;
         }
+        isChangeInfo = YES;
     }
     
     if (![self.album.sAlbumArtistName isEqualToString:sAlbumArtistName])
@@ -712,6 +771,7 @@
             [song setAlbumArtistName:sAlbumArtistName];
             song.iAlbumArtistId = iAlbumArtistId;
         }
+        isChangeInfo = YES;
     }
     
     if ([self.artworkView isChangeArtwork])
@@ -719,15 +779,25 @@
         for (Item *song in listSongs) {
             [song setArtwork:[self.artworkView artwork]];
         }
+        isChangeInfo = YES;
     }
     
-    [self save];
+    if (isChangeInfo) {
+        [self.arrListSongWriteTag addObjectsFromArray:listSongs];
+    }
+    [self finishSave];
 }
 
-- (void)save
+- (void)finishSave
 {
     [[DataManagement sharedInstance] saveData];
-    [self touchCancel];
+    
+    if (isWriteTagsToFile && self.arrListSongWriteTag.count > 0) {
+        
+    }
+    else {
+        [self touchCancel];
+    }
 }
 
 #pragma mark - Utils

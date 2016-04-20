@@ -11,7 +11,7 @@
 
 #import "Item.h"
 
-@class FileInfo;
+@class File;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *sSongFirstLetter;
 @property (nullable, nonatomic, retain) NSString *sSongName;
 @property (nullable, nonatomic, retain) NSString *sSongNameIndex;
-@property (nullable, nonatomic, retain) FileInfo *fileInfo;
+@property (nullable, nonatomic, retain) File *fileInfo;
 
 @end
 

@@ -14,6 +14,7 @@
 @interface PlaylistsCell()
 
 @property (nonatomic, weak) IBOutlet UILabel *lblPlaylistName, *lblPlaylistDesc;
+@property (nonatomic, weak) IBOutlet UIButton *btnEditName;
 
 @end
 
@@ -26,10 +27,21 @@
 
 - (void)config:(Playlist *)playlist
 {
-    self.lblPlaylistName.text = playlist.sPlaylistName;
-    self.lblPlaylistDesc.text = playlist.sPlaylistDesc;
+    self.currentPlaylist = playlist;
     
-    [self setArtwork:playlist.sLocalArtworkUrl];
+    self.lblPlaylistName.text = self.currentPlaylist.sPlaylistName;
+    self.lblPlaylistDesc.text = self.currentPlaylist.sPlaylistDesc;
+    
+    [self setArtwork:self.currentPlaylist.sLocalArtworkUrl];
+    
+    if (self.currentPlaylist.isSmartPlaylist.boolValue) {
+        self.imgvListIcon.hidden = NO;
+        self.btnEditName.hidden = YES;
+    }
+    else {
+        self.imgvListIcon.hidden = YES;
+        self.btnEditName.hidden = NO;
+    }
 }
 
 @end

@@ -14,7 +14,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FileInfo : NSManagedObject
+@interface File : NSManagedObject
 
 @property (nonatomic, strong) NSString *sTimeStamp;
 
@@ -24,4 +24,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#import "FileInfo+CoreDataProperties.h"
+#import "File+CoreDataProperties.h"

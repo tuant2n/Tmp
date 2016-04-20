@@ -66,4 +66,28 @@
     return sLocalArtworkUrl;
 }
 
+#pragma mark - Method
+
+- (void)addSongs:(NSArray *)listNewSong
+{
+    NSMutableArray *listSong = [[NSMutableArray alloc] initWithArray:[self getPlaylist]];
+    int fDuration = [self.fDuration intValue];
+    
+    for (Item *newSong in listNewSong) {
+        [listSong addObject:newSong.iSongId];
+        fDuration += [newSong.fDuration intValue];
+        
+        if (newSong.sArtworkName) {
+            [self setArtwork:newSong.sArtworkName];
+        }
+    }
+    
+    if (fDuration > 0) {
+        self.fDuration = @(fDuration);
+    }
+    
+    [self setPlaylist:listSong];
+}
+
+
 @end

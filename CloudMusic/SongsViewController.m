@@ -49,7 +49,7 @@
 {
     if (!_fetchedResultsController)
     {
-        NSFetchRequest *request = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:nil artistId:nil genreId:nil];
+        NSFetchRequest *request = [[DataManagement sharedInstance] getSongFilterByName:nil albumId:nil artistId:nil genreId:nil];
         _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:@"sSongFirstLetter" cacheName:nil];
         _fetchedResultsController.delegate = self;
         
@@ -62,6 +62,8 @@
     [super viewDidLoad];
     [self setupUI];
     [self performFetch];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:NOTIFICATION_RELOAD_DATA object:nil];
 }
 
 - (void)performFetch
@@ -73,6 +75,13 @@
     else {
         [self.tblList reloadData];
         [self setupFooterView];
+    }
+}
+
+- (void)reloadData:(NSNotification *)notification
+{
+    if (isActiveSearch) {
+        [self searchBar:self.headerView.searchBar activate:NO];
     }
 }
 
@@ -88,12 +97,8 @@
     self.disableView.hidden = YES;
     [self.disableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSearch)]];
     
-    self.tblList.sectionIndexColor = [Utils colorWithRGBHex:0x006bd5];
-    self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
-    self.tblList.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
-    
-    [Utils registerNibForTableView:self.tblList];
-    [Utils registerNibForTableView:self.tblSearchResult];
+    [Utils configTableView:self.tblList isSearch:NO];
+    [Utils configTableView:self.tblSearchResult isSearch:YES];
     
     [self setupHeaderBar];
     [self.tblList setTableFooterView:self.footerView];
@@ -103,7 +108,6 @@
 {
     self.headerView.searchBar.delegate = self;
     [self.tblList setTableHeaderView:self.headerView];
-    self.tblSearchResult.tableFooterView = nil;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -334,8 +338,9 @@
             isHiddenSeperator = (indexPath.row == [resultOj.listData count] - 1);
         }
         else {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
             cellItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
             isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
         }
         
@@ -346,12 +351,6 @@
         [mainCell config:cellItem];
         [mainCell setLineHidden:isHiddenSeperator];
     }
-}
-
-- (void)configureCell:(MainCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [cell config:item];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -370,7 +369,7 @@
     
     if (itemObj) {
         [self.headerView resignKeyboard];
-        [[DataManagement sharedInstance] doActionWithItem:itemObj fromNavigation:self.navigationController];
+        [[DataManagement sharedInstance] doActionWithItem:itemObj withData:nil fromSearch:isActiveSearch fromNavigation:self.navigationController];
     }
 }
 
@@ -464,6 +463,12 @@
     [self setupFooterView];
 }
 
+- (void)configureCell:(MainCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [cell config:item];
+}
+
 #pragma mark - UI
 
 - (TableFooterView *)footerView
@@ -503,7 +508,7 @@
 
 - (void)selectUtility:(kHeaderUtilType)iType
 {
-    [[DataManagement sharedInstance] doUtility:iType withData:[self.fetchedResultsController fetchedObjects] fromNavigation:self.navigationController];
+    [[DataManagement sharedInstance] doUtility:iType withData:nil fromNavigation:self.navigationController];
 }
 
 #pragma mark - MusicEq

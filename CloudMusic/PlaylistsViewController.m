@@ -86,12 +86,8 @@
     self.disableView.hidden = YES;
     [self.disableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSearch)]];
     
-    self.tblList.sectionIndexColor = [Utils colorWithRGBHex:0x006bd5];
-    self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
-    self.tblList.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
-    
-    [Utils registerNibForTableView:self.tblList];
-    [Utils registerNibForTableView:self.tblSearchResult];
+    [Utils configTableView:self.tblList isSearch:YES];
+    [Utils configTableView:self.tblSearchResult isSearch:YES];
     
     [self setupHeaderBar];
 }
@@ -107,8 +103,6 @@
 {
     self.headerView.searchBar.delegate = self;
     [self.tblList setTableHeaderView:self.headerView];
-    
-    self.tblSearchResult.tableFooterView = nil;
 }
 
 - (void)closeSearch
@@ -365,7 +359,7 @@
     
     if (itemObj) {
         [self.headerView resignKeyboard];
-        [[DataManagement sharedInstance] doActionWithItem:itemObj fromNavigation:self.navigationController];
+        [[DataManagement sharedInstance] doActionWithItem:itemObj withData:nil fromSearch:isActiveSearch fromNavigation:self.navigationController];
     }
 }
 
@@ -471,7 +465,7 @@
 
 - (void)selectUtility:(kHeaderUtilType)iType
 {
-    [[DataManagement sharedInstance] doUtility:iType withData:[self.fetchedResultsController fetchedObjects] fromNavigation:self.navigationController];
+    [[DataManagement sharedInstance] doUtility:iType withData:nil fromNavigation:self.navigationController];
 }
 
 #pragma mark - MusicEq

@@ -22,6 +22,7 @@
 
 #import "TableFooterView.h"
 #import "TableHeaderView.h"
+#import "TableBottomLine.h"
 
 #import "PCSEQVisualizer.h"
 
@@ -67,8 +68,9 @@
 
 #pragma mark - UITableView
 
-+ (void)registerNibForTableView:(UITableView *)tblView;
++ (void)configTableView:(UITableView *)tblView isSearch:(BOOL)isSearch;
 + (MainCell *)getCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
++ (TableBottomLine *)bottomLine;
 
 #pragma mark - Files
 

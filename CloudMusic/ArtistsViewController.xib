@@ -8,7 +8,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ArtistsViewController">
             <connections>
                 <outlet property="disableView" destination="0sz-pR-aW8" id="21i-Uz-az0"/>
-                <outlet property="keyboardLayout" destination="6rw-fR-nl5" id="Gdr-hf-nvP"/>
                 <outlet property="tblList" destination="sTO-6g-VZg" id="AIQ-Wg-8iG"/>
                 <outlet property="tblSearchResult" destination="kJq-Km-fe6" id="Zuy-YW-21Q"/>
                 <outlet property="view" destination="iN0-l3-epB" id="brj-of-8Nf"/>

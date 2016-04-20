@@ -9,8 +9,7 @@
 #import "FilesCell.h"
 
 #import "Item.h"
-#import "FileInfo.h"
-#import "FileObj.h"
+#import "File.h"
 
 #import "Utils.h"
 
@@ -30,13 +29,13 @@
     self.lblSongDesc.textColor = [Utils colorWithRGBHex:0x6a6a6a];
 }
 
-- (void)config:(FileObj *)file
+- (void)config:(File *)file
 {
     [self setArtwork:file.item.sLocalArtworkUrl];
-    
-    self.lblSongName.text = file.item.fileInfo.sFileName;
-    self.lblSongDesc.text = file.item.fileInfo.sTimeStamp;
     self.lblDuration.text = file.item.sDuration;
+    
+    self.lblSongName.text = file.sFileName;
+    self.lblSongDesc.text = file.sTimeStamp;
     
     [self configMenuButton:YES isEdit:YES];
     [self isPlaying:file.item.isPlaying];

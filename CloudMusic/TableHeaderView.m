@@ -15,14 +15,16 @@
 #import "HeaderUtilObj.h"
 
 #define SEARCHBAR_HEIGHT 50.0
-#define LINE_SEPERATOR_HEIGHT 1.0
+#define LINE_SEPERATOR_HEIGHT 1
 
 @interface TableHeaderView() <UITableViewDataSource,UITableViewDelegate>
 {
-    BOOL hasIndexTitles;
+    BOOL hasIndexTitles, isNotShowSearch;
 }
 
 @property (nonatomic, strong) UITableView *tblListUtils;
+@property (nonatomic, strong) NSLayoutConstraint *tblListUtilsPosition;
+
 @property (nonatomic, strong) UIView *line;
 
 @property (nonatomic, strong) NSMutableArray *arrListUtils;
@@ -44,8 +46,8 @@
     self = [super init];
     
     if (self) {
-        [self setupForFilesVC];
         [self initUI];
+        [self setupForFilesVC];
     }
     
     return self;
@@ -56,8 +58,8 @@
     self = [super init];
     
     if (self) {
-        [self setupForSongsVC];
         [self initUI];
+        [self setupForSongsVC];
     }
     
     return self;
@@ -68,8 +70,8 @@
     self = [super init];
     
     if (self) {
-        [self setupForAlbumsVC];
         [self initUI];
+        [self setupForAlbumsVC];
     }
     
     return self;
@@ -80,8 +82,8 @@
     self = [super init];
     
     if (self) {
-        [self setupForArtistVC];
         [self initUI];
+        [self setupForArtistVC];
     }
     
     return self;
@@ -92,8 +94,8 @@
     self = [super init];
     
     if (self) {
-        [self setupForGenresVC];
         [self initUI];
+        [self setupForGenresVC];
     }
     
     return self;
@@ -104,8 +106,20 @@
     self = [super init];
     
     if (self) {
-        [self setupForPlaylistsVC];
         [self initUI];
+        [self setupForPlaylistsVC];
+    }
+    
+    return self;
+}
+
+- (id)initForPlaylistsListSongVC
+{
+    self = [super init];
+    
+    if (self) {
+        [self initUI];
+        [self setupForPlaylistsListSongVC];
     }
     
     return self;
@@ -116,8 +130,8 @@
     self = [super init];
     
     if (self) {
-        [self setupForAlbumListVC:album];
         [self initUI];
+        [self setupForAlbumListVC:album];
     }
     
     return self;
@@ -127,12 +141,7 @@
 {
     [self.arrListUtils removeAllObjects];
     
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist]];
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Shuffle" icon:@"shuffle-icon" type:kHeaderUtilTypeShuffle]];
-    
-    self.line.backgroundColor = [Utils colorWithRGBHex:0xf7f7f7];
     hasIndexTitles = NO;
-    
     [self setupDefault];
 }
 
@@ -140,12 +149,11 @@
 {
     [self.arrListUtils removeAllObjects];
     
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist]];
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Shuffle" icon:@"shuffle-icon" type:kHeaderUtilTypeShuffle]];
-    
-    self.line.backgroundColor = [Utils colorWithRGBHex:0xf7f7f7];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreateNewPlaylist]];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Shuffle" icon:@"shuffle-icon" type:kHeaderUtilTypeShuffleFromSong]];
+
+    self.line.backgroundColor = [UIColor clearColor];
     hasIndexTitles = YES;
-    
     [self setupDefault];
 }
 
@@ -153,12 +161,10 @@
 {
     [self.arrListUtils removeAllObjects];
     
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist]];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylistWithData]];
     [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"All Songs" icon:@"list-item-icon.png" type:kHeaderUtilTypeGoAllSongs]];
     
-    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     hasIndexTitles = NO;
-    
     [self setupDefault];
 }
 
@@ -166,12 +172,10 @@
 {
     [self.arrListUtils removeAllObjects];
     
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist]];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylistWithData]];
     [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"All Albums" icon:@"list-item-icon.png" type:kHeaderUtilTypeGoAllAlbums]];
     
-    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     hasIndexTitles = NO;
-    
     [self setupDefault];
 }
 
@@ -179,23 +183,31 @@
 {
     [self.arrListUtils removeAllObjects];
     
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylist]];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylistWithData]];
     
-    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     hasIndexTitles = NO;
-    
     [self setupDefault];
 }
 
 - (void)setupForPlaylistsVC
 {
     [self.arrListUtils removeAllObjects];
-    
+
     [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"New Playlists" icon:@"add-icon" type:kHeaderUtilTypeCreateNewPlaylist]];
     
-    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
+    self.line.backgroundColor = [UIColor clearColor];
     hasIndexTitles = NO;
+    [self setupDefault];
+}
+
+- (void)setupForPlaylistsListSongVC
+{
+    [self.arrListUtils removeAllObjects];
+
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Shuffle" icon:@"shuffle-icon" type:kHeaderUtilTypeShuffle]];
     
+    hasIndexTitles = NO;
+    isNotShowSearch = YES;
     [self setupDefault];
 }
 
@@ -206,9 +218,8 @@
     [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Shuffle" icon:@"shuffle-icon" type:kHeaderUtilTypeShuffle]];
     [self.arrListUtils addObject:album];
     
-    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
+    self.line.backgroundColor = [UIColor clearColor];
     hasIndexTitles = NO;
-    
     [self setupDefault];
 }
 
@@ -223,7 +234,28 @@
             height += [MainCell largeCellHeight];
         }
     }
-    height += SEARCHBAR_HEIGHT + LINE_SEPERATOR_HEIGHT;
+    
+    height += LINE_SEPERATOR_HEIGHT;
+    
+    if (!isNotShowSearch)
+    {
+        height += SEARCHBAR_HEIGHT;
+        self.searchBar.hidden = NO;
+        
+        if (self.arrListUtils.count > 0) {
+            self.tblListUtils.hidden = NO;
+            [self.tblListUtilsPosition setConstant:SEARCHBAR_HEIGHT];
+        }
+        else {
+            self.tblListUtils.hidden = YES;
+            [self.tblListUtilsPosition setConstant:0.0];
+        }
+    }
+    else {
+        self.searchBar.hidden = YES;
+        [self.tblListUtilsPosition setConstant:0.0];
+    }
+    
     [self setHeight:height];
 }
 
@@ -301,32 +333,34 @@
 {
     //
     self.searchBar = [[UISearchBar alloc] init];
-    [self.searchBar setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self addSubview:self.searchBar];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:SEARCHBAR_HEIGHT]];
-    
     [self.searchBar setBackgroundImage:[UIImage new]];
     [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"textField-background"] forState:UIControlStateNormal];
     self.searchBar.opaque = NO;
     self.searchBar.translucent = NO;
     
+    [self.searchBar setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self addSubview:self.searchBar];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1 constant:0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1 constant:0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:SEARCHBAR_HEIGHT]];
+    
     //
     self.line = [[UIView alloc] init];
     [self.line setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     [self addSubview:self.line];
     
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.line attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.line attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1 constant:0]];
     
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.line attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.line attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1 constant:0]];
     
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.line attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.line attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.line attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:LINE_SEPERATOR_HEIGHT]];
     
@@ -335,22 +369,22 @@
     self.tblListUtils.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tblListUtils.delegate = self;
     self.tblListUtils.dataSource = self;
-    [self.tblListUtils setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self addSubview:self.tblListUtils];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.searchBar attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.line attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
-    
     [self.tblListUtils setScrollEnabled:NO];
     [self.tblListUtils setTableFooterView:[UIView new]];
     
-    [Utils registerNibForTableView:self.tblListUtils];
+    [Utils configTableView:self.tblListUtils isSearch:NO];
+    
+    [self.tblListUtils setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self addSubview:self.tblListUtils];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1 constant:0]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1 constant:0]];
+    
+    self.tblListUtilsPosition = [NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+    [self addConstraint:self.tblListUtilsPosition];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.line attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
 }
-
 
 @end

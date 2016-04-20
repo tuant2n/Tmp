@@ -9,11 +9,11 @@
 //  to delete and recreate this implementation file for your updated model.
 //
 
-#import "FileInfo.h"
+#import "File.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FileInfo (CoreDataProperties)
+@interface File (CoreDataProperties)
 
 @property (nullable, nonatomic, retain) NSString *sFileName;
 @property (nullable, nonatomic, retain) NSString *sSize;

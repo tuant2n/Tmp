@@ -21,7 +21,7 @@
 @property (nonatomic, strong) PCSEQVisualizer *musicEq;
 @property (nonatomic, strong) UIBarButtonItem *barMusicEq;
 
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSMutableArray *arrData;
 @property (nonatomic, strong) NSMutableArray *arrResults;
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
@@ -43,24 +43,21 @@
     return _arrResults;
 }
 
-- (NSFetchedResultsController *)fetchedResultsController
+- (NSMutableArray *)arrData
 {
-    if (!_fetchedResultsController)
-    {
-        NSFetchRequest *request = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:self.currentAlbum.iAlbumId artistId:nil genreId:nil];
-        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
-        _fetchedResultsController.delegate = self;
+    if (!_arrData) {
+        _arrData = [[NSMutableArray alloc] init];
     }
-    return _fetchedResultsController;
+    return _arrData;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self setupUI];
-    [self performFetch];
+    [self getData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pop) name:NOTIFICATION_RELOAD_DATA object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:NOTIFICATION_RELOAD_DATA object:nil];
 }
 
 - (void)pop
@@ -68,16 +65,24 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-- (void)performFetch
+- (void)getData
 {
-    NSError *error = nil;
-    if (![self.fetchedResultsController performFetch:&error]) {
-        NSLog(@"Fetch error: %@", error);
+    [self.arrData removeAllObjects];
+    
+    NSFetchRequest *request = [[DataManagement sharedInstance] getSongFilterByName:nil albumId:self.currentAlbum.iAlbumId artistId:nil genreId:self.currentAlbum.iGenreId];
+    NSArray *listSong = [[DataManagement sharedInstance].managedObjectContext executeFetchRequest:request error:nil];
+    [self.arrData addObjectsFromArray:listSong];
+    [self.tblList reloadData];
+    [self setupFooterView];
+}
+
+- (void)reloadData:(NSNotification *)notification
+{
+    if (isActiveSearch) {
+        [self searchBar:self.headerView.searchBar activate:NO];
     }
-    else {
-        [self.tblList reloadData];
-        [self setupFooterView];
-    }
+    
+    [self getData];
 }
 
 - (void)setupUI
@@ -92,12 +97,8 @@
     self.disableView.hidden = YES;
     [self.disableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSearch)]];
     
-    self.tblList.sectionIndexColor = [Utils colorWithRGBHex:0x006bd5];
-    self.tblList.sectionIndexBackgroundColor = [UIColor clearColor];
-    self.tblList.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
-    
-    [Utils registerNibForTableView:self.tblList];
-    [Utils registerNibForTableView:self.tblSearchResult];
+    [Utils configTableView:self.tblList isSearch:NO];
+    [Utils configTableView:self.tblSearchResult isSearch:YES];
     
     [self setupHeaderBar];
     [self.tblList setTableFooterView:self.footerView];
@@ -107,7 +108,6 @@
 {
     self.headerView.searchBar.delegate = self;
     [self.tblList setTableHeaderView:self.headerView];
-    self.tblSearchResult.tableFooterView = nil;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -243,7 +243,7 @@
         return self.arrResults.count;
     }
     else {
-        return [[self.fetchedResultsController sections] count];
+        return 1;
     }
 }
 
@@ -257,26 +257,6 @@
     }
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    return [sectionInfo name];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    NSString *sTitle = nil;
-    
-    if (tableView == self.tblSearchResult) {
-        DataObj *resultOj = self.arrResults[section];
-        sTitle = resultOj.sTitle;
-    }
-    
-    HeaderTitle *header = (HeaderTitle *)[tableView dequeueReusableCellWithIdentifier:@"HeaderTitleId"];
-    [header setTitle:sTitle];
-    return header.contentView;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.tblSearchResult) {
@@ -284,8 +264,7 @@
         return resultOj.listData.count;
     }
     else {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-        return [sectionInfo numberOfObjects];
+        return self.arrData.count;
     }
 }
 
@@ -317,7 +296,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([cell isKindOfClass:[ListSongCell class]]) {
-        id cellItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        id cellItem = self.arrData[indexPath.row];
         
         ListSongCell *listSongCell = (ListSongCell *)cell;
         listSongCell.delegate = self;
@@ -339,12 +318,6 @@
     }
 }
 
-- (void)configureCell:(MainCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [cell config:item];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -356,73 +329,13 @@
         itemObj = resultOj.listData[indexPath.row];
     }
     else {
-        itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        itemObj = self.arrData[indexPath.row];
     }
     
     if (itemObj) {
         [self.headerView resignKeyboard];
-        [[DataManagement sharedInstance] doActionWithItem:itemObj fromNavigation:self.navigationController];
+        [[DataManagement sharedInstance] doActionWithItem:itemObj withData:self.arrData fromSearch:isActiveSearch fromNavigation:self.navigationController];
     }
-}
-
-#pragma mark - Fetched Results Controller Delegate
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tblList beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
-{
-    switch(type)
-    {
-        case NSFetchedResultsChangeInsert: {
-            [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            
-            break;
-            
-        case NSFetchedResultsChangeDelete: {
-            [self.tblList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            
-            break;
-            
-        case NSFetchedResultsChangeUpdate: {
-            [self configureCell:(SongsCell *)[self.tblList cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-        }
-            break;
-            
-        case NSFetchedResultsChangeMove: {
-            [self.tblList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
-{
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert: {
-            [self.tblList insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-            
-        case NSFetchedResultsChangeDelete: {
-            [self.tblList deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tblList endUpdates];
-    [self setupFooterView];
 }
 
 #pragma mark - UI
@@ -441,13 +354,13 @@
 - (void)setupFooterView
 {
     NSString *sContent = nil;
-    int itemCount = (int)[self.fetchedResultsController.fetchedObjects count];
+    int itemCount = (int)[self.arrData count];
     
     if (itemCount <= 1) {
-        sContent = [NSString stringWithFormat:@"%d File",itemCount];
+        sContent = [NSString stringWithFormat:@"%d Song",itemCount];
     }
     else {
-        sContent = [NSString stringWithFormat:@"%d Files",itemCount];
+        sContent = [NSString stringWithFormat:@"%d Songs",itemCount];
     }
     
     [self.footerView setContent:sContent];
@@ -464,7 +377,7 @@
 
 - (void)selectUtility:(kHeaderUtilType)iType
 {
-    [[DataManagement sharedInstance] doUtility:iType withData:nil fromNavigation:self.navigationController];
+    [[DataManagement sharedInstance] doUtility:iType withData:self.arrData fromNavigation:self.navigationController];
 }
 
 #pragma mark - MusicEq

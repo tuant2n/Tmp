@@ -19,6 +19,7 @@
 
 @property (nonatomic, assign) BOOL isCloud, isPlaying;
 
+// Optional
 @property (nonatomic, strong) NSString *iArtistId, *iGenreId;
 
 - (id)initWithInfo:(NSDictionary *)info;

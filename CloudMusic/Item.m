@@ -8,7 +8,7 @@
 
 #import "Item.h"
 
-#import "FileInfo.h"
+#import "File.h"
 #import "DropBoxObj.h"
 
 #import "DataManagement.h"
@@ -35,11 +35,15 @@
 - (void)updateWithMediaItem:(MPMediaItem *)item
 {
     self.sAssetUrl = [item.itemAssetURL absoluteString];
-
+    self.sLyrics = item.itemLyrics;
+    self.iYear = item.year;
+    self.iRate = item.itemRating;
+    self.iPlayCount = item.itemPlayCount;
+    
     self.iSongId = [item.itemPersistentID stringValue];
     [self setSongName:item.itemTitle];
     
-    self.iAlbumId = [NSString stringWithFormat:@"%@ - %@",[item.itemAlbumPID stringValue],[item.year stringValue]];
+    self.iAlbumId = [NSString stringWithFormat:@"%@-%@",[item.itemAlbumPID stringValue],[item.year stringValue]];
     [self changeAlbumName:item.itemAlbumTitle];
     
     self.iArtistId = [item.itemArtistPID stringValue];
@@ -56,11 +60,6 @@
         [self setArtwork:artwork];
     }
     
-    self.sLyrics = item.itemLyrics;
-    self.iYear = item.year;
-    self.iRate = item.itemRating;
-    self.iPlayCount = item.itemPlayCount;
-    
     [self setSongDuration:item.playbackDuration];
 }
 
@@ -73,6 +72,21 @@
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:songUrl options:nil];
     [self setSongDuration:CMTimeGetSeconds([asset duration])];
     
+    NSString *sYear = [songInfo objectForKey:@"year"];
+    if (sYear) {
+        self.iYear = @([sYear integerValue]);
+    }
+    
+    NSString *sLyrics = [songInfo objectForKey:@"lyrics"];
+    if (sLyrics) {
+        self.sLyrics = sLyrics;
+    }
+    
+    UIImage *artwork = [songInfo objectForKey:@"artwork"];
+    if (artwork && [artwork isKindOfClass:[UIImage class]]) {
+        [self setArtwork:artwork];
+    }
+    
     NSString *sTitle = [songInfo objectForKey:@"title"];
     if (sTitle) {
         [self setSongName:sTitle];
@@ -81,7 +95,7 @@
     NSString *sAlbumName = [songInfo objectForKey:@"album"];
     if (sAlbumName)
     {
-        NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName];
+        NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName year:[self.iYear intValue]];
         if (iAlbumId) {
             self.iAlbumId = iAlbumId;
         }
@@ -127,21 +141,6 @@
         }
         [self setGenreName:sGenreName];
     }
-    
-    NSString *sYear = [songInfo objectForKey:@"year"];
-    if (sYear) {
-        self.iYear = @([sYear integerValue]);
-    }
-    
-    NSString *sLyrics = [songInfo objectForKey:@"lyrics"];
-    if (sLyrics) {
-        self.sLyrics = sLyrics;
-    }
-    
-    UIImage *artwork = [songInfo objectForKey:@"artwork"];
-    if (artwork && [artwork isKindOfClass:[UIImage class]]) {
-        [self setArtwork:artwork];
-    }
 }
 
 - (void)setArtwork:(UIImage *)artwork
@@ -186,7 +185,7 @@
         return;
     }
     
-    NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName];
+    NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName year:[self.iYear intValue]];
     if (iAlbumId) {
         self.iAlbumId = iAlbumId;
     }

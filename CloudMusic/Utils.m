@@ -9,11 +9,12 @@
 #import "Utils.h"
 
 #import "Item.h"
+#import "Playlist.h"
+#import "File.h"
+
 #import "AlbumObj.h"
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
-#import "FileObj.h"
-#import "Playlist.h"
 
 @implementation Utils
 
@@ -258,7 +259,7 @@
 
 #pragma mark - UITableView
 
-+ (void)registerNibForTableView:(UITableView *)tblView
++ (void)configTableView:(UITableView *)tblView isSearch:(BOOL)isSearch
 {
     [tblView registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
     [tblView registerNib:[UINib nibWithNibName:@"AlbumsCell" bundle:nil] forCellReuseIdentifier:@"AlbumsCellId"];
@@ -273,6 +274,15 @@
     
     tblView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     tblView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    if (isSearch) {
+        [tblView setTableFooterView:[self bottomLine]];
+    }
+    else {
+        tblView.sectionIndexColor = [self colorWithRGBHex:0x006bd5];
+        tblView.sectionIndexBackgroundColor = [UIColor clearColor];
+        tblView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
+    }
 }
 
 + (MainCell *)getCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
@@ -291,7 +301,7 @@
     else if ([itemObj isKindOfClass:[GenreObj class]]) {
         cell = (GenresCell *)[tableView dequeueReusableCellWithIdentifier:@"GenresCellId" forIndexPath:indexPath];
     }
-    else if ([itemObj isKindOfClass:[FileObj class]]) {
+    else if ([itemObj isKindOfClass:[File class]]) {
         cell = (FilesCell *)[tableView dequeueReusableCellWithIdentifier:@"FilesCellId" forIndexPath:indexPath];
     }
     else if ([itemObj isKindOfClass:[Playlist class]]) {
@@ -299,6 +309,12 @@
     }
     
     return cell;
+}
+
++ (TableBottomLine *)bottomLine
+{
+    TableBottomLine *bottomLine = [[[NSBundle mainBundle] loadNibNamed:@"TableBottomLine" owner:self options:nil] objectAtIndex:0];
+    return bottomLine;
 }
 
 #pragma mark - Files

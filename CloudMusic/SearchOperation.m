@@ -54,7 +54,7 @@
         
         NSArray *tmpArray = nil;
         
-        tmpArray = [[DataManagement sharedInstance] getListSongFilterByName:_sSearch];
+        tmpArray = [[DataManagement sharedInstance] getListSongFilterByName:_sSearch albumId:nil artistId:nil genreId:nil];
         if (tmpArray.count > 0)
         {
             DataObj *songResult = [[DataObj alloc] init];
@@ -96,7 +96,7 @@
             return;
         }
         
-        tmpArray = [[DataManagement sharedInstance] getListSongCloudFilterByName:_sSearch];
+        tmpArray = [[DataManagement sharedInstance] getListFileFilterByName:_sSearch];
         if (tmpArray.count > 0)
         {
             DataObj *fileResult = [[DataObj alloc] init];

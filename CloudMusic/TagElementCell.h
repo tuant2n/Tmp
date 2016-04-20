@@ -10,8 +10,13 @@
 
 @class TagObj;
 
+@protocol TagElementCellDelegate <NSObject>
+- (void)disableSave;
+@end
+
 @interface TagElementCell : UITableViewCell
 
+@property (nonatomic, assign) id<TagElementCellDelegate> delegate;
 @property (nonatomic, strong) TagObj *tagObj;
 
 - (void)configWithTag:(TagObj *)tagObj;

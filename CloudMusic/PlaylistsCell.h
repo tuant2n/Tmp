@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "MainCell.h"
 
+@class Playlist;
+
 @interface PlaylistsCell : MainCell
+
+@property (nonatomic, strong) Playlist *currentPlaylist;
 
 @end

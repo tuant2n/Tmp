@@ -12,9 +12,6 @@
 #import "Utils.h"
 
 @interface TagElementCell() <UITextFieldDelegate>
-{
-    
-}
 
 @property (nonatomic, weak) IBOutlet UILabel *lblTagName;
 @property (nonatomic, weak) IBOutlet UITextField *tfTagContent;
@@ -31,6 +28,7 @@
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     self.lblTagName.textColor = [Utils colorWithRGBHex:0x006bd5];
     
+    self.tfTagContent.autocapitalizationType = UITextAutocapitalizationTypeSentences;
     self.tfTagContent.delegate = self;
 }
 
@@ -70,6 +68,20 @@
     else {
         textField.text = self.tagObj.value;
     }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    NSString *sTmp = textField.text;
+    if (sTmp.length > 0) {
+        self.tagObj.value = sTmp;
+    }
+    else {
+        textField.text = self.tagObj.value;
+    }
+    
+    [textField resignFirstResponder];
+    return YES;
 }
 
 #pragma mark - Utils

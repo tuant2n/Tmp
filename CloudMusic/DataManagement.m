@@ -67,9 +67,9 @@ static DataManagement *_sharedInstance = nil;
     return [NSEntityDescription entityForName:NSStringFromClass([Item class]) inManagedObjectContext:self.managedObjectContext];
 }
 
-- (NSEntityDescription *)fileInfoEntity
+- (NSEntityDescription *)fileEntity
 {
-    return [NSEntityDescription entityForName:NSStringFromClass([FileInfo class]) inManagedObjectContext:self.managedObjectContext];
+    return [NSEntityDescription entityForName:NSStringFromClass([File class]) inManagedObjectContext:self.managedObjectContext];
 }
 
 - (NSEntityDescription *)playlistEntity
@@ -105,8 +105,7 @@ static DataManagement *_sharedInstance = nil;
         NSArray *listSong = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:nil];
         for (Item *item in listSong) {
             if ([sListSongId rangeOfString:item.iSongId].location == NSNotFound) {
-                [self removeItemFromPlaylist:item];
-                [self.managedObjectContext deleteObject:item];
+                [self deleteSong:item];
             }
         }
         
@@ -148,6 +147,8 @@ static DataManagement *_sharedInstance = nil;
     }
 }
 
+#pragma mark - Item
+
 - (void)insertSong:(DropBoxObj *)dropboxItem
 {
     NSDictionary *songInfo = [[NSDictionary alloc] initWithDictionary:dropboxItem.songInfo];
@@ -156,7 +157,7 @@ static DataManagement *_sharedInstance = nil;
     Item *item = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Item class]) inManagedObjectContext:self.managedObjectContext];
     [item updateWithSongUrl:songUrl songInfo:songInfo];
     
-    FileInfo *fileInfo = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([FileInfo class]) inManagedObjectContext:self.managedObjectContext];
+    File *fileInfo = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([File class]) inManagedObjectContext:self.managedObjectContext];
     fileInfo.sFileName = [songUrl.path lastPathComponent];
     fileInfo.lTimestamp = @(time(nil));
     fileInfo.sSize = [Utils getFileSize:songUrl.path];
@@ -165,7 +166,7 @@ static DataManagement *_sharedInstance = nil;
     [self addItem:item toSpecialList:kPlaylistTypeRecentlyAdded];
 }
 
-- (NSFetchRequest *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId
+- (NSFetchRequest *)getSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[self itemEntity]];
@@ -197,18 +198,61 @@ static DataManagement *_sharedInstance = nil;
     return request;
 }
 
-- (NSArray *)getListSongFilterByName:(NSString *)sName
+- (NSArray *)getListSongFilterByName:(NSString *)sName albumId:(NSString *)iAlbumId artistId:(NSString *)iArtistId genreId:(NSString *)iGenreId
 {
-    NSFetchRequest *request = [self getListSongFilterByName:sName albumId:nil artistId:nil genreId:nil];
+    NSFetchRequest *request = [self getSongFilterByName:sName albumId:iAlbumId artistId:iArtistId genreId:iGenreId];
     NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
     return results;
 }
 
-- (NSArray *)getListSongCloudFilterByName:(NSString *)sName
+- (Item *)getItemBySongId:(NSString *)iSongId
 {
-    NSPredicate *filterCloudItem = [NSPredicate predicateWithFormat:@"iCloudItem == %@",@1];
-    return [[self getListSongFilterByName:sName] filteredArrayUsingPredicate:filterCloudItem];
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"iSongId",iSongId];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        return [listData lastObject];
+    }
+    return nil;
 }
+
+#pragma mark - File
+
+- (NSFetchRequest *)getFileFilterByName:(NSString *)sName
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[self fileEntity]];
+    
+    NSSortDescriptor *sortByType = [[NSSortDescriptor alloc] initWithKey:@"lTimestamp" ascending:YES];
+    NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"sFileName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+    [request setSortDescriptors:@[sortByType,sortByName]];
+    
+    NSMutableArray *filters = [NSMutableArray new];
+    
+    if (sName) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sFileName CONTAINS[cd] %@",sName];
+        [filters addObject:predicate];
+    }
+
+    if (filters.count > 0) {
+        [request setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:filters]];
+    }
+    
+    return request;
+}
+
+- (NSArray *)getListFileFilterByName:(NSString *)sName
+{
+    NSFetchRequest *request = [self getFileFilterByName:sName];
+    NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
+    return results;
+}
+
+#pragma mark - Album
 
 - (NSArray *)getListAlbumFilterByName:(NSString *)sName albumArtistId:(NSString *)iAlbumArtistId genreId:(NSString *)iGenreId
 {
@@ -295,6 +339,24 @@ static DataManagement *_sharedInstance = nil;
     return albumsArray;
 }
 
+- (NSString *)getAlbumIdFromName:(NSString *)sAlbumName year:(int)iYear
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sAlbumName ==[c] %@ AND iYear == %d",sAlbumName,iYear];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        Item *item = [listData lastObject];
+        return item.iAlbumId;
+    }
+    return nil;
+}
+
+#pragma mark - AlbumArtist
+
 - (NSArray *)getListAlbumArtistFilterByName:(NSString *)sName
 {
     NSEntityDescription *itemEntity = [self itemEntity];
@@ -367,6 +429,24 @@ static DataManagement *_sharedInstance = nil;
     return artistArray;
 }
 
+- (NSString *)getAlbumArtistIdFromName:(NSString *)sAlbumArtistName
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"sAlbumArtistName",sAlbumArtistName];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        Item *item = [listData lastObject];
+        return item.iAlbumArtistId;
+    }
+    return nil;
+}
+
+#pragma mark - Genre
+
 - (NSArray *)getListGenreFilterByName:(NSString *)sName
 {
     NSEntityDescription *itemEntity = [self itemEntity];
@@ -433,68 +513,7 @@ static DataManagement *_sharedInstance = nil;
     return genresArray;
 }
 
-- (Item *)getItemBySongId:(NSString *)iSongId
-{
-    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"iSongId",iSongId];
-    [fetchSongRequest setPredicate:predicate];
-    
-    NSError *error = nil;
-    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
-    
-    if (!error) {
-        return [listData lastObject];
-    }
-    return nil;
-}
-
-- (NSString *)getAlbumIdFromName:(NSString *)sAlbumName
-{
-    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"sAlbumName",sAlbumName];
-    [fetchSongRequest setPredicate:predicate];
-    
-    NSError *error = nil;
-    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
-    
-    if (!error) {
-        Item *item = [listData lastObject];
-        return item.iAlbumId;
-    }
-    return nil;
-}
-
-- (NSString *)getAlbumArtistIdFromName:(NSString *)sAlbumArtistName
-{
-    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"sAlbumArtistName",sAlbumArtistName];
-    [fetchSongRequest setPredicate:predicate];
-    
-    NSError *error = nil;
-    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
-    
-    if (!error) {
-        Item *item = [listData lastObject];
-        return item.iAlbumArtistId;
-    }
-    return nil;
-}
-
-- (NSString *)getArtistIdFromName:(NSString *)sArtistName
-{
-    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"sArtistName",sArtistName];
-    [fetchSongRequest setPredicate:predicate];
-    
-    NSError *error = nil;
-    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
-    
-    if (!error) {
-        Item *item = [listData lastObject];
-        return item.iArtistId;
-    }
-    return nil;
-}
+#pragma mark - Artist
 
 - (NSString *)getGenreIdFromName:(NSString *)sGenreName
 {
@@ -512,46 +531,68 @@ static DataManagement *_sharedInstance = nil;
     return nil;
 }
 
-- (void)deleteSong:(Item *)item
+#pragma mark - Artist
+
+- (NSString *)getArtistIdFromName:(NSString *)sArtistName
 {
-    [[self managedObjectContext] deleteObject:item];
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K ==[c] %@", @"sArtistName",sArtistName];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        Item *item = [listData lastObject];
+        return item.iArtistId;
+    }
+    return nil;
+}
+
+#pragma mark - Delete
+
+- (void)deleteSongs:(NSArray *)listSongs
+{
+    for (Item *item in listSongs) {
+        [[self managedObjectContext] deleteObject:item];
+    }
+    
     [self saveData];
+}
+
+- (void)deleteSong:(Item *)song
+{
+    NSString *sSongPath = [[Utils dropboxPath] stringByAppendingPathComponent:song.fileInfo.sFileName];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:sSongPath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:sSongPath error:nil];
+    }
+    
+    if (song.fileInfo) {
+        [[self managedObjectContext] deleteObject:song.fileInfo];
+    }
+    [self removeSongFromPlaylist:song];
+    [[self managedObjectContext] deleteObject:song];
 }
 
 - (void)deleteAlbum:(AlbumObj *)album
 {
-    NSFetchRequest *request = [self getListSongFilterByName:nil albumId:album.iAlbumId artistId:nil genreId:nil];
+    NSFetchRequest *request = [self getSongFilterByName:nil albumId:album.iAlbumId artistId:nil genreId:nil];
     NSArray *listSongs = [[self managedObjectContext] executeFetchRequest:request error:nil];
-    
-    for (Item *song in listSongs) {
-        [[self managedObjectContext] deleteObject:song];
-    }
-    
-    [self saveData];
+    [self deleteSongs:listSongs];
 }
 
 - (void)deleteArtist:(AlbumArtistObj *)artist
 {
-    NSFetchRequest *request = [self getListSongFilterByName:nil albumId:nil artistId:artist.iAlbumArtistId genreId:nil];
+    NSFetchRequest *request = [self getSongFilterByName:nil albumId:nil artistId:artist.iAlbumArtistId genreId:nil];
     NSArray *listSongs = [[self managedObjectContext] executeFetchRequest:request error:nil];
-    
-    for (Item *song in listSongs) {
-        [[self managedObjectContext] deleteObject:song];
-    }
-    
-    [self saveData];
+    [self deleteSongs:listSongs];
 }
 
 - (void)deleteGenre:(GenreObj *)genre
 {
-    NSFetchRequest *request = [self getListSongFilterByName:nil albumId:nil artistId:nil genreId:genre.iGenreId];
+    NSFetchRequest *request = [self getSongFilterByName:nil albumId:nil artistId:nil genreId:genre.iGenreId];
     NSArray *listSongs = [[self managedObjectContext] executeFetchRequest:request error:nil];
-    
-    for (Item *song in listSongs) {
-        [[self managedObjectContext] deleteObject:song];
-    }
-    
-    [self saveData];
+    [self deleteSongs:listSongs];
 }
 
 #pragma mark - Playlist
@@ -559,36 +600,31 @@ static DataManagement *_sharedInstance = nil;
 - (void)createDefaultPlaylist
 {
     if (![self getPlaylistWithType:kPlaylistTypeMyTopRated andName:nil]) {
-        Playlist *playlistMyTopRated = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
-        playlistMyTopRated.iPlaylistId = [NSString stringWithFormat:@"%@ - %d",[Utils getTimestamp],kPlaylistTypeMyTopRated];
-        playlistMyTopRated.iPlaylistType = @(kPlaylistTypeMyTopRated);
-        playlistMyTopRated.sPlaylistName = @"My Top Rated";
-        playlistMyTopRated.isSmartPlaylist = @YES;
+        [self createPlaylistWithName:@"My Top Rated" type:kPlaylistTypeMyTopRated];
     }
     
     if (![self getPlaylistWithType:kPlaylistTypeRecentlyAdded andName:nil]) {
-        Playlist *playlistRecentlyAdded = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
-        playlistRecentlyAdded.iPlaylistId = [NSString stringWithFormat:@"%@ - %d",[Utils getTimestamp],kPlaylistTypeRecentlyAdded];
-        playlistRecentlyAdded.iPlaylistType = @(kPlaylistTypeRecentlyAdded);
-        playlistRecentlyAdded.sPlaylistName = @"Recently Added";
-        playlistRecentlyAdded.isSmartPlaylist = @YES;
+        [self createPlaylistWithName:@"Recently Added" type:kPlaylistTypeRecentlyAdded];
     }
     
     if (![self getPlaylistWithType:kPlaylistTypeRecentlyPlayed andName:nil]) {
-        Playlist *playlistRecentlyPlayed = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
-        playlistRecentlyPlayed.iPlaylistId = [NSString stringWithFormat:@"%@ - %d",[Utils getTimestamp],kPlaylistTypeRecentlyPlayed];
-        playlistRecentlyPlayed.iPlaylistType = @(kPlaylistTypeRecentlyPlayed);
-        playlistRecentlyPlayed.sPlaylistName = @"Recently Played";
-        playlistRecentlyPlayed.isSmartPlaylist = @YES;
+        [self createPlaylistWithName:@"Recently Played" type:kPlaylistTypeRecentlyPlayed];
     }
     
     if (![self getPlaylistWithType:kPlaylistTypeTopMostPlayed andName:nil]) {
-        Playlist *playlistTopMostPlayed = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
-        playlistTopMostPlayed.iPlaylistId = [NSString stringWithFormat:@"%@ - %d",[Utils getTimestamp],kPlaylistTypeTopMostPlayed];
-        playlistTopMostPlayed.iPlaylistType = @(kPlaylistTypeTopMostPlayed);
-        playlistTopMostPlayed.sPlaylistName = @"Top 25 Most Played";
-        playlistTopMostPlayed.isSmartPlaylist = @YES;
+        [self createPlaylistWithName:@"Top 25 Most Played" type:kPlaylistTypeTopMostPlayed];
     }
+}
+
+- (Playlist *)createPlaylistWithName:(NSString *)sPlaylistName type:(kPlaylistType)iType
+{
+    Playlist *playlist = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
+    playlist.iPlaylistId = [NSString stringWithFormat:@"%@-%d",[Utils getTimestamp],iType];
+    playlist.iPlaylistType = @(iType);
+    playlist.sPlaylistName = sPlaylistName;
+    playlist.isSmartPlaylist = @(iType != kPlaylistTypeNormal);
+    
+    return playlist;
 }
 
 - (Playlist *)getPlaylistWithType:(kPlaylistType)iPlaylistType andName:(NSString *)sName
@@ -616,9 +652,11 @@ static DataManagement *_sharedInstance = nil;
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[self playlistEntity]];
     
-    NSSortDescriptor *sortByType = [[NSSortDescriptor alloc] initWithKey:@"iPlaylistType" ascending:YES];
+    NSSortDescriptor *sortByType = [[NSSortDescriptor alloc] initWithKey:@"iPlaylistType" ascending:NO];
     NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"sPlaylistName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-    [request setSortDescriptors:@[sortByType,sortByName]];
+    NSSortDescriptor *sortForView = [[NSSortDescriptor alloc] initWithKey:@"isSmartPlaylist" ascending:NO];
+    
+    [request setSortDescriptors:@[sortByType,sortByName,sortForView]];
     
     if (isNormalOnly) {
         [request setPredicate:[NSPredicate predicateWithFormat:@"isSmartPlaylist == NO"]];
@@ -627,45 +665,13 @@ static DataManagement *_sharedInstance = nil;
     return request;
 }
 
-- (void)removeItemFromPlaylist:(Item *)item
-{
-    NSFetchRequest *getPlaylist = [self getListPlaylistIsGetNormalOnly:NO];
-    
-    NSError *error = nil;
-    NSArray *playlists = [[self managedObjectContext] executeFetchRequest:getPlaylist error:&error];
-    for (Playlist *playlist in playlists)
-    {
-        int fDuration = [playlist.fDuration intValue];
-        
-        NSMutableArray *listSong = [[NSMutableArray alloc] initWithArray:[playlist getPlaylist]];
-        for (NSString *sSongId in listSong)
-        {
-            if ([sSongId isEqualToString:item.iSongId]) {
-                fDuration -= [item.fDuration intValue];
-            }
-        }
-        
-        if (fDuration < 0) {
-            fDuration = 0;
-        }
-        playlist.fDuration = @(fDuration);
-        
-        [listSong removeObject:item.iSongId];
-        [playlist setPlaylist:[listSong copy]];
-        
-        if (listSong.count <= 0) {
-            [playlist setArtwork:nil];
-        }
-    }
-}
-
 - (void)addItem:(Item *)newSong toSpecialList:(kPlaylistType)iPlaylistType
 {
     Playlist *playlist = [self getPlaylistWithType:iPlaylistType andName:nil];
     if (!playlist)
     {
         playlist = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Playlist class]) inManagedObjectContext:self.managedObjectContext];
-        playlist.iPlaylistId = [NSString stringWithFormat:@"%@ - %d",[Utils getTimestamp],iPlaylistType];
+        playlist.iPlaylistId = [NSString stringWithFormat:@"%@-%d",[Utils getTimestamp],iPlaylistType];
         playlist.iPlaylistType = @(iPlaylistType);
         
         if (iPlaylistType == kPlaylistTypeMyTopRated) {
@@ -685,12 +691,16 @@ static DataManagement *_sharedInstance = nil;
     }
     
     NSMutableArray *listSong = [[NSMutableArray alloc] initWithArray:[playlist getPlaylist]];
-    int fDuration = [playlist.fDuration intValue];
+    int fDuration = 0;
     
-    if (iPlaylistType == kPlaylistTypeMyTopRated ||
-        iPlaylistType == kPlaylistTypeRecentlyPlayed ||
-        iPlaylistType == kPlaylistTypeRecentlyAdded)
-    {
+    if (iPlaylistType == kPlaylistTypeMyTopRated) {
+        
+    }
+    else if (iPlaylistType == kPlaylistTypeRecentlyAdded) {
+        [listSong addObject:newSong.iSongId];
+        fDuration = [playlist.fDuration intValue] + [newSong.fDuration intValue];
+    }
+    else if (iPlaylistType == kPlaylistTypeRecentlyPlayed) {
         if ([listSong containsObject:newSong.iSongId]) {
             [listSong removeObject:newSong.iSongId];
             [listSong addObject:newSong.iSongId];
@@ -726,12 +736,42 @@ static DataManagement *_sharedInstance = nil;
     if (fDuration > 0) {
         playlist.fDuration = @(fDuration);
     }
-    else {
-        playlist.fDuration = @(0);
-    }
 
     [playlist setPlaylist:listSong];
+    
     [self saveData:NO];
+}
+
+- (void)removeSongFromPlaylist:(Item *)item
+{
+    NSFetchRequest *getPlaylist = [self getListPlaylistIsGetNormalOnly:NO];
+    
+    NSError *error = nil;
+    NSArray *playlists = [[self managedObjectContext] executeFetchRequest:getPlaylist error:&error];
+    for (Playlist *playlist in playlists)
+    {
+        int fDuration = [playlist.fDuration intValue];
+        
+        NSMutableArray *listSong = [[NSMutableArray alloc] initWithArray:[playlist getPlaylist]];
+        for (NSString *sSongId in listSong)
+        {
+            if ([sSongId isEqualToString:item.iSongId]) {
+                fDuration -= [item.fDuration intValue];
+            }
+        }
+        
+        if (fDuration < 0) {
+            fDuration = 0;
+        }
+        playlist.fDuration = @(fDuration);
+        
+        [listSong removeObject:item.iSongId];
+        [playlist setPlaylist:[listSong copy]];
+        
+        if (listSong.count <= 0) {
+            [playlist setArtwork:nil];
+        }
+    }
 }
 
 #pragma mark - Search
@@ -765,10 +805,27 @@ static DataManagement *_sharedInstance = nil;
 
 #pragma mark - DoAction
 
-- (void)doActionWithItem:(id)item fromNavigation:(UINavigationController *)navController
+- (void)doActionWithItem:(id)item withData:(NSArray *)data fromSearch:(BOOL)isSearchActive fromNavigation:(UINavigationController *)navController
 {
-    if ([item isKindOfClass:[Item class]]) {
-        [[GlobalParameter sharedInstance] setCurrentPlaying:(Item *)item];
+    if ([item isKindOfClass:[Item class]])
+    {
+        if (isSearchActive) {
+            [[GlobalParameter sharedInstance] setCurrentPlaying:item];
+        }
+        else {
+            if (data) {
+                // Play All Song In List Start With 'item'
+            }
+        }
+    }
+    if ([item isKindOfClass:[File class]]) {
+        if (isSearchActive) {
+            File *file = (File *)item;
+            [[GlobalParameter sharedInstance] setCurrentPlaying:file.item];
+        }
+        else {
+            // Play All Song Downloaded With 'item'
+        }
     }
     else if ([item isKindOfClass:[AlbumObj class]]) {
         AlbumListViewController *vc = [[AlbumListViewController alloc] init];
@@ -791,19 +848,64 @@ static DataManagement *_sharedInstance = nil;
         vc.iGenreId = genre.iGenreId;
         [navController pushViewController:vc animated:YES];
     }
+    else if ([item isKindOfClass:[Playlist class]]) {
+        Playlist *playlist = (Playlist *)item;
+        
+        if (playlist.isSmartPlaylist) {
+            if ([playlist getPlaylist].count <= 0) {
+                return;
+            }
+        }
+        
+        PlaylistsListSongViewController *vc = [[PlaylistsListSongViewController alloc] init];
+        vc.currentPlaylist = playlist;
+        [navController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)doUtility:(int)iType withData:(NSArray *)arrData fromNavigation:(UINavigationController *)navController
+{
+    if (iType == kHeaderUtilTypeShuffle) {
+        if (arrData) {
+            // Play Shuffle A List
+        }
+        else {
+            // Play Shuffle All Song
+        }
+    }
+    else if (iType == kHeaderUtilTypeShuffleFromSong) {
+        // Play Shuffle All Song
+    }
+    else if (iType == kHeaderUtilTypeGoAllAlbums) {
+        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
+        [navController pushViewController:vc animated:YES];
+    }
+    else if (iType == kHeaderUtilTypeGoAllSongs) {
+        SongsViewController *vc = [[SongsViewController alloc] init];
+        [navController pushViewController:vc animated:YES];
+    }
+    else if (iType == kHeaderUtilTypeCreatePlaylistWithData) {
+        MakePlaylistViewController *vc = [[MakePlaylistViewController alloc] init];
+        vc.arrListItem = arrData;
+        [navController pushViewController:vc animated:YES];
+    }
+    else if (iType == kHeaderUtilTypeCreateNewPlaylist) {
+        MakePlaylistViewController *vc = [[MakePlaylistViewController alloc] init];
+        [navController pushViewController:vc animated:YES];
+    }
 }
 
 - (BOOL)doSwipeActionWithItem:(id)itemObj atIndex:(NSInteger)index fromNavigation:(UINavigationController *)navController
 {
-    if ([itemObj isKindOfClass:[Item class]] || [itemObj isKindOfClass:[FileObj class]])
+    if ([itemObj isKindOfClass:[Item class]] || [itemObj isKindOfClass:[File class]])
     {
         Item *item = nil;
         
         if ([itemObj isKindOfClass:[Item class]]) {
             item = (Item *)itemObj;
         }
-        else if ([itemObj isKindOfClass:[FileObj class]]) {
-            FileObj *file = (FileObj *)itemObj;
+        else if ([itemObj isKindOfClass:[File class]]) {
+            File *file = (File *)itemObj;
             item = file.item;
         }
         
@@ -817,7 +919,7 @@ static DataManagement *_sharedInstance = nil;
                 return NO;
             }
             else if (index == 1) {
-                AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+                CreatePlaylistViewController *vc = [[CreatePlaylistViewController alloc] init];
                 vc.value = item;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
                 [navController presentViewController:nav animated:YES completion:nil];
@@ -830,7 +932,7 @@ static DataManagement *_sharedInstance = nil;
             }
         }
         else {
-            AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+            CreatePlaylistViewController *vc = [[CreatePlaylistViewController alloc] init];
             vc.value = item;
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             [navController presentViewController:nav animated:YES completion:nil];
@@ -846,7 +948,7 @@ static DataManagement *_sharedInstance = nil;
                 return NO;
             }
             else if (index == 1) {
-                AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+                CreatePlaylistViewController *vc = [[CreatePlaylistViewController alloc] init];
                 vc.value = album;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
                 [navController presentViewController:nav animated:YES completion:nil];
@@ -859,7 +961,7 @@ static DataManagement *_sharedInstance = nil;
             }
         }
         else {
-            AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+            CreatePlaylistViewController *vc = [[CreatePlaylistViewController alloc] init];
             vc.value = album;
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             [navController presentViewController:nav animated:YES completion:nil];
@@ -875,14 +977,14 @@ static DataManagement *_sharedInstance = nil;
                 return NO;
             }
             else if (index == 1) {
-                AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+                CreatePlaylistViewController *vc = [[CreatePlaylistViewController alloc] init];
                 vc.value = artist;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
                 [navController presentViewController:nav animated:YES completion:nil];
             }
         }
         else {
-            AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+            CreatePlaylistViewController *vc = [[CreatePlaylistViewController alloc] init];
             vc.value = artist;
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             [navController presentViewController:nav animated:YES completion:nil];
@@ -898,14 +1000,14 @@ static DataManagement *_sharedInstance = nil;
                 return NO;
             }
             else if (index == 1) {
-                AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+                CreatePlaylistViewController *vc = [[CreatePlaylistViewController alloc] init];
                 vc.value = genre;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
                 [navController presentViewController:nav animated:YES completion:nil];
             }
         }
         else {
-            AddToPlaylistViewController *vc = [[AddToPlaylistViewController alloc] init];
+            CreatePlaylistViewController *vc = [[CreatePlaylistViewController alloc] init];
             vc.value = genre;
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             [navController presentViewController:nav animated:YES completion:nil];
@@ -913,26 +1015,6 @@ static DataManagement *_sharedInstance = nil;
     }
     
     return YES;
-}
-
-- (void)doUtility:(int)iType withData:(NSArray *)arrData fromNavigation:(UINavigationController *)navController
-{
-    if (iType == kHeaderUtilTypeShuffle) {
-        // Play
-    }
-    else if (iType == kHeaderUtilTypeCreatePlaylist) {
-        MakePlaylistViewController *vc = [[MakePlaylistViewController alloc] init];
-        vc.arrListItem = arrData;
-        [navController pushViewController:vc animated:YES];
-    }
-    else if (iType == kHeaderUtilTypeGoAllAlbums) {
-        AlbumsViewController *vc = [[AlbumsViewController alloc] init];
-        [navController pushViewController:vc animated:YES];
-    }
-    else if (iType == kHeaderUtilTypeGoAllSongs) {
-        SongsViewController *vc = [[SongsViewController alloc] init];
-        [navController pushViewController:vc animated:YES];
-    }
 }
 
 #pragma mark - iTunes Sync

@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddToPlaylistViewController : UIViewController
+@interface CreatePlaylistViewController : UIViewController
 
+@property (nonatomic, strong) NSArray *listSong;
 @property (nonatomic, strong) id value;
 
 @end

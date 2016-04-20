@@ -19,6 +19,7 @@
 #import "KGModal.h"
 #import "MarqueeLabel.h"
 #import "MBProgressHUD.h"
+#import "UIAlertView+Blocks.h"
 
 #define extesions @[@"mp3", @"m4a", @"wma", @"wav", @"aac", @"ogg"]
 
@@ -264,6 +265,8 @@
     
     [[KGModal sharedInstance] showWithContentView:self.downloadView andAnimated:NO];
     
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    
     iCurrentIndex = 0;
     [self downloadItemAtIndex:iCurrentIndex];
 }
@@ -324,7 +327,6 @@
 
 - (void)finishAllDownload
 {
-    [[DataManagement sharedInstance] saveData];
     [self closeDownloadView];
 }
 
@@ -371,15 +373,26 @@
 
 - (void)logout
 {
-    if ([[DBSession sharedSession] isLinked]) {
-        [[DBSession sharedSession] unlinkAll];
-    }
-    
-    [self.restClient cancelAllRequests];
-    [[GlobalParameter sharedInstance] clearDropBoxInfo];
-    
-    [self.navigationController setToolbarHidden:YES animated:NO];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [UIAlertView showWithTitle:@"Are you sure you want to logout?"
+                       message:nil
+             cancelButtonTitle:@"OK"
+             otherButtonTitles:@[@"Cancel"]
+                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex)
+     {
+         if (buttonIndex != [alertView cancelButtonIndex]) {
+             return;
+         }
+         
+         if ([[DBSession sharedSession] isLinked]) {
+             [[DBSession sharedSession] unlinkAll];
+         }
+         
+         [self.restClient cancelAllRequests];
+         [[GlobalParameter sharedInstance] clearDropBoxInfo];
+         
+         [self.navigationController setToolbarHidden:YES animated:NO];
+         [self.navigationController popToRootViewControllerAnimated:YES];
+     }];
 }
 
 #pragma mark - UI
@@ -556,6 +569,7 @@
     isSelectAll = NO;
     [self changeSelect:isSelectAll];
     
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
     [[KGModal sharedInstance] hideAnimated:NO];
 }
 
