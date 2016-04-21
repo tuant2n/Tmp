@@ -8,6 +8,8 @@
 
 #import "PlaylistsListSongViewController.h"
 
+#import "AddSongsViewController.h"
+
 #import "DataManagement.h"
 #import "GlobalParameter.h"
 #import "Utils.h"
@@ -207,7 +209,10 @@
 
 - (void)touchAddSong
 {
+    AddSongsViewController *vc = [[AddSongsViewController alloc] init];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark - UI

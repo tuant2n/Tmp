@@ -910,6 +910,7 @@ static DataManagement *_sharedInstance = nil;
         
         PlaylistsListSongViewController *vc = [[PlaylistsListSongViewController alloc] init];
         vc.currentPlaylist = playlist;
+        vc.hidesBottomBarWhenPushed = YES;
         [navController pushViewController:vc animated:YES];
     }
 }
