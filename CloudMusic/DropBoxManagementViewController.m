@@ -489,6 +489,20 @@
     return exportSession;
 }
 
+- (void)getExportSessionProgress:(AVAssetExportSession *)session
+{
+    NSArray *modes = [[NSArray alloc] initWithObjects:NSDefaultRunLoopMode, UITrackingRunLoopMode, nil];
+    [self performSelector:@selector(updateProgress:) withObject:session afterDelay:0.5 inModes:modes];
+}
+
+- (void)updateProgress:(AVAssetExportSession *)session
+{
+    if (session.status == AVAssetExportSessionStatusExporting) {
+        TTLog(@"PROGRESS EXPORT: %f",session.progress);
+        [self getExportSessionProgress:session];
+    }
+}
+
 #pragma mark - Download View
 
 - (UIView *)downloadView
@@ -597,21 +611,7 @@
     }
     
     self.progressBar.progress = currentItem.fProgress;
-    NSLog(@"PROGRESS DOWNLOAD: %f",currentItem.fProgress);
-}
-
-- (void)getExportSessionProgress:(AVAssetExportSession *)session
-{
-    NSArray *modes = [[NSArray alloc] initWithObjects:NSDefaultRunLoopMode, UITrackingRunLoopMode, nil];
-    [self performSelector:@selector(updateProgress:) withObject:session afterDelay:0.5 inModes:modes];
-}
-
-- (void)updateProgress:(AVAssetExportSession *)session
-{
-    if (session.status == AVAssetExportSessionStatusExporting) {
-        NSLog(@"PROGRESS EXPORT: %f",session.progress);
-        [self getExportSessionProgress:session];
-    }
+    TTLog(@"PROGRESS DOWNLOAD: %f",currentItem.fProgress);
 }
 
 #pragma mark - Utils

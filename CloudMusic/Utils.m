@@ -12,7 +12,6 @@
 #import "Playlist.h"
 #import "File.h"
 
-#import "ItemObj.h"
 #import "AlbumObj.h"
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
@@ -293,9 +292,6 @@
     MainCell *cell = nil;
     
     if ([itemObj isKindOfClass:[Item class]]) {
-        cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
-    }
-    else if ([itemObj isKindOfClass:[ItemObj class]]) {
         cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
     }
     else if ([itemObj isKindOfClass:[AlbumObj class]]) {

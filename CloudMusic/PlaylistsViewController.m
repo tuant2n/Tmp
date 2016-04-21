@@ -344,6 +344,10 @@
 {
     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell config:item];
+    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
+    BOOL isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
+    [cell setLineHidden:isHiddenSeperator];
 }
 
 - (void)changePlaylistName:(Playlist *)playlist
@@ -354,7 +358,7 @@
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     
     UITextField *tfPlaylistName = [alertView textFieldAtIndex:0];
-    tfPlaylistName.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+    tfPlaylistName.autocapitalizationType = UITextAutocapitalizationTypeWords;
     tfPlaylistName.placeholder = @"Playlist Title";
     tfPlaylistName.text = editPlaylist.sPlaylistName;
     

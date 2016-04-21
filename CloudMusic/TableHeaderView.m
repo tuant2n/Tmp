@@ -149,7 +149,7 @@
 {
     [self.arrListUtils removeAllObjects];
     
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreateNewPlaylist]];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist From Songs" icon:@"edit-icon" type:kHeaderUtilTypeCreateNewPlaylist]];
     [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Shuffle" icon:@"shuffle-icon" type:kHeaderUtilTypeShuffleFromSong]];
 
     self.line.backgroundColor = [UIColor clearColor];
@@ -161,7 +161,7 @@
 {
     [self.arrListUtils removeAllObjects];
     
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylistWithData]];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist From Albums" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylistWithData]];
     [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"All Songs" icon:@"list-item-icon.png" type:kHeaderUtilTypeGoAllSongs]];
     
     hasIndexTitles = NO;
@@ -172,7 +172,7 @@
 {
     [self.arrListUtils removeAllObjects];
     
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylistWithData]];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist From Artists" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylistWithData]];
     [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"All Albums" icon:@"list-item-icon.png" type:kHeaderUtilTypeGoAllAlbums]];
     
     hasIndexTitles = NO;
@@ -183,7 +183,7 @@
 {
     [self.arrListUtils removeAllObjects];
     
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylistWithData]];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Make Playlist From Genres" icon:@"edit-icon" type:kHeaderUtilTypeCreatePlaylistWithData]];
     
     hasIndexTitles = NO;
     [self setupDefault];
@@ -193,7 +193,7 @@
 {
     [self.arrListUtils removeAllObjects];
 
-    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"New Playlists" icon:@"add-icon" type:kHeaderUtilTypeCreateNewPlaylist]];
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Create New Playlist" icon:@"add-icon" type:kHeaderUtilTypeCreateNewPlaylist]];
     
     self.line.backgroundColor = [UIColor clearColor];
     hasIndexTitles = NO;

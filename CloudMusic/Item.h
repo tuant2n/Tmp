@@ -19,13 +19,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL isCloud;
 
-@property (nonatomic, strong) NSURL *sLocalArtworkUrl;
-@property (nonatomic, strong) NSAttributedString *sSongDesc;
+@property (nullable, nonatomic, strong) NSURL *sLocalArtworkUrl;
+@property (nullable, nonatomic, strong) NSAttributedString *sSongDesc;
 
-@property (nonatomic, strong) NSURL *sPlayableUrl;
+@property (nullable, nonatomic, strong) NSURL *sPlayableUrl;
 
 @property (nonatomic, assign) BOOL isPlaying;
 @property (nonatomic, assign) int numberOfSelect;
+
+#pragma mark - Update Item
 
 - (void)updateWithMediaItem:(MPMediaItem *)item;
 - (void)updateWithSongUrl:(NSURL *)songUrl songInfo:(NSDictionary *)songInfo;
@@ -40,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)changeArtistName:(NSString *)sArtistName;
 - (void)changeAlbumArtistName:(NSString *)sAlbumArtistName;
 - (void)changeGenreName:(NSString *)sGenreName;
+
+- (NSArray *)getMetaData;
 
 @end
 

@@ -239,12 +239,19 @@
         }
         
         if (sGenre) {
-            AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
-            item.locale = [NSLocale currentLocale];
-            item.keySpace = AVMetadataKeySpaceCommon;
-            item.key = AVMetadataCommonKeyType;
-            item.value = sGenre;
-            [metadata addObject:item];
+            AVMutableMetadataItem *itemCommon = [[AVMutableMetadataItem alloc] init];
+            itemCommon.locale = [NSLocale currentLocale];
+            itemCommon.keySpace = AVMetadataKeySpaceCommon;
+            itemCommon.key = AVMetadataCommonKeyType;
+            itemCommon.value = sGenre;
+            [metadata addObject:itemCommon];
+            
+            AVMutableMetadataItem *userGenre = [[AVMutableMetadataItem alloc] init];
+            userGenre.locale = [NSLocale currentLocale];
+            userGenre.keySpace = AVMetadataKeySpaceiTunes;
+            userGenre.key = AVMetadataiTunesMetadataKeyUserGenre;
+            userGenre.value = sGenre;
+            [metadata addObject:userGenre];
         }
         
         if (sYear) {

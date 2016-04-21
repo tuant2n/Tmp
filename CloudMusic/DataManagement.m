@@ -355,6 +355,21 @@ static DataManagement *_sharedInstance = nil;
     return nil;
 }
 
+- (BOOL)hasAlbum:(NSString *)iAlbumId
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iAlbumId ==[c] %@",iAlbumId];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        return (listData.count > 0);
+    }
+    return NO;
+}
+
 #pragma mark - AlbumArtist
 
 - (NSArray *)getListAlbumArtistFilterByName:(NSString *)sName
@@ -445,6 +460,21 @@ static DataManagement *_sharedInstance = nil;
     return nil;
 }
 
+- (BOOL)hasAlbumArtist:(NSString *)iAlbumArtistId
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iAlbumArtistId ==[c] %@",iAlbumArtistId];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        return (listData.count > 0);
+    }
+    return NO;
+}
+
 #pragma mark - Genre
 
 - (NSArray *)getListGenreFilterByName:(NSString *)sName
@@ -513,8 +543,6 @@ static DataManagement *_sharedInstance = nil;
     return genresArray;
 }
 
-#pragma mark - Artist
-
 - (NSString *)getGenreIdFromName:(NSString *)sGenreName
 {
     NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
@@ -529,6 +557,21 @@ static DataManagement *_sharedInstance = nil;
         return item.iGenreId;
     }
     return nil;
+}
+
+- (BOOL)hasGenre:(NSString *)iGenreId
+{
+    NSFetchRequest *fetchSongRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Item class])];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"iGenreId ==[c] %@",iGenreId];
+    [fetchSongRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *listData = [[self managedObjectContext] executeFetchRequest:fetchSongRequest error:&error];
+    
+    if (!error) {
+        return (listData.count > 0);
+    }
+    return NO;
 }
 
 #pragma mark - Artist
@@ -572,6 +615,8 @@ static DataManagement *_sharedInstance = nil;
     }
     [self removeSongFromPlaylist:song];
     [[self managedObjectContext] deleteObject:song];
+    
+    [self saveData];
 }
 
 - (void)deleteAlbum:(AlbumObj *)album
@@ -796,7 +841,7 @@ static DataManagement *_sharedInstance = nil;
             }
         }
         else {
-            NSLog(@"CANCEL");
+            TTLog(@"CANCEL");
         }
     }];
     [self.searchQueue addOperation:operation];

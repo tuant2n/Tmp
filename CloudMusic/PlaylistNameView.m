@@ -25,7 +25,7 @@
     self.backgroundColor = [Utils colorWithRGBHex:0xf0f0f0];
     
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
-    self.tfPlaylistName.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+    self.tfPlaylistName.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.tfPlaylistName.delegate = self;
 }
 

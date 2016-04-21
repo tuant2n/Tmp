@@ -277,7 +277,6 @@
 		7BD22F161CBFB1F9005DF164 /* UIColor+RGBValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BD22F141CBFB1F9005DF164 /* UIColor+RGBValues.m */; };
 		7BEA9BC81CC0F9AB0071EEB5 /* CreatePlaylistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEA9BC61CC0F9AB0071EEB5 /* CreatePlaylistViewController.m */; };
 		7BEA9BC91CC0F9AB0071EEB5 /* CreatePlaylistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BEA9BC71CC0F9AB0071EEB5 /* CreatePlaylistViewController.xib */; };
-		7BF16BFA1CC8B07E002D99A6 /* ItemObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BF16BF91CC8B07E002D99A6 /* ItemObj.m */; };
 		7BF16C0A1CC8EC81002D99A6 /* btnAddSongToPlaylist.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BF16C071CC8EC81002D99A6 /* btnAddSongToPlaylist.png */; };
 		7BF16C0B1CC8EC81002D99A6 /* btnAddSongToPlaylist@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BF16C081CC8EC81002D99A6 /* btnAddSongToPlaylist@2x.png */; };
 		7BF16C0C1CC8EC81002D99A6 /* btnAddSongToPlaylist@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BF16C091CC8EC81002D99A6 /* btnAddSongToPlaylist@3x.png */; };
@@ -683,8 +682,6 @@
 		7BEA9BC51CC0F9AB0071EEB5 /* CreatePlaylistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreatePlaylistViewController.h; sourceTree = "<group>"; };
 		7BEA9BC61CC0F9AB0071EEB5 /* CreatePlaylistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreatePlaylistViewController.m; sourceTree = "<group>"; };
 		7BEA9BC71CC0F9AB0071EEB5 /* CreatePlaylistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreatePlaylistViewController.xib; sourceTree = "<group>"; };
-		7BF16BF81CC8B07E002D99A6 /* ItemObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemObj.h; sourceTree = "<group>"; };
-		7BF16BF91CC8B07E002D99A6 /* ItemObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemObj.m; sourceTree = "<group>"; };
 		7BF16C071CC8EC81002D99A6 /* btnAddSongToPlaylist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnAddSongToPlaylist.png; sourceTree = "<group>"; };
 		7BF16C081CC8EC81002D99A6 /* btnAddSongToPlaylist@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnAddSongToPlaylist@2x.png"; sourceTree = "<group>"; };
 		7BF16C091CC8EC81002D99A6 /* btnAddSongToPlaylist@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnAddSongToPlaylist@3x.png"; sourceTree = "<group>"; };
@@ -1066,8 +1063,6 @@
 				3CB3FF421CB95E0200A95DD2 /* DropBoxObj.m */,
 				7B26B2451CAF780B00368CA8 /* TagObj.h */,
 				7B26B2461CAF780B00368CA8 /* TagObj.m */,
-				7BF16BF81CC8B07E002D99A6 /* ItemObj.h */,
-				7BF16BF91CC8B07E002D99A6 /* ItemObj.m */,
 			);
 			name = Object;
 			sourceTree = "<group>";
@@ -2036,7 +2031,6 @@
 				3C6C2CB31CB26AC600F3E901 /* IQUIView+IQKeyboardToolbar.m in Sources */,
 				7BF65F4E1CA3D782007B198D /* UIImage+MultiFormat.m in Sources */,
 				3CDE2EE71CC4DC97009B2FBA /* Playlist+CoreDataProperties.m in Sources */,
-				7BF16BFA1CC8B07E002D99A6 /* ItemObj.m in Sources */,
 				3CF2A3651CAC199500EE89FC /* MainCell.m in Sources */,
 				7B26B2391CAF64D200368CA8 /* TagElementCell.m in Sources */,
 				7BF65F491CA3D782007B198D /* SDWebImageDownloaderOperation.m in Sources */,

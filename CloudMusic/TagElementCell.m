@@ -28,7 +28,7 @@
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
     self.lblTagName.textColor = [Utils colorWithRGBHex:0x006bd5];
     
-    self.tfTagContent.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+    self.tfTagContent.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.tfTagContent.delegate = self;
 }
 

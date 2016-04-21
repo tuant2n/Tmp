@@ -27,10 +27,12 @@
 #import "UIAlertView+Blocks.h"
 #import "QBImagePickerController.h"
 #import "UIImage+ProportionalFill.h"
+#import "MBProgressHUD.h"
 
 @interface EditViewController () <ArtworkViewDelegate,QBImagePickerControllerDelegate,DeleteItemCellDelegate,TagRenameCellDelegate,WriteTagCellDelegate>
 {
     BOOL isWriteTagsToFile;
+    int iCurrentIndex;
 }
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
@@ -41,9 +43,20 @@
 @property (nonatomic, strong) ArtworkView *artworkView;
 @property (nonatomic, strong) QBImagePickerController *imagePickerController;
 
+@property (nonatomic, strong) MBProgressHUD *HUD;
+
 @end
 
 @implementation EditViewController
+
+- (MBProgressHUD *)HUD
+{
+    if (!_HUD) {
+        _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        _HUD.mode = MBProgressHUDModeDeterminate;
+    }
+    return _HUD;
+}
 
 - (NSMutableArray *)arrListTag
 {
@@ -620,6 +633,7 @@
                     if ([[NSFileManager defaultManager] moveItemAtPath:sOldFilePath toPath:sNewFilePath error:&error]) {
                         self.song.fileInfo.sFileName = sNewFileName;
                         self.song.sAssetUrl = sNewFileName;
+                        self.song.sPlayableUrl = nil;
                     }
                 }
             }
@@ -631,6 +645,21 @@
     }
     
     BOOL isChangeInfo = NO;
+    
+    if (![self.song.iYear isEqual:@([sYear intValue])]) {
+        self.song.iYear = @([sYear intValue]);
+        isChangeInfo = YES;
+    }
+    
+    if (![self.song.sLyrics isEqualToString:sLyrics]) {
+        self.song.sLyrics = sLyrics;
+        isChangeInfo = YES;
+    }
+    
+    if ([self.artworkView isChangeArtwork]) {
+        [self.song setArtwork:[self.artworkView artwork]];
+        isChangeInfo = YES;
+    }
     
     if (![self.song.sSongName isEqualToString:sTitle]) {
         [self.song setSongName:sTitle];
@@ -654,21 +683,6 @@
     
     if (![self.song.sGenreName isEqualToString:sGenreName]) {
         [self.song changeGenreName:sGenreName];
-        isChangeInfo = YES;
-    }
-    
-    if (![self.song.iYear isEqual:@([sYear intValue])]) {
-        self.song.iYear = @([sYear intValue]);
-        isChangeInfo = YES;
-    }
-    
-    if (![self.song.sLyrics isEqualToString:sLyrics]) {
-        self.song.sLyrics = sLyrics;
-        isChangeInfo = YES;
-    }
-    
-    if ([self.artworkView isChangeArtwork]) {
-        [self.song setArtwork:[self.artworkView artwork]];
         isChangeInfo = YES;
     }
     
@@ -723,6 +737,7 @@
     }
     
     BOOL isChangeInfo = NO;
+    NSString *sTimeStamp = [Utils getTimestamp];
     
     // Update Year
     if ([self.album.iYear compare:@([sYear intValue])] != NSOrderedSame) {
@@ -734,9 +749,9 @@
     
     if (![self.album.sAlbumName isEqualToString:sAlbumName])
     {
-        NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName year:[self.album.iYear intValue]];
+        NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName year:[sYear intValue]];
         if (!iAlbumId) {
-            iAlbumId = [Utils getTimestamp];
+            iAlbumId = [NSString stringWithFormat:@"%@-%@",sTimeStamp,sYear];
         }
         
         for (Item *song in listSongs) {
@@ -750,7 +765,7 @@
     {
         NSString *iArtistId = [[DataManagement sharedInstance] getArtistIdFromName:sArtistName];
         if (!iArtistId) {
-            iArtistId = [Utils getTimestamp];
+            iArtistId = [NSString stringWithFormat:@"%@-%@",sTimeStamp,sYear];
         }
         
         for (Item *song in listSongs) {
@@ -764,7 +779,7 @@
     {
         NSString *iAlbumArtistId = [[DataManagement sharedInstance] getAlbumArtistIdFromName:sAlbumArtistName];
         if (!iAlbumArtistId) {
-            iAlbumArtistId = [Utils getTimestamp];
+            iAlbumArtistId = [NSString stringWithFormat:@"%@-%@",sTimeStamp,sYear];
         }
         
         for (Item *song in listSongs) {
@@ -793,10 +808,114 @@
     [[DataManagement sharedInstance] saveData];
     
     if (isWriteTagsToFile && self.arrListSongWriteTag.count > 0) {
-        
+        iCurrentIndex = 0;
+        [self exportItemAtIndex:iCurrentIndex];
     }
     else {
         [self touchCancel];
+    }
+}
+
+- (void)exportItemAtIndex:(int)index
+{
+    Item *song = self.arrListSongWriteTag[index];
+    
+    [self showHUD:[NSString stringWithFormat:@"%d/%d",index + 1,(int)self.arrListSongWriteTag.count]];
+    AVAssetExportSession *exportSession = [self exportItem:song];
+    if (exportSession)
+    {
+        [exportSession exportAsynchronouslyWithCompletionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self exportNextItem];
+            });
+        }];
+        [self getExportSessionProgress:exportSession];
+    }
+    else {
+        [self exportNextItem];
+    }
+}
+
+- (void)exportNextItem
+{
+    iCurrentIndex++;
+    if (iCurrentIndex <= self.arrListSongWriteTag.count - 1)
+    {
+        [self exportItemAtIndex:iCurrentIndex];
+    }
+    else {
+        [self finishAll];
+    }
+}
+
+- (void)finishAll
+{
+    [self touchCancel];
+}
+
+#pragma mark - Export
+
+- (AVAssetExportSession *)exportItem:(Item *)item
+{
+    NSError *error = nil;
+    NSURL *sCopyUrl = [NSURL fileURLWithPath:[[Utils cachePath] stringByAppendingPathComponent:item.sAssetUrl]];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:sCopyUrl.path]) {
+        [[NSFileManager defaultManager] removeItemAtURL:sCopyUrl error:&error];
+    }
+    
+    if (error) {
+        return nil;
+    }
+    
+    [[NSFileManager defaultManager] copyItemAtURL:item.sPlayableUrl toURL:sCopyUrl error:&error];
+    
+    if (!error) {
+        [[NSFileManager defaultManager] removeItemAtURL:item.sPlayableUrl error:&error];
+    }
+    
+    if (error) {
+        return nil;
+    }
+    
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:sCopyUrl options:nil];
+    
+    AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetAppleM4A];
+    exportSession.outputURL = item.sPlayableUrl;
+    exportSession.outputFileType = AVFileTypeAppleM4A;
+    exportSession.metadata = [item getMetaData];
+    
+    return exportSession;
+}
+
+- (void)showHUD:(NSString *)sTitle
+{
+    self.HUD.labelText = sTitle;
+    self.HUD.progress = 0.0;
+    self.HUD.detailsLabelText = @"0%";
+    
+    [self.HUD show:YES];
+}
+
+- (void)hideHUD
+{
+    self.HUD.progress = 1.0;
+    self.HUD.detailsLabelText = @"100%";
+    [self.HUD hide:YES];
+}
+
+- (void)getExportSessionProgress:(AVAssetExportSession *)session
+{
+    NSArray *modes = [[NSArray alloc] initWithObjects:NSDefaultRunLoopMode, UITrackingRunLoopMode, nil];
+    [self performSelector:@selector(updateProgress:) withObject:session afterDelay:0.5 inModes:modes];
+}
+
+- (void)updateProgress:(AVAssetExportSession *)session
+{
+    if (session.status == AVAssetExportSessionStatusExporting) {
+        self.HUD.progress = session.progress;
+        self.HUD.detailsLabelText = [NSString stringWithFormat:@"%.0f%%",session.progress*100];
+        [self getExportSessionProgress:session];
     }
 }
 

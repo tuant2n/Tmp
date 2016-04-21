@@ -20,7 +20,6 @@
 @dynamic iCloudItem;
 @dynamic iGenreId;
 @dynamic iPlayCount;
-@dynamic iPlaylistId;
 @dynamic iRate;
 @dynamic iSongId;
 @dynamic iYear;

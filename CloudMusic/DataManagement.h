@@ -13,7 +13,6 @@
 #import "File.h"
 #import "Playlist.h"
 
-#import "ItemObj.h"
 #import "AlbumObj.h"
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
@@ -68,16 +67,19 @@
 
 - (NSArray *)getListAlbumFilterByName:(NSString *)sName albumArtistId:(NSString *)iAlbumArtistId genreId:(NSString *)iGenreId;
 - (NSString *)getAlbumIdFromName:(NSString *)sAlbumName year:(int)iYear;
+- (BOOL)hasAlbum:(NSString *)iAlbumId;
 
 #pragma mark - AlbumArtist
 
 - (NSArray *)getListAlbumArtistFilterByName:(NSString *)sName;
 - (NSString *)getAlbumArtistIdFromName:(NSString *)sAlbumArtistName;
+- (BOOL)hasAlbumArtist:(NSString *)iAlbumArtistId;
 
 #pragma mark - Genre
 
 - (NSArray *)getListGenreFilterByName:(NSString *)sName;
 - (NSString *)getGenreIdFromName:(NSString *)sGenreName;
+- (BOOL)hasGenre:(NSString *)iGenreId;
 
 #pragma mark - Artist
 

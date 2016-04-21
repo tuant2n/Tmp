@@ -70,7 +70,7 @@
 {
     NSError *error = nil;
     if (![self.fetchedResultsController performFetch:&error]) {
-        NSLog(@"Fetch error: %@", error);
+        TTLog(@"Fetch error: %@", error);
     }
     else {
         [self.tblList reloadData];
@@ -462,6 +462,10 @@
 {
     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell config:item];
+    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
+    BOOL isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
+    [cell setLineHidden:isHiddenSeperator];
 }
 
 #pragma mark - UI

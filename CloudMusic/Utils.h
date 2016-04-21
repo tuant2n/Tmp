@@ -35,6 +35,14 @@
 #define NOTIFICATION_RELOAD_DATA @"NOTIFICATION_RELOAD_DATA"
 #define NOTIFICATION_LOGIN_DROPBOX @"NOTIFICATION_LOGIN_DROPBOX"
 
+#ifndef TTLog
+#if DEBUG
+#define TTLog(l, ...)  NSLog((@"%s [Line %d]" l), __PRETTY_FUNCTION__, __LINE__, ## __VA_ARGS__)
+#else
+#define TTLog(l, ...)
+#endif
+#endif
+
 @interface Utils : NSObject
 
 #pragma mark - UIColor

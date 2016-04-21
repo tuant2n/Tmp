@@ -8,7 +8,6 @@
 
 #import "SongsCell.h"
 
-#import "ItemObj.h"
 #import "Item.h"
 
 #import "Utils.h"
@@ -28,18 +27,8 @@
     self.lblDuration.textColor = [Utils colorWithRGBHex:0x545454];
 }
 
-- (void)config:(id)item
-{
-    Item *song = nil;
-    
-    if ([item isKindOfClass:[Item class]]) {
-        song = (Item *)item;
-    }
-    else if ([item isKindOfClass:[ItemObj class]]) {
-        ItemObj *itemObj = (ItemObj *)item;
-        song = itemObj.song;
-    }
-    
+- (void)config:(Item *)song
+{    
     [self setArtwork:song.sLocalArtworkUrl];
     
     self.lblSongName.text = song.sSongName;

@@ -24,7 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSNumber *iCloudItem;
 @property (nullable, nonatomic, retain) NSString *iGenreId;
 @property (nullable, nonatomic, retain) NSNumber *iPlayCount;
-@property (nullable, nonatomic, retain) NSString *iPlaylistId;
 @property (nullable, nonatomic, retain) NSNumber *iRate;
 @property (nullable, nonatomic, retain) NSString *iSongId;
 @property (nullable, nonatomic, retain) NSNumber *iYear;
@@ -36,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *sArtistName;
 @property (nullable, nonatomic, retain) NSString *sArtistNameIndex;
 @property (nullable, nonatomic, retain) NSString *sArtworkName;
-@property (nullable, nonatomic, retain) NSString *sAssetUrl; // URL
+@property (nullable, nonatomic, retain) NSString *sAssetUrl;
 @property (nullable, nonatomic, retain) NSString *sDuration;
 @property (nullable, nonatomic, retain) NSString *sGenreName;
 @property (nullable, nonatomic, retain) NSString *sGenreNameIndex;

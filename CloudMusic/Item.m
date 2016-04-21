@@ -27,10 +27,7 @@
 @synthesize isPlaying;
 @synthesize numberOfSelect;
 
-/*
- @property (nullable, nonatomic, retain) NSNumber *iPlaylistId;
- @property (nullable, nonatomic, retain) NSString *sPlaylistName;
- */
+#pragma mark - Update Item
 
 - (void)updateWithMediaItem:(MPMediaItem *)item
 {
@@ -44,16 +41,16 @@
     [self setSongName:item.itemTitle];
     
     self.iAlbumId = [NSString stringWithFormat:@"%@-%@",[item.itemAlbumPID stringValue],[item.year stringValue]];
-    [self changeAlbumName:item.itemAlbumTitle];
+    [self updateAlbumName:item.itemAlbumTitle];
     
     self.iArtistId = [item.itemArtistPID stringValue];
     [self changeArtistName:item.itemArtist];
     
     self.iAlbumArtistId = [item.itemAlbumArtistPID stringValue];
-    [self changeAlbumArtistName:item.itemAlbumArtist];
+    [self updateAlbumArtistName:item.itemAlbumArtist];
     
     self.iGenreId = [item.itemGenrePID stringValue];
-    [self changeGenreName:item.itemGenre];
+    [self updateGenreName:item.itemGenre];
     
     UIImage *artwork = [item.itemArtwork imageWithSize:item.itemArtwork.bounds.size];
     if (artwork) {
@@ -143,15 +140,7 @@
     }
 }
 
-- (void)setArtwork:(UIImage *)artwork
-{
-    NSString *sArtworkName = [NSString stringWithFormat:@"%@-%@.png",self.iSongId,[Utils getTimestamp]];
-    BOOL isSaveArtwork = [UIImagePNGRepresentation(artwork) writeToFile:[[Utils artworkPath] stringByAppendingPathComponent:sArtworkName] atomically:YES];
-    if (isSaveArtwork) {
-        self.sArtworkName = sArtworkName;
-        sLocalArtworkUrl = nil;
-    }
-}
+#pragma mark - Name
 
 - (void)setSongName:(NSString *)sSongName
 {
@@ -168,6 +157,8 @@
     }
     self.sSongFirstLetter = sFirstLetter;
 }
+
+#pragma mark - Album
 
 - (void)setAlbumName:(NSString *)sAlbumName
 {
@@ -196,6 +187,32 @@
     sSongDesc = nil;
     [self setAlbumName:sAlbumName];
 }
+
+- (void)updateAlbumName:(NSString *)sAlbumName
+{
+    if (sAlbumName.length <= 0) {
+        return;
+    }
+    
+    if ([self.sAlbumName isEqualToString:sAlbumName]) {
+        return;
+    }
+    
+    if (![[DataManagement sharedInstance] hasAlbum:self.iAlbumId]) {
+        NSString *iAlbumId = [[DataManagement sharedInstance] getAlbumIdFromName:sAlbumName year:[self.iYear intValue]];
+        if (iAlbumId) {
+            self.iAlbumId = iAlbumId;
+        }
+        else {
+            self.iAlbumId = [NSString stringWithFormat:@"%@-%@",self.iAlbumId,[Utils getTimestamp]];
+        }
+    }
+
+    sSongDesc = nil;
+    [self setAlbumName:sAlbumName];
+}
+
+#pragma mark - Artist
 
 - (void)setArtistName:(NSString *)sArtistName
 {
@@ -229,6 +246,8 @@
     [self setArtistName:sArtistName];
 }
 
+#pragma mark - AlbumArtist
+
 - (void)setAlbumArtistName:(NSString *)sAlbumArtistName
 {
     if (sAlbumArtistName.length <= 0) {
@@ -261,6 +280,31 @@
     [self setAlbumArtistName:sAlbumArtistName];
 }
 
+- (void)updateAlbumArtistName:(NSString *)sAlbumArtistName
+{
+    if (sAlbumArtistName.length <= 0) {
+        return;
+    }
+    
+    if ([self.sAlbumArtistName isEqualToString:sAlbumArtistName]) {
+        return;
+    }
+    
+    if (![[DataManagement sharedInstance] hasAlbumArtist:self.iAlbumArtistId]) {
+        NSString *iAlbumArtistId = [[DataManagement sharedInstance] getAlbumArtistIdFromName:sAlbumArtistName];
+        if (iAlbumArtistId) {
+            self.iAlbumArtistId = iAlbumArtistId;
+        }
+        else {
+            self.iAlbumArtistId = [NSString stringWithFormat:@"%@-%@",self.iAlbumArtistId,[Utils getTimestamp]];
+        }
+    }
+    
+    [self setAlbumArtistName:sAlbumArtistName];
+}
+
+#pragma mark - Genre
+
 - (void)setGenreName:(NSString *)sGenreName
 {
     if (sGenreName.length <= 0) {
@@ -292,10 +336,39 @@
     [self setGenreName:sGenreName];
 }
 
-- (void)setSongDuration:(int)fDuration
+- (void)updateGenreName:(NSString *)sGenreName
 {
-    self.fDuration = [NSNumber numberWithInt:fDuration];
-    self.sDuration = [Utils timeFormattedForSong:fDuration];
+    if (sGenreName.length <= 0) {
+        return;
+    }
+    
+    if ([self.sGenreName isEqualToString:sGenreName]) {
+        return;
+    }
+    
+    if (![[DataManagement sharedInstance] hasGenre:self.iGenreId]) {
+        NSString *iGenreId = [[DataManagement sharedInstance] getGenreIdFromName:sGenreName];
+        if (iGenreId) {
+            self.iGenreId = iGenreId;
+        }
+        else {
+            self.iGenreId = [NSString stringWithFormat:@"%@-%@",self.iGenreId,[Utils getTimestamp]];
+        }
+    }
+
+    [self setGenreName:sGenreName];
+}
+
+#pragma mark - Artwork
+
+- (void)setArtwork:(UIImage *)artwork
+{
+    NSString *sArtworkName = [NSString stringWithFormat:@"%@-%@.png",self.iSongId,[Utils getTimestamp]];
+    BOOL isSaveArtwork = [UIImagePNGRepresentation(artwork) writeToFile:[[Utils artworkPath] stringByAppendingPathComponent:sArtworkName] atomically:YES];
+    if (isSaveArtwork) {
+        self.sArtworkName = sArtworkName;
+        sLocalArtworkUrl = nil;
+    }
 }
 
 - (NSURL *)sLocalArtworkUrl
@@ -305,6 +378,8 @@
     }
     return sLocalArtworkUrl;
 }
+
+#pragma mark - Other
 
 - (NSURL *)sPlayableUrl
 {
@@ -354,9 +429,104 @@
     return sSongDesc;
 }
 
+- (void)setSongDuration:(int)fDuration
+{
+    self.fDuration = [NSNumber numberWithInt:fDuration];
+    self.sDuration = [Utils timeFormattedForSong:fDuration];
+}
+
 - (BOOL)isCloud
 {
     return [self.iCloudItem intValue] == 1;
+}
+
+#pragma mark - Utils
+
+- (NSArray *)getMetaData
+{
+    NSString *sTitle = self.sSongName;
+    NSString *sAlbumName = self.sAlbumName;
+    NSString *sArtistName = self.sAlbumArtistName;
+    NSString *sGenre = self.sGenreName;
+    NSString *sYear = [self.iYear stringValue];
+    NSString *sLyrics = self.sLyrics;
+    UIImage *artwork = [UIImage imageWithContentsOfFile:[self.sLocalArtworkUrl path]];
+    
+    NSMutableArray *metadata = [[NSMutableArray alloc] init];
+    
+    if (sTitle)
+    {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyTitle;
+        item.value = sTitle;
+        [metadata addObject:item];
+    }
+    
+    if (sAlbumName) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyAlbumName;
+        item.value = sAlbumName;
+        [metadata addObject:item];
+    }
+    
+    if (sArtistName) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyArtist;
+        item.value = sArtistName;
+        [metadata addObject:item];
+    }
+    
+    if (sGenre) {
+        AVMutableMetadataItem *itemCommon = [[AVMutableMetadataItem alloc] init];
+        itemCommon.locale = [NSLocale currentLocale];
+        itemCommon.keySpace = AVMetadataKeySpaceCommon;
+        itemCommon.key = AVMetadataCommonKeyType;
+        itemCommon.value = sGenre;
+        [metadata addObject:itemCommon];
+        
+        AVMutableMetadataItem *userGenre = [[AVMutableMetadataItem alloc] init];
+        userGenre.locale = [NSLocale currentLocale];
+        userGenre.keySpace = AVMetadataKeySpaceiTunes;
+        userGenre.key = AVMetadataiTunesMetadataKeyUserGenre;
+        userGenre.value = sGenre;
+        [metadata addObject:userGenre];
+    }
+    
+    if (sYear) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyCreationDate;
+        item.value = sYear;
+        [metadata addObject:item];
+    }
+    
+    if (artwork) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceCommon;
+        item.key = AVMetadataCommonKeyArtwork;
+        item.dataType = (__bridge NSString * _Nullable)(kCMMetadataBaseDataType_PNG);
+        item.value = UIImagePNGRepresentation(artwork);
+        [metadata addObject:item];
+    }
+    
+    if (sLyrics) {
+        AVMutableMetadataItem *item = [[AVMutableMetadataItem alloc] init];
+        item.locale = [NSLocale currentLocale];
+        item.keySpace = AVMetadataKeySpaceiTunes;
+        item.key = AVMetadataiTunesMetadataKeyLyrics;
+        item.value = sLyrics;
+        [metadata addObject:item];
+    }
+    
+    return [metadata copy];
 }
 
 @end
