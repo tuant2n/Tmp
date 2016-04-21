@@ -391,12 +391,7 @@
         return YES;
     }
     
-    if (direction == MGSwipeDirectionLeftToRight)
-    {
-        return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index fromNavigation:self.navigationController];
-    }
-    
-    return YES;
+    return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index isLeftAction:(direction == MGSwipeDirectionLeftToRight) fromNavigation:self.navigationController];
 }
 
 #pragma mark - Fetched Results Controller Delegate

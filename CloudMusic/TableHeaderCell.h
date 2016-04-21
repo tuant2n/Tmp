@@ -13,7 +13,6 @@
 @interface TableHeaderCell : UITableViewCell
 
 - (void)configWithUtil:(HeaderUtilObj *)utilObj hasIndexTitles:(BOOL)isTrue;
-- (void)setLineHidden:(BOOL)isHidden;
 
 + (CGFloat)height;
 

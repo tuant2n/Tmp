@@ -22,7 +22,7 @@
 
 #import "TableFooterView.h"
 #import "TableHeaderView.h"
-#import "TableBottomLine.h"
+#import "TableLine.h"
 
 #import "PCSEQVisualizer.h"
 
@@ -70,7 +70,7 @@
 
 + (void)configTableView:(UITableView *)tblView isSearch:(BOOL)isSearch;
 + (MainCell *)getCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
-+ (TableBottomLine *)bottomLine;
++ (TableLine *)tableLine;
 
 #pragma mark - Files
 

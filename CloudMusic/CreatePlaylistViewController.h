@@ -11,6 +11,6 @@
 @interface CreatePlaylistViewController : UIViewController
 
 @property (nonatomic, strong) NSArray *listSong;
-@property (nonatomic, strong) id value;
+@property (nonatomic, strong) id item;
 
 @end

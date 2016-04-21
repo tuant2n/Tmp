@@ -74,7 +74,7 @@
     int fDuration = [self.fDuration intValue];
     
     for (Item *newSong in listNewSong) {
-        [listSong addObject:newSong.iSongId];
+        [listSong insertObject:newSong.iSongId atIndex:0];
         fDuration += [newSong.fDuration intValue];
         
         if (newSong.sArtworkName) {

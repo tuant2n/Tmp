@@ -6,17 +6,17 @@
 //  Copyright © 2016 TuanTN. All rights reserved.
 //
 
-#import "TableBottomLine.h"
+#import "TableLine.h"
 
 #import "Utils.h"
 
-@interface TableBottomLine()
+@interface TableLine()
 
 @property (nonatomic, strong) IBOutlet UIView *line;
 
 @end
 
-@implementation TableBottomLine
+@implementation TableLine
 
 - (void)awakeFromNib
 {

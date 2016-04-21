@@ -16,6 +16,7 @@
 @property (nonatomic, assign) int  numberOfAlbum;
 
 @property (nonatomic, assign) BOOL isCloud, isPlaying;
+@property (nonatomic, assign) BOOL isSelected;
 
 - (id)initWithInfo:(NSDictionary *)info;
 

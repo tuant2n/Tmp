@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TableBottomLine : UIView
+@interface TableLine : UIView
 
 @end

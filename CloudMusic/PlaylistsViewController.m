@@ -12,7 +12,9 @@
 #import "GlobalParameter.h"
 #import "DataManagement.h"
 
-@interface PlaylistsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate>
+#import "UIAlertView+Blocks.h"
+
+@interface PlaylistsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate,MainCellDelegate>
 {
     BOOL isActiveSearch;
     NSString *sCurrentSearch;
@@ -330,6 +332,7 @@
         
         MainCell *mainCell = (MainCell *)cell;
         mainCell.delegate = self;
+        mainCell.subDelegate = self;
         mainCell.allowsMultipleSwipe = NO;
         
         [mainCell config:cellItem];
@@ -341,6 +344,51 @@
 {
     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell config:item];
+}
+
+- (void)changePlaylistName:(Playlist *)playlist
+{
+    __block Playlist *editPlaylist = playlist;
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Edit Playlist Title" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    
+    UITextField *tfPlaylistName = [alertView textFieldAtIndex:0];
+    tfPlaylistName.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+    tfPlaylistName.placeholder = @"Playlist Title";
+    tfPlaylistName.text = editPlaylist.sPlaylistName;
+    
+    alertView.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex)
+    {
+        if (buttonIndex == alertView.cancelButtonIndex) {
+            return;
+        }
+        
+        NSString *sNewName = [[alertView textFieldAtIndex:0] text];
+        if ([[DataManagement sharedInstance] getPlaylistWithType:kPlaylistTypeNormal andName:sNewName])
+        {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"Playlist with such name already exists." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+            return;
+        }
+        else {
+            editPlaylist.sPlaylistName = sNewName;
+            [[DataManagement sharedInstance] saveData:NO];
+        }
+    };
+    
+    alertView.shouldEnableFirstOtherButtonBlock = ^BOOL(UIAlertView *alertView)
+    {
+        NSString *sTmpName = [[alertView textFieldAtIndex:0] text];
+        
+        if ([sTmpName isEqualToString:editPlaylist.sPlaylistName]) {
+            return NO;
+        }
+        else {
+            return sTmpName.length;
+        }
+    };
+    
+    [alertView show];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -381,12 +429,7 @@
         return YES;
     }
     
-    if (direction == MGSwipeDirectionLeftToRight)
-    {
-        return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index fromNavigation:self.navigationController];
-    }
-    
-    return YES;
+    return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index isLeftAction:(direction == MGSwipeDirectionLeftToRight) fromNavigation:self.navigationController];
 }
 
 #pragma mark - Fetched Results Controller Delegate

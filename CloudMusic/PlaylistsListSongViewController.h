@@ -12,7 +12,6 @@
 
 @interface PlaylistsListSongViewController : UIViewController
 
-@property (nonatomic, assign) BOOL isCreateNewPlaylist;
 @property (nonatomic, strong) Playlist *currentPlaylist;
 
 @end

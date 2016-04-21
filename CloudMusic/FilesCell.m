@@ -37,7 +37,7 @@
     self.lblSongName.text = file.sFileName;
     self.lblSongDesc.text = file.sTimeStamp;
     
-    [self configMenuButton:YES isEdit:YES];
+    [self configMenuButton:YES isEdit:YES hasIndexTitle:NO];
     [self isPlaying:file.item.isPlaying];
 }
 

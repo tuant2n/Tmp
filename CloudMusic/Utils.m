@@ -12,6 +12,7 @@
 #import "Playlist.h"
 #import "File.h"
 
+#import "ItemObj.h"
 #import "AlbumObj.h"
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
@@ -178,7 +179,7 @@
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [button setFrame:CGRectMake(0.0, 0.0, 35.0, 35.0)];
+    [button setFrame:CGRectMake(0.0, 0.0, 30.0, 35.0)];
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     [button setContentHorizontalAlignment:position];
     button.multipleTouchEnabled = NO;
@@ -274,9 +275,11 @@
     
     tblView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     tblView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tblView.canCancelContentTouches = YES;
+    tblView.delaysContentTouches = YES;
     
     if (isSearch) {
-        [tblView setTableFooterView:[self bottomLine]];
+        [tblView setTableFooterView:[self tableLine]];
     }
     else {
         tblView.sectionIndexColor = [self colorWithRGBHex:0x006bd5];
@@ -290,6 +293,9 @@
     MainCell *cell = nil;
     
     if ([itemObj isKindOfClass:[Item class]]) {
+        cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
+    }
+    else if ([itemObj isKindOfClass:[ItemObj class]]) {
         cell = (SongsCell *)[tableView dequeueReusableCellWithIdentifier:@"SongsCellId" forIndexPath:indexPath];
     }
     else if ([itemObj isKindOfClass:[AlbumObj class]]) {
@@ -311,9 +317,9 @@
     return cell;
 }
 
-+ (TableBottomLine *)bottomLine
++ (TableLine *)tableLine
 {
-    TableBottomLine *bottomLine = [[[NSBundle mainBundle] loadNibNamed:@"TableBottomLine" owner:self options:nil] objectAtIndex:0];
+    TableLine *bottomLine = [[[NSBundle mainBundle] loadNibNamed:@"TableLine" owner:self options:nil] objectAtIndex:0];
     return bottomLine;
 }
 

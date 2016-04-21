@@ -18,9 +18,10 @@
 @property (nonatomic, strong) NSString *sAlbumDesc, *sAlbumInfo;
 
 @property (nonatomic, assign) BOOL isCloud, isPlaying;
+@property (nonatomic, assign) BOOL isSelected;
 
 // Optional
-@property (nonatomic, strong) NSString *iArtistId, *iGenreId;
+@property (nonatomic, strong) NSString *iAlbumArtistId, *iGenreId;
 
 - (id)initWithInfo:(NSDictionary *)info;
 

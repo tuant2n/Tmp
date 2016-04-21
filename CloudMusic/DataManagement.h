@@ -13,6 +13,7 @@
 #import "File.h"
 #import "Playlist.h"
 
+#import "ItemObj.h"
 #import "AlbumObj.h"
 #import "AlbumArtistObj.h"
 #import "GenreObj.h"
@@ -88,6 +89,7 @@
 - (void)deleteAlbum:(AlbumObj *)album;
 - (void)deleteArtist:(AlbumArtistObj *)artist;
 - (void)deleteGenre:(GenreObj *)genre;
+- (void)deletePlaylist:(Playlist *)playlist;
 
 #pragma mark - Playlist
 
@@ -108,7 +110,7 @@
 
 - (void)doActionWithItem:(id)item withData:(NSArray *)data fromSearch:(BOOL)isSearchActive fromNavigation:(UINavigationController *)navController;
 - (void)doUtility:(int)iType withData:(NSArray *)arrData fromNavigation:(UINavigationController *)navController;
-- (BOOL)doSwipeActionWithItem:(id)item atIndex:(NSInteger)index fromNavigation:(UINavigationController *)navController;
+- (BOOL)doSwipeActionWithItem:(id)itemObj atIndex:(NSInteger)index isLeftAction:(BOOL)isLeftAction fromNavigation:(UINavigationController *)navController;
 
 #pragma mark - iTunes Sync
 

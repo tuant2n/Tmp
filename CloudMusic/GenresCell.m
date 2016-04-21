@@ -32,7 +32,7 @@
     self.lblGenreName.text = item.sGenreName;
     self.lblGenreDesc.text = item.sGenreDesc;
     
-    [self configMenuButton:item.isCloud isEdit:NO];
+    [self configMenuButton:item.isCloud isEdit:NO hasIndexTitle:NO];
     [self setItemType:item.isCloud];
     [self isPlaying:item.isPlaying];
 }

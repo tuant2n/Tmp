@@ -89,7 +89,7 @@
     for (AlbumObj *album in array)
     {
         album.iGenreId = self.iGenreId;
-        album.iArtistId = self.iAlbumArtistId;
+        album.iAlbumArtistId = self.iAlbumArtistId;
     }
 }
 
@@ -382,12 +382,7 @@
         return YES;
     }
     
-    if (direction == MGSwipeDirectionLeftToRight)
-    {
-        return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index fromNavigation:self.navigationController];
-    }
-    
-    return YES;
+    return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index isLeftAction:(direction == MGSwipeDirectionLeftToRight) fromNavigation:self.navigationController];
 }
 
 #pragma mark - UI

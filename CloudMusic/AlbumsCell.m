@@ -39,7 +39,7 @@
     self.lblAlbumInfo.text = item.sAlbumInfo;
     self.lblAlbumDesc.text = item.sAlbumDesc;
     
-    [self configMenuButton:item.isCloud isEdit:YES];
+    [self configMenuButton:item.isCloud isEdit:YES hasIndexTitle:NO];
     [self setItemType:item.isCloud];
     [self isPlaying:item.isPlaying];
 }

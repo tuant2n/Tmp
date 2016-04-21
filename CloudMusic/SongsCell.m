@@ -8,7 +8,9 @@
 
 #import "SongsCell.h"
 
+#import "ItemObj.h"
 #import "Item.h"
+
 #import "Utils.h"
 
 @interface SongsCell()
@@ -26,17 +28,27 @@
     self.lblDuration.textColor = [Utils colorWithRGBHex:0x545454];
 }
 
-- (void)config:(Item *)item
+- (void)config:(id)item
 {
-    [self setArtwork:item.sLocalArtworkUrl];
+    Item *song = nil;
     
-    self.lblSongName.text = item.sSongName;
-    self.lblSongDesc.attributedText = item.sSongDesc;
-    self.lblDuration.text = item.sDuration;
+    if ([item isKindOfClass:[Item class]]) {
+        song = (Item *)item;
+    }
+    else if ([item isKindOfClass:[ItemObj class]]) {
+        ItemObj *itemObj = (ItemObj *)item;
+        song = itemObj.song;
+    }
     
-    [self configMenuButton:item.isCloud isEdit:YES];
-    [self setItemType:item.isCloud];
-    [self isPlaying:item.isPlaying];
+    [self setArtwork:song.sLocalArtworkUrl];
+    
+    self.lblSongName.text = song.sSongName;
+    self.lblSongDesc.attributedText = song.sSongDesc;
+    self.lblDuration.text = song.sDuration;
+    
+    [self configMenuButton:song.isCloud isEdit:YES hasIndexTitle:YES];
+    [self setItemType:song.isCloud];
+    [self isPlaying:song.isPlaying];
 }
 
 @end

@@ -20,9 +20,12 @@
 
 @implementation PlaylistsCell
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
+    
     self.lblPlaylistDesc.textColor = [Utils colorWithRGBHex:0x6a6a6a];
+    [self.btnEditName addTarget:self action:@selector(touchEditName:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)config:(Playlist *)playlist
@@ -39,8 +42,20 @@
         self.btnEditName.hidden = YES;
     }
     else {
+        [self configRightMenu:YES hasIndexTitle:NO];
         self.imgvListIcon.hidden = YES;
         self.btnEditName.hidden = NO;
+    }
+}
+
+- (void)touchEditName:(id)sender
+{
+    if (!self.currentPlaylist) {
+        return;
+    }
+    
+    if ([self.subDelegate respondsToSelector:@selector(changePlaylistName:)]) {
+        [self.subDelegate changePlaylistName:self.currentPlaylist];
     }
 }
 

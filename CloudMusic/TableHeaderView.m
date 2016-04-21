@@ -299,7 +299,6 @@
     if ([item isKindOfClass:[HeaderUtilObj class]]) {
         TableHeaderCell *cell = (TableHeaderCell *)[tableView dequeueReusableCellWithIdentifier:@"TableHeaderCellId"];
         [cell configWithUtil:item hasIndexTitles:hasIndexTitles];
-        [cell setLineHidden:(indexPath.row == self.arrListUtils.count - 1)];
 
         return cell;
     }

@@ -66,7 +66,7 @@
     }
     else {
         [self.nameView configWhenEmpty:NO];
-        [self.tblList setTableFooterView:[Utils bottomLine]];
+        [self.tblList setTableFooterView:[Utils tableLine]];
     }
 }
 
@@ -86,7 +86,13 @@
 - (void)setupUI
 {
     self.title = @"Playlists";
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.btnCancel];
+    
+    if (self.item) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.btnCancel];
+    }
+    else {
+        self.navigationItem.leftBarButtonItem = [Utils customBackNavigationWithTarget:self selector:@selector(onBack)];
+    }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.btnDone];
     
     [self setEnableDoneButton:NO];
@@ -153,26 +159,26 @@
 {
     NSMutableArray *arrListSong = [NSMutableArray new];
     
-    if (self.value) {
-        if ([self.value isKindOfClass:[Item class]]) {
-            [arrListSong addObject:self.value];
+    if (self.item) {
+        if ([self.item isKindOfClass:[Item class]]) {
+            [arrListSong addObject:self.item];
         }
-        else if ([self.value isKindOfClass:[File class]]) {
-            File *file = (File *)self.value;
+        else if ([self.item isKindOfClass:[File class]]) {
+            File *file = (File *)self.item;
             [arrListSong addObject:file.item];
         }
-        else if ([self.value isKindOfClass:[AlbumObj class]]) {
-            AlbumObj *album = (AlbumObj *)self.value;
+        else if ([self.item isKindOfClass:[AlbumObj class]]) {
+            AlbumObj *album = (AlbumObj *)self.item;
             NSArray *arrTmp = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:album.iAlbumId artistId:nil genreId:nil];
             [arrListSong addObjectsFromArray:arrTmp];
         }
-        else if ([self.value isKindOfClass:[AlbumArtistObj class]]) {
-            AlbumArtistObj *albumArtist = (AlbumArtistObj *)self.value;
+        else if ([self.item isKindOfClass:[AlbumArtistObj class]]) {
+            AlbumArtistObj *albumArtist = (AlbumArtistObj *)self.item;
             NSArray *arrTmp = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:nil artistId:albumArtist.iAlbumArtistId genreId:nil];
             [arrListSong addObjectsFromArray:arrTmp];
         }
-        else if ([self.value isKindOfClass:[GenreObj class]]) {
-            GenreObj *genre = (GenreObj *)self.value;
+        else if ([self.item isKindOfClass:[GenreObj class]]) {
+            GenreObj *genre = (GenreObj *)self.item;
             NSArray *arrTmp = [[DataManagement sharedInstance] getListSongFilterByName:nil albumId:nil artistId:nil genreId:genre.iGenreId];
             [arrListSong addObjectsFromArray:arrTmp];
         }
@@ -190,6 +196,12 @@
     
     if (!sPlaylistName || sPlaylistName.length <= 0) {
         [self dismissView];
+        return;
+    }
+    
+    if ([[DataManagement sharedInstance] getPlaylistWithType:kPlaylistTypeNormal andName:sPlaylistName])
+    {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Playlist with such name already exists." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
         return;
     }
     
@@ -237,7 +249,7 @@
 - (UIButton *)btnCancel
 {
     if (!_btnCancel) {
-        _btnCancel = [Utils createBarButtonWithTitle:@"Cancel" font:[UIFont fontWithName:@"HelveticaNeue-Medium" size:16.0] textColor:0x017ee6 position:UIControlContentHorizontalAlignmentLeft target:self action:@selector(touchCancel)];
+        _btnCancel = [Utils createBarButtonWithTitle:@"Cancel" font:[UIFont fontWithName:@"HelveticaNeue" size:16.0] textColor:0x017ee6 position:UIControlContentHorizontalAlignmentLeft target:self action:@selector(touchCancel)];
         [_btnCancel setFrame:CGRectMake(_btnCancel.frame.origin.x, _btnCancel.frame.origin.y, 100.0, _btnCancel.frame.size.height)];
     }
     return _btnCancel;
@@ -251,6 +263,11 @@
 - (void)dismissView
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)onBack
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (PlaylistNameView *)nameView

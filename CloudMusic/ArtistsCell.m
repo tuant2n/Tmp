@@ -31,7 +31,7 @@
     self.lblAlbumArtistName.text = item.sAlbumArtistName;
     self.lblAlbumArtisDesc.text = item.sAlbumArtistDesc;
 
-    [self configMenuButton:item.isCloud isEdit:NO];
+    [self configMenuButton:item.isCloud isEdit:NO hasIndexTitle:NO];
     [self setItemType:item.isCloud];
     [self isPlaying:item.isPlaying];
 }

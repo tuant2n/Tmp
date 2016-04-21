@@ -14,7 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mhw-b7-1zJ" userLabel="content">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mhw-b7-1zJ" userLabel="content">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="playlist_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Xep-lS-Ba1" userLabel="imgvArtwork">
@@ -25,10 +25,10 @@
                                 </constraints>
                             </imageView>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KOM-ip-EFF" userLabel="vInfo">
-                                <rect key="frame" x="60" y="8" width="210" height="45"/>
+                                <rect key="frame" x="60" y="8" width="200" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F5k-CY-qs9" userLabel="lblPlaylistName">
-                                        <rect key="frame" x="0.0" y="0.0" width="210" height="25"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="LTB-Le-rZG"/>
                                         </constraints>
@@ -37,7 +37,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZ0-TK-kCN" userLabel="lblPlaylistDesc">
-                                        <rect key="frame" x="0.0" y="25" width="210" height="20"/>
+                                        <rect key="frame" x="0.0" y="25" width="200" height="20"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -55,10 +55,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kLN-W1-h9V" userLabel="vExternal">
-                                <rect key="frame" x="270" y="0.0" width="40" height="61"/>
+                                <rect key="frame" x="260" y="0.0" width="60" height="61"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="AP5-5N-x8O" userLabel="imgvListIcon">
-                                        <rect key="frame" x="0.0" y="0.0" width="40" height="61"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="61"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="20" id="AbX-va-3hO"/>
                                         </constraints>
@@ -69,7 +69,7 @@
                                         </variation>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbd-Ef-sUf" userLabel="btnEditName">
-                                        <rect key="frame" x="0.0" y="0.0" width="40" height="61"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="61"/>
                                         <state key="normal" image="edit-icon.png"/>
                                     </button>
                                 </subviews>
@@ -78,11 +78,11 @@
                                     <constraint firstItem="AP5-5N-x8O" firstAttribute="top" secondItem="kLN-W1-h9V" secondAttribute="top" id="COH-bV-vS9"/>
                                     <constraint firstAttribute="trailing" secondItem="mbd-Ef-sUf" secondAttribute="trailing" id="Lf5-vL-7rI"/>
                                     <constraint firstItem="mbd-Ef-sUf" firstAttribute="leading" secondItem="kLN-W1-h9V" secondAttribute="leading" id="SIc-RM-L2O"/>
-                                    <constraint firstAttribute="width" constant="40" id="Uwx-ki-8Uu"/>
+                                    <constraint firstAttribute="width" constant="60" id="Uwx-ki-8Uu"/>
                                     <constraint firstItem="AP5-5N-x8O" firstAttribute="leading" secondItem="kLN-W1-h9V" secondAttribute="leading" id="YMP-3S-QEs"/>
                                     <constraint firstAttribute="bottom" secondItem="AP5-5N-x8O" secondAttribute="bottom" id="bB2-Xt-aud"/>
                                     <constraint firstAttribute="bottom" secondItem="mbd-Ef-sUf" secondAttribute="bottom" id="lIU-yP-3Hx"/>
-                                    <constraint firstAttribute="trailing" secondItem="AP5-5N-x8O" secondAttribute="trailing" id="lcl-7H-nKe"/>
+                                    <constraint firstAttribute="trailing" secondItem="AP5-5N-x8O" secondAttribute="trailing" constant="10" id="lcl-7H-nKe"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -90,7 +90,7 @@
                             <constraint firstItem="kLN-W1-h9V" firstAttribute="top" secondItem="Mhw-b7-1zJ" secondAttribute="top" id="0fH-pz-vnF"/>
                             <constraint firstAttribute="bottom" secondItem="kLN-W1-h9V" secondAttribute="bottom" id="3A6-ss-vr1"/>
                             <constraint firstItem="Xep-lS-Ba1" firstAttribute="centerY" secondItem="Mhw-b7-1zJ" secondAttribute="centerY" id="47h-j0-jTJ"/>
-                            <constraint firstAttribute="trailing" secondItem="kLN-W1-h9V" secondAttribute="trailing" constant="10" id="6ap-Zb-he3"/>
+                            <constraint firstAttribute="trailing" secondItem="kLN-W1-h9V" secondAttribute="trailing" id="6ap-Zb-he3"/>
                             <constraint firstItem="Xep-lS-Ba1" firstAttribute="leading" secondItem="Mhw-b7-1zJ" secondAttribute="leading" constant="5" id="W1h-n6-IOl"/>
                             <constraint firstItem="KOM-ip-EFF" firstAttribute="leading" secondItem="Xep-lS-Ba1" secondAttribute="trailing" constant="5" id="dFq-3U-0zo"/>
                             <constraint firstItem="KOM-ip-EFF" firstAttribute="centerY" secondItem="Mhw-b7-1zJ" secondAttribute="centerY" id="f4F-2o-JEk"/>
@@ -124,6 +124,7 @@
                 <outlet property="line" destination="cKN-sa-S79" id="Eis-RD-2oV"/>
                 <outlet property="vContent" destination="Mhw-b7-1zJ" id="sfS-lT-ezL"/>
             </connections>
+            <point key="canvasLocation" x="322" y="-57"/>
         </tableViewCell>
     </objects>
     <resources>
