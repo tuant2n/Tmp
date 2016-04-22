@@ -40,4 +40,16 @@
     [self isPlaying:song.isPlaying];
 }
 
+- (void)configWithoutMenu:(Item *)song
+{
+    [self setArtwork:song.sLocalArtworkUrl];
+    
+    self.lblSongName.text = song.sSongName;
+    self.lblSongDesc.attributedText = song.sSongDesc;
+    self.lblDuration.text = song.sDuration;
+    
+    [self setItemType:song.isCloud];
+    [self isPlaying:song.isPlaying];
+}
+
 @end

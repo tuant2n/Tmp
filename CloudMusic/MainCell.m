@@ -70,6 +70,11 @@
     
 }
 
+- (void)configWithoutMenu:(id)item
+{
+    
+}
+
 + (CGFloat)normalCellHeight
 {
     return 61.0;

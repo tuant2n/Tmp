@@ -46,6 +46,11 @@
     else {
         self.imgvIconLayout.constant = 5.0;
     }
+    
+    if (utilObj.iType == kHeaderUtilTypeAddAllSongs) {
+        self.lblTitle.textColor = [UIColor blackColor];
+        self.lblTitle.font = [UIFont fontWithName:@"HelveticaNeue" size:17.0];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

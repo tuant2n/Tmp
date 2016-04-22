@@ -19,6 +19,7 @@
 #import "ListSongCell.h"
 #import "FilesCell.h"
 #import "PlaylistsCell.h"
+#import "AddSongsCell.h"
 
 #import "TableFooterView.h"
 #import "TableHeaderView.h"

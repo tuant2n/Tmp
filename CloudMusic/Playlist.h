@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Method
 
 - (void)addSongs:(NSArray *)listNewSong;
+- (void)changePlaylist:(NSArray *)listNewSong;
 
 @end
 

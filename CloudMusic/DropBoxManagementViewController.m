@@ -252,6 +252,7 @@
     if (isSelect) {
         [self.arrSelected addObjectsFromArray:self.arrListData];
     }
+    [self.btnDownload setEnabled:(self.arrSelected.count > 0)];
 }
 
 #pragma mark - DownloadFile

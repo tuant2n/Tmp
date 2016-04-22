@@ -137,6 +137,18 @@
     return self;
 }
 
+- (id)initForAddSongsVC
+{
+    self = [super init];
+    
+    if (self) {
+        [self initUI];
+        [self setupForAddSongsVC];
+    }
+    
+    return self;
+}
+
 - (void)setupForFilesVC
 {
     [self.arrListUtils removeAllObjects];
@@ -219,6 +231,16 @@
     [self.arrListUtils addObject:album];
     
     self.line.backgroundColor = [UIColor clearColor];
+    hasIndexTitles = NO;
+    [self setupDefault];
+}
+
+- (void)setupForAddSongsVC
+{
+    [self.arrListUtils removeAllObjects];
+    
+    [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Add All Songs" icon:@"add-song" type:kHeaderUtilTypeAddAllSongs]];
+    
     hasIndexTitles = NO;
     [self setupDefault];
 }

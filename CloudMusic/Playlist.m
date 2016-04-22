@@ -89,5 +89,25 @@
     [self setPlaylist:listSong];
 }
 
+- (void)changePlaylist:(NSArray *)listNewSong
+{
+    NSMutableArray *listSong = [NSMutableArray new];
+    int fDuration = 0.0;
+    
+    for (Item *newSong in listNewSong) {
+        [listSong addObject:newSong.iSongId];
+        fDuration += [newSong.fDuration intValue];
+        
+        if (newSong.sArtworkName) {
+            [self setArtwork:newSong.sArtworkName];
+        }
+    }
+    
+    if (fDuration > 0) {
+        self.fDuration = @(fDuration);
+    }
+    
+    [self setPlaylist:listSong];
+}
 
 @end

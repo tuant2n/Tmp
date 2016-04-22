@@ -38,6 +38,7 @@
 + (CGFloat)largeCellHeight;
 
 - (void)config:(id)item;
+- (void)configWithoutMenu:(id)item;
 
 - (void)setItemType:(BOOL)isCloud;
 - (void)setArtwork:(NSURL *)sArtworkUrl;

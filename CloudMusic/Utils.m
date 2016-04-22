@@ -268,6 +268,7 @@
     [tblView registerNib:[UINib nibWithNibName:@"ListSongCell" bundle:nil] forCellReuseIdentifier:@"ListSongCellId"];
     [tblView registerNib:[UINib nibWithNibName:@"FilesCell" bundle:nil] forCellReuseIdentifier:@"FilesCellId"];
     [tblView registerNib:[UINib nibWithNibName:@"PlaylistsCell" bundle:nil] forCellReuseIdentifier:@"PlaylistsCellId"];
+    [tblView registerNib:[UINib nibWithNibName:@"AddSongsCell" bundle:nil] forCellReuseIdentifier:@"AddSongsCellId"];
     
     [tblView registerNib:[UINib nibWithNibName:@"HeaderTitle" bundle:nil] forCellReuseIdentifier:@"HeaderTitleId"];
     [tblView registerNib:[UINib nibWithNibName:@"TableHeaderCell" bundle:nil] forCellReuseIdentifier:@"TableHeaderCellId"];

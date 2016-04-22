@@ -15,6 +15,7 @@ typedef enum {
     kHeaderUtilTypeGoAllSongs,
     kHeaderUtilTypeCreatePlaylistWithData,
     kHeaderUtilTypeCreateNewPlaylist,
+    kHeaderUtilTypeAddAllSongs,
 } kHeaderUtilType;
 
 @class AlbumObj;
@@ -39,6 +40,7 @@ typedef enum {
 - (id)initForPlaylistsListSongVC;
 
 - (id)initForAlbumListVC:(AlbumObj *)album;
+- (id)initForAddSongsVC;
 
 - (void)resignKeyboard;
 
