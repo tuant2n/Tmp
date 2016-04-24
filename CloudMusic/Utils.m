@@ -134,16 +134,7 @@
                                                            NSFontAttributeName:navigationFont,
                                                            NSShadowAttributeName:shadowText}];
     
-    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 20.0)];
-    leftView.backgroundColor = [UIColor redColor];
-    UIImageView *searchIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 20.0, 20.0)];
-    searchIcon.image = [UIImage imageNamed:@"textField-search"];
-    searchIcon.contentMode = UIViewContentModeCenter;
-    [leftView addSubview:searchIcon];
-    
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setLeftView:leftView];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setLeftViewMode:UITextFieldViewModeAlways];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor grayColor]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:@{NSForegroundColorAttributeName:[UIColor darkGrayColor],NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue" size:15.0]}];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setPlaceholder:@"Search"];
     
     if ([[UINavigationBar class] respondsToSelector:@selector(appearance)])
@@ -151,6 +142,31 @@
         [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
         [[UINavigationBar appearance] setTranslucent:NO];
     }
+}
+
++ (void)configSearchBar:(UISearchBar *)searchBar
+{
+    [searchBar setBackgroundImage:[Utils imageWithColor:0xffffff]];
+    [searchBar setSearchBarStyle:UISearchBarStyleMinimal];
+    [searchBar setBarTintColor:[UIColor redColor]];
+    searchBar.opaque = NO;
+    searchBar.translucent = NO;
+}
+
++ (UITextField *) findTextFieldFromControl:(UIView *) view
+{
+    for (UIView *subview in view.subviews)
+    {
+        if ([subview isKindOfClass:[UITextField class]])
+        {
+            return (UITextField *)subview;
+        }
+        else if ([subview.subviews count] > 0)
+        {
+            return [self findTextFieldFromControl:subview];
+        }
+    }
+    return nil;
 }
 
 + (void)configNavigationController:(UINavigationController *)navController
@@ -174,49 +190,6 @@
     return [[UIBarButtonItem alloc] initWithCustomView:button];
 }
 
-+ (UIButton *)createBarButton:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector
-{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [button setFrame:CGRectMake(0.0, 0.0, 30.0, 35.0)];
-    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-    [button setContentHorizontalAlignment:position];
-    button.multipleTouchEnabled = NO;
-    button.exclusiveTouch = YES;
-    
-    UIImage *normalImage = [UIImage imageNamed:imageName];
-    UIImage *highlightedImage = [self tranlucentImage:[UIImage imageNamed:imageName] withAlpha:0.6];
-    
-    [button setImage:normalImage forState:UIControlStateNormal];
-    [button setImage:highlightedImage forState:UIControlStateHighlighted];
-    [button setImage:highlightedImage forState:UIControlStateDisabled];
-    
-    return button;
-}
-
-+ (UIButton *)createBarButtonWithTitle:(NSString *)sTitle font:(UIFont *)font textColor:(UInt32)hexColor position:(UIControlContentHorizontalAlignment)position target:(id)target action:(SEL)selector
-{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:CGRectMake(0.0, 0.0, 70.0, 35.0)];
-    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-    [button setContentHorizontalAlignment:position];
-    button.multipleTouchEnabled = NO;
-    button.exclusiveTouch = YES;
-    
-    [button setTitle:sTitle forState:UIControlStateNormal];
-    button.titleLabel.font = font;
-    
-    UIColor *normalColor = [Utils colorWithRGBHex:hexColor];
-    UIColor *highlightedColor = [UIColor lightGrayColor];
-    
-    [button setTitleColor:normalColor forState:UIControlStateNormal];
-    [button setTitleColor:highlightedColor forState:UIControlStateHighlighted];
-    [button setTitleColor:highlightedColor forState:UIControlStateSelected];
-    [button setTitleColor:highlightedColor forState:UIControlStateDisabled];
-    
-    return button;
-}
-
 + (UIButton *)buttonMusicEqualizeqHolderWith:(PCSEQVisualizer *)musicEq target:(id)target action:(SEL)selector
 {
     UIButton *btnEqHolder = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -233,6 +206,67 @@
     [btnEqHolder addSubview:musicEq];
     
     return btnEqHolder;
+}
+
++ (UIButton *)createBarButton:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector
+{
+    return [self createBarButtonWithTitle:nil font:nil textColor:0x0000 image:imageName position:position target:target selector:selector];
+}
+
++ (UIButton *)createBarButtonWithTitle:(NSString *)sTitle font:(UIFont *)font textColor:(UInt32)hexColor position:(UIControlContentHorizontalAlignment)position target:(id)target action:(SEL)selector
+{
+    return [self createBarButtonWithTitle:sTitle font:font textColor:hexColor image:nil position:position target:target selector:selector];
+}
+
++ (UIButton *)createBarButtonWithTitle:(NSString *)sTitle font:(UIFont *)font textColor:(UInt32)hexColor image:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    [button setContentHorizontalAlignment:position];
+    button.multipleTouchEnabled = NO;
+    button.exclusiveTouch = YES;
+    
+    float width = 0.0;
+    
+    if (sTitle && font) {
+        [button setTitle:sTitle forState:UIControlStateNormal];
+        button.titleLabel.font = font;
+        
+        UIColor *normalColor = [Utils colorWithRGBHex:hexColor];
+        UIColor *highlightedColor = [UIColor lightGrayColor];
+        
+        [button setTitleColor:normalColor forState:UIControlStateNormal];
+        [button setTitleColor:highlightedColor forState:UIControlStateHighlighted];
+        [button setTitleColor:highlightedColor forState:UIControlStateSelected];
+        [button setTitleColor:highlightedColor forState:UIControlStateDisabled];
+        
+        width += [self getWidthWithString:sTitle font:font] + 5.0;
+    }
+    
+    if (imageName) {
+        UIImage *normalImage = [UIImage imageNamed:imageName];
+        UIImage *highlightedImage = [self tranlucentImage:[UIImage imageNamed:imageName] withAlpha:0.6];
+        
+        [button setImage:normalImage forState:UIControlStateNormal];
+        [button setImage:highlightedImage forState:UIControlStateHighlighted];
+        [button setImage:highlightedImage forState:UIControlStateDisabled];
+        
+        width += normalImage.size.width + 5.0;;
+    }
+    
+    [button setFrame:CGRectMake(0.0, 0.0, width, 35.0)];
+    return button;
+}
+
++ (float)getWidthWithString:(NSString *)contentString font:(UIFont *)font
+{
+    UILabel *tmpLabel = [[UILabel alloc] init];
+    tmpLabel.font = font;
+    tmpLabel.text = contentString;
+    [tmpLabel sizeToFit];
+    
+    return tmpLabel.bounds.size.width;
 }
 
 + (BOOL)isLandscapeDevice

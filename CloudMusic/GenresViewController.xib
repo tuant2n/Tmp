@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GenresViewController">
@@ -20,6 +20,7 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="363-wC-SI7" userLabel="tblList">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="O5L-Mg-21V"/>
@@ -27,28 +28,31 @@
                     </connections>
                 </tableView>
                 <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="n1f-JL-nTj" userLabel="tblSearchResult">
-                    <rect key="frame" x="0.0" y="50" width="320" height="366"/>
+                    <rect key="frame" x="0.0" y="44" width="320" height="372"/>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
                 <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xpP-ut-pRJ" userLabel="disableView">
-                    <rect key="frame" x="0.0" y="50" width="320" height="366"/>
+                    <rect key="frame" x="0.0" y="44" width="320" height="372"/>
+                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="xpP-ut-pRJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0YN-Kl-yoQ"/>
-                <constraint firstItem="xpP-ut-pRJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="3Cl-XN-LZJ"/>
-                <constraint firstAttribute="trailing" secondItem="xpP-ut-pRJ" secondAttribute="trailing" id="5KR-SE-YvK"/>
                 <constraint firstAttribute="bottom" secondItem="363-wC-SI7" secondAttribute="bottom" id="AfQ-Kg-1CO"/>
+                <constraint firstItem="xpP-ut-pRJ" firstAttribute="bottom" secondItem="n1f-JL-nTj" secondAttribute="bottom" id="QW0-uG-8h2"/>
                 <constraint firstAttribute="trailing" secondItem="363-wC-SI7" secondAttribute="trailing" id="WMk-PY-8zD"/>
+                <constraint firstItem="xpP-ut-pRJ" firstAttribute="leading" secondItem="n1f-JL-nTj" secondAttribute="leading" id="YrB-Hg-apy"/>
+                <constraint firstItem="xpP-ut-pRJ" firstAttribute="trailing" secondItem="n1f-JL-nTj" secondAttribute="trailing" id="av9-GK-zS9"/>
                 <constraint firstItem="363-wC-SI7" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dBA-2W-eQg"/>
                 <constraint firstAttribute="bottom" secondItem="n1f-JL-nTj" secondAttribute="bottom" id="hls-Mh-oRp"/>
-                <constraint firstItem="n1f-JL-nTj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="mAy-Wf-rsi"/>
+                <constraint firstItem="n1f-JL-nTj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="44" id="mAy-Wf-rsi"/>
                 <constraint firstAttribute="trailing" secondItem="n1f-JL-nTj" secondAttribute="trailing" id="oH3-qH-8fq"/>
                 <constraint firstItem="n1f-JL-nTj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="thP-rX-9C4"/>
-                <constraint firstAttribute="bottom" secondItem="xpP-ut-pRJ" secondAttribute="bottom" id="tzA-dV-RWi"/>
                 <constraint firstItem="363-wC-SI7" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="uzd-26-bRz"/>
+                <constraint firstItem="xpP-ut-pRJ" firstAttribute="top" secondItem="n1f-JL-nTj" secondAttribute="top" id="x4s-yj-HJP"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>

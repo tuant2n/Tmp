@@ -32,6 +32,7 @@
 #import "PlaylistsListSongViewController.h"
 
 #import "SearchOperation.h"
+#import "NSManagedObject+Clone.h"
 
 @interface DataManagement : NSObject
 

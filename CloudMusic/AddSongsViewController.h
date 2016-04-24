@@ -20,5 +20,6 @@
 
 @property (nonatomic, assign) id<AddSongsViewControllerDelegate> delegate;
 @property (nonatomic, strong) Playlist *currentPlaylist;
+@property (nonatomic, strong) NSMutableArray *currentListSongs;
 
 @end

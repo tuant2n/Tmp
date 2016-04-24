@@ -72,6 +72,7 @@
     
     [syncDataQueue addOperationWithBlock:^{
         [self.arrListData removeAllObjects];
+        
         for (NSString *iSongId in self.arrPlaylist) {
             Item *song = [[DataManagement sharedInstance] getItemBySongId:iSongId];
             if (song) {
@@ -214,9 +215,9 @@
          }
          
          [self.arrListData removeAllObjects];
-         [self configExternalView];
-         [self setEnableAction:NO];
          [self.tblList reloadData];
+         [self setEnableAction:NO];
+         [self configExternalView];
          
          [self.currentPlaylist setPlaylist:[NSArray new]];
          self.currentPlaylist.fDuration = @(0);
@@ -247,6 +248,7 @@
 {
     AddSongsViewController *vc = [[AddSongsViewController alloc] init];
     vc.currentPlaylist = self.currentPlaylist;
+    vc.currentListSongs = self.arrListData;
     vc.delegate = self;
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -257,7 +259,11 @@
 - (void)getNewPlaylistItems:(NSArray *)newPlaylistItem
 {
     [self.currentPlaylist changePlaylist:newPlaylistItem];
-    [self getData];
+    
+    [self.arrListData removeAllObjects];
+    [self.arrListData addObjectsFromArray:newPlaylistItem];
+    [self.tblList reloadData];
+    [self configExternalView];
 }
 
 #pragma mark - UI
@@ -346,7 +352,7 @@
 - (UIButton *)btnAdd
 {
     if (!_btnAdd) {
-        _btnAdd = [Utils createBarButton:@"btnAddSongToPlaylist.png" position:UIControlContentHorizontalAlignmentCenter target:self selector:@selector(touchAddSong:)];
+        _btnAdd = [Utils createBarButton:@"btnAddSongToPlaylist.png" position:UIControlContentHorizontalAlignmentRight target:self selector:@selector(touchAddSong:)];
     }
     return _btnAdd;
 }

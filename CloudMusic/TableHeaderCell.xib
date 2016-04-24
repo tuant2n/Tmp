@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -19,6 +19,7 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yba-fG-j0Z" userLabel="lblTitle">
                                 <rect key="frame" x="15" y="0.0" width="260" height="39"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -26,11 +27,13 @@
                             </label>
                             <imageView opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="edit-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="eIH-vd-sdO" userLabel="imgvIcon">
                                 <rect key="frame" x="275" y="0.0" width="30" height="39"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="ajf-P3-uZe"/>
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Yba-fG-j0Z" firstAttribute="top" secondItem="GMF-QP-H7g" secondAttribute="top" id="8IB-Ch-6Lm"/>
@@ -43,6 +46,7 @@
                         </constraints>
                     </view>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="GMF-QP-H7g" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="FtN-Dp-faj"/>
                     <constraint firstAttribute="trailing" secondItem="GMF-QP-H7g" secondAttribute="trailing" id="W1s-Gi-5da"/>
@@ -50,6 +54,7 @@
                     <constraint firstItem="GMF-QP-H7g" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="oQU-bj-KoZ"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="bgView" destination="GMF-QP-H7g" id="yu9-1z-BHD"/>
                 <outlet property="imgvIcon" destination="eIH-vd-sdO" id="qAo-eq-BDQ"/>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -20,16 +20,18 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ade-lK-sga" userLabel="imgvArtwork">
                                 <rect key="frame" x="5" y="5" width="50" height="50"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="V0l-Wk-sMl"/>
                                     <constraint firstAttribute="height" constant="50" id="WbC-nE-Bnm"/>
                                 </constraints>
                             </imageView>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mzH-eY-fPK" userLabel="vInfo">
-                                <rect key="frame" x="60" y="8" width="190" height="45"/>
+                                <rect key="frame" x="60" y="8" width="220" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bzU-GJ-zG5" userLabel="lblSongName">
-                                        <rect key="frame" x="0.0" y="0.0" width="190" height="25"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="220" height="25"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="kef-Le-T9d"/>
                                         </constraints>
@@ -38,12 +40,14 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l95-Xh-l7S" userLabel="lblSongDesc">
-                                        <rect key="frame" x="0.0" y="25" width="190" height="20"/>
+                                        <rect key="frame" x="0.0" y="25" width="220" height="20"/>
+                                        <animations/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <animations/>
                                 <constraints>
                                     <constraint firstItem="bzU-GJ-zG5" firstAttribute="leading" secondItem="mzH-eY-fPK" secondAttribute="leading" id="OjT-6z-lrV"/>
                                     <constraint firstItem="bzU-GJ-zG5" firstAttribute="top" secondItem="mzH-eY-fPK" secondAttribute="top" id="dTo-Q5-Kp6"/>
@@ -56,10 +60,11 @@
                                 </constraints>
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="txY-1z-xYO" userLabel="vExternal">
-                                <rect key="frame" x="255" y="0.0" width="30" height="61"/>
+                                <rect key="frame" x="285" y="0.0" width="30" height="61"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="x9999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mN9-hS-UCG" userLabel="lblCount">
                                         <rect key="frame" x="0.0" y="6" width="30" height="15"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="ELf-LO-7ll"/>
                                             <constraint firstAttribute="height" constant="15" id="P7b-H8-anu"/>
@@ -75,6 +80,7 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LLW-un-FBD" userLabel="lblDuration">
                                         <rect key="frame" x="0.0" y="21" width="30" height="20"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="Cqt-yn-0AO"/>
                                         </constraints>
@@ -84,8 +90,10 @@
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ipod-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="wY3-iz-s6A" userLabel="imgvIcon">
                                         <rect key="frame" x="0.0" y="41" width="30" height="20"/>
+                                        <animations/>
                                     </imageView>
                                 </subviews>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="0Dq-nk-F8e"/>
                                     <constraint firstItem="wY3-iz-s6A" firstAttribute="leading" secondItem="txY-1z-xYO" secondAttribute="leading" id="DRr-Eg-Wmk"/>
@@ -110,32 +118,15 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wZJ-Eg-xIc" userLabel="vAdd">
-                                <rect key="frame" x="285" y="0.0" width="30" height="61"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-song.png" translatesAutoresizingMaskIntoConstraints="NO" id="ba0-DG-zyf">
-                                        <rect key="frame" x="0.0" y="0.0" width="30" height="61"/>
-                                    </imageView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="ba0-DG-zyf" firstAttribute="top" secondItem="wZJ-Eg-xIc" secondAttribute="top" id="7F3-Wv-s4d"/>
-                                    <constraint firstAttribute="bottom" secondItem="ba0-DG-zyf" secondAttribute="bottom" id="j90-Cx-UOx"/>
-                                    <constraint firstAttribute="trailing" secondItem="ba0-DG-zyf" secondAttribute="trailing" id="rsC-gY-d2E"/>
-                                    <constraint firstItem="ba0-DG-zyf" firstAttribute="leading" secondItem="wZJ-Eg-xIc" secondAttribute="leading" id="wOQ-4M-mkm"/>
-                                    <constraint firstAttribute="width" constant="30" id="wtQ-t0-sbw"/>
-                                </constraints>
-                            </view>
                         </subviews>
+                        <animations/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="wZJ-Eg-xIc" secondAttribute="bottom" id="0HK-hX-D07"/>
                             <constraint firstItem="mzH-eY-fPK" firstAttribute="centerY" secondItem="DnW-Nc-Zji" secondAttribute="centerY" id="ALi-Lk-0MT"/>
-                            <constraint firstItem="wZJ-Eg-xIc" firstAttribute="top" secondItem="DnW-Nc-Zji" secondAttribute="top" id="Amb-HU-ptp"/>
-                            <constraint firstAttribute="trailing" secondItem="wZJ-Eg-xIc" secondAttribute="trailing" constant="5" id="GBo-1R-uev"/>
+                            <constraint firstAttribute="trailing" secondItem="txY-1z-xYO" secondAttribute="trailing" constant="5" id="KNA-OM-cJM"/>
                             <constraint firstItem="txY-1z-xYO" firstAttribute="height" secondItem="DnW-Nc-Zji" secondAttribute="height" multiplier="2/3" id="Toy-ly-P1b"/>
                             <constraint firstItem="txY-1z-xYO" firstAttribute="top" secondItem="DnW-Nc-Zji" secondAttribute="top" id="Uo5-gc-40D"/>
                             <constraint firstItem="ade-lK-sga" firstAttribute="leading" secondItem="DnW-Nc-Zji" secondAttribute="leading" constant="5" id="dcX-WM-bbz"/>
                             <constraint firstItem="mzH-eY-fPK" firstAttribute="leading" secondItem="ade-lK-sga" secondAttribute="trailing" constant="5" id="drh-4Y-bXD"/>
-                            <constraint firstItem="wZJ-Eg-xIc" firstAttribute="leading" secondItem="txY-1z-xYO" secondAttribute="trailing" id="igq-AM-JEw"/>
                             <constraint firstAttribute="bottom" secondItem="txY-1z-xYO" secondAttribute="bottom" id="kAr-Ac-q7Y"/>
                             <constraint firstItem="ade-lK-sga" firstAttribute="centerY" secondItem="DnW-Nc-Zji" secondAttribute="centerY" id="kIG-5X-4fW"/>
                             <constraint firstItem="txY-1z-xYO" firstAttribute="leading" secondItem="mzH-eY-fPK" secondAttribute="trailing" constant="5" id="nFd-ve-h7q"/>
@@ -152,12 +143,14 @@
                     </view>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Awv-7V-U5E" userLabel="line">
                         <rect key="frame" x="5" y="60" width="315" height="1"/>
+                        <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="2AO-RN-ruc"/>
                         </constraints>
                     </view>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="Awv-7V-U5E" firstAttribute="leading" secondItem="adF-TJ-Aqk" secondAttribute="leading" constant="5" id="0Nl-e1-gLA"/>
                     <constraint firstAttribute="bottom" secondItem="DnW-Nc-Zji" secondAttribute="bottom" id="7cS-hZ-aB8"/>
@@ -174,6 +167,7 @@
                     </mask>
                 </variation>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="imgvArtwork" destination="ade-lK-sga" id="qYN-Ea-KJS"/>
                 <outlet property="imgvIcon" destination="wY3-iz-s6A" id="nyi-qc-fxq"/>
@@ -188,7 +182,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="add-song.png" width="20" height="20"/>
         <image name="ipod-item-icon.png" width="13" height="13"/>
     </resources>
 </document>

@@ -67,11 +67,14 @@
 
 + (void)configNavigationBar;
 + (void)configNavigationController:(UINavigationController *)navController;
++ (void)configSearchBar:(UISearchBar *)searchBar;
 
 + (UIBarButtonItem *)customBackNavigationWithTarget:(id)target selector:(SEL)selector;
++ (UIButton *)buttonMusicEqualizeqHolderWith:(PCSEQVisualizer *)musicEq target:(id)target action:(SEL)selector;
+
 + (UIButton *)createBarButton:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector;
 + (UIButton *)createBarButtonWithTitle:(NSString *)sTitle font:(UIFont *)font textColor:(UInt32)hexColor position:(UIControlContentHorizontalAlignment)position target:(id)target action:(SEL)selector;
-+ (UIButton *)buttonMusicEqualizeqHolderWith:(PCSEQVisualizer *)musicEq target:(id)target action:(SEL)selector;
++ (UIButton *)createBarButtonWithTitle:(NSString *)sTitle font:(UIFont *)font textColor:(UInt32)hexColor image:(NSString *)imageName position:(UIControlContentHorizontalAlignment)position target:(id)target selector:(SEL)selector;
 
 + (BOOL)isLandscapeDevice;
 

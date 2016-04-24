@@ -16,6 +16,7 @@ typedef enum {
     kHeaderUtilTypeCreatePlaylistWithData,
     kHeaderUtilTypeCreateNewPlaylist,
     kHeaderUtilTypeAddAllSongs,
+    kHeaderUtilTypeFilter
 } kHeaderUtilType;
 
 @class AlbumObj;

@@ -27,6 +27,8 @@
 
 - (void)awakeFromNib
 {
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     self.imgvArtwork.clipsToBounds = YES;
     self.imgvArtwork.contentMode = UIViewContentModeScaleAspectFill;
     
@@ -166,6 +168,18 @@
     }
     else {
         self.vContent.backgroundColor = bgColor;
+    }
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+
+    if (editing) {
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
+    else {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 }
 

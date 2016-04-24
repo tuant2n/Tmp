@@ -24,8 +24,8 @@
 @synthesize sSongDesc;
 @synthesize sPlayableUrl;
 
-@synthesize isPlaying;
 @synthesize numberOfSelect;
+@synthesize isPlaying;
 
 #pragma mark - Update Item
 

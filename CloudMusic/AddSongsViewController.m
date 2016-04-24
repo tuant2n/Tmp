@@ -16,13 +16,29 @@
 
 #import "MBProgressHUD.h"
 
-@interface AddSongsViewController () <TableHeaderViewDelegate>
+typedef enum {
+    kFilterTypeAll,
+    kFilterTypeiTunes,
+    kFilterTypeDownloaded,
+} kFilterType;
 
-@property (nonatomic, strong) NSMutableArray *arrListData;
+@interface AddSongsViewController () <UISearchDisplayDelegate,UITableViewDataSource,UITableViewDelegate,TableHeaderViewDelegate>
+{
+    kFilterType iFilterType;
+    NSString *sLastSearchString;
+}
+
 @property (nonatomic, strong) NSMutableArray *arrNewPlaylist;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) NSFetchedResultsController *searchFetchedResultsController;
 
 @property (nonatomic, strong) UIButton *btnDone, *btnCancel;
+@property (nonatomic, strong) UIButton *btnFilter;
+
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
+
+@property (nonatomic, strong) UISearchDisplayController *searchDisplay;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 
 @property (nonatomic, strong) TableFooterView *footerView;
 @property (nonatomic, strong) TableHeaderView *headerView;
@@ -31,20 +47,58 @@
 
 @implementation AddSongsViewController
 
-- (NSMutableArray *)arrListData
-{
-    if (!_arrListData) {
-        _arrListData = [[NSMutableArray alloc] init];
-    }
-    return _arrListData;
-}
-
 - (NSMutableArray *)arrNewPlaylist
 {
     if (!_arrNewPlaylist) {
-        _arrNewPlaylist = [[NSMutableArray alloc] init];
+        _arrNewPlaylist = [[NSMutableArray alloc] initWithArray:self.currentListSongs];
     }
     return _arrNewPlaylist;
+}
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (!_fetchedResultsController)
+    {
+        NSFetchRequest *request = [[DataManagement sharedInstance] getSongFilterByName:nil albumId:nil artistId:nil genreId:nil];
+        
+        if (iFilterType == kFilterTypeDownloaded) {
+            [request setPredicate:[NSPredicate predicateWithFormat:@"%K == %@", @"iCloudItem",@1]];
+        }
+        else if (iFilterType == kFilterTypeiTunes) {
+            [request setPredicate:[NSPredicate predicateWithFormat:@"%K == %@", @"iCloudItem",@0]];
+        }
+        
+        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:@"sSongFirstLetter" cacheName:nil];
+        _fetchedResultsController.delegate = self;
+    }
+    return _fetchedResultsController;
+}
+
+- (NSFetchedResultsController *)searchFetchedResultsController
+{
+    if (!_searchFetchedResultsController)
+    {
+        NSFetchRequest *request = [[DataManagement sharedInstance] getSongFilterByName:nil albumId:nil artistId:nil genreId:nil];
+        
+        NSMutableArray *filters = [NSMutableArray new];
+        
+        if (iFilterType == kFilterTypeDownloaded) {
+            [filters addObject:[NSPredicate predicateWithFormat:@"%K == %@", @"iCloudItem",@1]];
+        }
+        else if (iFilterType == kFilterTypeiTunes) {
+            [filters addObject:[NSPredicate predicateWithFormat:@"%K == %@", @"iCloudItem",@0]];
+        }
+        
+        if (sLastSearchString) {
+            [filters addObject:[NSPredicate predicateWithFormat:@"sSongNameIndex CONTAINS[cd] %@",sLastSearchString]];
+        }
+        
+        [request setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:filters]];
+        
+        _searchFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:[[DataManagement sharedInstance] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+        _searchFetchedResultsController.delegate = self;
+    }
+    return _searchFetchedResultsController;
 }
 
 - (void)viewDidLoad
@@ -52,35 +106,31 @@
     [super viewDidLoad];
     
     [self setupUI];
-    [self getData];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getData) name:NOTIFICATION_RELOAD_DATA object:nil];
+    [self fetchDataWithFilter:kFilterTypeAll];
 }
 
-- (void)getData
+- (void)fetchDataWithFilter:(kFilterType)iType
 {
-    NSOperationQueue *syncDataQueue = [[NSOperationQueue alloc] init];
-    syncDataQueue.name = @"queue.get.listsong";
+    iFilterType = iType;
     
-    [syncDataQueue addOperationWithBlock:^{
-        [self.arrListData removeAllObjects];
-        [self.arrListData addObjectsFromArray:[[DataManagement sharedInstance] getListSongFilterByName:nil albumId:nil artistId:nil genreId:nil]];
-        
-        NSArray *arrCurrentPlaylist = [self.currentPlaylist getPlaylist];
-        
-        [self.arrNewPlaylist removeAllObjects];
-        [self.arrNewPlaylist addObjectsFromArray:arrCurrentPlaylist];
-        
-        NSCountedSet *countedSet = [[NSCountedSet alloc] initWithArray:arrCurrentPlaylist];
-        for (Item *song in self.arrListData) {
-            song.numberOfSelect = (int)[countedSet countForObject:song.iSongId];
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        TTLog(@"Fetch error: %@", error);
+    }
+    else {
+        NSCountedSet *countedSet = [[NSCountedSet alloc] initWithArray:[self.currentPlaylist getPlaylist]];
+
+        for (int i = 0; i < [self.fetchedResultsController sections].count; i++) {
+            id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:i];
+            for (Item *song in sectionInfo.objects) {
+                song.numberOfSelect = (int)[countedSet countForObject:song.iSongId];
+                [self.arrNewPlaylist insertObject:song atIndex:0];
+            }
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tblList reloadData];
-            [self configExternalView];
-        });
-    }];
+        [self.tblList reloadData];
+        [self configExternalView];
+    }
 }
 
 - (void)setupUI
@@ -89,16 +139,77 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.btnCancel];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.btnDone];
     [Utils configNavigationController:self.navigationController];
-    self.edgesForExtendedLayout = UIRectEdgeBottom;
 
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.automaticallyAdjustsScrollViewInsets = YES;
+    
+    UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [self setToolbarItems:[NSArray arrayWithObjects:spaceItem,[[UIBarButtonItem alloc] initWithCustomView:self.btnFilter],spaceItem,nil] animated:NO];
+    
+    [self setupSearchBar];
     [Utils configTableView:self.tblList isSearch:NO];
+}
+
+- (void)setupSearchBar
+{
+    [Utils configSearchBar:self.searchBar];
+    
+    self.searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    self.searchDisplay.searchResultsDataSource = self;
+    self.searchDisplay.searchResultsDelegate = self;
+    self.searchDisplay.delegate = self;
+}
+
+- (UINavigationController *)navigationController {
+    return nil;
 }
 
 #pragma mark - UITableViewDataSource
 
+- (NSFetchedResultsController *)fetchedResultsControllerForTableView:(UITableView *)tableView
+{
+    return tableView == self.tblList ? self.fetchedResultsController : self.searchFetchedResultsController;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    return tableView == self.tblList ? index : 0;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    return tableView == self.tblList ? [[NSMutableArray alloc] initWithArray:[self.fetchedResultsController sectionIndexTitles]] : nil;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [[[self fetchedResultsControllerForTableView:tableView] sections] count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return tableView == self.tblList ? [HeaderTitle height] : 0.0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NSString *sTitle = [self tableView:tableView titleForHeaderInSection:section];
+    HeaderTitle *header = (HeaderTitle *)[tableView dequeueReusableCellWithIdentifier:@"HeaderTitleId"];
+    [header setTitle:sTitle];
+    return header;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsControllerForTableView:tableView] sections] objectAtIndex:section];
+    return [sectionInfo name];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.arrListData.count;
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsControllerForTableView:tableView] sections][section];
+    return [sectionInfo numberOfObjects];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -118,12 +229,13 @@
         return;
     }
     
-    Item *song = self.arrListData[indexPath.row];
+    Item *song = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     
     MainCell *mainCell = (MainCell *)cell;
-
     [mainCell configWithoutMenu:song];
-    [mainCell setLineHidden:(indexPath.row == [self.arrListData count] - 1)];
+    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsControllerForTableView:tableView] sections][indexPath.section];
+    [mainCell setLineHidden:(indexPath.row == [sectionInfo numberOfObjects] - 1)];
 }
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -134,16 +246,122 @@
     }
 }
 
-#pragma mark - Action
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    Item *song = self.arrListData[indexPath.row];
+    Item *song = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     song.numberOfSelect += 1;
-    [self.arrNewPlaylist insertObject:song.iSongId atIndex:0];
+    [self.arrNewPlaylist insertObject:song atIndex:0];
 }
+
+#pragma mark - Fetched Results Controller Delegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tblList beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert: {
+            [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            
+            break;
+            
+        case NSFetchedResultsChangeDelete: {
+            [self.tblList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            
+            break;
+            
+        case NSFetchedResultsChangeUpdate: {
+            [self configureCell:(SongsCell *)[self.tblList cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+        }
+            break;
+            
+        case NSFetchedResultsChangeMove: {
+            [self.tblList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert: {
+            [self.tblList insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+            
+        case NSFetchedResultsChangeDelete: {
+            [self.tblList deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tblList endUpdates];
+    [self configExternalView];
+}
+
+- (void)configureCell:(MainCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [cell config:item];
+    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
+    BOOL isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
+    [cell setLineHidden:isHiddenSeperator];
+}
+
+#pragma mark - UISearchDisplayControllerDelegate
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView;
+{
+    self.searchFetchedResultsController.delegate = nil;
+    self.searchFetchedResultsController = nil;
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+{
+    [controller.searchResultsTableView setContentInset:UIEdgeInsetsZero];
+    [controller.searchResultsTableView setScrollIndicatorInsets:UIEdgeInsetsZero];
+    [controller.searchResultsTableView setTableFooterView:[Utils tableLine]];
+    controller.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [controller.searchResultsTableView registerNib:[UINib nibWithNibName:@"AddSongsCell" bundle:nil] forCellReuseIdentifier:@"AddSongsCellId"];
+}
+
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
+{
+    sLastSearchString = nil;
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    if (!searchString || [searchString isEqualToString:sLastSearchString]) {
+        return NO;
+    }
+    
+    sLastSearchString = searchString;
+    
+    self.searchFetchedResultsController = nil;
+    [self.searchFetchedResultsController performFetch:nil];
+    
+    return YES;
+}
+
+#pragma mark - TableHeaderViewDelegate
 
 - (void)selectUtility:(kHeaderUtilType)iType
 {
@@ -151,9 +369,12 @@
         return;
     }
     
-    for (Item *song in self.arrListData) {
-        song.numberOfSelect += 1;
-        [self.arrNewPlaylist insertObject:song.iSongId atIndex:0];
+    for (int i = 0; i < [self.fetchedResultsController sections].count; i++) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:i];
+        for (Item *song in sectionInfo.objects) {
+            song.numberOfSelect += 1;
+            [self.arrNewPlaylist insertObject:song atIndex:0];
+        }
     }
 }
 
@@ -182,7 +403,7 @@
 
 - (void)configExternalView
 {
-    int itemCount = (int)[self.arrListData count];
+    int itemCount = (int)[self.fetchedResultsController.fetchedObjects count];
     if (itemCount <= 0)
     {
         [self.tblList setTableHeaderView:[UIView new]];
@@ -200,6 +421,8 @@
     }
     
     [self.footerView setContent:sContent];
+    
+    [self.navigationController setToolbarHidden:!NO animated:YES];
     [self.tblList setTableHeaderView:self.headerView];
     [self.tblList setTableFooterView:self.footerView];
 }
@@ -229,6 +452,14 @@
     return _btnCancel;
 }
 
+- (UIButton *)btnFilter
+{
+    if (!_btnCancel) {
+        _btnCancel = [Utils createBarButtonWithTitle:@"All" font:[UIFont fontWithName:@"HelveticaNeue" size:16.0] textColor:0x017ee6 image:@"btnFilter" position:UIControlContentHorizontalAlignmentCenter target:self selector:@selector(touchDone)];
+    }
+    return _btnCancel;
+}
+
 - (void)touchCancel
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -236,7 +467,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

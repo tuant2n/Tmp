@@ -14,7 +14,7 @@
 #import "DataManagement.h"
 #import "HeaderUtilObj.h"
 
-#define SEARCHBAR_HEIGHT 50.0
+#define SEARCHBAR_HEIGHT 44.0
 #define LINE_SEPERATOR_HEIGHT 1
 
 @interface TableHeaderView() <UITableViewDataSource,UITableViewDelegate>
@@ -240,8 +240,9 @@
     [self.arrListUtils removeAllObjects];
     
     [self.arrListUtils addObject:[[HeaderUtilObj alloc] initWithTitle:@"Add All Songs" icon:@"add-song" type:kHeaderUtilTypeAddAllSongs]];
-    
-    hasIndexTitles = NO;
+
+    self.line.backgroundColor = [UIColor clearColor];
+    isNotShowSearch = YES;
     [self setupDefault];
 }
 
@@ -354,11 +355,7 @@
 {
     //
     self.searchBar = [[UISearchBar alloc] init];
-    [self.searchBar setBackgroundImage:[UIImage new]];
-    [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"textField-background"] forState:UIControlStateNormal];
-    self.searchBar.opaque = NO;
-    self.searchBar.translucent = NO;
-    
+    [Utils configSearchBar:self.searchBar];
     [self.searchBar setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self addSubview:self.searchBar];
     

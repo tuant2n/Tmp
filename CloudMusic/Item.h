@@ -24,8 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, strong) NSURL *sPlayableUrl;
 
-@property (nonatomic, assign) BOOL isPlaying;
 @property (nonatomic, assign) int numberOfSelect;
+@property (nonatomic, assign) BOOL isPlaying;
 
 #pragma mark - Update Item
 

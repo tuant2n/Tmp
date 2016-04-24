@@ -202,6 +202,10 @@
 		3CB3FF501CB969BF00A95DD2 /* unselect.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF4A1CB969BF00A95DD2 /* unselect.png */; };
 		3CB3FF511CB969BF00A95DD2 /* unselect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF4B1CB969BF00A95DD2 /* unselect@2x.png */; };
 		3CB3FF521CB969BF00A95DD2 /* unselect@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CB3FF4C1CB969BF00A95DD2 /* unselect@3x.png */; };
+		3CCF230E1CCBD9700007EB21 /* NSManagedObject+Clone.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCF230D1CCBD9700007EB21 /* NSManagedObject+Clone.m */; };
+		3CCF23121CCBE6A50007EB21 /* btnFilter.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CCF230F1CCBE6A50007EB21 /* btnFilter.png */; };
+		3CCF23131CCBE6A50007EB21 /* btnFilter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CCF23101CCBE6A50007EB21 /* btnFilter@2x.png */; };
+		3CCF23141CCBE6A50007EB21 /* btnFilter@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CCF23111CCBE6A50007EB21 /* btnFilter@3x.png */; };
 		3CDE2EC61CC4891B009B2FBA /* SyncDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CDE2EC41CC4891B009B2FBA /* SyncDataViewController.m */; };
 		3CDE2EC71CC4891B009B2FBA /* SyncDataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CDE2EC51CC4891B009B2FBA /* SyncDataViewController.xib */; };
 		3CDE2EE01CC4D4DD009B2FBA /* add-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDE2EDD1CC4D4DD009B2FBA /* add-icon.png */; };
@@ -582,6 +586,11 @@
 		3CB3FF4A1CB969BF00A95DD2 /* unselect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unselect.png; sourceTree = "<group>"; };
 		3CB3FF4B1CB969BF00A95DD2 /* unselect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unselect@2x.png"; sourceTree = "<group>"; };
 		3CB3FF4C1CB969BF00A95DD2 /* unselect@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unselect@3x.png"; sourceTree = "<group>"; };
+		3CCF230C1CCBD9700007EB21 /* NSManagedObject+Clone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Clone.h"; sourceTree = "<group>"; };
+		3CCF230D1CCBD9700007EB21 /* NSManagedObject+Clone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Clone.m"; sourceTree = "<group>"; };
+		3CCF230F1CCBE6A50007EB21 /* btnFilter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnFilter.png; sourceTree = "<group>"; };
+		3CCF23101CCBE6A50007EB21 /* btnFilter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnFilter@2x.png"; sourceTree = "<group>"; };
+		3CCF23111CCBE6A50007EB21 /* btnFilter@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnFilter@3x.png"; sourceTree = "<group>"; };
 		3CDE2EC31CC4891B009B2FBA /* SyncDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncDataViewController.h; sourceTree = "<group>"; };
 		3CDE2EC41CC4891B009B2FBA /* SyncDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncDataViewController.m; sourceTree = "<group>"; };
 		3CDE2EC51CC4891B009B2FBA /* SyncDataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncDataViewController.xib; sourceTree = "<group>"; };
@@ -1170,6 +1179,8 @@
 		3CA4E2A61C9E876F00168B48 /* DataObject */ = {
 			isa = PBXGroup;
 			children = (
+				3CCF230C1CCBD9700007EB21 /* NSManagedObject+Clone.h */,
+				3CCF230D1CCBD9700007EB21 /* NSManagedObject+Clone.m */,
 				3C6C2CDD1CB29F7C00F3E901 /* Item+CoreDataProperties.h */,
 				3C6C2CDE1CB29F7C00F3E901 /* Item+CoreDataProperties.m */,
 				3CA4E3111C9ECE9400168B48 /* Item.h */,
@@ -1198,6 +1209,9 @@
 		3CB1052B1CA419DB0087D20A /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				3CCF230F1CCBE6A50007EB21 /* btnFilter.png */,
+				3CCF23101CCBE6A50007EB21 /* btnFilter@2x.png */,
+				3CCF23111CCBE6A50007EB21 /* btnFilter@3x.png */,
 				7BF16C071CC8EC81002D99A6 /* btnAddSongToPlaylist.png */,
 				7BF16C081CC8EC81002D99A6 /* btnAddSongToPlaylist@2x.png */,
 				7BF16C091CC8EC81002D99A6 /* btnAddSongToPlaylist@3x.png */,
@@ -1858,6 +1872,7 @@
 				7B066A8E1CA5152C0078FD53 /* cloud-item-icon.png in Resources */,
 				3CDE2EFA1CC4E794009B2FBA /* playlist_icon.png in Resources */,
 				3CB3FF2C1CB9578100A95DD2 /* wma.png in Resources */,
+				3CCF23141CCBE6A50007EB21 /* btnFilter@3x.png in Resources */,
 				3CB3FF2D1CB9578100A95DD2 /* wma@2x.png in Resources */,
 				7BF16C0B1CC8EC81002D99A6 /* btnAddSongToPlaylist@2x.png in Resources */,
 				7B066A621CA4D0190078FD53 /* SettingsViewController.xib in Resources */,
@@ -1918,6 +1933,7 @@
 				7B3A91D91CCA2E38007DB5B6 /* add-song.png in Resources */,
 				7B066A671CA4D8720078FD53 /* TableFooterView.xib in Resources */,
 				3C4926CE1C93EBCC0065B1DD /* playlists-selected@2x.png in Resources */,
+				3CCF23121CCBE6A50007EB21 /* btnFilter.png in Resources */,
 				3CB3FF331CB958EB00A95DD2 /* folder@2x.png in Resources */,
 				3C6DB1051CA6D0CE00F68D3E /* list-item-icon@3x.png in Resources */,
 				7B066A5E1CA4CF490078FD53 /* ArtistsViewController.xib in Resources */,
@@ -1969,6 +1985,7 @@
 				3CB3FF231CB9578100A95DD2 /* mp3.png in Resources */,
 				3C4926BA1C93EBCC0065B1DD /* artists@3x.png in Resources */,
 				3C4926BF1C93EBCC0065B1DD /* files@2x.png in Resources */,
+				3CCF23131CCBE6A50007EB21 /* btnFilter@2x.png in Resources */,
 				3C6DB0D71CA667D200F68D3E /* textField-search@2x.png in Resources */,
 				7B066A8F1CA5152C0078FD53 /* cloud-item-icon@2x.png in Resources */,
 				3CB3FF321CB958EB00A95DD2 /* folder.png in Resources */,
@@ -2026,6 +2043,7 @@
 				7B08960F1CA8C26E00264CD1 /* AlbumArtistObj.m in Sources */,
 				3C4926FC1C952AC40065B1DD /* SettingsViewController.m in Sources */,
 				3C09C6FE1C8C6910004A44E2 /* AlbumsViewController.m in Sources */,
+				3CCF230E1CCBD9700007EB21 /* NSManagedObject+Clone.m in Sources */,
 				7BF65F4C1CA3D782007B198D /* UIButton+WebCache.m in Sources */,
 				7BC0A4591CC7396C000E67DE /* PlaylistsListSongViewController.m in Sources */,
 				7BF65F4B1CA3D782007B198D /* SDWebImagePrefetcher.m in Sources */,
