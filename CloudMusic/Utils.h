@@ -35,6 +35,7 @@
 
 #define NOTIFICATION_RELOAD_DATA @"NOTIFICATION_RELOAD_DATA"
 #define NOTIFICATION_LOGIN_DROPBOX @"NOTIFICATION_LOGIN_DROPBOX"
+#define NOTIFICATION_OPEN_PLAYER @"NOTIFICATION_OPEN_PLAYER"
 
 #ifndef TTLog
 #if DEBUG
@@ -68,6 +69,7 @@
 + (void)configNavigationBar;
 + (void)configNavigationController:(UINavigationController *)navController;
 + (void)configSearchBar:(UISearchBar *)searchBar;
++ (void)findAndHideSearchBarShadowInView:(UIView *)view;
 
 + (UIBarButtonItem *)customBackNavigationWithTarget:(id)target selector:(SEL)selector;
 + (UIButton *)buttonMusicEqualizeqHolderWith:(PCSEQVisualizer *)musicEq target:(id)target action:(SEL)selector;
@@ -80,9 +82,13 @@
 
 #pragma mark - UITableView
 
-+ (void)configTableView:(UITableView *)tblView isSearch:(BOOL)isSearch;
++ (void)configTableView:(UITableView *)tblView;
++ (void)registerXibs:(UITableView *)tblView;
+
 + (MainCell *)getCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 + (TableLine *)tableLine;
++ (TableLine *)tableLineWithColor:(UInt32)hexColor;
++ (id)loadView:(Class)viewClass fromXib:(NSString *)xibName;
 
 #pragma mark - Files
 

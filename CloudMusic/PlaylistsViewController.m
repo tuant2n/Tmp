@@ -14,9 +14,8 @@
 
 #import "UIAlertView+Blocks.h"
 
-@interface PlaylistsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate,MainCellDelegate>
+@interface PlaylistsViewController () <NSFetchedResultsControllerDelegate,MGSwipeTableCellDelegate,UISearchDisplayDelegate,UITableViewDelegate,UITableViewDataSource,TableHeaderViewDelegate,MainCellDelegate>
 {
-    BOOL isActiveSearch;
     NSString *sCurrentSearch;
 }
 
@@ -26,8 +25,7 @@
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 @property (nonatomic, weak) IBOutlet UITableView *tblList;
-@property (nonatomic, weak) IBOutlet UITableView *tblSearchResult;
-@property (nonatomic, weak) IBOutlet UIView *disableView;
+@property (nonatomic, strong) UISearchDisplayController *searchDisplay;
 
 @property (nonatomic, strong) NSMutableArray *arrResults;
 @property (nonatomic, strong) TableHeaderView *headerView;
@@ -62,7 +60,7 @@
     [self setupUI];
     [self performFetch];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:NOTIFICATION_RELOAD_DATA object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeSearch) name:NOTIFICATION_RELOAD_DATA object:nil];
 }
 
 - (void)performFetch
@@ -80,167 +78,32 @@
 {
     self.title = @"Playlist";
     self.navigationItem.rightBarButtonItem = self.barMusicEq;
-    [Utils configNavigationController:self.navigationController];
     self.edgesForExtendedLayout = UIRectEdgeBottom;
-    
-    self.disableView.backgroundColor = [UIColor blackColor];
-    self.disableView.alpha = 0.0;
-    self.disableView.hidden = YES;
-    [self.disableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSearch)]];
-    
-    [Utils configTableView:self.tblList isSearch:YES];
-    [Utils configTableView:self.tblSearchResult isSearch:YES];
-    
-    [self setupHeaderBar];
-}
 
-- (void)reloadData:(NSNotification *)notification
-{
-    if (isActiveSearch) {
-        [self searchBar:self.headerView.searchBar activate:NO];
-    }
+    [Utils configTableView:self.tblList];
+    [self setupHeaderBar];
+    [self.tblList setTableFooterView:[Utils tableLine]];
 }
 
 - (void)setupHeaderBar
 {
-    self.headerView.searchBar.delegate = self;
     [self.tblList setTableHeaderView:self.headerView];
+    
+    self.searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:self.headerView.searchBar contentsController:self];
+    self.searchDisplay.searchResultsDataSource = self;
+    self.searchDisplay.searchResultsDelegate = self;
+    self.searchDisplay.delegate = self;
 }
 
-- (void)closeSearch
-{
-    [self searchBar:self.headerView.searchBar activate:NO];
-}
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    [self searchBar:searchBar activate:YES];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [self searchBar:searchBar activate:NO];
-}
-
-- (void)searchBar:(UISearchBar *)searchBar activate:(BOOL)isActive
-{
-    [searchBar setShowsCancelButton:isActive animated:YES];
-    
-    if (isActiveSearch == isActive) {
-        return;
-    }
-    
-    isActiveSearch = isActive;
-    
-    [self.arrResults removeAllObjects];
-    sCurrentSearch = nil;
-    self.headerView.searchBar.text = sCurrentSearch;
-    
-    if (isActiveSearch)
-    {
-        [self showOverlayDisable:YES];
-        
-        self.tblSearchResult.delegate = self;
-        self.tblSearchResult.dataSource = self;
-    }
-    else {
-        [self showOverlayDisable:NO];
-        
-        if ([searchBar isFirstResponder]) {
-            [searchBar resignFirstResponder];
-        }
-        
-        self.tblSearchResult.delegate = nil;
-        self.tblSearchResult.dataSource = nil;
-    }
-    
-    self.tblList.allowsSelection = !isActiveSearch;
-    self.tblList.scrollEnabled = !isActiveSearch;
-    
-    [self.tblList reloadSectionIndexTitles];
-}
-
-- (void)showOverlayDisable:(BOOL)isShow
-{
-    if (isShow)
-    {
-        self.disableView.hidden = NO;
-        self.tblSearchResult.hidden = NO;
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            self.disableView.alpha = 0.5;
-            self.tblSearchResult.alpha = 0.0;
-        } completion:nil];
-    }
-    else {
-        self.disableView.hidden = YES;
-        self.tblSearchResult.hidden = YES;
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            self.disableView.alpha = 0.0;
-            self.tblSearchResult.alpha = 0.0;
-        } completion:nil];
-    }
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    [self doSearch:searchText];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-    [searchBar setShowsCancelButton:NO animated:YES];
-}
-
-- (void)doSearch:(NSString *)sSearch
-{
-    sSearch = [sSearch stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if ([sSearch isEqualToString:sCurrentSearch])
-    {
-        return;
-    }
-    
-    [self.arrResults removeAllObjects];
-    sCurrentSearch = sSearch;
-    
-    if (sCurrentSearch.length <= 0)
-    {
-        [UIView animateWithDuration:0.2 animations:^{
-            self.disableView.hidden = NO;
-            self.tblSearchResult.alpha = 0.0;
-            [self.tblSearchResult reloadData];
-        } completion:nil];
-    }
-    else {
-        [[DataManagement sharedInstance] search:sCurrentSearch searchType:kSearchTypeArtist block:^(NSArray *results)
-         {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 if (results) {
-                     [self.arrResults addObjectsFromArray:results];
-                 }
-                 
-                 self.disableView.hidden = YES;
-                 self.tblSearchResult.alpha = 1.0;
-                 
-                 [UIView transitionWithView:self.tblSearchResult duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                     [self.tblSearchResult reloadData];
-                 } completion:nil];
-             });
-         }];
-    }
+- (UINavigationController *)navigationController {
+    return nil;
 }
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-{
-    if(index == 0) [tableView scrollRectToVisible:tableView.tableHeaderView.frame animated: NO];
-    return (index - 1);
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (tableView == self.tblSearchResult) {
+    if (tableView != self.tblList) {
         return self.arrResults.count;
     }
     else {
@@ -257,7 +120,7 @@
 {
     NSString *sTitle = nil;
     
-    if (tableView == self.tblSearchResult) {
+    if (tableView != self.tblList) {
         DataObj *resultOj = self.arrResults[section];
         sTitle = resultOj.sTitle;
     }
@@ -282,7 +145,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == self.tblSearchResult) {
+    if (tableView != self.tblList) {
         DataObj *resultOj = self.arrResults[section];
         return resultOj.listData.count;
     }
@@ -301,7 +164,7 @@
 {
     id cellItem = nil;
     
-    if (tableView == self.tblSearchResult) {
+    if (tableView != self.tblList) {
         DataObj *resultOj = self.arrResults[indexPath.section];
         cellItem = resultOj.listData[indexPath.row];
     }
@@ -317,37 +180,58 @@
     if ([cell isKindOfClass:[MainCell class]])
     {
         id cellItem = nil;
-        BOOL isHiddenSeperator = NO;
-        
-        if (tableView == self.tblSearchResult) {
-            DataObj *resultOj = self.arrResults[indexPath.section];
-            cellItem = resultOj.listData[indexPath.row];
-            isHiddenSeperator = (indexPath.row == [resultOj.listData count] - 1);
-        }
-        else {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
-            cellItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
-        }
-        
+
         MainCell *mainCell = (MainCell *)cell;
         mainCell.delegate = self;
         mainCell.subDelegate = self;
         mainCell.allowsMultipleSwipe = NO;
         
-        [mainCell config:cellItem];
-        [mainCell setLineHidden:isHiddenSeperator];
+        if (tableView != self.tblList) {
+            DataObj *resultOj = self.arrResults[indexPath.section];
+            cellItem = resultOj.listData[indexPath.row];
+            
+            [mainCell configWithoutMenu:cellItem];
+            [mainCell setLineHidden:(indexPath.row == [resultOj.listData count] - 1)];
+        }
+        else {
+            cellItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            [mainCell config:cellItem];
+            
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
+            [mainCell setLineHidden:(indexPath.row == [sectionInfo numberOfObjects] - 1)];
+        }
     }
 }
 
-- (void)configureCell:(MainCell *)cell atIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [cell config:item];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
-    BOOL isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
-    [cell setLineHidden:isHiddenSeperator];
+    id itemObj = nil;
+    
+    if (tableView != self.tblList) {
+        DataObj *resultOj = self.arrResults[indexPath.section];
+        itemObj = resultOj.listData[indexPath.row];
+    }
+    else {
+        itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    }
+    
+    if (itemObj) {
+        [[DataManagement sharedInstance] doActionWithItem:itemObj withData:nil fromSearch:(tableView != self.tblList) fromNavigation:[super navigationController]];
+    }
+}
+
+- (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
+{
+    NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
+    id itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    if (!itemObj) {
+        return YES;
+    }
+    
+    return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index isLeftAction:(direction == MGSwipeDirectionLeftToRight) fromNavigation:[super navigationController]];
 }
 
 - (void)changePlaylistName:(Playlist *)playlist
@@ -395,55 +279,11 @@
     [alertView show];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    id itemObj = nil;
-    
-    if (tableView == self.tblSearchResult) {
-        DataObj *resultOj = self.arrResults[indexPath.section];
-        itemObj = resultOj.listData[indexPath.row];
-    }
-    else {
-        itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    }
-    
-    if (itemObj) {
-        [self.headerView resignKeyboard];
-        [[DataManagement sharedInstance] doActionWithItem:itemObj withData:nil fromSearch:isActiveSearch fromNavigation:self.navigationController];
-    }
-}
-
-- (BOOL)swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
-{
-    id itemObj = nil;
-    
-    if (isActiveSearch) {
-        NSIndexPath *indexPath = [self.tblSearchResult indexPathForCell:cell];
-        DataObj *resultOj = self.arrResults[indexPath.section];
-        itemObj = resultOj.listData[indexPath.row];
-    }
-    else {
-        NSIndexPath *indexPath = [self.tblList indexPathForCell:cell];
-        itemObj = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    }
-    
-    if (!itemObj) {
-        return YES;
-    }
-    
-    return [[DataManagement sharedInstance] doSwipeActionWithItem:itemObj atIndex:index isLeftAction:(direction == MGSwipeDirectionLeftToRight) fromNavigation:self.navigationController];
-}
-
 #pragma mark - Fetched Results Controller Delegate
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    if (isActiveSearch) {
-        [self searchBar:self.headerView.searchBar activate:NO];
-    }
-    
+    [self closeSearch];
     [self.tblList beginUpdates];
 }
 
@@ -499,6 +339,81 @@
     [self.tblList endUpdates];
 }
 
+- (void)configureCell:(MainCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [cell config:item];
+    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
+    BOOL isHiddenSeperator = (indexPath.row == [sectionInfo numberOfObjects] - 1);
+    [cell setLineHidden:isHiddenSeperator];
+}
+
+#pragma mark - UISearchDisplayControllerDelegate
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView
+{
+    [tableView setContentInset:UIEdgeInsetsMake(SEARCHBAR_HEIGHT, 0.0, 0.0, 0.0)];
+    [tableView setScrollIndicatorInsets:UIEdgeInsetsMake(SEARCHBAR_HEIGHT, 0.0, 0.0, 0.0)];
+    [tableView setTableFooterView:[Utils tableLine]];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView
+{
+    [Utils findAndHideSearchBarShadowInView:tableView];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView;
+{
+    [self closeSearch];
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+{
+    controller.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [Utils registerXibs:controller.searchResultsTableView];
+}
+
+- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
+{
+    [self closeSearch];
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    if (!searchString || [searchString isEqualToString:sCurrentSearch]) {
+        return NO;
+    }
+    
+    searchString = [Utils standardLocaleString:searchString];
+    sCurrentSearch = searchString;
+    
+    [[DataManagement sharedInstance] search:sCurrentSearch searchType:kSearchTypeFile block:^(NSArray *results)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             if (results) {
+                 [self.arrResults removeAllObjects];
+                 [self.arrResults addObjectsFromArray:results];
+                 
+                 [UIView transitionWithView:self.searchDisplayController.searchResultsTableView duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                     [self.searchDisplayController.searchResultsTableView reloadData];
+                 } completion:nil];
+             }
+         });
+     }];
+    
+    return YES;
+}
+
+- (void)closeSearch
+{
+    if ([self.searchDisplay isActive]) {
+        [self.searchDisplay setActive:NO animated:NO];
+    }
+    
+    sCurrentSearch = nil;
+}
+
 #pragma mark - UI
 
 - (TableHeaderView *)headerView
@@ -512,7 +427,7 @@
 
 - (void)selectUtility:(kHeaderUtilType)iType
 {
-    [[DataManagement sharedInstance] doUtility:iType withData:nil fromNavigation:self.navigationController];
+    [[DataManagement sharedInstance] doUtility:iType withData:nil fromNavigation:[super navigationController]];
 }
 
 #pragma mark - MusicEq

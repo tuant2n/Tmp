@@ -1,9 +1,2 @@
 http://code.tutsplus.com/tutorials/10-xcode-plugins-for-ios-development--cms-21899
-
-/ReengBackendBiz/v1/appdriver/redirectUrl?msisdn=%1$s&source=%2$s&url=%3$s&timestamp=%4$s&security=%5$s
- 
-Source =mocha
-url = location url của item nhé.
- 
---
-Thanks and Best Regards
+https://ccrma.stanford.edu/~jsanchez/NSSpain.pdf

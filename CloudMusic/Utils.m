@@ -147,26 +147,35 @@
 + (void)configSearchBar:(UISearchBar *)searchBar
 {
     [searchBar setBackgroundImage:[Utils imageWithColor:0xffffff]];
-    [searchBar setSearchBarStyle:UISearchBarStyleMinimal];
-    [searchBar setBarTintColor:[UIColor redColor]];
-    searchBar.opaque = NO;
-    searchBar.translucent = NO;
+    
+    searchBar.opaque = YES;
+    searchBar.translucent = YES;
+    searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    searchBar.barTintColor = [UIColor whiteColor];
+    
+    searchBar.layer.borderWidth = 1;
+    searchBar.layer.borderColor = [UIColor whiteColor].CGColor;
+    
+    searchBar.layer.shadowOpacity = 1.0;
+    searchBar.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+    searchBar.layer.shadowColor = [UIColor whiteColor].CGColor;
 }
 
-+ (UITextField *) findTextFieldFromControl:(UIView *) view
++ (void)findAndHideSearchBarShadowInView:(UIView *)view
 {
-    for (UIView *subview in view.subviews)
+    NSString *usc = @"_";
+    NSString *sb = @"UISearchBar";
+    NSString *sv = @"ShadowView";
+    NSString *s = [[usc stringByAppendingString:sb] stringByAppendingString:sv];
+    
+    for (UIView *v in view.subviews)
     {
-        if ([subview isKindOfClass:[UITextField class]])
-        {
-            return (UITextField *)subview;
+        if ([v isKindOfClass:NSClassFromString(s)]) {
+            v.backgroundColor = [UIColor redColor];
+            v.alpha = 0.0f;
         }
-        else if ([subview.subviews count] > 0)
-        {
-            return [self findTextFieldFromControl:subview];
-        }
+        [self findAndHideSearchBarShadowInView:v];
     }
-    return nil;
 }
 
 + (void)configNavigationController:(UINavigationController *)navController
@@ -175,6 +184,7 @@
     navController.navigationBar.translucent = NO;
     navController.navigationBar.shadowImage = [UIImage new];
     navController.interactivePopGestureRecognizer.enabled = YES;
+    navController.extendedLayoutIncludesOpaqueBars = YES;
 }
 
 + (UIBarButtonItem *)customBackNavigationWithTarget:(id)target selector:(SEL)selector
@@ -293,7 +303,21 @@
 
 #pragma mark - UITableView
 
-+ (void)configTableView:(UITableView *)tblView isSearch:(BOOL)isSearch
++ (void)configTableView:(UITableView *)tblView
+{
+    [self registerXibs:tblView];
+    
+    tblView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    tblView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tblView.canCancelContentTouches = YES;
+    tblView.delaysContentTouches = YES;
+    
+    tblView.sectionIndexColor = [self colorWithRGBHex:0x006bd5];
+    tblView.sectionIndexBackgroundColor = [UIColor clearColor];
+    tblView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
+}
+
++ (void)registerXibs:(UITableView *)tblView
 {
     [tblView registerNib:[UINib nibWithNibName:@"SongsCell" bundle:nil] forCellReuseIdentifier:@"SongsCellId"];
     [tblView registerNib:[UINib nibWithNibName:@"AlbumsCell" bundle:nil] forCellReuseIdentifier:@"AlbumsCellId"];
@@ -306,20 +330,6 @@
     
     [tblView registerNib:[UINib nibWithNibName:@"HeaderTitle" bundle:nil] forCellReuseIdentifier:@"HeaderTitleId"];
     [tblView registerNib:[UINib nibWithNibName:@"TableHeaderCell" bundle:nil] forCellReuseIdentifier:@"TableHeaderCellId"];
-    
-    tblView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    tblView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tblView.canCancelContentTouches = YES;
-    tblView.delaysContentTouches = YES;
-    
-    if (isSearch) {
-        [tblView setTableFooterView:[self tableLine]];
-    }
-    else {
-        tblView.sectionIndexColor = [self colorWithRGBHex:0x006bd5];
-        tblView.sectionIndexBackgroundColor = [UIColor clearColor];
-        tblView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
-    }
 }
 
 + (MainCell *)getCellWithItem:(id)itemObj atIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
@@ -350,8 +360,27 @@
 
 + (TableLine *)tableLine
 {
+    return [self tableLineWithColor:0xe4e4e4];
+}
+
++ (TableLine *)tableLineWithColor:(UInt32)hexColor
+{
     TableLine *bottomLine = [[[NSBundle mainBundle] loadNibNamed:@"TableLine" owner:self options:nil] objectAtIndex:0];
+    [bottomLine setColor:hexColor];
     return bottomLine;
+}
+
++ (id)loadView:(Class)viewClass fromXib:(NSString *)xibName
+{
+    NSArray *bundle = [[NSBundle mainBundle] loadNibNamed:xibName owner:nil options:nil];
+    id retView = nil;
+    for (id object in bundle) {
+        if ([object isKindOfClass:viewClass]) {
+            retView = object;
+            break;
+        }
+    }
+    return retView;
 }
 
 #pragma mark - Files

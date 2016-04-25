@@ -44,7 +44,7 @@
         self.imgvIconLayout.constant = 15.0;
     }
     else {
-        self.imgvIconLayout.constant = 5.0;
+        self.imgvIconLayout.constant = 10.0;
     }
     
     if (utilObj.iType == kHeaderUtilTypeAddAllSongs) {

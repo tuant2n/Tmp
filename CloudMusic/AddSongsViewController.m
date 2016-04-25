@@ -22,7 +22,7 @@ typedef enum {
     kFilterTypeDownloaded,
 } kFilterType;
 
-@interface AddSongsViewController () <UISearchDisplayDelegate,UITableViewDataSource,UITableViewDelegate,TableHeaderViewDelegate>
+@interface AddSongsViewController () <NSFetchedResultsControllerDelegate,UISearchDisplayDelegate,UITableViewDataSource,UITableViewDelegate,TableHeaderViewDelegate>
 {
     kFilterType iFilterType;
     NSString *sLastSearchString;
@@ -148,7 +148,7 @@ typedef enum {
     [self setToolbarItems:[NSArray arrayWithObjects:spaceItem,[[UIBarButtonItem alloc] initWithCustomView:self.btnFilter],spaceItem,nil] animated:NO];
     
     [self setupSearchBar];
-    [Utils configTableView:self.tblList isSearch:NO];
+    [Utils configTableView:self.tblList];
 }
 
 - (void)setupSearchBar
@@ -269,7 +269,6 @@ typedef enum {
         case NSFetchedResultsChangeInsert: {
             [self.tblList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
-            
             break;
             
         case NSFetchedResultsChangeDelete: {
@@ -327,24 +326,42 @@ typedef enum {
 
 #pragma mark - UISearchDisplayControllerDelegate
 
-- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView;
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView
+{
+    [tableView setContentInset:UIEdgeInsetsZero];
+    [tableView setScrollIndicatorInsets:UIEdgeInsetsZero];
+    
+    [tableView setTableHeaderView:[Utils tableLine]];
+    [tableView setTableFooterView:[Utils tableLine]];
+
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView
+{
+    [Utils findAndHideSearchBarShadowInView:tableView];
+}
+
+- (void)closeSearch
 {
     self.searchFetchedResultsController.delegate = nil;
     self.searchFetchedResultsController = nil;
+    sLastSearchString = nil;
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView;
+{
+    [self closeSearch];
 }
 
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
 {
-    [controller.searchResultsTableView setContentInset:UIEdgeInsetsZero];
-    [controller.searchResultsTableView setScrollIndicatorInsets:UIEdgeInsetsZero];
-    [controller.searchResultsTableView setTableFooterView:[Utils tableLine]];
     controller.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [controller.searchResultsTableView registerNib:[UINib nibWithNibName:@"AddSongsCell" bundle:nil] forCellReuseIdentifier:@"AddSongsCellId"];
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
 {
-    sLastSearchString = nil;
+    [self closeSearch];
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
@@ -353,6 +370,7 @@ typedef enum {
         return NO;
     }
     
+    searchString = [Utils standardLocaleString:searchString];
     sLastSearchString = searchString;
     
     self.searchFetchedResultsController = nil;

@@ -36,4 +36,15 @@
     [self isPlaying:item.isPlaying];
 }
 
+- (void)configWithoutMenu:(AlbumArtistObj *)item
+{
+    [self setArtwork:item.sLocalArtworkUrl];
+    
+    self.lblAlbumArtistName.text = item.sAlbumArtistName;
+    self.lblAlbumArtisDesc.text = item.sAlbumArtistDesc;
+    
+    [self setItemType:item.isCloud];
+    [self isPlaying:item.isPlaying];
+}
+
 @end

@@ -410,7 +410,6 @@
 {
     if (!_btnDownload) {
         _btnDownload = [Utils createBarButtonWithTitle:@"Download" font:[UIFont fontWithName:@"HelveticaNeue-Medium" size:16.0] textColor:0x017ee6 position:UIControlContentHorizontalAlignmentRight target:self action:@selector(download)];
-        [_btnDownload setFrame:CGRectMake(_btnDownload.frame.origin.x, _btnDownload.frame.origin.y, 100.0, _btnDownload.frame.size.height)];
     }
     return _btnDownload;
 }
@@ -419,7 +418,6 @@
 {
     if (!_btnSelect) {
         _btnSelect = [Utils createBarButtonWithTitle:@"Select All" font:[UIFont fontWithName:@"HelveticaNeue-Medium" size:16.0] textColor:0x017ee6 position:UIControlContentHorizontalAlignmentLeft target:self action:@selector(selectAll)];
-        [_btnSelect setFrame:CGRectMake(_btnSelect.frame.origin.x, _btnSelect.frame.origin.y, 100.0, _btnSelect.frame.size.height)];
     }
     return _btnSelect;
 }

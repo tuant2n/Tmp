@@ -10,4 +10,6 @@
 
 @interface PlayerViewController : UIViewController
 
++ (PlayerViewController *)sharedInstance;
+
 @end

@@ -69,9 +69,7 @@
         @try {
             [self.currentSong removeObserver:self forKeyPath:@"numberOfSelect"];
         }
-        @catch(id anException) {
-            TTLog(@"%@",anException);
-        }
+        @catch(id anException) {}
     }
 }
 

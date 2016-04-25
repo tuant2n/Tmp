@@ -48,6 +48,11 @@
     }
 }
 
+- (void)configWithoutMenu:(Playlist *)playlist
+{
+    [self config:playlist];
+}
+
 - (void)touchEditName:(id)sender
 {
     if (!self.currentPlaylist) {

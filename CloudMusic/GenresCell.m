@@ -37,4 +37,15 @@
     [self isPlaying:item.isPlaying];
 }
 
+- (void)configWithoutMenu:(GenreObj *)item
+{
+    [self setArtwork:item.sLocalArtworkUrl];
+    
+    self.lblGenreName.text = item.sGenreName;
+    self.lblGenreDesc.text = item.sGenreDesc;
+    
+    [self setItemType:item.isCloud];
+    [self isPlaying:item.isPlaying];
+}
+
 @end

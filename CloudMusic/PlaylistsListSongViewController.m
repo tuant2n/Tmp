@@ -101,7 +101,7 @@
     editMode = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithCustomView:self.btnDone],spaceItem,[[UIBarButtonItem alloc] initWithCustomView:self.btnAdd],nil];
     [self setToolbarItems:normalMode animated:NO];
     
-    [Utils configTableView:self.tblList isSearch:NO];
+    [Utils configTableView:self.tblList];
     [self setupEditView];
 }
 

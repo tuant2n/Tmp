@@ -255,6 +255,9 @@
 		7B0896281CA8E3A400264CD1 /* PlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B0896271CA8E3A400264CD1 /* PlayerViewController.xib */; };
 		7B1533621CAA863B0099DD9C /* AlbumListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B1533601CAA863B0099DD9C /* AlbumListViewController.m */; };
 		7B1533631CAA863B0099DD9C /* AlbumListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B1533611CAA863B0099DD9C /* AlbumListViewController.xib */; };
+		7B2191C91CCE12EE00EA0070 /* btn_close_player.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2191C61CCE12EE00EA0070 /* btn_close_player.png */; };
+		7B2191CA1CCE12EE00EA0070 /* btn_close_player@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2191C71CCE12EE00EA0070 /* btn_close_player@2x.png */; };
+		7B2191CB1CCE12EE00EA0070 /* btn_close_player@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2191C81CCE12EE00EA0070 /* btn_close_player@3x.png */; };
 		7B26B2391CAF64D200368CA8 /* TagElementCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B2371CAF64D200368CA8 /* TagElementCell.m */; };
 		7B26B23A1CAF64D200368CA8 /* TagElementCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B26B2381CAF64D200368CA8 /* TagElementCell.xib */; };
 		7B26B2421CAF76C000368CA8 /* ArtworkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B2411CAF76C000368CA8 /* ArtworkView.m */; };
@@ -655,6 +658,9 @@
 		7B15335F1CAA863B0099DD9C /* AlbumListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumListViewController.h; sourceTree = "<group>"; };
 		7B1533601CAA863B0099DD9C /* AlbumListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumListViewController.m; sourceTree = "<group>"; };
 		7B1533611CAA863B0099DD9C /* AlbumListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumListViewController.xib; sourceTree = "<group>"; };
+		7B2191C61CCE12EE00EA0070 /* btn_close_player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_close_player.png; sourceTree = "<group>"; };
+		7B2191C71CCE12EE00EA0070 /* btn_close_player@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_close_player@2x.png"; sourceTree = "<group>"; };
+		7B2191C81CCE12EE00EA0070 /* btn_close_player@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_close_player@3x.png"; sourceTree = "<group>"; };
 		7B26B2361CAF64D200368CA8 /* TagElementCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagElementCell.h; sourceTree = "<group>"; };
 		7B26B2371CAF64D200368CA8 /* TagElementCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagElementCell.m; sourceTree = "<group>"; };
 		7B26B2381CAF64D200368CA8 /* TagElementCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagElementCell.xib; sourceTree = "<group>"; };
@@ -711,7 +717,7 @@
 		7BF16C081CC8EC81002D99A6 /* btnAddSongToPlaylist@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnAddSongToPlaylist@2x.png"; sourceTree = "<group>"; };
 		7BF16C091CC8EC81002D99A6 /* btnAddSongToPlaylist@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnAddSongToPlaylist@3x.png"; sourceTree = "<group>"; };
 		7BF5C8D11C915D2100175C6F /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
-		7BF5C8D21C915D2100175C6F /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
+		7BF5C8D21C915D2100175C6F /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		7BF5C8D71C915E3F00175C6F /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		7BF5C8D81C915E3F00175C6F /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		7BF5C8DA1C91605800175C6F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -811,7 +817,7 @@
 				3C4926F11C9528170065B1DD /* Artists */,
 				3C4926F51C9528380065B1DD /* Genres */,
 				7BF5C8C61C91540400175C6F /* Playlists */,
-				7BF5C8D41C915D2500175C6F /* Player */,
+				7BF5C8D41C915D2500175C6F /* PlayerView */,
 				7B4CD88D1CACE0BB0041BE4E /* EditViewController */,
 				7BD179471C9D5159004CD5AF /* DataManagement */,
 				3C4926F91C952AB70065B1DD /* Settings */,
@@ -839,6 +845,7 @@
 		3C09C7061C8C72C7004A44E2 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				7B2191C51CCE12EE00EA0070 /* Player */,
 				3C6C2CB51CB2829900F3E901 /* Button */,
 				7B066A751CA4F9770078FD53 /* HeaderView */,
 				3CB1052B1CA419DB0087D20A /* Media */,
@@ -1374,6 +1381,16 @@
 			name = AlbumListViewController;
 			sourceTree = "<group>";
 		};
+		7B2191C51CCE12EE00EA0070 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				7B2191C61CCE12EE00EA0070 /* btn_close_player.png */,
+				7B2191C71CCE12EE00EA0070 /* btn_close_player@2x.png */,
+				7B2191C81CCE12EE00EA0070 /* btn_close_player@3x.png */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
 		7B26B22E1CAF625100368CA8 /* MainCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1635,14 +1652,14 @@
 			name = Playlists;
 			sourceTree = "<group>";
 		};
-		7BF5C8D41C915D2500175C6F /* Player */ = {
+		7BF5C8D41C915D2500175C6F /* PlayerView */ = {
 			isa = PBXGroup;
 			children = (
 				7BF5C8D11C915D2100175C6F /* PlayerViewController.h */,
 				7BF5C8D21C915D2100175C6F /* PlayerViewController.m */,
 				7B0896271CA8E3A400264CD1 /* PlayerViewController.xib */,
 			);
-			name = Player;
+			name = PlayerView;
 			sourceTree = "<group>";
 		};
 		7BF5C8D51C915D3600175C6F /* MainTabbar */ = {
@@ -1854,6 +1871,7 @@
 				3CDE2EE01CC4D4DD009B2FBA /* add-icon.png in Resources */,
 				3C4926B31C93EBCC0065B1DD /* albums@2x.png in Resources */,
 				3C4926C91C93EBCC0065B1DD /* more-selected@3x.png in Resources */,
+				7B2191CA1CCE12EE00EA0070 /* btn_close_player@2x.png in Resources */,
 				3C4926DB1C93EBCC0065B1DD /* songs-selected@3x.png in Resources */,
 				3CB3FF1E1CB9578100A95DD2 /* aac@2x.png in Resources */,
 				3C4926D81C93EBCC0065B1DD /* settings@3x.png in Resources */,
@@ -1911,10 +1929,12 @@
 				3C4926DA1C93EBCC0065B1DD /* songs-selected@2x.png in Resources */,
 				3C6C2CBC1CB2829900F3E901 /* check.png in Resources */,
 				7B3A91DB1CCA2E38007DB5B6 /* add-song@3x.png in Resources */,
+				7B2191C91CCE12EE00EA0070 /* btn_close_player.png in Resources */,
 				3CB105351CA419DB0087D20A /* ipod-item-icon.png in Resources */,
 				3C6DB1031CA6D0CE00F68D3E /* list-item-icon.png in Resources */,
 				7BF65F1C1CA3C665007B198D /* HeaderTitle.xib in Resources */,
 				3CDE2EE21CC4D4DD009B2FBA /* add-icon@3x.png in Resources */,
+				7B2191CB1CCE12EE00EA0070 /* btn_close_player@3x.png in Resources */,
 				3C4926CC1C93EBCC0065B1DD /* more@3x.png in Resources */,
 				7B066A581CA4CD730078FD53 /* AlbumsViewController.xib in Resources */,
 				7B0896281CA8E3A400264CD1 /* PlayerViewController.xib in Resources */,

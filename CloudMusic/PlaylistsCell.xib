@@ -70,6 +70,7 @@
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbd-Ef-sUf" userLabel="btnEditName">
                                         <rect key="frame" x="0.0" y="0.0" width="60" height="61"/>
+                                        <inset key="imageEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" image="edit-icon.png"/>
                                     </button>
                                 </subviews>

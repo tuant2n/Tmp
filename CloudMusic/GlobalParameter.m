@@ -75,6 +75,11 @@ static GlobalParameter *globalParameter = nil;
     [self startPlay];
 }
 
+- (void)openPlayer
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_OPEN_PLAYER object:nil];
+}
+
 #pragma mark - DropBoxInfo
 
 - (void)clearDropBoxInfo

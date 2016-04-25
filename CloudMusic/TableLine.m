@@ -26,4 +26,9 @@
     self.line.backgroundColor = [Utils colorWithRGBHex:0xe4e4e4];
 }
 
+- (void)setColor:(UInt32)hex
+{
+    self.line.backgroundColor = [Utils colorWithRGBHex:hex];
+}
+
 @end

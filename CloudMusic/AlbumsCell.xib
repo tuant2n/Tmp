@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -20,24 +20,21 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2S1-HP-aab" userLabel="imgvArtwork">
                                 <rect key="frame" x="5" y="5" width="71" height="71"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="2S1-HP-aab" secondAttribute="height" multiplier="1:1" id="Bxh-iL-P08"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XsS-hr-Es2" userLabel="vInfo">
-                                <rect key="frame" x="81" y="26" width="194" height="50"/>
+                                <rect key="frame" x="81" y="26" width="189" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ổ Ỵ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofK-a5-jmX" userLabel="lblAlbumName">
-                                        <rect key="frame" x="0.0" y="0.0" width="194" height="22"/>
-                                        <animations/>
+                                        <rect key="frame" x="0.0" y="0.0" width="189" height="22"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ổ ỵ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Flu-ft-5qb" userLabel="lblAlbumInfo">
-                                        <rect key="frame" x="0.0" y="22" width="194" height="15"/>
-                                        <animations/>
+                                        <rect key="frame" x="0.0" y="22" width="189" height="15"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="CM8-51-s9O"/>
                                         </constraints>
@@ -46,8 +43,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ổ Ỵ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8I6-hc-4mF" userLabel="lblAlbumDesc">
-                                        <rect key="frame" x="0.0" y="37" width="194" height="13"/>
-                                        <animations/>
+                                        <rect key="frame" x="0.0" y="37" width="189" height="13"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="13" id="f3v-rM-DCG"/>
                                         </constraints>
@@ -56,7 +52,6 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="0zb-9t-AKz"/>
                                     <constraint firstItem="Flu-ft-5qb" firstAttribute="leading" secondItem="XsS-hr-Es2" secondAttribute="leading" id="6mB-rb-BBU"/>
@@ -72,11 +67,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yUn-mj-I6D" userLabel="vExternal">
-                                <rect key="frame" x="275" y="0.0" width="30" height="81"/>
+                                <rect key="frame" x="270" y="0.0" width="30" height="81"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YBW-Tt-qLV" userLabel="vMusicEq">
                                         <rect key="frame" x="11" y="14" width="8" height="14"/>
-                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="15m-rB-fR0"/>
                                             <constraint firstAttribute="width" constant="8" id="GGM-2y-fhc"/>
@@ -84,13 +78,11 @@
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ipod-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="fBC-Hr-QUk" userLabel="imgvIcon">
                                         <rect key="frame" x="0.0" y="31" width="30" height="20"/>
-                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="f5p-4N-M2V"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="fBC-Hr-QUk" secondAttribute="trailing" id="0ue-M8-0bk"/>
                                     <constraint firstItem="fBC-Hr-QUk" firstAttribute="leading" secondItem="yUn-mj-I6D" secondAttribute="leading" id="2ia-7a-3pM"/>
@@ -100,15 +92,13 @@
                                     <constraint firstItem="YBW-Tt-qLV" firstAttribute="centerX" secondItem="yUn-mj-I6D" secondAttribute="centerX" id="tJV-Mg-DGW"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zvt-HI-8eg" userLabel="imgvListIcon">
-                                <rect key="frame" x="305" y="0.0" width="10" height="81"/>
-                                <animations/>
+                            <imageView userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zvt-HI-8eg" userLabel="imgvListIcon">
+                                <rect key="frame" x="300" y="0.0" width="10" height="81"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="10" id="iFp-fs-NQR"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="yUn-mj-I6D" secondAttribute="bottom" id="6yl-pX-mL9"/>
@@ -117,7 +107,7 @@
                             <constraint firstItem="2S1-HP-aab" firstAttribute="top" secondItem="Gss-Ub-Fnl" secondAttribute="top" constant="5" id="IBE-mw-pw1"/>
                             <constraint firstItem="yUn-mj-I6D" firstAttribute="top" secondItem="Gss-Ub-Fnl" secondAttribute="top" id="NQi-8x-ZTH"/>
                             <constraint firstItem="XsS-hr-Es2" firstAttribute="leading" secondItem="2S1-HP-aab" secondAttribute="trailing" constant="5" id="WNZ-Lx-j1k"/>
-                            <constraint firstAttribute="trailing" secondItem="Zvt-HI-8eg" secondAttribute="trailing" constant="5" id="afA-4a-9js"/>
+                            <constraint firstAttribute="trailing" secondItem="Zvt-HI-8eg" secondAttribute="trailing" constant="10" id="afA-4a-9js"/>
                             <constraint firstAttribute="bottom" secondItem="XsS-hr-Es2" secondAttribute="bottom" constant="5" id="boe-Rc-EIF"/>
                             <constraint firstItem="Zvt-HI-8eg" firstAttribute="leading" secondItem="yUn-mj-I6D" secondAttribute="trailing" id="jWV-eF-Ah2"/>
                             <constraint firstAttribute="bottom" secondItem="2S1-HP-aab" secondAttribute="bottom" constant="5" id="pkr-V9-vec"/>
@@ -127,14 +117,12 @@
                     </view>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H61-yK-3gD" userLabel="line">
                         <rect key="frame" x="5" y="80" width="315" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="yVh-Sq-aIp"/>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="Gss-Ub-Fnl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Af8-dA-lWx"/>
                     <constraint firstItem="H61-yK-3gD" firstAttribute="top" secondItem="Gss-Ub-Fnl" secondAttribute="bottom" id="Gnf-hd-6rT"/>
@@ -151,7 +139,6 @@
                     </mask>
                 </variation>
             </tableViewCellContentView>
-            <animations/>
             <connections>
                 <outlet property="imgvArtwork" destination="2S1-HP-aab" id="e2D-ln-2cM"/>
                 <outlet property="imgvIcon" destination="fBC-Hr-QUk" id="rey-uM-vw0"/>

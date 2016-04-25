@@ -10,4 +10,6 @@
 
 @interface TableLine : UIView
 
+- (void)setColor:(UInt32)hex;
+
 @end

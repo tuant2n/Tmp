@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FilesViewController">
             <connections>
                 <outlet property="btnConnectDropbox" destination="kYB-LM-Hu1" id="Z0X-tX-Xfd"/>
-                <outlet property="disableView" destination="iNZ-Ma-sJw" id="CjU-cE-gpt"/>
                 <outlet property="tblList" destination="ELj-iY-t1P" id="cin-oO-Hhu"/>
-                <outlet property="tblSearchResult" destination="7ee-Zf-N0J" id="z4K-F5-wmU"/>
                 <outlet property="vNotFound" destination="aJK-Z7-ss3" id="Von-N8-q87"/>
                 <outlet property="view" destination="iN0-l3-epB" id="IaC-GY-CgR"/>
             </connections>
@@ -22,29 +20,17 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ELj-iY-t1P" userLabel="tblList">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
-                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="3dy-wh-fEV"/>
                         <outlet property="delegate" destination="-1" id="gcg-eT-6dU"/>
                     </connections>
                 </tableView>
-                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7ee-Zf-N0J" userLabel="tblSearchResult">
-                    <rect key="frame" x="0.0" y="44" width="320" height="372"/>
-                    <animations/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </tableView>
-                <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iNZ-Ma-sJw" userLabel="disableView">
-                    <rect key="frame" x="0.0" y="44" width="320" height="372"/>
-                    <animations/>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aJK-Z7-ss3" userLabel="vNotFound">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You haven't imported any music files." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="230" translatesAutoresizingMaskIntoConstraints="NO" id="y4D-xo-b36" userLabel="lblTitle1">
                             <rect key="frame" x="45" y="20" width="230" height="55"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="230" id="8VW-Rd-KPA"/>
                                 <constraint firstAttribute="height" constant="55" id="U4v-P9-5Fa"/>
@@ -55,7 +41,6 @@
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expand your library by adding new music." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="MYD-4j-ank" userLabel="lblTitle2">
                             <rect key="frame" x="45" y="85" width="230" height="45"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="G88-Uw-e7M"/>
                             </constraints>
@@ -65,7 +50,6 @@
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYB-LM-Hu1" userLabel="btnConnect">
                             <rect key="frame" x="30" y="336" width="260" height="50"/>
-                            <animations/>
                             <color key="backgroundColor" red="1" green="0.080225848229999994" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="23D-IS-hjq"/>
@@ -82,7 +66,6 @@
                             </connections>
                         </button>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="kYB-LM-Hu1" secondAttribute="bottom" constant="30" id="1Vp-bS-4h0"/>
@@ -95,24 +78,15 @@
                     </constraints>
                 </view>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="iNZ-Ma-sJw" firstAttribute="leading" secondItem="7ee-Zf-N0J" secondAttribute="leading" id="1Vt-wE-I2l"/>
-                <constraint firstItem="7ee-Zf-N0J" firstAttribute="leading" secondItem="ELj-iY-t1P" secondAttribute="leading" id="7JP-Eg-7M3"/>
                 <constraint firstAttribute="bottom" secondItem="ELj-iY-t1P" secondAttribute="bottom" id="AgO-7W-MKK"/>
                 <constraint firstItem="ELj-iY-t1P" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="BfC-Np-xbk"/>
-                <constraint firstItem="iNZ-Ma-sJw" firstAttribute="trailing" secondItem="7ee-Zf-N0J" secondAttribute="trailing" id="FhS-Gv-f3p"/>
-                <constraint firstItem="iNZ-Ma-sJw" firstAttribute="top" secondItem="7ee-Zf-N0J" secondAttribute="top" id="LfC-yz-CUn"/>
-                <constraint firstItem="7ee-Zf-N0J" firstAttribute="bottom" secondItem="ELj-iY-t1P" secondAttribute="bottom" id="ZBg-TH-CUD"/>
                 <constraint firstItem="ELj-iY-t1P" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aom-gm-mgZ"/>
-                <constraint firstItem="iNZ-Ma-sJw" firstAttribute="bottom" secondItem="7ee-Zf-N0J" secondAttribute="bottom" id="cIS-z1-hXq"/>
-                <constraint firstItem="7ee-Zf-N0J" firstAttribute="top" secondItem="ELj-iY-t1P" secondAttribute="top" constant="44" id="eMA-uh-wvG"/>
                 <constraint firstAttribute="trailing" secondItem="ELj-iY-t1P" secondAttribute="trailing" id="ey9-qv-Ytc"/>
                 <constraint firstItem="aJK-Z7-ss3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="gQh-i6-gXv"/>
                 <constraint firstAttribute="bottom" secondItem="aJK-Z7-ss3" secondAttribute="bottom" id="nip-0c-bAO"/>
                 <constraint firstAttribute="trailing" secondItem="aJK-Z7-ss3" secondAttribute="trailing" id="o0K-TO-wwS"/>
-                <constraint firstItem="7ee-Zf-N0J" firstAttribute="trailing" secondItem="ELj-iY-t1P" secondAttribute="trailing" id="rCz-5G-vm3"/>
                 <constraint firstItem="aJK-Z7-ss3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="rMg-LT-5h1"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>

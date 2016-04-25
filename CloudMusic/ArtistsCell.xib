@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -19,18 +19,16 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Jja-VM-2CJ" userLabel="imgvArtwork">
                                 <rect key="frame" x="5" y="5" width="50" height="50"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="IKX-em-GgV"/>
                                     <constraint firstAttribute="width" constant="50" id="gnh-qY-StH"/>
                                 </constraints>
                             </imageView>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fpS-QT-yLx" userLabel="vInfo">
-                                <rect key="frame" x="60" y="8" width="215" height="45"/>
+                                <rect key="frame" x="60" y="8" width="210" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfu-SR-bjP" userLabel="lblAlbumArtistName">
-                                        <rect key="frame" x="0.0" y="0.0" width="215" height="25"/>
-                                        <animations/>
+                                        <rect key="frame" x="0.0" y="0.0" width="210" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="aZa-bC-SQ6"/>
                                         </constraints>
@@ -39,14 +37,12 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cfy-D7-Acg" userLabel="sAlbumArtistDesc">
-                                        <rect key="frame" x="0.0" y="25" width="215" height="20"/>
-                                        <animations/>
+                                        <rect key="frame" x="0.0" y="25" width="210" height="20"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Cfy-D7-Acg" secondAttribute="trailing" id="81d-8v-pQX"/>
                                     <constraint firstAttribute="trailing" secondItem="nfu-SR-bjP" secondAttribute="trailing" id="Dkf-3d-6xZ"/>
@@ -59,11 +55,10 @@
                                 </constraints>
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="81h-Ut-Gnm" userLabel="vExternal">
-                                <rect key="frame" x="275" y="0.0" width="30" height="61"/>
+                                <rect key="frame" x="270" y="0.0" width="30" height="61"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x0G-f2-aGV" userLabel="vMusicEq">
                                         <rect key="frame" x="11" y="4" width="8" height="14"/>
-                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="I2P-1n-VF5"/>
                                             <constraint firstAttribute="width" constant="8" id="mCc-yz-KMz"/>
@@ -71,13 +66,11 @@
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ipod-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="xaM-vR-xcf" userLabel="imgvIcon">
                                         <rect key="frame" x="0.0" y="21" width="30" height="20"/>
-                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="HUs-ab-VwK"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <animations/>
                                 <constraints>
                                     <constraint firstItem="x0G-f2-aGV" firstAttribute="centerX" secondItem="81h-Ut-Gnm" secondAttribute="centerX" id="Dbf-aW-yST"/>
                                     <constraint firstAttribute="width" constant="30" id="ETa-As-GVE"/>
@@ -93,17 +86,15 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Cbf-sQ-Bmu" userLabel="imgvListIcon">
-                                <rect key="frame" x="305" y="0.0" width="10" height="61"/>
-                                <animations/>
+                            <imageView userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list-item-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Cbf-sQ-Bmu" userLabel="imgvListIcon">
+                                <rect key="frame" x="300" y="0.0" width="10" height="61"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="10" id="mTK-Fp-y0c"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <animations/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Cbf-sQ-Bmu" secondAttribute="trailing" constant="5" id="HJT-4w-EDC"/>
+                            <constraint firstAttribute="trailing" secondItem="Cbf-sQ-Bmu" secondAttribute="trailing" constant="10" id="HJT-4w-EDC"/>
                             <constraint firstItem="Jja-VM-2CJ" firstAttribute="leading" secondItem="bff-Kk-A75" secondAttribute="leading" constant="5" id="IFv-19-LRn"/>
                             <constraint firstItem="Jja-VM-2CJ" firstAttribute="centerY" secondItem="bff-Kk-A75" secondAttribute="centerY" id="Jwy-gy-KHl"/>
                             <constraint firstAttribute="bottom" secondItem="Cbf-sQ-Bmu" secondAttribute="bottom" id="T96-iX-UTw"/>
@@ -130,14 +121,12 @@
                     </view>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZHz-xI-4xB" userLabel="line">
                         <rect key="frame" x="5" y="60" width="315" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="DIS-Kb-QZF"/>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="ZHz-xI-4xB" firstAttribute="top" secondItem="bff-Kk-A75" secondAttribute="bottom" id="2MS-oB-SAM"/>
                     <constraint firstItem="ZHz-xI-4xB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="ATC-QE-IHS"/>
@@ -158,7 +147,6 @@
                     </mask>
                 </variation>
             </tableViewCellContentView>
-            <animations/>
             <connections>
                 <outlet property="imgvArtwork" destination="Jja-VM-2CJ" id="myU-0l-4ig"/>
                 <outlet property="imgvIcon" destination="xaM-vR-xcf" id="xsX-Zi-83y"/>

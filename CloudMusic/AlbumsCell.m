@@ -44,6 +44,18 @@
     [self isPlaying:item.isPlaying];
 }
 
+- (void)configWithoutMenu:(AlbumObj *)item
+{
+    [self setArtwork:item.sLocalArtworkUrl];
+    
+    self.lblAlbumName.text = item.sAlbumName;
+    self.lblAlbumInfo.text = item.sAlbumInfo;
+    self.lblAlbumDesc.text = item.sAlbumDesc;
+    
+    [self setItemType:item.isCloud];
+    [self isPlaying:item.isPlaying];
+}
+
 - (void)hideExtenal
 {
     self.vExternal.hidden = YES;

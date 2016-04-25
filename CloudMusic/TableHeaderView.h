@@ -19,6 +19,9 @@ typedef enum {
     kHeaderUtilTypeFilter
 } kHeaderUtilType;
 
+#define SEARCHBAR_HEIGHT 44.0
+#define LINE_SEPERATOR_HEIGHT 1
+
 @class AlbumObj;
 
 @protocol TableHeaderViewDelegate <NSObject>
@@ -42,7 +45,5 @@ typedef enum {
 
 - (id)initForAlbumListVC:(AlbumObj *)album;
 - (id)initForAddSongsVC;
-
-- (void)resignKeyboard;
 
 @end

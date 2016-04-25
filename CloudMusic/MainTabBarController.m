@@ -22,6 +22,8 @@
 #import "GenresViewController.h"
 #import "SettingsViewController.h"
 
+#import "PlayerViewController.h"
+
 #import "IQKeyboardManager.h"
 #import "MBProgressHUD.h"
 
@@ -74,6 +76,8 @@ typedef enum {
 {
     [super viewDidLoad];
     [self initData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openPlayer) name:NOTIFICATION_OPEN_PLAYER object:nil];
 }
 
 - (void)initData
@@ -229,6 +233,12 @@ typedef enum {
     }
     
     return [arrayListTab copy];
+}
+
+- (void)openPlayer
+{
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[PlayerViewController sharedInstance]];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning

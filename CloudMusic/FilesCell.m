@@ -41,4 +41,15 @@
     [self isPlaying:file.item.isPlaying];
 }
 
+- (void)configWithoutMenu:(File *)file
+{
+    [self setArtwork:file.item.sLocalArtworkUrl];
+    self.lblDuration.text = file.item.sDuration;
+    
+    self.lblSongName.text = file.sFileName;
+    self.lblSongDesc.text = file.sTimeStamp;
+    
+    [self isPlaying:file.item.isPlaying];
+}
+
 @end

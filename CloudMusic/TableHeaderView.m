@@ -14,17 +14,12 @@
 #import "DataManagement.h"
 #import "HeaderUtilObj.h"
 
-#define SEARCHBAR_HEIGHT 44.0
-#define LINE_SEPERATOR_HEIGHT 1
-
 @interface TableHeaderView() <UITableViewDataSource,UITableViewDelegate>
 {
     BOOL hasIndexTitles, isNotShowSearch;
 }
 
 @property (nonatomic, strong) UITableView *tblListUtils;
-@property (nonatomic, strong) NSLayoutConstraint *tblListUtilsPosition;
-
 @property (nonatomic, strong) UIView *line;
 
 @property (nonatomic, strong) NSMutableArray *arrListUtils;
@@ -232,6 +227,7 @@
     
     self.line.backgroundColor = [UIColor clearColor];
     hasIndexTitles = NO;
+    isNotShowSearch = YES;
     [self setupDefault];
 }
 
@@ -258,36 +254,14 @@
         }
     }
     
-    height += LINE_SEPERATOR_HEIGHT;
-    
     if (!isNotShowSearch)
     {
         height += SEARCHBAR_HEIGHT;
-        self.searchBar.hidden = NO;
-        
-        if (self.arrListUtils.count > 0) {
-            self.tblListUtils.hidden = NO;
-            [self.tblListUtilsPosition setConstant:SEARCHBAR_HEIGHT];
-        }
-        else {
-            self.tblListUtils.hidden = YES;
-            [self.tblListUtilsPosition setConstant:0.0];
-        }
-    }
-    else {
-        self.searchBar.hidden = YES;
-        [self.tblListUtilsPosition setConstant:0.0];
+        [self.tblListUtils setTableHeaderView:self.searchBar];
     }
     
+    height += LINE_SEPERATOR_HEIGHT;
     [self setHeight:height];
-}
-
-- (void)resignKeyboard
-{
-    if ([self.searchBar isFirstResponder]) {
-        [self.searchBar resignFirstResponder];
-        [self.searchBar setShowsCancelButton:NO animated:YES];
-    }
 }
 
 - (void)setHeight:(float)fHeight
@@ -354,18 +328,8 @@
 - (void)initUI
 {
     //
-    self.searchBar = [[UISearchBar alloc] init];
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
     [Utils configSearchBar:self.searchBar];
-    [self.searchBar setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self addSubview:self.searchBar];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1 constant:0]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1 constant:0]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.searchBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:SEARCHBAR_HEIGHT]];
     
     //
     self.line = [[UIView alloc] init];
@@ -389,8 +353,7 @@
     self.tblListUtils.dataSource = self;
     [self.tblListUtils setScrollEnabled:NO];
     [self.tblListUtils setTableFooterView:[UIView new]];
-    
-    [Utils configTableView:self.tblListUtils isSearch:NO];
+    [Utils configTableView:self.tblListUtils];
     
     [self.tblListUtils setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self addSubview:self.tblListUtils];
@@ -399,8 +362,7 @@
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1 constant:0]];
     
-    self.tblListUtilsPosition = [NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0];
-    [self addConstraint:self.tblListUtilsPosition];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tblListUtils attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.line attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
 }

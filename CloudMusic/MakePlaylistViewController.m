@@ -51,7 +51,7 @@
     [Utils configNavigationController:self.navigationController];
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     
-    [Utils configTableView:self.tblList isSearch:YES];
+    [Utils configTableView:self.tblList];
     [self.tblList setTableHeaderView:[Utils tableLine]];
 }
 
