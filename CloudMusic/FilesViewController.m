@@ -357,10 +357,7 @@
              if (results) {
                  [self.arrResults removeAllObjects];
                  [self.arrResults addObjectsFromArray:results];
-                 
-                 [UIView transitionWithView:self.searchDisplayController.searchResultsTableView duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                     [self.searchDisplayController.searchResultsTableView reloadData];
-                 } completion:nil];
+                 [self.searchDisplay.searchResultsTableView reloadData];
              }
          });
      }];
@@ -374,6 +371,7 @@
         [self.searchDisplay setActive:NO animated:NO];
     }
     
+    [self.arrResults removeAllObjects];
     sCurrentSearch = nil;
 }
 

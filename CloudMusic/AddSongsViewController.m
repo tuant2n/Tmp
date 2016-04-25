@@ -330,10 +330,7 @@ typedef enum {
 {
     [tableView setContentInset:UIEdgeInsetsZero];
     [tableView setScrollIndicatorInsets:UIEdgeInsetsZero];
-    
-    [tableView setTableHeaderView:[Utils tableLine]];
     [tableView setTableFooterView:[Utils tableLine]];
-
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView
