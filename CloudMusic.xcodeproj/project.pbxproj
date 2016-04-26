@@ -224,6 +224,25 @@
 		3CF2A3651CAC199500EE89FC /* MainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF2A3641CAC199500EE89FC /* MainCell.m */; };
 		7B007E2D1C924FE90083AA31 /* PCSEQVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B007E2C1C924FE90083AA31 /* PCSEQVisualizer.m */; };
 		7B0285361CBBAB83008E6F7B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0285351CBBAB83008E6F7B /* AVFoundation.framework */; };
+		7B0544551CCF190B0001C9C9 /* fast-forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544431CCF190B0001C9C9 /* fast-forward.png */; };
+		7B0544561CCF190B0001C9C9 /* fast-forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544441CCF190B0001C9C9 /* fast-forward@2x.png */; };
+		7B0544571CCF190B0001C9C9 /* fast-forward@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544451CCF190B0001C9C9 /* fast-forward@3x.png */; };
+		7B0544581CCF190B0001C9C9 /* next-track-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544461CCF190B0001C9C9 /* next-track-button.png */; };
+		7B0544591CCF190B0001C9C9 /* next-track-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544471CCF190B0001C9C9 /* next-track-button@2x.png */; };
+		7B05445A1CCF190B0001C9C9 /* next-track-button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544481CCF190B0001C9C9 /* next-track-button@3x.png */; };
+		7B05445B1CCF190B0001C9C9 /* pause-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544491CCF190B0001C9C9 /* pause-button.png */; };
+		7B05445C1CCF190B0001C9C9 /* pause-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B05444A1CCF190B0001C9C9 /* pause-button@2x.png */; };
+		7B05445D1CCF190B0001C9C9 /* pause-button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B05444B1CCF190B0001C9C9 /* pause-button@3x.png */; };
+		7B05445E1CCF190B0001C9C9 /* play-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B05444C1CCF190B0001C9C9 /* play-button.png */; };
+		7B05445F1CCF190B0001C9C9 /* play-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B05444D1CCF190B0001C9C9 /* play-button@2x.png */; };
+		7B0544601CCF190B0001C9C9 /* play-button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B05444E1CCF190B0001C9C9 /* play-button@3x.png */; };
+		7B0544611CCF190B0001C9C9 /* previous-track.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B05444F1CCF190B0001C9C9 /* previous-track.png */; };
+		7B0544621CCF190B0001C9C9 /* previous-track@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544501CCF190B0001C9C9 /* previous-track@2x.png */; };
+		7B0544631CCF190B0001C9C9 /* previous-track@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544511CCF190B0001C9C9 /* previous-track@3x.png */; };
+		7B0544641CCF190B0001C9C9 /* rewind.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544521CCF190B0001C9C9 /* rewind.png */; };
+		7B0544651CCF190B0001C9C9 /* rewind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544531CCF190B0001C9C9 /* rewind@2x.png */; };
+		7B0544661CCF190B0001C9C9 /* rewind@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544541CCF190B0001C9C9 /* rewind@3x.png */; };
+		7B05448E1CCF2B230001C9C9 /* NBTouchAndHoldButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B05448D1CCF2B230001C9C9 /* NBTouchAndHoldButton.m */; };
 		7B066A4D1CA4C9610078FD53 /* SongsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B066A4C1CA4C9610078FD53 /* SongsViewController.xib */; };
 		7B066A581CA4CD730078FD53 /* AlbumsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B066A571CA4CD730078FD53 /* AlbumsViewController.xib */; };
 		7B066A5A1CA4CDD50078FD53 /* FilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B066A591CA4CDD50078FD53 /* FilesViewController.xib */; };
@@ -253,6 +272,15 @@
 		7B0896131CA8C30000264CD1 /* ArtistsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0896111CA8C30000264CD1 /* ArtistsCell.m */; };
 		7B0896141CA8C30000264CD1 /* ArtistsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B0896121CA8C30000264CD1 /* ArtistsCell.xib */; };
 		7B0896281CA8E3A400264CD1 /* PlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B0896271CA8E3A400264CD1 /* PlayerViewController.xib */; };
+		7B1018CF1CCF7F5000BC514B /* maxTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B1018C61CCF7F5000BC514B /* maxTrack.png */; };
+		7B1018D01CCF7F5000BC514B /* maxTrack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B1018C71CCF7F5000BC514B /* maxTrack@2x.png */; };
+		7B1018D11CCF7F5000BC514B /* maxTrack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B1018C81CCF7F5000BC514B /* maxTrack@3x.png */; };
+		7B1018D21CCF7F5000BC514B /* minTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B1018C91CCF7F5000BC514B /* minTrack.png */; };
+		7B1018D31CCF7F5000BC514B /* minTrack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B1018CA1CCF7F5000BC514B /* minTrack@2x.png */; };
+		7B1018D41CCF7F5000BC514B /* minTrack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B1018CB1CCF7F5000BC514B /* minTrack@3x.png */; };
+		7B1018D51CCF7F5000BC514B /* thumbTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B1018CC1CCF7F5000BC514B /* thumbTrack.png */; };
+		7B1018D61CCF7F5000BC514B /* thumbTrack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B1018CD1CCF7F5000BC514B /* thumbTrack@2x.png */; };
+		7B1018D71CCF7F5000BC514B /* thumbTrack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B1018CE1CCF7F5000BC514B /* thumbTrack@3x.png */; };
 		7B1533621CAA863B0099DD9C /* AlbumListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B1533601CAA863B0099DD9C /* AlbumListViewController.m */; };
 		7B1533631CAA863B0099DD9C /* AlbumListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B1533611CAA863B0099DD9C /* AlbumListViewController.xib */; };
 		7B2191C91CCE12EE00EA0070 /* btn_close_player.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B2191C61CCE12EE00EA0070 /* btn_close_player.png */; };
@@ -620,6 +648,26 @@
 		7B007E2B1C924FE90083AA31 /* PCSEQVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCSEQVisualizer.h; sourceTree = "<group>"; };
 		7B007E2C1C924FE90083AA31 /* PCSEQVisualizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCSEQVisualizer.m; sourceTree = "<group>"; };
 		7B0285351CBBAB83008E6F7B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		7B0544431CCF190B0001C9C9 /* fast-forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fast-forward.png"; sourceTree = "<group>"; };
+		7B0544441CCF190B0001C9C9 /* fast-forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fast-forward@2x.png"; sourceTree = "<group>"; };
+		7B0544451CCF190B0001C9C9 /* fast-forward@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fast-forward@3x.png"; sourceTree = "<group>"; };
+		7B0544461CCF190B0001C9C9 /* next-track-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next-track-button.png"; sourceTree = "<group>"; };
+		7B0544471CCF190B0001C9C9 /* next-track-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next-track-button@2x.png"; sourceTree = "<group>"; };
+		7B0544481CCF190B0001C9C9 /* next-track-button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next-track-button@3x.png"; sourceTree = "<group>"; };
+		7B0544491CCF190B0001C9C9 /* pause-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause-button.png"; sourceTree = "<group>"; };
+		7B05444A1CCF190B0001C9C9 /* pause-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause-button@2x.png"; sourceTree = "<group>"; };
+		7B05444B1CCF190B0001C9C9 /* pause-button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause-button@3x.png"; sourceTree = "<group>"; };
+		7B05444C1CCF190B0001C9C9 /* play-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play-button.png"; sourceTree = "<group>"; };
+		7B05444D1CCF190B0001C9C9 /* play-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play-button@2x.png"; sourceTree = "<group>"; };
+		7B05444E1CCF190B0001C9C9 /* play-button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play-button@3x.png"; sourceTree = "<group>"; };
+		7B05444F1CCF190B0001C9C9 /* previous-track.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous-track.png"; sourceTree = "<group>"; };
+		7B0544501CCF190B0001C9C9 /* previous-track@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous-track@2x.png"; sourceTree = "<group>"; };
+		7B0544511CCF190B0001C9C9 /* previous-track@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous-track@3x.png"; sourceTree = "<group>"; };
+		7B0544521CCF190B0001C9C9 /* rewind.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rewind.png; sourceTree = "<group>"; };
+		7B0544531CCF190B0001C9C9 /* rewind@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rewind@2x.png"; sourceTree = "<group>"; };
+		7B0544541CCF190B0001C9C9 /* rewind@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rewind@3x.png"; sourceTree = "<group>"; };
+		7B05448C1CCF2B230001C9C9 /* NBTouchAndHoldButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBTouchAndHoldButton.h; sourceTree = "<group>"; };
+		7B05448D1CCF2B230001C9C9 /* NBTouchAndHoldButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBTouchAndHoldButton.m; sourceTree = "<group>"; };
 		7B066A4C1CA4C9610078FD53 /* SongsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SongsViewController.xib; sourceTree = "<group>"; };
 		7B066A571CA4CD730078FD53 /* AlbumsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumsViewController.xib; sourceTree = "<group>"; };
 		7B066A591CA4CDD50078FD53 /* FilesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilesViewController.xib; sourceTree = "<group>"; };
@@ -655,6 +703,15 @@
 		7B0896111CA8C30000264CD1 /* ArtistsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtistsCell.m; sourceTree = "<group>"; };
 		7B0896121CA8C30000264CD1 /* ArtistsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistsCell.xib; sourceTree = "<group>"; };
 		7B0896271CA8E3A400264CD1 /* PlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerViewController.xib; sourceTree = "<group>"; };
+		7B1018C61CCF7F5000BC514B /* maxTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = maxTrack.png; sourceTree = "<group>"; };
+		7B1018C71CCF7F5000BC514B /* maxTrack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "maxTrack@2x.png"; sourceTree = "<group>"; };
+		7B1018C81CCF7F5000BC514B /* maxTrack@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "maxTrack@3x.png"; sourceTree = "<group>"; };
+		7B1018C91CCF7F5000BC514B /* minTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minTrack.png; sourceTree = "<group>"; };
+		7B1018CA1CCF7F5000BC514B /* minTrack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minTrack@2x.png"; sourceTree = "<group>"; };
+		7B1018CB1CCF7F5000BC514B /* minTrack@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minTrack@3x.png"; sourceTree = "<group>"; };
+		7B1018CC1CCF7F5000BC514B /* thumbTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbTrack.png; sourceTree = "<group>"; };
+		7B1018CD1CCF7F5000BC514B /* thumbTrack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbTrack@2x.png"; sourceTree = "<group>"; };
+		7B1018CE1CCF7F5000BC514B /* thumbTrack@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbTrack@3x.png"; sourceTree = "<group>"; };
 		7B15335F1CAA863B0099DD9C /* AlbumListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumListViewController.h; sourceTree = "<group>"; };
 		7B1533601CAA863B0099DD9C /* AlbumListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumListViewController.m; sourceTree = "<group>"; };
 		7B1533611CAA863B0099DD9C /* AlbumListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumListViewController.xib; sourceTree = "<group>"; };
@@ -1316,6 +1373,15 @@
 			path = PCSEQVisualizer;
 			sourceTree = "<group>";
 		};
+		7B05448B1CCF2B230001C9C9 /* NBTouchAndHoldButton */ = {
+			isa = PBXGroup;
+			children = (
+				7B05448C1CCF2B230001C9C9 /* NBTouchAndHoldButton.h */,
+				7B05448D1CCF2B230001C9C9 /* NBTouchAndHoldButton.m */,
+			);
+			path = NBTouchAndHoldButton;
+			sourceTree = "<group>";
+		};
 		7B066A681CA4EAEF0078FD53 /* TableHeaderView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1384,6 +1450,33 @@
 		7B2191C51CCE12EE00EA0070 /* Player */ = {
 			isa = PBXGroup;
 			children = (
+				7B1018C61CCF7F5000BC514B /* maxTrack.png */,
+				7B1018C71CCF7F5000BC514B /* maxTrack@2x.png */,
+				7B1018C81CCF7F5000BC514B /* maxTrack@3x.png */,
+				7B1018C91CCF7F5000BC514B /* minTrack.png */,
+				7B1018CA1CCF7F5000BC514B /* minTrack@2x.png */,
+				7B1018CB1CCF7F5000BC514B /* minTrack@3x.png */,
+				7B1018CC1CCF7F5000BC514B /* thumbTrack.png */,
+				7B1018CD1CCF7F5000BC514B /* thumbTrack@2x.png */,
+				7B1018CE1CCF7F5000BC514B /* thumbTrack@3x.png */,
+				7B0544431CCF190B0001C9C9 /* fast-forward.png */,
+				7B0544441CCF190B0001C9C9 /* fast-forward@2x.png */,
+				7B0544451CCF190B0001C9C9 /* fast-forward@3x.png */,
+				7B0544461CCF190B0001C9C9 /* next-track-button.png */,
+				7B0544471CCF190B0001C9C9 /* next-track-button@2x.png */,
+				7B0544481CCF190B0001C9C9 /* next-track-button@3x.png */,
+				7B0544491CCF190B0001C9C9 /* pause-button.png */,
+				7B05444A1CCF190B0001C9C9 /* pause-button@2x.png */,
+				7B05444B1CCF190B0001C9C9 /* pause-button@3x.png */,
+				7B05444C1CCF190B0001C9C9 /* play-button.png */,
+				7B05444D1CCF190B0001C9C9 /* play-button@2x.png */,
+				7B05444E1CCF190B0001C9C9 /* play-button@3x.png */,
+				7B05444F1CCF190B0001C9C9 /* previous-track.png */,
+				7B0544501CCF190B0001C9C9 /* previous-track@2x.png */,
+				7B0544511CCF190B0001C9C9 /* previous-track@3x.png */,
+				7B0544521CCF190B0001C9C9 /* rewind.png */,
+				7B0544531CCF190B0001C9C9 /* rewind@2x.png */,
+				7B0544541CCF190B0001C9C9 /* rewind@3x.png */,
 				7B2191C61CCE12EE00EA0070 /* btn_close_player.png */,
 				7B2191C71CCE12EE00EA0070 /* btn_close_player@2x.png */,
 				7B2191C81CCE12EE00EA0070 /* btn_close_player@3x.png */,
@@ -1495,6 +1588,7 @@
 		7BA4EE9B1C9000A600157284 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				7B05448B1CCF2B230001C9C9 /* NBTouchAndHoldButton */,
 				7BC0A44B1CC71CBC000E67DE /* UIAlertView+Blocks */,
 				7BD22F101CBFB1F9005DF164 /* LDProgressView */,
 				7BD22EE61CBF7357005DF164 /* KGModal */,
@@ -1828,12 +1922,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B1018D31CCF7F5000BC514B /* minTrack@2x.png in Resources */,
 				3C53415B1CB7FEAC000BA5DD /* dropboxIcon_large@2x.png in Resources */,
 				3C4926D01C93EBCC0065B1DD /* playlists.png in Resources */,
 				3C53414F1CB7EA62000BA5DD /* dropboxIcon.png in Resources */,
 				3CB3FF241CB9578100A95DD2 /* mp3@2x.png in Resources */,
 				3CB3FF4D1CB969BF00A95DD2 /* select.png in Resources */,
 				7BF65F171CA3C285007B198D /* SongsCell.xib in Resources */,
+				7B0544581CCF190B0001C9C9 /* next-track-button.png in Resources */,
+				7B05445B1CCF190B0001C9C9 /* pause-button.png in Resources */,
 				3C9390551CC3E01F00F12F8F /* TagRenameCell.xib in Resources */,
 				3C53415A1CB7FEAC000BA5DD /* dropboxIcon_large.png in Resources */,
 				7B4CD8921CAD09D50041BE4E /* ListSongCell.xib in Resources */,
@@ -1856,6 +1953,7 @@
 				7BD22EEC1CBF7357005DF164 /* closePopup@2x.png in Resources */,
 				3CB3FF091CB9485F00A95DD2 /* btn_back@3x.png in Resources */,
 				7BF65F5F1CA3FFAF007B198D /* Info.plist in Resources */,
+				7B0544611CCF190B0001C9C9 /* previous-track.png in Resources */,
 				3CB105331CA419DB0087D20A /* filetype_audio@2x.png in Resources */,
 				7B1533631CAA863B0099DD9C /* AlbumListViewController.xib in Resources */,
 				3CB3FF511CB969BF00A95DD2 /* unselect@2x.png in Resources */,
@@ -1878,6 +1976,7 @@
 				3C8D3DA51CA58155008EB7A8 /* btnAddPlaylist@2x.png in Resources */,
 				7B066A791CA4F9770078FD53 /* shuffle-icon.png in Resources */,
 				7B066A7B1CA4F9770078FD53 /* shuffle-icon@3x.png in Resources */,
+				7B0544551CCF190B0001C9C9 /* fast-forward.png in Resources */,
 				3C4926BB1C93EBCC0065B1DD /* files-selected.png in Resources */,
 				7BD22EEB1CBF7357005DF164 /* closePopup.png in Resources */,
 				3C4926D41C93EBCC0065B1DD /* settings-selected@2x.png in Resources */,
@@ -1885,12 +1984,18 @@
 				7B3A91DA1CCA2E38007DB5B6 /* add-song@2x.png in Resources */,
 				7BC0A45A1CC7396C000E67DE /* PlaylistsListSongViewController.xib in Resources */,
 				3CB3FF081CB9485F00A95DD2 /* btn_back@2x.png in Resources */,
+				7B0544621CCF190B0001C9C9 /* previous-track@2x.png in Resources */,
 				3C09C6E91C8C664F004A44E2 /* LaunchScreen.storyboard in Resources */,
 				3CB3FF2A1CB9578100A95DD2 /* wav@2x.png in Resources */,
 				7B066A8E1CA5152C0078FD53 /* cloud-item-icon.png in Resources */,
 				3CDE2EFA1CC4E794009B2FBA /* playlist_icon.png in Resources */,
 				3CB3FF2C1CB9578100A95DD2 /* wma.png in Resources */,
+				7B05445E1CCF190B0001C9C9 /* play-button.png in Resources */,
 				3CCF23141CCBE6A50007EB21 /* btnFilter@3x.png in Resources */,
+				7B0544601CCF190B0001C9C9 /* play-button@3x.png in Resources */,
+				7B0544571CCF190B0001C9C9 /* fast-forward@3x.png in Resources */,
+				7B0544561CCF190B0001C9C9 /* fast-forward@2x.png in Resources */,
+				7B1018D21CCF7F5000BC514B /* minTrack.png in Resources */,
 				3CB3FF2D1CB9578100A95DD2 /* wma@2x.png in Resources */,
 				7BF16C0B1CC8EC81002D99A6 /* btnAddSongToPlaylist@2x.png in Resources */,
 				7B066A621CA4D0190078FD53 /* SettingsViewController.xib in Resources */,
@@ -1898,11 +2003,15 @@
 				3C4926B81C93EBCC0065B1DD /* artists.png in Resources */,
 				3C5927EE1CB6A4DF00320D55 /* DropBoxManagementViewController.xib in Resources */,
 				3C4926DC1C93EBCC0065B1DD /* songs.png in Resources */,
+				7B05445C1CCF190B0001C9C9 /* pause-button@2x.png in Resources */,
 				3C4926D71C93EBCC0065B1DD /* settings@2x.png in Resources */,
+				7B05445D1CCF190B0001C9C9 /* pause-button@3x.png in Resources */,
 				7B066A901CA5152C0078FD53 /* cloud-item-icon@3x.png in Resources */,
 				3C5341511CB7EA62000BA5DD /* dropboxIcon@3x.png in Resources */,
 				3C4926CA1C93EBCC0065B1DD /* more.png in Resources */,
 				3C4926D51C93EBCC0065B1DD /* settings-selected@3x.png in Resources */,
+				7B1018D51CCF7F5000BC514B /* thumbTrack.png in Resources */,
+				7B0544591CCF190B0001C9C9 /* next-track-button@2x.png in Resources */,
 				7B3A91D51CCA2A0E007DB5B6 /* AddSongsCell.xib in Resources */,
 				7B066A881CA50BF00078FD53 /* textField-background.png in Resources */,
 				3CB3FF261CB9578100A95DD2 /* ogg.png in Resources */,
@@ -1916,12 +2025,14 @@
 				7B4CD88B1CACDFE00041BE4E /* MakePlaylistViewController.xib in Resources */,
 				3C8D3D981CA5774E008EB7A8 /* btnEditSong.png in Resources */,
 				3C4926D61C93EBCC0065B1DD /* settings.png in Resources */,
+				7B0544661CCF190B0001C9C9 /* rewind@3x.png in Resources */,
 				7BF16C0C1CC8EC81002D99A6 /* btnAddSongToPlaylist@3x.png in Resources */,
 				3C8D3D9A1CA5774E008EB7A8 /* btnEditSong@3x.png in Resources */,
 				3C4926C61C93EBCC0065B1DD /* genres@3x.png in Resources */,
 				3CB3FEED1CB9137900A95DD2 /* FilesCell.xib in Resources */,
 				3C4926C81C93EBCC0065B1DD /* more-selected@2x.png in Resources */,
 				7B066A7A1CA4F9770078FD53 /* shuffle-icon@2x.png in Resources */,
+				7B0544631CCF190B0001C9C9 /* previous-track@3x.png in Resources */,
 				3CB3FF341CB958EB00A95DD2 /* folder@3x.png in Resources */,
 				3CB3FF281CB9578100A95DD2 /* ogg@3x.png in Resources */,
 				7B8B549D1CC754F8002F5387 /* TableLine.xib in Resources */,
@@ -1934,13 +2045,17 @@
 				3C6DB1031CA6D0CE00F68D3E /* list-item-icon.png in Resources */,
 				7BF65F1C1CA3C665007B198D /* HeaderTitle.xib in Resources */,
 				3CDE2EE21CC4D4DD009B2FBA /* add-icon@3x.png in Resources */,
+				7B1018D61CCF7F5000BC514B /* thumbTrack@2x.png in Resources */,
+				7B1018D41CCF7F5000BC514B /* minTrack@3x.png in Resources */,
 				7B2191CB1CCE12EE00EA0070 /* btn_close_player@3x.png in Resources */,
 				3C4926CC1C93EBCC0065B1DD /* more@3x.png in Resources */,
+				7B1018D11CCF7F5000BC514B /* maxTrack@3x.png in Resources */,
 				7B066A581CA4CD730078FD53 /* AlbumsViewController.xib in Resources */,
 				7B0896281CA8E3A400264CD1 /* PlayerViewController.xib in Resources */,
 				7B066A891CA50BF00078FD53 /* textField-background@2x.png in Resources */,
 				3CB105341CA419DB0087D20A /* filetype_audio@3x.png in Resources */,
 				7BE3C3B61CC9AFCF001DBDCC /* AddSongsViewController.xib in Resources */,
+				7B05445F1CCF190B0001C9C9 /* play-button@2x.png in Resources */,
 				3C5341501CB7EA62000BA5DD /* dropboxIcon@2x.png in Resources */,
 				3CB3FF4F1CB969BF00A95DD2 /* select@3x.png in Resources */,
 				3C6C2CBF1CB2829900F3E901 /* uncheck.png in Resources */,
@@ -1950,7 +2065,9 @@
 				3C4926AF1C93EBCC0065B1DD /* albums-selected.png in Resources */,
 				3C6C2CBD1CB2829900F3E901 /* check@2x.png in Resources */,
 				3C6C2CC01CB2829900F3E901 /* uncheck@2x.png in Resources */,
+				7B0544641CCF190B0001C9C9 /* rewind.png in Resources */,
 				7B3A91D91CCA2E38007DB5B6 /* add-song.png in Resources */,
+				7B1018CF1CCF7F5000BC514B /* maxTrack.png in Resources */,
 				7B066A671CA4D8720078FD53 /* TableFooterView.xib in Resources */,
 				3C4926CE1C93EBCC0065B1DD /* playlists-selected@2x.png in Resources */,
 				3CCF23121CCBE6A50007EB21 /* btnFilter.png in Resources */,
@@ -1959,6 +2076,7 @@
 				7B066A5E1CA4CF490078FD53 /* ArtistsViewController.xib in Resources */,
 				3CB3FF2E1CB9578100A95DD2 /* wma@3x.png in Resources */,
 				3CDE2EFB1CC4E794009B2FBA /* playlist_icon@2x.png in Resources */,
+				7B0544651CCF190B0001C9C9 /* rewind@2x.png in Resources */,
 				3CDE2EFC1CC4E794009B2FBA /* playlist_icon@3x.png in Resources */,
 				3CB105321CA419DB0087D20A /* filetype_audio.png in Resources */,
 				3C94B81A1CB400E900449B07 /* QBImagePicker.storyboard in Resources */,
@@ -1968,6 +2086,7 @@
 				7B066A7F1CA4FAA20078FD53 /* edit-icon.png in Resources */,
 				3C6C2CC11CB2829900F3E901 /* uncheck@3x.png in Resources */,
 				3C6DB0FF1CA6CC1A00F68D3E /* AlbumsCell.xib in Resources */,
+				7B1018D71CCF7F5000BC514B /* thumbTrack@3x.png in Resources */,
 				3C4926CF1C93EBCC0065B1DD /* playlists-selected@3x.png in Resources */,
 				3C4926BD1C93EBCC0065B1DD /* files-selected@3x.png in Resources */,
 				3CEA50321CAEC44700123F3C /* EditViewController.xib in Resources */,
@@ -1993,8 +2112,10 @@
 				3C4926B41C93EBCC0065B1DD /* albums@3x.png in Resources */,
 				3CB3FF501CB969BF00A95DD2 /* unselect.png in Resources */,
 				3C4926B21C93EBCC0065B1DD /* albums.png in Resources */,
+				7B1018D01CCF7F5000BC514B /* maxTrack@2x.png in Resources */,
 				3C4926BE1C93EBCC0065B1DD /* files.png in Resources */,
 				7B066A8A1CA50BF00078FD53 /* textField-background@3x.png in Resources */,
+				7B05445A1CCF190B0001C9C9 /* next-track-button@3x.png in Resources */,
 				3C8D3D9E1CA57B5F008EB7A8 /* btnDelete.png in Resources */,
 				7B8B54A31CC788C4002F5387 /* PlaylistNameView.xib in Resources */,
 				7B26B2441CAF76D300368CA8 /* ArtworkView.xib in Resources */,
@@ -2098,6 +2219,7 @@
 				7BF65F201CA3CD48007B198D /* VYPlayIndicator.m in Sources */,
 				7BF65F4D1CA3D782007B198D /* UIImage+GIF.m in Sources */,
 				3C6C2CAE1CB26AC600F3E901 /* IQTextView.m in Sources */,
+				7B05448E1CCF2B230001C9C9 /* NBTouchAndHoldButton.m in Sources */,
 				7BE3C3B51CC9AFCF001DBDCC /* AddSongsViewController.m in Sources */,
 				3CA4E3181C9ED35D00168B48 /* MPMediaItem+Accessors.m in Sources */,
 				7BF5C8D31C915D2100175C6F /* PlayerViewController.m in Sources */,

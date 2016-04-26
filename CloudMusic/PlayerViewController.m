@@ -10,9 +10,16 @@
 
 #import "Utils.h"
 
+#import "NBTouchAndHoldButton.h"
+
+#define FARST_SEEK_TIME 1.0
+
 static PlayerViewController *sharedInstance = nil;
 
 @interface PlayerViewController ()
+{
+    BOOL isSeek;
+}
 
 @property (nonatomic, strong) UIButton *btnClose;
 
@@ -21,6 +28,12 @@ static PlayerViewController *sharedInstance = nil;
 
 @property (nonatomic, weak) IBOutlet UIView *vControlPlayer, *vInfoPlayer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *vControlPlayerWidth, *vInfoPlayerWidth;
+
+@property (nonatomic, weak) IBOutlet UIButton *btnPlay, *btnPause;
+@property (nonatomic, weak) IBOutlet NBTouchAndHoldButton *btnNext, *btnPrev;
+
+@property (nonatomic, weak) IBOutlet UILabel *lblCurrent, *lblRemain;
+@property (nonatomic, weak) IBOutlet UISlider *seekSlider;
 
 @end
 
@@ -61,12 +74,61 @@ static PlayerViewController *sharedInstance = nil;
     [self configPlayerViewFrame];
 }
 
+#pragma mark - Action
+
+- (void)farstFoward
+{
+    isSeek = YES;
+    NSLog(@"farstFoward begin");
+}
+
+- (void)nextSong
+{
+    if (!isSeek) {
+        NSLog(@"next song");
+    }
+    else {
+        NSLog(@"farstFoward end");
+    }
+    isSeek = NO;
+}
+
+- (void)farstBackward
+{
+    isSeek = YES;
+    NSLog(@"farstBackward begin");
+}
+
+- (void)prevSong
+{
+    if (!isSeek) {
+        NSLog(@"prev song");
+    }
+    else {
+        NSLog(@"farstBackward end");
+    }
+    isSeek = NO;
+}
+
+- (void)play
+{
+    
+}
+
+- (void)pause
+{
+    
+}
+
 #pragma mark - UI
 
 - (void)setupUI
 {
     self.title = @"1 of 1";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.btnClose];
+    
+    [self setupControlPlayer];
+    [self setupSeekView];
 }
 
 - (UIButton *)btnClose
@@ -89,6 +151,25 @@ static PlayerViewController *sharedInstance = nil;
         [self.vInfoPlayerWidth setConstant:DEVICE_SIZE.width];
         [self.vControlPlayerWidth setConstant:DEVICE_SIZE.width];
     }
+}
+
+- (void)setupControlPlayer
+{
+    [self.btnNext addTarget:self action:@selector(farstFoward) forTouchAndHoldControlEventWithTimeInterval:FARST_SEEK_TIME];
+    [self.btnNext addTarget:self action:@selector(nextSong) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.btnPrev addTarget:self action:@selector(farstBackward) forTouchAndHoldControlEventWithTimeInterval:FARST_SEEK_TIME];
+    [self.btnPrev addTarget:self action:@selector(prevSong) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.btnPlay addTarget:self action:@selector(play) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnPause addTarget:self action:@selector(pause) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)setupSeekView
+{
+    [self.seekSlider setMinimumTrackImage:[[UIImage imageNamed:@"maxTrack"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal];
+    [self.seekSlider setMaximumTrackImage:[[UIImage imageNamed:@"minTrack"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal];
+    [self.seekSlider setThumbImage:[UIImage imageNamed:@"thumbTrack"] forState:UIControlStateNormal];
 }
 
 - (void)closeView
