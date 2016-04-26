@@ -21,7 +21,10 @@
 
 @synthesize isCloud;
 @synthesize sLocalArtworkUrl;
+
 @synthesize sSongDesc;
+@synthesize sSongPlayerDesc;
+
 @synthesize sPlayableUrl;
 
 @synthesize numberOfSelect;
@@ -427,6 +430,33 @@
         }
     }
     return sSongDesc;
+}
+
+- (NSString *)sSongPlayerDesc
+{
+    if (!sSongPlayerDesc)
+    {
+        NSString *sArtist = self.sArtistName;
+        NSString *sAlbumName = self.sAlbumName;
+        
+        if (sArtist) {
+            if (sAlbumName) {
+                sSongPlayerDesc = [NSString stringWithFormat:@"%@ - %@",sArtist,sAlbumName];
+            }
+            else {
+                sSongPlayerDesc = sArtist;
+            }
+        }
+        else {
+            if (sAlbumName) {
+                sSongPlayerDesc = sAlbumName;
+            }
+            else {
+                sSongPlayerDesc = @"n/a";
+            }
+        }
+    }
+    return sSongPlayerDesc;
 }
 
 - (void)setSongDuration:(int)fDuration

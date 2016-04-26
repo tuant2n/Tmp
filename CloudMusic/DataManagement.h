@@ -26,10 +26,11 @@
 #import "GenresViewController.h"
 
 #import "EditViewController.h"
-
 #import "CreatePlaylistViewController.h"
 #import "MakePlaylistViewController.h"
 #import "PlaylistsListSongViewController.h"
+
+#import "PlayerViewController.h"
 
 #import "SearchOperation.h"
 #import "NSManagedObject+Clone.h"

@@ -920,6 +920,8 @@ static DataManagement *_sharedInstance = nil;
     if (iType == kHeaderUtilTypeShuffle) {
         if (arrData) {
             // Play Shuffle A List
+            [[PlayerViewController sharedInstance] playWithPlaylist:arrData isShuffle:NO];
+            [[GlobalParameter sharedInstance] openPlayer];
         }
         else {
             // Play Shuffle All Song

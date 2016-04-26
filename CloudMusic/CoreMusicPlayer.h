@@ -23,30 +23,6 @@ typedef NS_ENUM(NSInteger,CoreMusicPlayerFailed) {
     CoreMusicPlayerFailedCurrentItem = 4001,
 };
 
-@protocol CoreMusicPlayerDelegate <NSObject>
-
-- (void)playerWillChangedAtIndex:(NSInteger)index;
-- (void)playerRateChanged;
-- (void)playerDidReachEnd;
-- (void)playerCurrentItemPreloaded:(CMTime)time;
-- (void)playerDidFailed:(CoreMusicPlayerFailed)iStatus atIndex:(NSInteger)index;
-- (void)playerReadyToPlay:(CoreMusicPlayerReadyToPlay)iStatus;
-
-@optional
-
-- (void)playerCurrentItemChanged:(AVPlayerItem *)item;
-- (void)playerItemFailedToPlayEndTime:(AVPlayerItem *)item error:(NSError *)error;
-- (void)playerItemPlaybackStall:(AVPlayerItem *)item;
-
-@end
-
-@protocol CoreMusicPlayerDataSource <NSObject>
-
-- (NSInteger)numberOfItems;
-- (NSURL *)URLForItemAtIndex:(NSInteger)index preBuffer:(BOOL)preBuffer;
-
-@end
-
 typedef NS_ENUM(NSInteger,CoreMusicPlayerStatus) {
     CoreMusicPlayerStatusPlaying = 0,
     CoreMusicPlayerStatusForcePause,
@@ -64,6 +40,30 @@ typedef NS_ENUM(NSInteger,CoreMusicPlayerShuffleMode) {
     CoreMusicPlayerShuffleModeOn = 0,
     CoreMusicPlayerShuffleModeOff,
 };
+
+@protocol CoreMusicPlayerDelegate <NSObject>
+
+- (void)playerWillChangedAtIndex:(NSInteger)index;
+- (void)playerStateChanged:(CoreMusicPlayerStatus)iStatus;
+- (void)playerDidReachEnd;
+- (void)playerDidFailed:(CoreMusicPlayerFailed)iStatus atIndex:(NSInteger)index;
+- (void)playerReadyToPlay:(CoreMusicPlayerReadyToPlay)iStatus;
+
+@optional
+
+- (void)playerCurrentItemPreloaded:(CMTime)time;
+- (void)playerCurrentItemChanged:(AVPlayerItem *)item;
+- (void)playerItemFailedToPlayEndTime:(AVPlayerItem *)item error:(NSError *)error;
+- (void)playerItemPlaybackStall:(AVPlayerItem *)item;
+
+@end
+
+@protocol CoreMusicPlayerDataSource <NSObject>
+
+- (NSInteger)numberOfItems;
+- (NSURL *)URLForItemAtIndex:(NSInteger)index preBuffer:(BOOL)preBuffer;
+
+@end
 
 @interface CoreMusicPlayer : NSObject <AVAudioPlayerDelegate>
 

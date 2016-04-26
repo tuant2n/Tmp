@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, strong) NSURL *sLocalArtworkUrl;
 @property (nullable, nonatomic, strong) NSAttributedString *sSongDesc;
+@property (nullable, nonatomic, strong) NSString *sSongPlayerDesc;
 
 @property (nullable, nonatomic, strong) NSURL *sPlayableUrl;
 

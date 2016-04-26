@@ -17,7 +17,8 @@ static const void *MusicTag = &MusicTag;
     BOOL pauseReasonForced;
     BOOL pauseReasonBuffering;
     BOOL isPreBuffered;
-
+    BOOL tookAudioFocus;
+    
     UIBackgroundTaskIdentifier bgTaskId;
     UIBackgroundTaskIdentifier removedId;
     
@@ -77,20 +78,44 @@ static dispatch_once_t onceToken;
 
 - (void)preAction
 {
-    self.audioPlayer = [[AVQueuePlayer alloc] init];
+    tookAudioFocus = YES;
+    
     [self backgroundPlayable];
+    self.audioPlayer = [[AVQueuePlayer alloc] init];
     [self AVAudioSessionNotification];
 }
 
 - (void)backgroundPlayable
 {
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    NSError *error = nil;
+    
+    if (audioSession.category != AVAudioSessionCategoryPlayback)
+    {
+        UIDevice *device = [UIDevice currentDevice];
+        if ([device respondsToSelector:@selector(isMultitaskingSupported)]) {
+            if (device.multitaskingSupported)
+            {
+                [audioSession setCategory:AVAudioSessionCategoryPlayback error:&error];
+                if (error) {
+                    NSLog(@"CoreMusicPlayer: set category error:%@",[error description]);
+                }
+
+                [audioSession setActive:YES error:&error];
+                if (error) {
+                    NSLog(@"CoreMusicPlayer: set active error:%@",[error description]);
+                }
+            }
+        }
+    }
+    else {
+        NSLog(@"CoreMusicPlayer: unable to register background playback");
+    }
+    
     [self longTimeBufferBackground];
 }
-
-/*
- * Tells OS this application starts one or more long-running tasks, should end background task when completed.
- */
 
 - (void)longTimeBufferBackground
 {
@@ -149,6 +174,10 @@ static dispatch_once_t onceToken;
 
 - (void)willPlayPlayerItemAtIndex:(NSInteger)index
 {
+    if (!tookAudioFocus) {
+        [self preAction];
+    }
+    
     self.lastItemIndex = index;
     [self.playedItems addObject:@(index)];
     
@@ -206,6 +235,7 @@ static dispatch_once_t onceToken;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setIndex:item key:[NSNumber numberWithInteger:index]];
+        
         if (self.isMemoryCached) {
             NSMutableArray *playerItems = [NSMutableArray arrayWithArray:self.playerItems];
             [playerItems addObject:item];
@@ -381,7 +411,7 @@ static dispatch_once_t onceToken;
         NSInteger nextIndex = [self randomIndex];
         if (nextIndex != NSNotFound) {
             [self fetchAndPlayPlayerItem:nextIndex];
-        }
+        } 
         else {
             pauseReasonForced = YES;
             if ([self.delegate respondsToSelector:@selector(playerDidReachEnd)]) {
@@ -626,8 +656,8 @@ static dispatch_once_t onceToken;
     }
     
     if (object == self.audioPlayer && [keyPath isEqualToString:@"rate"]) {
-        if ([self.delegate respondsToSelector:@selector(playerRateChanged)]) {
-            [self.delegate playerRateChanged];
+        if ([self.delegate respondsToSelector:@selector(playerStateChanged:)]) {
+            [self.delegate playerStateChanged:[self getCoreMusicPlayerStatus]];
         }
     }
     
@@ -811,6 +841,8 @@ static dispatch_once_t onceToken;
 
 - (void)deprecatePlayer
 {
+    tookAudioFocus = NO;
+    
     [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:nil];

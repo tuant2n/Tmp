@@ -13,6 +13,7 @@
 #import "DataManagement.h"
 
 #import "NBTouchAndHoldButton.h"
+#import "MarqueeLabel.h"
 
 #define FARST_SEEK_TIME 1.0
 
@@ -20,7 +21,7 @@ static PlayerViewController *sharedInstance = nil;
 
 @interface PlayerViewController () <CoreMusicPlayerDataSource,CoreMusicPlayerDelegate>
 {
-    BOOL isSeek;
+    BOOL isSeek, isPlaySingleSong;
     id mTimeObserver;
 }
 
@@ -32,6 +33,9 @@ static PlayerViewController *sharedInstance = nil;
 @property (nonatomic, weak) IBOutlet UIView *vControlPlayer, *vInfoPlayer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *vControlPlayerWidth, *vInfoPlayerWidth;
 
+@property (nonatomic, weak) IBOutlet MarqueeLabel *lblSongName, *lblSongDesc;
+
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingView;
 @property (nonatomic, weak) IBOutlet UIButton *btnPlay, *btnPause;
 @property (nonatomic, weak) IBOutlet NBTouchAndHoldButton *btnNext, *btnPrev;
 
@@ -64,7 +68,7 @@ static PlayerViewController *sharedInstance = nil;
     
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
+
     }
     return self;
 }
@@ -77,10 +81,6 @@ static PlayerViewController *sharedInstance = nil;
     [self setupUI];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
-    CoreMusicPlayer *musicPlayer = [CoreMusicPlayer sharedInstance];
-    musicPlayer.delegate = self;
-    musicPlayer.datasource = self;
 }
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification
@@ -98,20 +98,53 @@ static PlayerViewController *sharedInstance = nil;
     return _playlist;
 }
 
+- (void)setDelegate
+{
+    CoreMusicPlayer *musicPlayer = [CoreMusicPlayer sharedInstance];
+    
+    if (musicPlayer.delegate != self) {
+        musicPlayer.delegate = self;
+    }
+    
+    if (musicPlayer.datasource != self) {
+        musicPlayer.datasource = self;
+    }
+}
+
 - (void)playWithPlaylist:(NSArray *)listSongs isShuffle:(BOOL)isShuffle
 {
     [self.playlist removeAllObjects];
     [self.playlist addObjectsFromArray:listSongs];
     
+    CoreMusicPlayer *musicPlayer = [CoreMusicPlayer sharedInstance];
+    [musicPlayer removeAllItems];
+    
+    [musicPlayer setPlayerRepeatMode:CoreMusicPlayerRepeatModeOff];
+    
     if (isShuffle) {
-        [[CoreMusicPlayer sharedInstance] setPlayerShuffleMode:CoreMusicPlayerShuffleModeOn];
+        [musicPlayer setPlayerShuffleMode:CoreMusicPlayerShuffleModeOn];
     }
-    [[CoreMusicPlayer sharedInstance] setPlayerRepeatMode:CoreMusicPlayerRepeatModeOff];
+    
+    [self setDelegate];
+    [musicPlayer fetchAndPlayPlayerItem:0];
 }
 
 - (void)playWithSong:(Item *)song
 {
     // check if song is in playlist -> play song
+}
+
+#pragma mark - CoreMusicPlayer
+
+- (NSInteger)numberOfItems
+{
+    return self.playlist.count;
+}
+
+- (NSURL *)URLForItemAtIndex:(NSInteger)index preBuffer:(BOOL)preBuffer;
+{
+    Item *song = self.playlist[index];
+    return song.sPlayableUrl;
 }
 
 - (void)playerDidFailed:(CoreMusicPlayerFailed)iStatus atIndex:(NSInteger)index
@@ -169,46 +202,60 @@ static PlayerViewController *sharedInstance = nil;
     NSLog(@"current item changed");
 }
 
-- (void)playerCurrentItemPreloaded:(CMTime)time
+- (void)playerWillChangedAtIndex:(NSInteger)index
 {
-    NSLog(@"current item pre-loaded time: %f", CMTimeGetSeconds(time));
+    Item *song = self.playlist[index];
+    [self setupUIWithSong:song];
+}
+
+- (void)setupUIWithSong:(Item *)song
+{
+    self.lblSongName.text = song.sSongName;
+    self.lblSongDesc.text = song.sSongPlayerDesc;
 }
 
 - (void)playerDidReachEnd
 {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Player did reach end."
-                                                   message:nil
-                                                  delegate:self
-                                         cancelButtonTitle:@"OK"
-                                         otherButtonTitles:nil, nil];
-    [alert show];
+    
 }
 
-- (void)playerRateChanged
+- (void)playerStateChanged:(CoreMusicPlayerStatus)iStatus
 {
-//    [self syncPlayPauseButtons];
-    NSLog(@"player rate changed");
+    [self hideAll];
+    
+    switch (iStatus)
+    {
+//        case CoreMusicPlayerStatusUnknown:
+//        case CoreMusicPlayerStatusBuffering:
+//        {
+//            self.loadingView.hidden = NO;
+//        }
+//            break;
+//            
+        case CoreMusicPlayerStatusPlaying:
+            self.btnPause.hidden = NO;
+            break;
+
+        case CoreMusicPlayerStatusForcePause:
+            self.btnPlay.hidden = NO;
+            break;
+            
+        default:
+            self.loadingView.hidden = NO;
+            break;
+    }
 }
 
-- (void)playerWillChangedAtIndex:(NSInteger)index
+- (void)hideAll
 {
-    NSLog(@"index: %li is about to play", index);
-}
-
-- (NSInteger)numberOfItems
-{
-    return self.playlist.count;
-}
-
-- (NSURL *)URLForItemAtIndex:(NSInteger)index preBuffer:(BOOL)preBuffer;
-{
-    Item *song = self.playlist[index];
-    return song.sPlayableUrl;
+    self.btnPlay.hidden = YES;
+    self.btnPause.hidden = YES;
+    self.loadingView.hidden = YES;
 }
 
 #pragma mark - Action
 
-- (void)farstFoward
+- (void)fastFoward
 {
     isSeek = YES;
     NSLog(@"farstFoward begin");
@@ -217,15 +264,12 @@ static PlayerViewController *sharedInstance = nil;
 - (void)nextSong
 {
     if (!isSeek) {
-        NSLog(@"next song");
-    }
-    else {
-        NSLog(@"farstFoward end");
+        [[CoreMusicPlayer sharedInstance] playNext];
     }
     isSeek = NO;
 }
 
-- (void)farstBackward
+- (void)rewind
 {
     isSeek = YES;
     NSLog(@"farstBackward begin");
@@ -234,22 +278,19 @@ static PlayerViewController *sharedInstance = nil;
 - (void)prevSong
 {
     if (!isSeek) {
-        NSLog(@"prev song");
-    }
-    else {
-        NSLog(@"farstBackward end");
+        [[CoreMusicPlayer sharedInstance] playPrevious];
     }
     isSeek = NO;
 }
 
 - (void)play
 {
-    
+    [[CoreMusicPlayer sharedInstance] play];
 }
 
 - (void)pause
 {
-    
+    [[CoreMusicPlayer sharedInstance] pause];
 }
 
 #pragma mark - UI
@@ -261,6 +302,7 @@ static PlayerViewController *sharedInstance = nil;
     
     [self setupControlPlayer];
     [self setupSeekView];
+    [self setupInfoView];
 }
 
 - (UIButton *)btnClose
@@ -287,14 +329,47 @@ static PlayerViewController *sharedInstance = nil;
 
 - (void)setupControlPlayer
 {
-    [self.btnNext addTarget:self action:@selector(farstFoward) forTouchAndHoldControlEventWithTimeInterval:FARST_SEEK_TIME];
+    UIImage *nextHighlightedImage = [Utils tranlucentImage:[self.btnNext imageForState:UIControlStateNormal] withAlpha:0.6];
+    [self.btnNext setImage:nextHighlightedImage forState:UIControlStateHighlighted];
+    [self.btnNext addTarget:self action:@selector(fastFoward) forTouchAndHoldControlEventWithTimeInterval:FARST_SEEK_TIME];
     [self.btnNext addTarget:self action:@selector(nextSong) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.btnPrev addTarget:self action:@selector(farstBackward) forTouchAndHoldControlEventWithTimeInterval:FARST_SEEK_TIME];
+    //
+    UIImage *prevHighlightedImage = [Utils tranlucentImage:[self.btnPrev imageForState:UIControlStateNormal] withAlpha:0.6];
+    [self.btnPrev setImage:prevHighlightedImage forState:UIControlStateHighlighted];
+    [self.btnPrev addTarget:self action:@selector(rewind) forTouchAndHoldControlEventWithTimeInterval:FARST_SEEK_TIME];
     [self.btnPrev addTarget:self action:@selector(prevSong) forControlEvents:UIControlEventTouchUpInside];
     
+    //
+    UIImage *playHighlightedImage = [Utils tranlucentImage:[self.btnPlay imageForState:UIControlStateNormal] withAlpha:0.6];
+    [self.btnPlay setImage:playHighlightedImage forState:UIControlStateHighlighted];
     [self.btnPlay addTarget:self action:@selector(play) forControlEvents:UIControlEventTouchUpInside];
+    
+    //
+    UIImage *pauseHighlightedImage = [Utils tranlucentImage:[self.btnPause imageForState:UIControlStateNormal] withAlpha:0.6];
+    [self.btnPause setImage:pauseHighlightedImage forState:UIControlStateHighlighted];
     [self.btnPause addTarget:self action:@selector(pause) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)setupInfoView
+{
+    self.lblSongName.backgroundColor = [UIColor clearColor];
+    self.lblSongName.textAlignment = NSTextAlignmentCenter;
+    self.lblSongName.marqueeType = MLContinuous;
+    self.lblSongName.scrollDuration = 10.0f;
+    self.lblSongName.rate = 20.0f;
+    self.lblSongName.fadeLength = 1.0f;
+    self.lblSongName.trailingBuffer = 50.0f;
+    self.lblSongName.animationDelay = 1.0f;
+    
+    self.lblSongDesc.backgroundColor = [UIColor clearColor];
+    self.lblSongDesc.textAlignment = NSTextAlignmentCenter;
+    self.lblSongDesc.marqueeType = MLContinuous;
+    self.lblSongDesc.scrollDuration = 10.0f;
+    self.lblSongDesc.rate = 20.0f;
+    self.lblSongDesc.fadeLength = 1.0f;
+    self.lblSongDesc.trailingBuffer = 30.0f;
+    self.lblSongDesc.animationDelay = 1.0f;
 }
 
 - (void)setupSeekView
