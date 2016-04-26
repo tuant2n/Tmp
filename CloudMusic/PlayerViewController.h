@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class Item;
+
 @interface PlayerViewController : UIViewController
 
 + (PlayerViewController *)sharedInstance;
+
+- (void)playWithPlaylist:(NSArray *)listSongs isShuffle:(BOOL)isShuffle;
+- (void)playWithSong:(Item *)song;
 
 @end

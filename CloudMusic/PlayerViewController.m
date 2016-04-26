@@ -9,6 +9,8 @@
 #import "PlayerViewController.h"
 
 #import "Utils.h"
+#import "CoreMusicPlayer.h"
+#import "DataManagement.h"
 
 #import "NBTouchAndHoldButton.h"
 
@@ -16,9 +18,10 @@
 
 static PlayerViewController *sharedInstance = nil;
 
-@interface PlayerViewController ()
+@interface PlayerViewController () <CoreMusicPlayerDataSource,CoreMusicPlayerDelegate>
 {
     BOOL isSeek;
+    id mTimeObserver;
 }
 
 @property (nonatomic, strong) UIButton *btnClose;
@@ -35,9 +38,23 @@ static PlayerViewController *sharedInstance = nil;
 @property (nonatomic, weak) IBOutlet UILabel *lblCurrent, *lblRemain;
 @property (nonatomic, weak) IBOutlet UISlider *seekSlider;
 
+//
+@property (nonatomic, strong) NSMutableArray *playlist;
+
 @end
 
 @implementation PlayerViewController
+
+#pragma mark- Init
+
++ (PlayerViewController *)sharedInstance
+{
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        sharedInstance = [[PlayerViewController alloc] initWithNibName:@"PlayerViewController" bundle:nil];
+    });
+    return sharedInstance;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -52,14 +69,7 @@ static PlayerViewController *sharedInstance = nil;
     return self;
 }
 
-+ (PlayerViewController *)sharedInstance
-{
-    static dispatch_once_t once;
-    dispatch_once(&once, ^{
-        sharedInstance = [[PlayerViewController alloc] initWithNibName:@"PlayerViewController" bundle:nil];
-    });
-    return sharedInstance;
-}
+#pragma mark - UI
 
 - (void)viewDidLoad
 {
@@ -67,11 +77,133 @@ static PlayerViewController *sharedInstance = nil;
     [self setupUI];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    CoreMusicPlayer *musicPlayer = [CoreMusicPlayer sharedInstance];
+    musicPlayer.delegate = self;
+    musicPlayer.datasource = self;
 }
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
     [self configPlayerViewFrame];
+}
+
+#pragma mark - Player
+
+- (NSMutableArray *)playlist
+{
+    if (!_playlist) {
+        _playlist = [[NSMutableArray alloc] init];
+    }
+    return _playlist;
+}
+
+- (void)playWithPlaylist:(NSArray *)listSongs isShuffle:(BOOL)isShuffle
+{
+    [self.playlist removeAllObjects];
+    [self.playlist addObjectsFromArray:listSongs];
+    
+    if (isShuffle) {
+        [[CoreMusicPlayer sharedInstance] setPlayerShuffleMode:CoreMusicPlayerShuffleModeOn];
+    }
+    [[CoreMusicPlayer sharedInstance] setPlayerRepeatMode:CoreMusicPlayerRepeatModeOff];
+}
+
+- (void)playWithSong:(Item *)song
+{
+    // check if song is in playlist -> play song
+}
+
+- (void)playerDidFailed:(CoreMusicPlayerFailed)iStatus atIndex:(NSInteger)index
+{
+    switch (iStatus)
+    {
+        case CoreMusicPlayerFailedPlayer:
+            break;
+            
+        case CoreMusicPlayerFailedCurrentItem:
+            [[CoreMusicPlayer sharedInstance] playNext];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)playerReadyToPlay:(CoreMusicPlayerReadyToPlay)iStatus
+{
+    switch (iStatus)
+    {
+        case CoreMusicPlayerReadyToPlayPlayer:
+        {
+            if ( mTimeObserver == nil ) {
+                mTimeObserver = [[CoreMusicPlayer sharedInstance] addPeriodicTimeObserverForInterval:CMTimeMake(100, 1000) queue:NULL usingBlock:^(CMTime time)
+                                 {
+                                     float totalSecond = CMTimeGetSeconds(time);
+                                     int minute = (int)totalSecond / 60;
+                                     int second = (int)totalSecond % 60;
+                                     NSLog(@"%@",[NSString stringWithFormat:@"%02d:%02d", minute, second]);
+                                 }];
+            }
+            
+            break;
+        }
+            
+            
+        case CoreMusicPlayerReadyToPlayCurrentItem:
+        {
+            // It will be called when current PlayerItem is ready to play.
+            
+            // HysteriaPlayer will automatic play it, if you don't like this behavior,
+            // You can pausePlayerForcibly:YES to stop it.
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+- (void)playerCurrentItemChanged:(AVPlayerItem *)item
+{
+    NSLog(@"current item changed");
+}
+
+- (void)playerCurrentItemPreloaded:(CMTime)time
+{
+    NSLog(@"current item pre-loaded time: %f", CMTimeGetSeconds(time));
+}
+
+- (void)playerDidReachEnd
+{
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Player did reach end."
+                                                   message:nil
+                                                  delegate:self
+                                         cancelButtonTitle:@"OK"
+                                         otherButtonTitles:nil, nil];
+    [alert show];
+}
+
+- (void)playerRateChanged
+{
+//    [self syncPlayPauseButtons];
+    NSLog(@"player rate changed");
+}
+
+- (void)playerWillChangedAtIndex:(NSInteger)index
+{
+    NSLog(@"index: %li is about to play", index);
+}
+
+- (NSInteger)numberOfItems
+{
+    return self.playlist.count;
+}
+
+- (NSURL *)URLForItemAtIndex:(NSInteger)index preBuffer:(BOOL)preBuffer;
+{
+    Item *song = self.playlist[index];
+    return song.sPlayableUrl;
 }
 
 #pragma mark - Action
