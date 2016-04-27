@@ -446,6 +446,7 @@ static PlayerViewController *sharedInstance = nil;
     [self setCurrentTitle:[NSString stringWithFormat:@"%ld of %ld",(iIndex + 1),self.playlist.count]];
     
     Item *song = self.playlist[iIndex];
+    [[GlobalParameter sharedInstance] setCurrentPlaying:song];
     
     NSString *sSongTitle = song.sSongName;
     NSString *sSongDesc = song.sSongPlayerDesc;

@@ -50,4 +50,9 @@
 - (void)setLineHidden:(BOOL)isHidden;
 - (void)isPlaying:(BOOL)isPlaying;
 
+#pragma mark - Observer
+
+- (void)addObserver;
+- (void)removeObserver;
+
 @end

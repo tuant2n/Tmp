@@ -13,6 +13,9 @@
 #import "Utils.h"
 
 @interface SongsCell()
+{
+    Item *currentSong;
+}
 
 @property (nonatomic, weak) IBOutlet UILabel *lblSongName, *lblSongDesc, *lblDuration;
 
@@ -28,28 +31,62 @@
 }
 
 - (void)config:(Item *)song
-{    
-    [self setArtwork:song.sLocalArtworkUrl];
+{
+    currentSong = song;
     
-    self.lblSongName.text = song.sSongName;
-    self.lblSongDesc.attributedText = song.sSongDesc;
-    self.lblDuration.text = song.sDuration;
-    
-    [self configMenuButton:song.isCloud isEdit:YES hasIndexTitle:YES];
-    [self setItemType:song.isCloud];
-    [self isPlaying:song.isPlaying];
+    [self configWithoutMenu:currentSong];
+    [self configMenuButton:currentSong.isCloud isEdit:YES hasIndexTitle:YES];
 }
 
 - (void)configWithoutMenu:(Item *)song
 {
-    [self setArtwork:song.sLocalArtworkUrl];
+    currentSong = song;
     
-    self.lblSongName.text = song.sSongName;
-    self.lblSongDesc.attributedText = song.sSongDesc;
-    self.lblDuration.text = song.sDuration;
+    [self setArtwork:currentSong.sLocalArtworkUrl];
     
-    [self setItemType:song.isCloud];
-    [self isPlaying:song.isPlaying];
+    self.lblSongName.text = currentSong.sSongName;
+    self.lblSongDesc.attributedText = currentSong.sSongDesc;
+    self.lblDuration.text = currentSong.sDuration;
+    
+    [self setItemType:currentSong.isCloud];
+    [self isPlaying:currentSong.isPlaying];
+}
+
+#pragma mark - Observer
+
+- (void)addObserver
+{
+    [currentSong addObserver:self forKeyPath:@"isPlaying" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+}
+
+- (void)removeObserver
+{
+    if (![currentSong observationInfo]) {
+        return;
+    }
+    
+    @try {
+        [currentSong removeObserver:self forKeyPath:@"isPlaying"];
+    }
+    @catch (NSException *exception) {}
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (![object isKindOfClass:[Item class]]) {
+        return;
+    }
+    
+    if (![keyPath isEqualToString:@"isPlaying"]) {
+        return;
+    }
+    
+    [self isPlaying:currentSong.isPlaying];
+}
+
+- (void)dealloc
+{
+    [self removeObserver];
 }
 
 @end

@@ -62,6 +62,8 @@
     self.rightExpansion.buttonIndex = -1;
     self.rightExpansion.fillOnTrigger = YES;
     
+    [self.musicEq setColor:[Utils colorWithRGBHex:0x006bd5]];
+    
     deleteBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnDelete"] backgroundColor:[Utils colorWithRGBHex:0xEF4836]];
     addToPlaylistBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnAddPlaylist"] backgroundColor:[Utils colorWithRGBHex:0x00B16A]];
     editBtn = [MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"btnEditSong"] backgroundColor:[Utils colorWithRGBHex:0x9A12B3]];
@@ -144,6 +146,18 @@
     if (isDelete) {
         self.rightButtons = [NSArray arrayWithObject:deleteBtn];
     }
+}
+
+#pragma mark - Observer
+
+- (void)addObserver
+{
+    
+}
+
+- (void)removeObserver
+{
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

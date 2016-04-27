@@ -69,8 +69,8 @@
                         <constraint firstItem="ZtM-em-s2H" firstAttribute="leading" secondItem="JMl-Gy-BYZ" secondAttribute="leading" id="LgK-Id-0Bb"/>
                         <constraint firstAttribute="trailing" secondItem="ZtM-em-s2H" secondAttribute="trailing" id="ex2-00-2pt"/>
                         <constraint firstItem="btf-yw-vGT" firstAttribute="leading" secondItem="JMl-Gy-BYZ" secondAttribute="leading" id="iXt-gY-PhN"/>
-                        <constraint firstAttribute="bottom" secondItem="ZtM-em-s2H" secondAttribute="bottom" id="nTg-wN-bsf"/>
-                        <constraint firstItem="ZtM-em-s2H" firstAttribute="top" secondItem="JMl-Gy-BYZ" secondAttribute="top" id="rM0-GX-aHF"/>
+                        <constraint firstAttribute="bottom" secondItem="ZtM-em-s2H" secondAttribute="bottom" priority="750" id="nTg-wN-bsf"/>
+                        <constraint firstItem="ZtM-em-s2H" firstAttribute="top" secondItem="JMl-Gy-BYZ" secondAttribute="top" priority="750" id="rM0-GX-aHF"/>
                         <constraint firstItem="btf-yw-vGT" firstAttribute="top" secondItem="JMl-Gy-BYZ" secondAttribute="top" id="tEI-xL-nZ6"/>
                     </constraints>
                 </view>
@@ -211,12 +211,6 @@
                                             <animations/>
                                             <state key="normal" image="pause-button.png"/>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nd2-J6-gfq" userLabel="btnNext" customClass="NBTouchAndHoldButton">
-                                            <rect key="frame" x="192" y="0.0" width="64" height="30"/>
-                                            <animations/>
-                                            <state key="normal" image="fast-forward.png"/>
-                                            <state key="focused" image="fast-forward.png"/>
-                                        </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k0e-pJ-Xx6" userLabel="btnPrev" customClass="NBTouchAndHoldButton">
                                             <rect key="frame" x="64" y="0.0" width="64" height="30"/>
                                             <animations/>
@@ -226,6 +220,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="64" height="30"/>
                                             <animations/>
                                             <state key="normal" image="timer.png"/>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nd2-J6-gfq" userLabel="btnNext" customClass="NBTouchAndHoldButton">
+                                            <rect key="frame" x="192" y="0.0" width="64" height="30"/>
+                                            <animations/>
+                                            <state key="normal" image="fast-forward.png"/>
+                                            <state key="focused" image="fast-forward.png"/>
                                         </button>
                                     </subviews>
                                     <animations/>
@@ -282,7 +282,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Noy-wt-Dw3" userLabel="vExternal">
                                     <rect key="frame" x="0.0" y="60" width="320" height="30"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xz4-jf-Eq4" userLabel="vButton">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xz4-jf-Eq4" userLabel="btnRepeatView">
                                             <rect key="frame" x="0.0" y="0.0" width="64" height="30"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KNt-aA-thR" userLabel="btnRepeat">
@@ -310,7 +310,12 @@
                                             <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HZD-Jv-uBd" userLabel="vButton">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Apz-qw-Qnm" userLabel="vButton">
+                                            <rect key="frame" x="192" y="0.0" width="64" height="30"/>
+                                            <animations/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HZD-Jv-uBd" userLabel="btnRepeatView">
                                             <rect key="frame" x="256" y="0.0" width="64" height="30"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="usD-7z-du7" userLabel="btnRepeat">
@@ -327,11 +332,6 @@
                                                 <constraint firstItem="usD-7z-du7" firstAttribute="top" secondItem="HZD-Jv-uBd" secondAttribute="top" constant="5" id="oW5-ak-nyq"/>
                                                 <constraint firstAttribute="bottom" secondItem="usD-7z-du7" secondAttribute="bottom" constant="5" id="yYZ-LX-na8"/>
                                             </constraints>
-                                        </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Apz-qw-Qnm" userLabel="vButton">
-                                            <rect key="frame" x="192" y="0.0" width="64" height="30"/>
-                                            <animations/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                     </subviews>
                                     <animations/>

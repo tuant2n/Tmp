@@ -215,7 +215,17 @@
             
             id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
             [mainCell setLineHidden:(indexPath.row == [sectionInfo numberOfObjects] - 1)];
+            [mainCell addObserver];
         }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.tblList && [cell isKindOfClass:[MainCell class]])
+    {
+        MainCell *mainCell = (MainCell *)cell;
+        [mainCell removeObserver];
     }
 }
 
