@@ -89,29 +89,22 @@ static dispatch_once_t onceToken;
 {
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
     
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    NSError *error = nil;
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    NSError *error;
     
-    if (audioSession.category != AVAudioSessionCategoryPlayback)
-    {
-        UIDevice *device = [UIDevice currentDevice];
-        if ([device respondsToSelector:@selector(isMultitaskingSupported)]) {
-            if (device.multitaskingSupported)
-            {
-                [audioSession setCategory:AVAudioSessionCategoryPlayback error:&error];
-                if (error) {
-                    NSLog(@"CoreMusicPlayer: set category error:%@",[error description]);
-                }
-
-                [audioSession setActive:YES error:&error];
-                if (error) {
-                    NSLog(@"CoreMusicPlayer: set active error:%@",[error description]);
-                }
-            }
-        }
+    [session setMode:AVAudioSessionModeDefault error:&error];
+    if (error) {
+        NSLog(@"%@", error.description);
     }
-    else {
-        NSLog(@"CoreMusicPlayer: unable to register background playback");
+    
+    [session setCategory:AVAudioSessionCategoryPlayback error:&error];
+    if (error) {
+        NSLog(@"%@", error.description);
+    }
+    
+    [session setActive:YES error:&error];
+    if (error) {
+        NSLog(@"%@", error.description);
     }
     
     [self longTimeBufferBackground];

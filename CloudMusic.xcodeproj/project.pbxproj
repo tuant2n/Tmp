@@ -122,6 +122,25 @@
 		3C7122A31CC7E3F900E1728B /* PlaylistCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7122A11CC7E3F900E1728B /* PlaylistCell.m */; };
 		3C7122A41CC7E3F900E1728B /* PlaylistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C7122A21CC7E3F900E1728B /* PlaylistCell.xib */; };
 		3C72215B1CBE97450008356E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C72215A1CBE97450008356E /* CoreMedia.framework */; };
+		3C7F32411CD0F71500CCE970 /* white-default-cover.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F323E1CD0F71500CCE970 /* white-default-cover.png */; };
+		3C7F32471CD1092500CCE970 /* repeat.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F32441CD1092500CCE970 /* repeat.png */; };
+		3C7F32481CD1092500CCE970 /* repeat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F32451CD1092500CCE970 /* repeat@2x.png */; };
+		3C7F32491CD1092500CCE970 /* repeat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F32461CD1092500CCE970 /* repeat@3x.png */; };
+		3C7F324D1CD10BE200CCE970 /* repeat_once.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F324A1CD10BE200CCE970 /* repeat_once.png */; };
+		3C7F324E1CD10BE200CCE970 /* repeat_once@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F324B1CD10BE200CCE970 /* repeat_once@2x.png */; };
+		3C7F324F1CD10BE200CCE970 /* repeat_once@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F324C1CD10BE200CCE970 /* repeat_once@3x.png */; };
+		3C7F32531CD10C5800CCE970 /* repeat_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F32501CD10C5800CCE970 /* repeat_on.png */; };
+		3C7F32541CD10C5800CCE970 /* repeat_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F32511CD10C5800CCE970 /* repeat_on@2x.png */; };
+		3C7F32551CD10C5800CCE970 /* repeat_on@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F32521CD10C5800CCE970 /* repeat_on@3x.png */; };
+		3C7F325C1CD1150500CCE970 /* shuffle_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F32561CD1150500CCE970 /* shuffle_on.png */; };
+		3C7F325D1CD1150500CCE970 /* shuffle_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F32571CD1150500CCE970 /* shuffle_on@2x.png */; };
+		3C7F325E1CD1150500CCE970 /* shuffle_on@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F32581CD1150500CCE970 /* shuffle_on@3x.png */; };
+		3C7F325F1CD1150500CCE970 /* shuffle.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F32591CD1150500CCE970 /* shuffle.png */; };
+		3C7F32601CD1150500CCE970 /* shuffle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F325A1CD1150500CCE970 /* shuffle@2x.png */; };
+		3C7F32611CD1150500CCE970 /* shuffle@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F325B1CD1150500CCE970 /* shuffle@3x.png */; };
+		3C7F32651CD1189B00CCE970 /* HWViewPager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7F32641CD1189B00CCE970 /* HWViewPager.m */; };
+		3C7F326A1CD1195500CCE970 /* CurrentSongCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7F32691CD1195500CCE970 /* CurrentSongCollectionCell.m */; };
+		3C7F326C1CD1195D00CCE970 /* CurrentSongCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C7F326B1CD1195D00CCE970 /* CurrentSongCollectionCell.xib */; };
 		3C8D3D931CA56F8F008EB7A8 /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8D3D901CA56F8F008EB7A8 /* MGSwipeButton.m */; };
 		3C8D3D941CA56F8F008EB7A8 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8D3D921CA56F8F008EB7A8 /* MGSwipeTableCell.m */; };
 		3C8D3D981CA5774E008EB7A8 /* btnEditSong.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C8D3D951CA5774E008EB7A8 /* btnEditSong.png */; };
@@ -224,6 +243,19 @@
 		3CEA50321CAEC44700123F3C /* EditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CEA50301CAEC44700123F3C /* EditViewController.xib */; };
 		3CF2A3651CAC199500EE89FC /* MainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF2A3641CAC199500EE89FC /* MainCell.m */; };
 		7B007E2D1C924FE90083AA31 /* PCSEQVisualizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B007E2C1C924FE90083AA31 /* PCSEQVisualizer.m */; };
+		7B01E6D91CD09D090017C8C8 /* maxVolumeTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6D31CD09D090017C8C8 /* maxVolumeTrack.png */; };
+		7B01E6DA1CD09D090017C8C8 /* maxVolumeTrack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6D41CD09D090017C8C8 /* maxVolumeTrack@2x.png */; };
+		7B01E6DB1CD09D090017C8C8 /* maxVolumeTrack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6D51CD09D090017C8C8 /* maxVolumeTrack@3x.png */; };
+		7B01E6DC1CD09D090017C8C8 /* minVolumeTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6D61CD09D090017C8C8 /* minVolumeTrack.png */; };
+		7B01E6DD1CD09D090017C8C8 /* minVolumeTrack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6D71CD09D090017C8C8 /* minVolumeTrack@2x.png */; };
+		7B01E6DE1CD09D090017C8C8 /* minVolumeTrack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6D81CD09D090017C8C8 /* minVolumeTrack@3x.png */; };
+		7B01E6F41CD0A7EE0017C8C8 /* MPVolumeView+ReferenceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B01E6F31CD0A7EE0017C8C8 /* MPVolumeView+ReferenceView.m */; };
+		7B01E6F81CD0B1A80017C8C8 /* thumbVolume.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6F51CD0B1A80017C8C8 /* thumbVolume.png */; };
+		7B01E6F91CD0B1A80017C8C8 /* thumbVolume@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6F61CD0B1A80017C8C8 /* thumbVolume@2x.png */; };
+		7B01E6FA1CD0B1A80017C8C8 /* thumbVolume@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6F71CD0B1A80017C8C8 /* thumbVolume@3x.png */; };
+		7B01E6FE1CD0BE790017C8C8 /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6FB1CD0BE790017C8C8 /* timer.png */; };
+		7B01E6FF1CD0BE790017C8C8 /* timer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6FC1CD0BE790017C8C8 /* timer@2x.png */; };
+		7B01E7001CD0BE790017C8C8 /* timer@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B01E6FD1CD0BE790017C8C8 /* timer@3x.png */; };
 		7B0285361CBBAB83008E6F7B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0285351CBBAB83008E6F7B /* AVFoundation.framework */; };
 		7B0544551CCF190B0001C9C9 /* fast-forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544431CCF190B0001C9C9 /* fast-forward.png */; };
 		7B0544561CCF190B0001C9C9 /* fast-forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B0544441CCF190B0001C9C9 /* fast-forward@2x.png */; };
@@ -507,6 +539,27 @@
 		3C7122A11CC7E3F900E1728B /* PlaylistCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistCell.m; sourceTree = "<group>"; };
 		3C7122A21CC7E3F900E1728B /* PlaylistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaylistCell.xib; sourceTree = "<group>"; };
 		3C72215A1CBE97450008356E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		3C7F323E1CD0F71500CCE970 /* white-default-cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white-default-cover.png"; sourceTree = "<group>"; };
+		3C7F32441CD1092500CCE970 /* repeat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = repeat.png; sourceTree = "<group>"; };
+		3C7F32451CD1092500CCE970 /* repeat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repeat@2x.png"; sourceTree = "<group>"; };
+		3C7F32461CD1092500CCE970 /* repeat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repeat@3x.png"; sourceTree = "<group>"; };
+		3C7F324A1CD10BE200CCE970 /* repeat_once.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = repeat_once.png; sourceTree = "<group>"; };
+		3C7F324B1CD10BE200CCE970 /* repeat_once@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repeat_once@2x.png"; sourceTree = "<group>"; };
+		3C7F324C1CD10BE200CCE970 /* repeat_once@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repeat_once@3x.png"; sourceTree = "<group>"; };
+		3C7F32501CD10C5800CCE970 /* repeat_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = repeat_on.png; sourceTree = "<group>"; };
+		3C7F32511CD10C5800CCE970 /* repeat_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repeat_on@2x.png"; sourceTree = "<group>"; };
+		3C7F32521CD10C5800CCE970 /* repeat_on@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "repeat_on@3x.png"; sourceTree = "<group>"; };
+		3C7F32561CD1150500CCE970 /* shuffle_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shuffle_on.png; sourceTree = "<group>"; };
+		3C7F32571CD1150500CCE970 /* shuffle_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shuffle_on@2x.png"; sourceTree = "<group>"; };
+		3C7F32581CD1150500CCE970 /* shuffle_on@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shuffle_on@3x.png"; sourceTree = "<group>"; };
+		3C7F32591CD1150500CCE970 /* shuffle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shuffle.png; sourceTree = "<group>"; };
+		3C7F325A1CD1150500CCE970 /* shuffle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shuffle@2x.png"; sourceTree = "<group>"; };
+		3C7F325B1CD1150500CCE970 /* shuffle@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shuffle@3x.png"; sourceTree = "<group>"; };
+		3C7F32631CD1189B00CCE970 /* HWViewPager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWViewPager.h; sourceTree = "<group>"; };
+		3C7F32641CD1189B00CCE970 /* HWViewPager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWViewPager.m; sourceTree = "<group>"; };
+		3C7F32681CD1195500CCE970 /* CurrentSongCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentSongCollectionCell.h; sourceTree = "<group>"; };
+		3C7F32691CD1195500CCE970 /* CurrentSongCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentSongCollectionCell.m; sourceTree = "<group>"; };
+		3C7F326B1CD1195D00CCE970 /* CurrentSongCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CurrentSongCollectionCell.xib; sourceTree = "<group>"; };
 		3C8D3D8F1CA56F8F008EB7A8 /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
 		3C8D3D901CA56F8F008EB7A8 /* MGSwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeButton.m; sourceTree = "<group>"; };
 		3C8D3D911CA56F8F008EB7A8 /* MGSwipeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeTableCell.h; sourceTree = "<group>"; };
@@ -650,6 +703,20 @@
 		3CF2A3641CAC199500EE89FC /* MainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainCell.m; sourceTree = "<group>"; };
 		7B007E2B1C924FE90083AA31 /* PCSEQVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCSEQVisualizer.h; sourceTree = "<group>"; };
 		7B007E2C1C924FE90083AA31 /* PCSEQVisualizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCSEQVisualizer.m; sourceTree = "<group>"; };
+		7B01E6D31CD09D090017C8C8 /* maxVolumeTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = maxVolumeTrack.png; sourceTree = "<group>"; };
+		7B01E6D41CD09D090017C8C8 /* maxVolumeTrack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "maxVolumeTrack@2x.png"; sourceTree = "<group>"; };
+		7B01E6D51CD09D090017C8C8 /* maxVolumeTrack@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "maxVolumeTrack@3x.png"; sourceTree = "<group>"; };
+		7B01E6D61CD09D090017C8C8 /* minVolumeTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minVolumeTrack.png; sourceTree = "<group>"; };
+		7B01E6D71CD09D090017C8C8 /* minVolumeTrack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minVolumeTrack@2x.png"; sourceTree = "<group>"; };
+		7B01E6D81CD09D090017C8C8 /* minVolumeTrack@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minVolumeTrack@3x.png"; sourceTree = "<group>"; };
+		7B01E6F21CD0A7EE0017C8C8 /* MPVolumeView+ReferenceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPVolumeView+ReferenceView.h"; sourceTree = "<group>"; };
+		7B01E6F31CD0A7EE0017C8C8 /* MPVolumeView+ReferenceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MPVolumeView+ReferenceView.m"; sourceTree = "<group>"; };
+		7B01E6F51CD0B1A80017C8C8 /* thumbVolume.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbVolume.png; sourceTree = "<group>"; };
+		7B01E6F61CD0B1A80017C8C8 /* thumbVolume@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbVolume@2x.png"; sourceTree = "<group>"; };
+		7B01E6F71CD0B1A80017C8C8 /* thumbVolume@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbVolume@3x.png"; sourceTree = "<group>"; };
+		7B01E6FB1CD0BE790017C8C8 /* timer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.png; sourceTree = "<group>"; };
+		7B01E6FC1CD0BE790017C8C8 /* timer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "timer@2x.png"; sourceTree = "<group>"; };
+		7B01E6FD1CD0BE790017C8C8 /* timer@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "timer@3x.png"; sourceTree = "<group>"; };
 		7B0285351CBBAB83008E6F7B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7B0544431CCF190B0001C9C9 /* fast-forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fast-forward.png"; sourceTree = "<group>"; };
 		7B0544441CCF190B0001C9C9 /* fast-forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fast-forward@2x.png"; sourceTree = "<group>"; };
@@ -777,7 +844,7 @@
 		7BF16C081CC8EC81002D99A6 /* btnAddSongToPlaylist@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnAddSongToPlaylist@2x.png"; sourceTree = "<group>"; };
 		7BF16C091CC8EC81002D99A6 /* btnAddSongToPlaylist@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnAddSongToPlaylist@3x.png"; sourceTree = "<group>"; };
 		7BF5C8D11C915D2100175C6F /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
-		7BF5C8D21C915D2100175C6F /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
+		7BF5C8D21C915D2100175C6F /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; usesTabs = 0; wrapsLines = 1; };
 		7BF5C8D71C915E3F00175C6F /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		7BF5C8D81C915E3F00175C6F /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		7BF5C8DA1C91605800175C6F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1159,6 +1226,32 @@
 			name = Object;
 			sourceTree = "<group>";
 		};
+		3C7F32621CD1189B00CCE970 /* HWViewPager */ = {
+			isa = PBXGroup;
+			children = (
+				3C7F32631CD1189B00CCE970 /* HWViewPager.h */,
+				3C7F32641CD1189B00CCE970 /* HWViewPager.m */,
+			);
+			path = HWViewPager;
+			sourceTree = "<group>";
+		};
+		3C7F32661CD118E900CCE970 /* TablePlaylist */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = TablePlaylist;
+			sourceTree = "<group>";
+		};
+		3C7F32671CD118F500CCE970 /* CollectionPlaylist */ = {
+			isa = PBXGroup;
+			children = (
+				3C7F32681CD1195500CCE970 /* CurrentSongCollectionCell.h */,
+				3C7F32691CD1195500CCE970 /* CurrentSongCollectionCell.m */,
+				3C7F326B1CD1195D00CCE970 /* CurrentSongCollectionCell.xib */,
+			);
+			name = CollectionPlaylist;
+			sourceTree = "<group>";
+		};
 		3C8D3D8E1CA56F8F008EB7A8 /* MGSwipeTableCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1376,6 +1469,15 @@
 			path = PCSEQVisualizer;
 			sourceTree = "<group>";
 		};
+		7B01E6F11CD0A7EE0017C8C8 /* MPVolumeView+ReferenceView */ = {
+			isa = PBXGroup;
+			children = (
+				7B01E6F21CD0A7EE0017C8C8 /* MPVolumeView+ReferenceView.h */,
+				7B01E6F31CD0A7EE0017C8C8 /* MPVolumeView+ReferenceView.m */,
+			);
+			path = "MPVolumeView+ReferenceView";
+			sourceTree = "<group>";
+		};
 		7B05448B1CCF2B230001C9C9 /* NBTouchAndHoldButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -1453,6 +1555,34 @@
 		7B2191C51CCE12EE00EA0070 /* Player */ = {
 			isa = PBXGroup;
 			children = (
+				3C7F32561CD1150500CCE970 /* shuffle_on.png */,
+				3C7F32571CD1150500CCE970 /* shuffle_on@2x.png */,
+				3C7F32581CD1150500CCE970 /* shuffle_on@3x.png */,
+				3C7F32591CD1150500CCE970 /* shuffle.png */,
+				3C7F325A1CD1150500CCE970 /* shuffle@2x.png */,
+				3C7F325B1CD1150500CCE970 /* shuffle@3x.png */,
+				3C7F32501CD10C5800CCE970 /* repeat_on.png */,
+				3C7F32511CD10C5800CCE970 /* repeat_on@2x.png */,
+				3C7F32521CD10C5800CCE970 /* repeat_on@3x.png */,
+				3C7F324A1CD10BE200CCE970 /* repeat_once.png */,
+				3C7F324B1CD10BE200CCE970 /* repeat_once@2x.png */,
+				3C7F324C1CD10BE200CCE970 /* repeat_once@3x.png */,
+				3C7F32441CD1092500CCE970 /* repeat.png */,
+				3C7F32451CD1092500CCE970 /* repeat@2x.png */,
+				3C7F32461CD1092500CCE970 /* repeat@3x.png */,
+				3C7F323E1CD0F71500CCE970 /* white-default-cover.png */,
+				7B01E6FB1CD0BE790017C8C8 /* timer.png */,
+				7B01E6FC1CD0BE790017C8C8 /* timer@2x.png */,
+				7B01E6FD1CD0BE790017C8C8 /* timer@3x.png */,
+				7B01E6F51CD0B1A80017C8C8 /* thumbVolume.png */,
+				7B01E6F61CD0B1A80017C8C8 /* thumbVolume@2x.png */,
+				7B01E6F71CD0B1A80017C8C8 /* thumbVolume@3x.png */,
+				7B01E6D31CD09D090017C8C8 /* maxVolumeTrack.png */,
+				7B01E6D41CD09D090017C8C8 /* maxVolumeTrack@2x.png */,
+				7B01E6D51CD09D090017C8C8 /* maxVolumeTrack@3x.png */,
+				7B01E6D61CD09D090017C8C8 /* minVolumeTrack.png */,
+				7B01E6D71CD09D090017C8C8 /* minVolumeTrack@2x.png */,
+				7B01E6D81CD09D090017C8C8 /* minVolumeTrack@3x.png */,
 				7B1018C61CCF7F5000BC514B /* maxTrack.png */,
 				7B1018C71CCF7F5000BC514B /* maxTrack@2x.png */,
 				7B1018C81CCF7F5000BC514B /* maxTrack@3x.png */,
@@ -1591,6 +1721,8 @@
 		7BA4EE9B1C9000A600157284 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3C7F32621CD1189B00CCE970 /* HWViewPager */,
+				7B01E6F11CD0A7EE0017C8C8 /* MPVolumeView+ReferenceView */,
 				7B05448B1CCF2B230001C9C9 /* NBTouchAndHoldButton */,
 				7BC0A44B1CC71CBC000E67DE /* UIAlertView+Blocks */,
 				7BD22F101CBFB1F9005DF164 /* LDProgressView */,
@@ -1757,6 +1889,8 @@
 				7BF5C8D11C915D2100175C6F /* PlayerViewController.h */,
 				7BF5C8D21C915D2100175C6F /* PlayerViewController.m */,
 				7B0896271CA8E3A400264CD1 /* PlayerViewController.xib */,
+				3C7F32661CD118E900CCE970 /* TablePlaylist */,
+				3C7F32671CD118F500CCE970 /* CollectionPlaylist */,
 			);
 			name = PlayerView;
 			sourceTree = "<group>";
@@ -1932,18 +2066,21 @@
 				3C4926D01C93EBCC0065B1DD /* playlists.png in Resources */,
 				3C53414F1CB7EA62000BA5DD /* dropboxIcon.png in Resources */,
 				3CB3FF241CB9578100A95DD2 /* mp3@2x.png in Resources */,
+				3C7F32551CD10C5800CCE970 /* repeat_on@3x.png in Resources */,
 				3CB3FF4D1CB969BF00A95DD2 /* select.png in Resources */,
 				7BF65F171CA3C285007B198D /* SongsCell.xib in Resources */,
 				7B0544581CCF190B0001C9C9 /* next-track-button.png in Resources */,
 				7B05445B1CCF190B0001C9C9 /* pause-button.png in Resources */,
 				3C9390551CC3E01F00F12F8F /* TagRenameCell.xib in Resources */,
 				3C53415A1CB7FEAC000BA5DD /* dropboxIcon_large.png in Resources */,
+				7B01E7001CD0BE790017C8C8 /* timer@3x.png in Resources */,
 				7B4CD8921CAD09D50041BE4E /* ListSongCell.xib in Resources */,
 				3CB105361CA419DB0087D20A /* ipod-item-icon@2x.png in Resources */,
 				3CB3FF201CB9578100A95DD2 /* m4a.png in Resources */,
 				3C8D3DA61CA58155008EB7A8 /* btnAddPlaylist@3x.png in Resources */,
 				3C4926C41C93EBCC0065B1DD /* genres.png in Resources */,
 				3C6DB1041CA6D0CE00F68D3E /* list-item-icon@2x.png in Resources */,
+				7B01E6FE1CD0BE790017C8C8 /* timer.png in Resources */,
 				3C8D3D9F1CA57B5F008EB7A8 /* btnDelete@2x.png in Resources */,
 				3C94B8141CB400E900449B07 /* Info.plist in Resources */,
 				3CB3FF211CB9578100A95DD2 /* m4a@2x.png in Resources */,
@@ -1956,6 +2093,7 @@
 				3CB3FF271CB9578100A95DD2 /* ogg@2x.png in Resources */,
 				3C8D3DA01CA57B5F008EB7A8 /* btnDelete@3x.png in Resources */,
 				7BD22EEC1CBF7357005DF164 /* closePopup@2x.png in Resources */,
+				3C7F32601CD1150500CCE970 /* shuffle@2x.png in Resources */,
 				3CB3FF091CB9485F00A95DD2 /* btn_back@3x.png in Resources */,
 				7BF65F5F1CA3FFAF007B198D /* Info.plist in Resources */,
 				7B0544611CCF190B0001C9C9 /* previous-track.png in Resources */,
@@ -1966,11 +2104,15 @@
 				3C4926CD1C93EBCC0065B1DD /* playlists-selected.png in Resources */,
 				3CB3FF291CB9578100A95DD2 /* wav.png in Resources */,
 				3CDE2EF61CC4E0CF009B2FBA /* PlaylistsCell.xib in Resources */,
+				3C7F325C1CD1150500CCE970 /* shuffle_on.png in Resources */,
 				3C7122A41CC7E3F900E1728B /* PlaylistCell.xib in Resources */,
 				3CB3FF4E1CB969BF00A95DD2 /* select@2x.png in Resources */,
 				3C8D3D991CA5774E008EB7A8 /* btnEditSong@2x.png in Resources */,
+				7B01E6DE1CD09D090017C8C8 /* minVolumeTrack@3x.png in Resources */,
+				3C7F324F1CD10BE200CCE970 /* repeat_once@3x.png in Resources */,
 				7B066A601CA4CFFF0078FD53 /* GenresViewController.xib in Resources */,
 				3C4926B01C93EBCC0065B1DD /* albums-selected@2x.png in Resources */,
+				7B01E6DA1CD09D090017C8C8 /* maxVolumeTrack@2x.png in Resources */,
 				3CDE2EE01CC4D4DD009B2FBA /* add-icon.png in Resources */,
 				3C4926B31C93EBCC0065B1DD /* albums@2x.png in Resources */,
 				3C4926C91C93EBCC0065B1DD /* more-selected@3x.png in Resources */,
@@ -1979,9 +2121,12 @@
 				3CB3FF1E1CB9578100A95DD2 /* aac@2x.png in Resources */,
 				3C4926D81C93EBCC0065B1DD /* settings@3x.png in Resources */,
 				3C8D3DA51CA58155008EB7A8 /* btnAddPlaylist@2x.png in Resources */,
+				3C7F326C1CD1195D00CCE970 /* CurrentSongCollectionCell.xib in Resources */,
 				7B066A791CA4F9770078FD53 /* shuffle-icon.png in Resources */,
 				7B066A7B1CA4F9770078FD53 /* shuffle-icon@3x.png in Resources */,
+				7B01E6F91CD0B1A80017C8C8 /* thumbVolume@2x.png in Resources */,
 				7B0544551CCF190B0001C9C9 /* fast-forward.png in Resources */,
+				3C7F325D1CD1150500CCE970 /* shuffle_on@2x.png in Resources */,
 				3C4926BB1C93EBCC0065B1DD /* files-selected.png in Resources */,
 				7BD22EEB1CBF7357005DF164 /* closePopup.png in Resources */,
 				3C4926D41C93EBCC0065B1DD /* settings-selected@2x.png in Resources */,
@@ -2009,6 +2154,7 @@
 				3C5927EE1CB6A4DF00320D55 /* DropBoxManagementViewController.xib in Resources */,
 				3C4926DC1C93EBCC0065B1DD /* songs.png in Resources */,
 				7B05445C1CCF190B0001C9C9 /* pause-button@2x.png in Resources */,
+				7B01E6D91CD09D090017C8C8 /* maxVolumeTrack.png in Resources */,
 				3C4926D71C93EBCC0065B1DD /* settings@2x.png in Resources */,
 				7B05445D1CCF190B0001C9C9 /* pause-button@3x.png in Resources */,
 				7B066A901CA5152C0078FD53 /* cloud-item-icon@3x.png in Resources */,
@@ -2018,6 +2164,8 @@
 				7B1018D51CCF7F5000BC514B /* thumbTrack.png in Resources */,
 				7B0544591CCF190B0001C9C9 /* next-track-button@2x.png in Resources */,
 				7B3A91D51CCA2A0E007DB5B6 /* AddSongsCell.xib in Resources */,
+				3C7F32491CD1092500CCE970 /* repeat@3x.png in Resources */,
+				7B01E6DD1CD09D090017C8C8 /* minVolumeTrack@2x.png in Resources */,
 				7B066A881CA50BF00078FD53 /* textField-background.png in Resources */,
 				3CB3FF261CB9578100A95DD2 /* ogg.png in Resources */,
 				7B066A4D1CA4C9610078FD53 /* SongsViewController.xib in Resources */,
@@ -2042,6 +2190,7 @@
 				3CB3FF281CB9578100A95DD2 /* ogg@3x.png in Resources */,
 				7B8B549D1CC754F8002F5387 /* TableLine.xib in Resources */,
 				3C4926B91C93EBCC0065B1DD /* artists@2x.png in Resources */,
+				7B01E6FA1CD0B1A80017C8C8 /* thumbVolume@3x.png in Resources */,
 				3C4926DA1C93EBCC0065B1DD /* songs-selected@2x.png in Resources */,
 				3C6C2CBC1CB2829900F3E901 /* check.png in Resources */,
 				7B3A91DB1CCA2E38007DB5B6 /* add-song@3x.png in Resources */,
@@ -2050,8 +2199,10 @@
 				3C6DB1031CA6D0CE00F68D3E /* list-item-icon.png in Resources */,
 				7BF65F1C1CA3C665007B198D /* HeaderTitle.xib in Resources */,
 				3CDE2EE21CC4D4DD009B2FBA /* add-icon@3x.png in Resources */,
+				3C7F32481CD1092500CCE970 /* repeat@2x.png in Resources */,
 				7B1018D61CCF7F5000BC514B /* thumbTrack@2x.png in Resources */,
 				7B1018D41CCF7F5000BC514B /* minTrack@3x.png in Resources */,
+				3C7F32411CD0F71500CCE970 /* white-default-cover.png in Resources */,
 				7B2191CB1CCE12EE00EA0070 /* btn_close_player@3x.png in Resources */,
 				3C4926CC1C93EBCC0065B1DD /* more@3x.png in Resources */,
 				7B1018D11CCF7F5000BC514B /* maxTrack@3x.png in Resources */,
@@ -2062,21 +2213,28 @@
 				7BE3C3B61CC9AFCF001DBDCC /* AddSongsViewController.xib in Resources */,
 				7B05445F1CCF190B0001C9C9 /* play-button@2x.png in Resources */,
 				3C5341501CB7EA62000BA5DD /* dropboxIcon@2x.png in Resources */,
+				3C7F325F1CD1150500CCE970 /* shuffle.png in Resources */,
 				3CB3FF4F1CB969BF00A95DD2 /* select@3x.png in Resources */,
 				3C6C2CBF1CB2829900F3E901 /* uncheck.png in Resources */,
 				3CB3FF221CB9578100A95DD2 /* m4a@3x.png in Resources */,
 				7B066A811CA4FAA20078FD53 /* edit-icon@3x.png in Resources */,
 				3C4926B71C93EBCC0065B1DD /* artists-selected@3x.png in Resources */,
+				3C7F32541CD10C5800CCE970 /* repeat_on@2x.png in Resources */,
 				3C4926AF1C93EBCC0065B1DD /* albums-selected.png in Resources */,
 				3C6C2CBD1CB2829900F3E901 /* check@2x.png in Resources */,
 				3C6C2CC01CB2829900F3E901 /* uncheck@2x.png in Resources */,
+				7B01E6FF1CD0BE790017C8C8 /* timer@2x.png in Resources */,
+				3C7F32611CD1150500CCE970 /* shuffle@3x.png in Resources */,
 				7B0544641CCF190B0001C9C9 /* rewind.png in Resources */,
 				7B3A91D91CCA2E38007DB5B6 /* add-song.png in Resources */,
 				7B1018CF1CCF7F5000BC514B /* maxTrack.png in Resources */,
+				3C7F32471CD1092500CCE970 /* repeat.png in Resources */,
 				7B066A671CA4D8720078FD53 /* TableFooterView.xib in Resources */,
 				3C4926CE1C93EBCC0065B1DD /* playlists-selected@2x.png in Resources */,
+				3C7F324E1CD10BE200CCE970 /* repeat_once@2x.png in Resources */,
 				3CCF23121CCBE6A50007EB21 /* btnFilter.png in Resources */,
 				3CB3FF331CB958EB00A95DD2 /* folder@2x.png in Resources */,
+				7B01E6F81CD0B1A80017C8C8 /* thumbVolume.png in Resources */,
 				3C6DB1051CA6D0CE00F68D3E /* list-item-icon@3x.png in Resources */,
 				7B066A5E1CA4CF490078FD53 /* ArtistsViewController.xib in Resources */,
 				3CB3FF2E1CB9578100A95DD2 /* wma@3x.png in Resources */,
@@ -2085,6 +2243,7 @@
 				3CDE2EFC1CC4E794009B2FBA /* playlist_icon@3x.png in Resources */,
 				3CB105321CA419DB0087D20A /* filetype_audio.png in Resources */,
 				3C94B81A1CB400E900449B07 /* QBImagePicker.storyboard in Resources */,
+				3C7F32531CD10C5800CCE970 /* repeat_on.png in Resources */,
 				3C6DB0D81CA667D200F68D3E /* textField-search@3x.png in Resources */,
 				7BF16C0A1CC8EC81002D99A6 /* btnAddSongToPlaylist.png in Resources */,
 				3C94B8131CB400E900449B07 /* QBImagePicker.strings in Resources */,
@@ -2111,6 +2270,7 @@
 				3C4926CB1C93EBCC0065B1DD /* more@2x.png in Resources */,
 				7B066A5A1CA4CDD50078FD53 /* FilesViewController.xib in Resources */,
 				3C4926C01C93EBCC0065B1DD /* files@3x.png in Resources */,
+				7B01E6DB1CD09D090017C8C8 /* maxVolumeTrack@3x.png in Resources */,
 				3CB105371CA419DB0087D20A /* ipod-item-icon@3x.png in Resources */,
 				3C4926DD1C93EBCC0065B1DD /* songs@2x.png in Resources */,
 				3CB3FF1F1CB9578100A95DD2 /* aac@3x.png in Resources */,
@@ -2129,6 +2289,7 @@
 				3C6C2CBE1CB2829900F3E901 /* check@3x.png in Resources */,
 				7B066A801CA4FAA20078FD53 /* edit-icon@2x.png in Resources */,
 				3CB3FF231CB9578100A95DD2 /* mp3.png in Resources */,
+				3C7F324D1CD10BE200CCE970 /* repeat_once.png in Resources */,
 				3C4926BA1C93EBCC0065B1DD /* artists@3x.png in Resources */,
 				3C4926BF1C93EBCC0065B1DD /* files@2x.png in Resources */,
 				3CCF23131CCBE6A50007EB21 /* btnFilter@2x.png in Resources */,
@@ -2138,8 +2299,10 @@
 				3C9199901CA92A500099B451 /* GenresCell.xib in Resources */,
 				3CDE2EC71CC4891B009B2FBA /* SyncDataViewController.xib in Resources */,
 				3C4926B51C93EBCC0065B1DD /* artists-selected.png in Resources */,
+				3C7F325E1CD1150500CCE970 /* shuffle_on@3x.png in Resources */,
 				3C4926B11C93EBCC0065B1DD /* albums-selected@3x.png in Resources */,
 				3C4926E51C93EE1B0065B1DD /* icn-add-music-normal@3x.png in Resources */,
+				7B01E6DC1CD09D090017C8C8 /* minVolumeTrack.png in Resources */,
 				3CB3FF251CB9578100A95DD2 /* mp3@3x.png in Resources */,
 				3CDE2EE11CC4D4DD009B2FBA /* add-icon@2x.png in Resources */,
 				3C93905A1CC3E46200F12F8F /* DeleteItemCell.xib in Resources */,
@@ -2160,6 +2323,7 @@
 				3C6C2CD51CB29F3300F3E901 /* File.m in Sources */,
 				3C6C2CAB1CB26AC600F3E901 /* IQUIWindow+Hierarchy.m in Sources */,
 				7BF65F521CA3D782007B198D /* UIView+WebCacheOperation.m in Sources */,
+				3C7F326A1CD1195500CCE970 /* CurrentSongCollectionCell.m in Sources */,
 				3CEA50311CAEC44700123F3C /* EditViewController.m in Sources */,
 				3C94B8251CB4034400449B07 /* MBProgressHUD.m in Sources */,
 				3C6DB1091CA6DACB00F68D3E /* AlbumObj.m in Sources */,
@@ -2203,6 +2367,7 @@
 				3C8D3D931CA56F8F008EB7A8 /* MGSwipeButton.m in Sources */,
 				3C6C2CD61CB29F3300F3E901 /* File+CoreDataProperties.m in Sources */,
 				3C28FB381CBA9D1600762D2D /* MarqueeLabel.m in Sources */,
+				7B01E6F41CD0A7EE0017C8C8 /* MPVolumeView+ReferenceView.m in Sources */,
 				7B1533621CAA863B0099DD9C /* AlbumListViewController.m in Sources */,
 				7B066A841CA4FCA50078FD53 /* HeaderUtilObj.m in Sources */,
 				3C09C6DE1C8C664E004A44E2 /* AppDelegate.m in Sources */,
@@ -2234,6 +2399,7 @@
 				3C94B81B1CB400E900449B07 /* QBImagePickerController.m in Sources */,
 				7B066A651CA4D8620078FD53 /* TableFooterView.m in Sources */,
 				3C6C2CB31CB26AC600F3E901 /* IQUIView+IQKeyboardToolbar.m in Sources */,
+				3C7F32651CD1189B00CCE970 /* HWViewPager.m in Sources */,
 				7BF65F4E1CA3D782007B198D /* UIImage+MultiFormat.m in Sources */,
 				3CDE2EE71CC4DC97009B2FBA /* Playlist+CoreDataProperties.m in Sources */,
 				3CF2A3651CAC199500EE89FC /* MainCell.m in Sources */,

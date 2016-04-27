@@ -13,6 +13,8 @@
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 
+#define FARST_SEEK_TIME 1.0
+
 typedef NS_ENUM(NSInteger,CoreMusicPlayerReadyToPlay) {
     CoreMusicPlayerReadyToPlayPlayer = 3000,
     CoreMusicPlayerReadyToPlayCurrentItem = 3001,

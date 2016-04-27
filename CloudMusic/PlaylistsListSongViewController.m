@@ -401,7 +401,7 @@
 
 - (void)openPlayer:(id)sender
 {
-    
+    [[GlobalParameter sharedInstance] openPlayer];
 }
 
 #pragma mark - Utils

@@ -467,7 +467,7 @@
 
 - (void)openPlayer:(id)sender
 {
-    
+    [[GlobalParameter sharedInstance] openPlayer];
 }
 
 - (void)didReceiveMemoryWarning

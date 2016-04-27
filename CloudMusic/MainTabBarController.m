@@ -108,6 +108,7 @@ typedef enum {
     self.delegate = self;
     
     [self setupMoreNavVC];
+    [[PlayerViewController sharedInstance] view];
     
     [[IQKeyboardManager sharedManager] setShouldResignOnTouchOutside:YES];
     [[IQKeyboardManager sharedManager] setToolbarManageBehaviour:IQAutoToolbarByPosition];
