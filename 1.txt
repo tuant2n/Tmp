@@ -1,2 +1,0 @@
-http://code.tutsplus.com/tutorials/10-xcode-plugins-for-ios-development--cms-21899
-https://ccrma.stanford.edu/~jsanchez/NSSpain.pdf
